@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mseiot.Medical.Client", "Mseiot.Medical.Client.csproj", "{771C8A73-AFAA-4137-8273-8044D0E6CE1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ms.Controls", "..\..\libs_csharp\Ms.Controls\Ms.Controls.csproj", "{658D1289-6EAF-40E9-9B98-FD78FFB4A5EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ms.Libs", "..\..\libs_csharp\Ms.Libs\Ms.Libs.csproj", "{680BC546-CEA8-4F54-A80B-4C386CEB5DF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mseiot.Updater", "..\..\libs_csharp\Mseiot.Updater\Mseiot.Updater.csproj", "{08B4FAD7-31A0-46EB-AC31-2FCABD8B65E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mseiot.Medical.Service", "..\Mseiot.Medical.Service\Mseiot.Medical.Service.csproj", "{BD38A2A3-7B32-4127-8C45-06F23FEA4041}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{771C8A73-AFAA-4137-8273-8044D0E6CE1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{771C8A73-AFAA-4137-8273-8044D0E6CE1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{771C8A73-AFAA-4137-8273-8044D0E6CE1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{771C8A73-AFAA-4137-8273-8044D0E6CE1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{658D1289-6EAF-40E9-9B98-FD78FFB4A5EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{658D1289-6EAF-40E9-9B98-FD78FFB4A5EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{658D1289-6EAF-40E9-9B98-FD78FFB4A5EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{658D1289-6EAF-40E9-9B98-FD78FFB4A5EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{680BC546-CEA8-4F54-A80B-4C386CEB5DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{680BC546-CEA8-4F54-A80B-4C386CEB5DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{680BC546-CEA8-4F54-A80B-4C386CEB5DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{680BC546-CEA8-4F54-A80B-4C386CEB5DF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B4FAD7-31A0-46EB-AC31-2FCABD8B65E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B4FAD7-31A0-46EB-AC31-2FCABD8B65E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B4FAD7-31A0-46EB-AC31-2FCABD8B65E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B4FAD7-31A0-46EB-AC31-2FCABD8B65E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD38A2A3-7B32-4127-8C45-06F23FEA4041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD38A2A3-7B32-4127-8C45-06F23FEA4041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD38A2A3-7B32-4127-8C45-06F23FEA4041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD38A2A3-7B32-4127-8C45-06F23FEA4041}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {62FA8DBF-ED2E-4EED-B4B9-C5569DB68C9F}
+	EndGlobalSection
+EndGlobal

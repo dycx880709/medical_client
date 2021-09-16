@@ -3,3 +3,6 @@
 ################################################################################
 
 /Mseiot.Medical.Client/bin/Debug
+/Mseiot.Medical.Client/obj/Debug
+/Mseiot.Medical.Service/bin/Debug
+/Mseiot.Medical.Service/obj/Debug

@@ -1,0 +1,57 @@
+﻿<controls:MsWindow x:Class="Mseiot.Medical.Client.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+        mc:Ignorable="d" Height="400" Width="500" BorderThickness="0"
+        Background="{DynamicResource Color_Login_Bg}" 
+        OpacityMask="White" WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" AllowsTransparency="True">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <Border x:Name="layout" Grid.Row="0" Background="Transparent">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock x:Name="tb_title" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Primary}" FontSize="{StaticResource LargeExFontSize}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="0,5,5,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+                    <Button Height="30" Width="30" Click="SystemSetting_Click" Margin="5,0,0,0"/>
+                    <Button Height="30" Width="30" Click="Close_Click" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="tbName" Grid.Row="0" Grid.Column="1" Width="300"/>
+            <PasswordBox x:Name="tbPwd" Background="{StaticResource Color_Input_Background}" BorderBrush="{StaticResource Color_Border_Primary}" Height="{StaticResource InputElementHeight}" Grid.Row="1" Grid.Column="1" Margin="0,10" Width="300" />
+            <Button x:Name="btLogin" Grid.Row="3" Grid.Column="1" Content="登录" Margin="0,10" IsDefault="True" Width="300" Click="Login_Click" BorderBrush="Transparent"/>
+            <TextBlock x:Name="tbTips" Foreground="{DynamicResource Color_Danger}" FontSize="{StaticResource LargeFontSize}" Margin="0,10,0,0" 
+                        Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Grid.Row="0" VerticalAlignment="Bottom" Foreground="#42A5F3" FontSize="{StaticResource NormalFontSize}" FontStyle="Italic">
+                <Run Text="版本号:" />
+                <Run Text="" x:Name="tb_version"/>
+            </TextBlock>
+        </StackPanel>
+        <Border x:Name="border" Grid.RowSpan="3"/>
+    </Grid>
+</controls:MsWindow>
