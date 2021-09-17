@@ -45,10 +45,7 @@ namespace Mseiot.Medical.Client.Core
                 var json = File.ReadAllText(SettingPath, Encoding.Unicode);
                 CacheHelper.LocalSetting = JsonConvert.DeserializeObject<LocalSetting>(json);
             }
-            else
-            {
-                CacheHelper.LocalSetting = new LocalSetting();
-            }
+            else CacheHelper.LocalSetting = new LocalSetting();
         }
 
         public static void SaveLocalSetting()

@@ -62,11 +62,17 @@
     <Compile Include="Entities\LocalSetting.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\UserRecord.cs" />
+    <Compile Include="Views\Login\SeverSetting.xaml.cs">
+      <DependentUpon>SeverSetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Updates\AddVersion.xaml.cs">
       <DependentUpon>AddVersion.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Updates\UpdateMain.xaml.cs">
+      <DependentUpon>UpdateMain.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -80,11 +86,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Themes\Images.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Login\SeverSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Updates\AddVersion.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Login\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Updates\UpdateMain.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

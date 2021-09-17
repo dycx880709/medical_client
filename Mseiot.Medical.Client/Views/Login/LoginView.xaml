@@ -11,7 +11,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="90"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
@@ -25,9 +25,9 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock x:Name="tb_title" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Primary}" FontSize="{StaticResource LargeExFontSize}"/>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Margin="0,5,5,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
-                    <Button Height="30" Width="30" Click="SystemSetting_Click" Margin="5,0,0,0"/>
-                    <Button Height="30" Width="30" Click="Close_Click" Margin="5,0,0,0"/>
+                <StackPanel Grid.Column="1" Margin="0,10,10,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+                    <controls:MediaButton FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Setting}" HoverSource="{StaticResource Img_Setting_Hover}" Click="SystemSetting_Click" Margin="5,0,0,0"/>
+                    <controls:MediaButton FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Close}" HoverSource="{StaticResource Img_Close_Hover}" Click="Close_Click" Margin="5,0,0,0"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -40,8 +40,10 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="tbName" Grid.Row="0" Grid.Column="1" Width="300"/>
-            <PasswordBox x:Name="tbPwd" Background="{StaticResource Color_Input_Background}" BorderBrush="{StaticResource Color_Border_Primary}" Height="{StaticResource InputElementHeight}" Grid.Row="1" Grid.Column="1" Margin="0,10" Width="300" />
+            <controls:CustomTextBox x:Name="tbName" Removed="tbName_Removed" Selected="tbName_Selected" Grid.Row="0" Grid.Column="1" Width="300"/>
+            <controls:CustomTextBox x:Name="tbPwd" IsPassword="True" VerticalContentAlignment="Center"  Grid.Row="1" Grid.Column="1" Margin="0,10" Width="300" />
+            <CheckBox x:Name="cbRemember" Grid.Column="1" Grid.Row="2" IsChecked="True" IsEnabled="{Binding ElementName=pbPwd,Path=IsEnabled}" Margin="0,10" HorizontalAlignment="Right"
+                        Content="记住密码"  FontSize="{StaticResource NormalFontSize}" />
             <Button x:Name="btLogin" Grid.Row="3" Grid.Column="1" Content="登录" Margin="0,10" IsDefault="True" Width="300" Click="Login_Click" BorderBrush="Transparent"/>
             <TextBlock x:Name="tbTips" Foreground="{DynamicResource Color_Danger}" FontSize="{StaticResource LargeFontSize}" Margin="0,10,0,0" 
                         Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>

@@ -9,7 +9,10 @@ namespace Mseiot.Medical.Client.Entities
 {
     public class ServerSetting : NotifyPropertyBase
     {
-        private string address;
+        private int httpPort = 19000;
+        private string address = "10.211.55.2";
+        private int tcpPort = 19001;
+
         /// <summary>
         /// 服务地址
         /// </summary>
@@ -23,7 +26,6 @@ namespace Mseiot.Medical.Client.Entities
             }
         }
 
-        private int httpPort;
         /// <summary>
         /// 服务Http端口
         /// </summary>
@@ -37,7 +39,6 @@ namespace Mseiot.Medical.Client.Entities
             }
         }
 
-        private int tcpPort;
         /// <summary>
         /// 服务Tcp端口
         /// </summary>

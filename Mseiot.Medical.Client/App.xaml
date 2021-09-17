@@ -2,11 +2,12 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Mseiot.Medical.Client"
-             StartupUri="MainWindow.xaml">
+             StartupUri="Views/Login/LoginView.xaml">
     
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Mseiot.Medical.Client;component/Themes/Images.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Ms.Controls;component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

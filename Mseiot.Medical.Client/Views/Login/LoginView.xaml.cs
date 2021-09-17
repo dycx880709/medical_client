@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Mseiot.Medical.Client.Core;
 using Mseiot.Medical.Service.Services;
 using Version = Mseiot.Medical.Service.Entities.Version;
+using Ms.Controls.Models;
 
 namespace Mseiot.Medical.Client.Views
 {
@@ -18,6 +19,7 @@ namespace Mseiot.Medical.Client.Views
         public LoginView()
         {
             InitializeComponent();
+            CacheHelper.LoadLocalSetting();
             this.Loaded += LoginView_Loaded;
         }
 
@@ -30,10 +32,10 @@ namespace Mseiot.Medical.Client.Views
         private async void Updater()
         {
             var result = await SocketProxy.Instance.VerifyVersion(new Version { Code = CacheHelper.ClientVersion });
-            if (result.IsSuccess && !string.IsNullOrEmpty(result.Content.Code))
+            if (result.IsSuccess && result.Content != null && !string.IsNullOrEmpty(result.Content.Code))
             {
-                //var view = new UpdateMain(result.Content);
-                //view.ShowDialog("新版本提示");
+                var view = new UpdateMain(result.Content);
+                view.ShowDialog("新版本提示");
             }
         }
 
@@ -42,7 +44,8 @@ namespace Mseiot.Medical.Client.Views
             var localSetting = CacheHelper.LocalSetting;
             this.Title = tb_title.Text = CacheHelper.ProductName;
             tbName.Text = localSetting.UserRecord.LoginName ?? "";
-            tbPwd.Password = localSetting.UserRecord.LoginPwd ?? "";
+            tbPwd.Text = localSetting.UserRecord.LoginPwd ?? "";
+            cbRemember.IsChecked = localSetting.IsRemember;
             if (string.IsNullOrEmpty(localSetting.ServerSetting.Address) 
                 || localSetting.ServerSetting.HttpPort == 0
                 || localSetting.ServerSetting.TcpPort == 0) 
@@ -67,7 +70,7 @@ namespace Mseiot.Medical.Client.Views
         private async void Login_Click(object sender, RoutedEventArgs e)
         {
             var loginName = tbName.Text.Trim();
-            var loginPwd = tbPwd.Password.Trim();
+            var loginPwd = tbPwd.Text.Trim();
             if (string.IsNullOrEmpty(loginName))
             {
                 MsWindow.ShowDialog("登录名称不能为空");
@@ -83,6 +86,7 @@ namespace Mseiot.Medical.Client.Views
             if (result.IsSuccess) 
             {
                 var localSetting = CacheHelper.LocalSetting;
+                localSetting.IsRemember = cbRemember.IsChecked.Value;
                 var record = localSetting.UserRecord;
                 record.LoginName = loginName;
                 if (localSetting.IsRemember) record.LoginPwd = loginPwd;
@@ -113,7 +117,39 @@ namespace Mseiot.Medical.Client.Views
 
         private void SystemSetting_Click(object sender, RoutedEventArgs e)
         {
+            var view = new SeverSetting();
+            border.Child = view;
+            void SaveSystemSetting(object obj, EventArgs ex)
+            {
+                var serverSetting = CacheHelper.LocalSetting.ServerSetting;
+                SocketProxy.Instance.Load(serverSetting.Address, serverSetting.HttpPort, serverSetting.TcpPort);
+                btLogin.IsEnabled = true;
+                tbTips.Text = "";
+            }
+            view.Save += SaveSystemSetting;
+            view.Close += (o, ex) =>
+            {
+                view.Save -= SaveSystemSetting;
+                border.Child = null;
+            };
+        }
 
+        private void tbName_Selected(object sender, CustomEventArgs e)
+        {
+            var localSetting = CacheHelper.LocalSetting;
+            var userRecord = localSetting.UserRecords.FirstOrDefault(t => t.LoginName.Equals(e.PropertyValue));
+            if (TimeHelper.ToUnixTime(DateTime.Now) - userRecord.LoginTime > 3600 * 24 * 7)
+                tbPwd.Text = userRecord.LoginPwd = "";
+            else
+                tbPwd.Text = userRecord.LoginPwd;
+            userRecord.CopyTo(localSetting.UserRecord);
+        }
+
+        private void tbName_Removed(object sender, CustomEventArgs e)
+        {
+            var localSetting = CacheHelper.LocalSetting;
+            localSetting.UserRecords.RemoveAll(t => t.LoginName.Equals(e.PropertyValue));
+            CacheHelper.SaveLocalSetting();
         }
     }
 }

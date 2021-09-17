@@ -13,5 +13,6 @@ namespace Mseiot.Medical.Client
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }
