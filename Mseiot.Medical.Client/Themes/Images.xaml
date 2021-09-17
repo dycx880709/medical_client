@@ -16,4 +16,26 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
+
+    <!--用户-->
+    <DrawingImage x:Key="Img_User">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V1024 H1024 V0 H0 Z">
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{DynamicResource Color_Font_Primary}" Geometry="F1 M1024,1024z M0,0z M247.2,328.8C247.2,475.1 365.7,593.7 512,593.7 658.3,593.7 776.9,475.2 776.9,328.9L776.9,328.8C776.9,182.5 658.4,63.9 512.1,63.9 365.8,63.9 247.2,182.4 247.2,328.8 247.2,328.7 247.2,328.7 247.2,328.8z" />
+                    <GeometryDrawing Brush="{DynamicResource Color_Font_Primary}" Geometry="F1 M1024,1024z M0,0z M767.9,592.1C747,575.6 717,577.1 697.6,596.6 649.7,644.5 583.9,674.4 510.6,674.4 437.3,674.4 371.4,644.5 323.6,596.6 304.1,577.1 274.2,574.2 253.3,592.1 172.3,661 112.5,749.2 93,870.4 85.5,919.8 119.9,960.2 170.8,960.2L854.6,960.2C904,960.2 939.9,919.8 932.4,870.4 911.5,749.2 851.7,661 767.9,592.1z" />
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Img_User_Hover">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V1024 H1024 V0 H0 Z">
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{DynamicResource Color_Icon_Hover}" Geometry="F1 M1024,1024z M0,0z M247.2,328.8C247.2,475.1 365.7,593.7 512,593.7 658.3,593.7 776.9,475.2 776.9,328.9L776.9,328.8C776.9,182.5 658.4,63.9 512.1,63.9 365.8,63.9 247.2,182.4 247.2,328.8 247.2,328.7 247.2,328.7 247.2,328.8z" />
+                    <GeometryDrawing Brush="{DynamicResource Color_Icon_Hover}" Geometry="F1 M1024,1024z M0,0z M767.9,592.1C747,575.6 717,577.1 697.6,596.6 649.7,644.5 583.9,674.4 510.6,674.4 437.3,674.4 371.4,644.5 323.6,596.6 304.1,577.1 274.2,574.2 253.3,592.1 172.3,661 112.5,749.2 93,870.4 85.5,919.8 119.9,960.2 170.8,960.2L854.6,960.2C904,960.2 939.9,919.8 932.4,870.4 911.5,749.2 851.7,661 767.9,592.1z" />
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
 </ResourceDictionary>

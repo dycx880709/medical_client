@@ -42,7 +42,6 @@ namespace Mseiot.Medical.Client.Views
         private void InitProperty()
         {
             var localSetting = CacheHelper.LocalSetting;
-            this.Title = tb_title.Text = CacheHelper.ProductName;
             tbName.Text = localSetting.UserRecord.LoginName ?? "";
             tbPwd.Text = localSetting.UserRecord.LoginPwd ?? "";
             cbRemember.IsChecked = localSetting.IsRemember;

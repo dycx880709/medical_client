@@ -1,5 +1,6 @@
 ﻿using Ms.Controls;
 using Ms.Libs.SysLib;
+using Mseiot.Medical.Client.Core;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Diagnostics;
@@ -48,13 +49,12 @@ namespace Mseiot.Medical.Client.Views
             var result = loading.AsyncWait("下载升级包中,请稍后", SocketProxy.Instance.HttpProxy.DownloadFile("files/" + version.Path, localFilePath));
             if (result.IsSuccess)
             {
-                var processName = Process.GetCurrentProcess().ProcessName;
                 #region 运行升级程序，并关掉主进程 
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,
-                    Arguments = $"{processName} \"{localFilePath}\"",
+                    Arguments = $"{CacheHelper.ProcessName} \"{localFilePath}\"",
                     FileName = runExe
                 };
                 Process.Start(psi);
