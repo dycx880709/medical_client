@@ -2,7 +2,12 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/Mseiot.Medical.Client/bin/Debug
-/Mseiot.Medical.Client/obj/Debug
-/Mseiot.Medical.Service/bin/Debug
-/Mseiot.Medical.Service/obj/Debug
+/Mseiot.Medical.Client/bin/
+/Mseiot.Medical.Client/obj/
+/Mseiot.Medical.Client/packages/
+/Mseiot.Medical.Service/bin/
+/Mseiot.Medical.Service/obj/
+/MM.Libs.RFID/obj/
+/MM.Libs.RFID/bin/
+/MM.Libs.RFID.Test/obj/
+/MM.Libs.RFID.Test/bin/
