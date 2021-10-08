@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="Mseiot.Medical.Client.Views.PatientManageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="1080" d:DesignWidth="1920">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.Resources>
+                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="Margin" Value="5"/>
+                </Style>
+                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+                <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource {x:Type DatePicker}}">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="Width" Value="{StaticResource InputElementWidth}"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="登记日期" Grid.Row="0" Grid.Column="0"/>
+            <TextBlock Text="检查日期" Grid.Row="0" Grid.Column="2"/>
+            <TextBlock Text="检查部位" Grid.Row="0" Grid.Column="4"/>
+            <TextBlock Text="检查类型" Grid.Row="0" Grid.Column="6"/>
+            <TextBlock Text="送检科室" Grid.Row="0" Grid.Column="8"/>
+            <TextBlock Text="送检医生" Grid.Row="0" Grid.Column="10"/>
+            <TextBlock Text="检查序号" Grid.Row="0" Grid.Column="12"/>
+            <TextBlock Text="患者姓名" Grid.Row="1" Grid.Column="0"/>
+            <TextBlock Text="性别 " Grid.Row="1" Grid.Column="2"/>
+            <TextBlock Text="身份证号" Grid.Row="1" Grid.Column="4"/>
+            <TextBlock Text="电话号码" Grid.Row="1" Grid.Column="6"/>
+            <TextBlock Text="复/初诊" Grid.Row="1" Grid.Column="8"/>
+            <TextBlock Text="收费类型" Grid.Row="1" Grid.Column="10"/>
+
+            <DatePicker Grid.Row="0" Grid.Column="1"/>
+            <DatePicker Grid.Row="0" Grid.Column="3"/>
+            <ComboBox Grid.Row="0" Grid.Column="5"/>
+            <ComboBox Grid.Row="0" Grid.Column="7"/>
+            <TextBox Grid.Row="0" Grid.Column="9"/>
+            <TextBox Grid.Row="0" Grid.Column="11"/>
+            <TextBox Grid.Row="0" Grid.Column="13"/>
+
+            <TextBox Grid.Row="1" Grid.Column="1"/>
+            <ComboBox Grid.Row="1" Grid.Column="3"/>
+            <TextBox Grid.Row="1" Grid.Column="5"/>
+            <TextBox Grid.Row="1" Grid.Column="7"/>
+            <TextBox Grid.Row="1" Grid.Column="9"/>
+            <TextBox Grid.Row="1" Grid.Column="11"/>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="12" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                <Button Content="查询" IsDefault="True"/>
+                <Button Content="重置" Margin="15,0,0,0"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <DataGrid>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="70" Header="序号"/>
+                    <DataGridTextColumn Width="*" Header="检查序号"/>
+                    <DataGridTextColumn Width="*" Header="姓名"/>
+                    <DataGridTextColumn Width="*" Header="性别"/>
+                    <DataGridTextColumn Width="*" Header="身份证号"/>
+                    <DataGridTextColumn Width="*" Header="电话号码"/>
+                    <DataGridTextColumn Width="*" Header="复/初诊"/>
+                    <DataGridTextColumn Width="*" Header="收费类型"/>
+                    <DataGridTextColumn Width="*" Header="登记日期"/>
+                    <DataGridTextColumn Width="*" Header="检查日期"/>
+                    <DataGridTextColumn Width="*" Header="检查部位"/>
+                    <DataGridTextColumn Width="*" Header="检查类型"/>
+                    <DataGridTextColumn Width="*" Header="送检科室"/>
+                    <DataGridTextColumn Width="*" Header="送检医生"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <controls:Pager x:Name="pager" Grid.Row="2"/>
+    </Grid>
+</UserControl>

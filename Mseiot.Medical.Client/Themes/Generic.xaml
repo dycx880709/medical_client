@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:Double x:Key="NavigateFontSize">18</sys:Double>
+    
+    <s:Double x:Key="Title_Header_Height">40</s:Double>
+    
+    <sys:Double x:Key="InputElementWidth">160</sys:Double>
+    <sys:Double x:Key="InputElementHeight">30</sys:Double>
+    
+    <sys:Double x:Key="ButtonHeight">30</sys:Double>
+    <sys:Double x:Key="ButtonWidth">80</sys:Double>
+
+    <sys:Double x:Key="DataGrdiColumnHeight">40</sys:Double>
+    <sys:Double x:Key="DataGrdiRowHeight">33</sys:Double>
+
+    <!--<SolidColorBrush x:Key="Color_Primary" Color="#2B80FF"/>
+    <SolidColorBrush x:Key="Color_Content_Primary" Color="#4090FF"/>
+    <SolidColorBrush x:Key="Color_Content_Secondary" Color="#99C1F9"/>
+
+    <SolidColorBrush x:Key="Color_Font_Primary" Color="#2D405E"/>
+    <SolidColorBrush x:Key="Color_Font_Light" Color="#879BBA"/>-->
+</ResourceDictionary>

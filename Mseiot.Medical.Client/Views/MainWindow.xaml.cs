@@ -26,11 +26,11 @@ namespace Mseiot.Medical.Client.Views
     /// </summary>
     public partial class MainWindow : MsWindow
     {
-        private readonly Dictionary<string, UserControl> navigateItems;
+        private readonly Dictionary<string, UserControl> navigateItems 
+            = new Dictionary<string, UserControl>();
         public MainWindow()
         {
             InitializeComponent();
-            this.navigateItems = new Dictionary<string, UserControl>();
             this.Loaded += MainWindow_Loaded;
         }
 
@@ -71,14 +71,18 @@ namespace Mseiot.Medical.Client.Views
             App.Current.Shutdown();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is FrameworkElement element &&  element.Tag is string viewName)
             {
+                if (pop_clean != null)
+                    pop_clean.IsOpen = viewName.Equals("Mseiot.Medical.Client.Views.CleanCenterView");
                 if (!string.IsNullOrEmpty(viewName) && !navigateItems.ContainsKey(viewName))
                 {
                     var type = Type.GetType(viewName);
                     var uc = Activator.CreateInstance(type) as UserControl;
+                    var headerHeight = Convert.ToDouble(App.Current.Resources["Title_Header_Height"]);
+                    uc.Margin = new Thickness(0, -headerHeight, 0, 0);
                     navigateItems.Add(viewName, uc);
                 }
                 border.Child = navigateItems[viewName];

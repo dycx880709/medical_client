@@ -4,9 +4,133 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Mseiot.Medical.Client.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d" >
     <Grid>
-            
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource {x:Type DatePicker}}">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Header="常用信息">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="患者名称" Grid.Column="0" Grid.Row="0"/>
+                <TextBlock Text="性别" Grid.Column="2" Grid.Row="0"/>
+                <TextBlock Text="年龄" Grid.Column="4" Grid.Row="0"/>
+                <TextBlock Text="检查部位" Grid.Column="0" Grid.Row="1"/>
+                <TextBlock Text="病历编号" Grid.Column="2" Grid.Row="1"/>
+                <TextBlock Text="住院号" Grid.Column="4" Grid.Row="1"/>
+                <TextBlock Text="送检科室" Grid.Column="0" Grid.Row="2"/>
+                <TextBlock Text="床位号" Grid.Column="2" Grid.Row="2"/>
+                <TextBlock Text="病区号" Grid.Column="4" Grid.Row="2"/>
+                <TextBlock Text="送检医生" Grid.Column="0" Grid.Row="3"/>
+                <TextBlock Text="检查日期" Grid.Column="2" Grid.Row="3"/>
+                <TextBlock Text="收费类型" Grid.Column="4" Grid.Row="3"/>
+                <TextBlock Text="检查类型" Grid.Column="0" Grid.Row="4"/>
+                <TextBlock Text="门诊号" Grid.Column="2" Grid.Row="4"/>
+                <TextBlock Text="病理号" Grid.Column="4" Grid.Row="4"/>
+                <TextBlock Text="病史" Grid.Column="0" Grid.Row="5"/>
+                <TextBlock Text="主诉" Grid.Column="0" Grid.Row="6"/>
+
+                <TextBox Grid.Row="0" Grid.Column="1"/>
+                <ComboBox Grid.Row="0" Grid.Column="3"/>
+                <ComboBox Grid.Row="0" Grid.Column="5"/>
+                <ComboBox Grid.Row="1" Grid.Column="1"/>
+                <TextBox Grid.Row="1" Grid.Column="3"/>
+                <TextBox Grid.Row="1" Grid.Column="5"/>
+                <ComboBox Grid.Row="2" Grid.Column="1"/>
+                <TextBox Grid.Row="2" Grid.Column="3"/>
+                <ComboBox Grid.Row="2" Grid.Column="5"/>
+                <ComboBox Grid.Row="3" Grid.Column="1"/>
+                <DatePicker Grid.Row="3" Grid.Column="3"/>
+                <ComboBox Grid.Row="3" Grid.Column="5"/>
+                <ComboBox Grid.Row="4" Grid.Column="1"/>
+                <TextBox Grid.Row="4" Grid.Column="3"/>
+                <TextBox Grid.Row="4" Grid.Column="5"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" Width="Auto"/>
+                <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" Width="Auto"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="附加信息">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="身份证号" Grid.Column="0" Grid.Row="0"/>
+                <TextBlock Text="社保号码" Grid.Column="2" Grid.Row="0"/>
+                <TextBlock Text="电话号码" Grid.Column="4" Grid.Row="0"/>
+                <TextBlock Text="婚姻状况" Grid.Column="0" Grid.Row="1"/>
+                <TextBlock Text="职业" Grid.Column="2" Grid.Row="1"/>
+                <TextBlock Text="子女数" Grid.Column="4" Grid.Row="1"/>
+                <TextBlock Text="民族" Grid.Column="0" Grid.Row="2"/>
+                <TextBlock Text="身高" Grid.Column="2" Grid.Row="2"/>
+                <TextBlock Text="体重" Grid.Column="4" Grid.Row="2"/>
+                <TextBlock Text="居住地址" Grid.Column="0" Grid.Row="3"/>
+                <TextBlock Text="户籍地址" Grid.Column="0" Grid.Row="4"/>
+
+                <TextBox Grid.Row="0" Grid.Column="1"/>
+                <TextBox Grid.Row="0" Grid.Column="3"/>
+                <TextBox Grid.Row="0" Grid.Column="5"/>
+                <TextBox Grid.Row="1" Grid.Column="1"/>
+                <TextBox Grid.Row="1" Grid.Column="3"/>
+                <TextBox Grid.Row="1" Grid.Column="5"/>
+                <TextBox Grid.Row="2" Grid.Column="1"/>
+                <TextBox Grid.Row="2" Grid.Column="3"/>
+                <TextBox Grid.Row="2" Grid.Column="5"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" Width="Auto"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" Width="Auto"/>
+            </Grid>
+        </GroupBox>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="确定" IsDefault="True"/>
+            <Button Content="取消" Margin="20,0,0,0"/>
+        </StackPanel>
     </Grid>
 </UserControl>

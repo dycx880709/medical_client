@@ -11,25 +11,27 @@
 
     <Grid Background="{StaticResource Color_Login_Bg}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Border x:Name="border" Grid.Row="2"/>
+        <Grid Grid.Row="0">
+            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}"/>
             <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" FontSize="{StaticResource LargeExFontSize}" Text="{x:Static core:CacheHelper.ProductName}"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <RadioButton Click="MenuItem_Click" Content="预约登记" FontSize="{StaticResource LargeFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.BookingManagement" IsChecked="True"/>
-                <RadioButton Click="MenuItem_Click" Content="检查中心" FontSize="{StaticResource LargeFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0"/>
-                <RadioButton Click="MenuItem_Click" Content="病历中心" FontSize="{StaticResource LargeFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0"/>
-                <RadioButton Click="MenuItem_Click" Content="清洗中心" FontSize="{StaticResource LargeFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0"/>
-                <RadioButton Click="MenuItem_Click" Content="主任管理" FontSize="{StaticResource LargeFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0"/>
-                <RadioButton Click="MenuItem_Click" Content="系统管理" FontSize="{StaticResource LargeFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <RadioButton Checked="MenuItem_Checked" Content="预约登记" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.BookingManagetView" IsChecked="True"/>
+                <RadioButton Checked="MenuItem_Checked" Content="检查中心" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.InspectionManageView" Margin="10,0"/>
+                <RadioButton Checked="MenuItem_Checked" Content="病历中心" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.MedicalManageView" Margin="10,0"/>
+                <RadioButton Click="MenuItem_Checked" Content="清洗中心" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.CleanCenterView" Margin="10,0" x:Name="rb_Cleaning"/>
+                <RadioButton Checked="MenuItem_Checked" Content="主任管理" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0"/>
+                <RadioButton Checked="MenuItem_Checked" Content="系统管理" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0"/>
             </StackPanel>
             <StackPanel Margin="0,0,10,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="tb_time" VerticalAlignment="Center" FontSize="{StaticResource LargeExFontSize}"/>
+                    <TextBlock x:Name="tb_time" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}"/>
                 </StackPanel>
-                <ToggleButton x:Name="tg_user" Width="160" Margin="10,0" Background="Transparent" BorderThickness="0">
+                <ToggleButton x:Name="tg_User" Width="160" Margin="10,0" Background="Transparent" BorderThickness="0">
                     <StackPanel Orientation="Horizontal">
                         <Border Height="25" Width="25" CornerRadius="25" BorderThickness="2" BorderBrush="{StaticResource Color_Border_Primary}">
                             <Image Source="{StaticResource Img_User}" Height="{StaticResource LargeFontSize}"/>
@@ -42,8 +44,14 @@
                 </Button>
                 <controls:MediaButton Click="Close_Click" NormalSource="{StaticResource Img_Close}" HoverSource="{StaticResource Img_Close_Hover}" FISize="{StaticResource LargeExFontSize}"/>
             </StackPanel>
-            <Popup Width="240" Height="170" PopupAnimation="Fade" VerticalOffset="10" Placement="Bottom" IsOpen="{Binding IsChecked, ElementName=tg_user}" StaysOpen="{Binding IsMouseOver, ElementName=tg_user}"
-                   PlacementTarget="{Binding ElementName=tg_user}">
+            <Popup x:Name="pop_clean" PopupAnimation="Fade" Placement="Bottom" VerticalOffset="10" StaysOpen="False" PlacementTarget="{Binding ElementName=rb_Cleaning}">
+                <StackPanel>
+                    <Button Content="清洗记录" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.CleanRecordView"/>
+                    <Button Content="设备管理" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.DeviceSettingView"/>
+                </StackPanel>
+            </Popup>
+            <Popup Width="240" Height="170" PopupAnimation="Fade" VerticalOffset="10" Placement="Bottom" IsOpen="{Binding IsChecked, ElementName=tg_User}" StaysOpen="{Binding IsMouseOver, ElementName=tg_User}"
+                   PlacementTarget="{Binding ElementName=tg_User}">
                 <StackPanel VerticalAlignment="Center" Margin="10,0" HorizontalAlignment="Center">
                     <!--当前登录用户-->
                     <StackPanel Orientation="Horizontal" Margin="0,10">
@@ -65,9 +73,9 @@
                 </StackPanel>
             </Popup>
         </Grid>
-        <Border x:Name="border" Grid.Row="1">
-            
-        </Border>
+        <Grid Grid.Row="1" Height="{StaticResource  Title_Header_Height}">
+            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Secondary}"/>
+        </Grid>
         <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
     </Grid>
 </controls:MsWindow>

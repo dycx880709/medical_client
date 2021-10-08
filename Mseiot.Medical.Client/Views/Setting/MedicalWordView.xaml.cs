@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Mseiot.Medical.Client.Views
+namespace Mseiot.Medical.Client.Views.Setting
 {
     /// <summary>
-    /// BookingManagement.xaml 的交互逻辑
+    /// MedicalWordView.xaml 的交互逻辑
     /// </summary>
-    public partial class BookingManagement : UserControl
+    public partial class MedicalWordView : UserControl
     {
-        public BookingManagement()
+        public MedicalWordView()
         {
             InitializeComponent();
         }

@@ -122,6 +122,7 @@ namespace Mseiot.Medical.Client.Views
             {
                 var serverSetting = CacheHelper.LocalSetting.ServerSetting;
                 SocketProxy.Instance.Load(serverSetting.Address, serverSetting.HttpPort, serverSetting.TcpPort);
+                this.Updater();
                 btLogin.IsEnabled = true;
                 tbTips.Text = "";
             }
