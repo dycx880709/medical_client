@@ -75,8 +75,7 @@ namespace Mseiot.Medical.Client.Views
         {
             if (sender is FrameworkElement element &&  element.Tag is string viewName)
             {
-                if (pop_clean != null)
-                    pop_clean.IsOpen = viewName.Equals("Mseiot.Medical.Client.Views.CleanCenterView");
+                //pop_director.IsOpen = pop_clean.IsOpen = false;
                 if (!string.IsNullOrEmpty(viewName) && !navigateItems.ContainsKey(viewName))
                 {
                     var type = Type.GetType(viewName);
@@ -92,6 +91,16 @@ namespace Mseiot.Medical.Client.Views
         private void Min_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void CleanCenter_Checked(object sender, RoutedEventArgs e)
+        {
+            //pop_clean.IsOpen = true;
+        }
+
+        private void DirectorManage_Checked(object sender, RoutedEventArgs e)
+        {
+            //pop_director.IsOpen = true;
         }
     }
 }
