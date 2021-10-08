@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mseiot.Updater", "..\..\lib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mseiot.Medical.Service", "..\Mseiot.Medical.Service\Mseiot.Medical.Service.csproj", "{BD38A2A3-7B32-4127-8C45-06F23FEA4041}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Libs.RFID", "..\MM.Libs.RFID\MM.Libs.RFID.csproj", "{DD36C5D8-EFA7-432B-A0FD-11B4CBFDA32C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RTID", "RTID", "{7C028E97-68D6-4387-A25D-BFAE8E11A7D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Libs.RFID.Test", "..\MM.Libs.RFID.Test\MM.Libs.RFID.Test.csproj", "{220AE704-6F4B-4191-8096-FD274A00930D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +45,21 @@ Global
 		{BD38A2A3-7B32-4127-8C45-06F23FEA4041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD38A2A3-7B32-4127-8C45-06F23FEA4041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD38A2A3-7B32-4127-8C45-06F23FEA4041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD36C5D8-EFA7-432B-A0FD-11B4CBFDA32C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD36C5D8-EFA7-432B-A0FD-11B4CBFDA32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD36C5D8-EFA7-432B-A0FD-11B4CBFDA32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD36C5D8-EFA7-432B-A0FD-11B4CBFDA32C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{220AE704-6F4B-4191-8096-FD274A00930D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{220AE704-6F4B-4191-8096-FD274A00930D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{220AE704-6F4B-4191-8096-FD274A00930D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{220AE704-6F4B-4191-8096-FD274A00930D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DD36C5D8-EFA7-432B-A0FD-11B4CBFDA32C} = {7C028E97-68D6-4387-A25D-BFAE8E11A7D9}
+		{220AE704-6F4B-4191-8096-FD274A00930D} = {7C028E97-68D6-4387-A25D-BFAE8E11A7D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {62FA8DBF-ED2E-4EED-B4B9-C5569DB68C9F}
