@@ -20,7 +20,7 @@
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}"/>
             <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
                 <Image Source="/Mseiot.Medical.Client;component/Images/logo.png" Stretch="Uniform" Height="30"/>
-                <TextBlock VerticalAlignment="Center" FontSize="{StaticResource LargeExFontSize}" Text="{x:Static core:CacheHelper.ProductName}"/>
+                <TextBlock VerticalAlignment="Center" FontSize="{StaticResource LargeExFontSize}" Margin="5,0,0,0" Text="{x:Static core:CacheHelper.ProductName}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <RadioButton Checked="MenuItem_Checked" Content="预约登记" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.BookingManagetView" IsChecked="True"/>
