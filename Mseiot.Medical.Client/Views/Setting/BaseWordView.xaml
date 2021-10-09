@@ -12,20 +12,17 @@
             <ColumnDefinition Width="400"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <GroupBox Header="词库类型" Grid.Column="0">
+            <ListBox />
+        </GroupBox>
+        <GroupBox Header="词库明细" Grid.Column="1">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <controls:CustomTextBox Grid.Column="0"/>
-                <StackPanel Orientation="Horizontal" Grid.Column="1">
-                </StackPanel>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <ListBox />
             </Grid>
-        </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>
