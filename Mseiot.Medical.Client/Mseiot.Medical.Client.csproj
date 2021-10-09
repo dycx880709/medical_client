@@ -69,6 +69,7 @@
     </ApplicationDefinition>
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
+    <Compile Include="Entities\PageLevels.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\UserRecord.cs" />
     <Compile Include="Views\Booking\AddBookingView.xaml.cs">
@@ -121,6 +122,9 @@
     </Compile>
     <Compile Include="Views\Setting\MedicalWordView.xaml.cs">
       <DependentUpon>MedicalWordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Setting\RoleManageView.xaml.cs">
+      <DependentUpon>RoleManageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Setting\SystemSettingView.xaml.cs">
       <DependentUpon>SystemSettingView.xaml</DependentUpon>
@@ -222,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Setting\MedicalWordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Setting\RoleManageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

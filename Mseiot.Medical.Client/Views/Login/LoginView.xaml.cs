@@ -151,5 +151,10 @@ namespace Mseiot.Medical.Client.Views
             localSetting.UserRecords.RemoveAll(t => t.LoginName.Equals(e.PropertyValue));
             CacheHelper.SaveLocalSetting();
         }
+
+        private void ForgetPwd_Click(object sender, RoutedEventArgs e)
+        {
+            MsWindow.ShowDialog("请联系管理员重置密码", "软件提示");
+        }
     }
 }

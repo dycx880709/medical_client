@@ -11,7 +11,7 @@
 
     <Grid Background="{StaticResource Color_Login_Bg}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -20,17 +20,24 @@
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}"/>
             <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
                 <Image Source="/Mseiot.Medical.Client;component/Images/logo.png" Stretch="Uniform" Height="30"/>
-                <TextBlock VerticalAlignment="Center" FontSize="{StaticResource LargeExFontSize}" Margin="5,0,0,0" Text="{x:Static core:CacheHelper.ProductName}"/>
+                <TextBlock VerticalAlignment="Center" FontSize="{StaticResource LargeExFontSize}" FontWeight="Bold" Margin="5,0,0,0" Text="{x:Static core:CacheHelper.ProductName}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <RadioButton Checked="MenuItem_Checked" Content="预约登记" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.BookingManagetView" IsChecked="True"/>
-                <RadioButton Checked="MenuItem_Checked" Content="检查中心" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.InspectionManageView" Margin="10,0"/>
-                <RadioButton Checked="MenuItem_Checked" Content="病历中心" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.MedicalManageView" Margin="10,0"/>
-                <RadioButton Content="清洗中心" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0" x:Name="rb_Cleaning"/>
-                <RadioButton Content="主任管理" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0" x:Name="rb_Director"/>
-                <RadioButton Content="系统管理" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0" x:Name="rb_System"/>
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource NavigateRadioButtonStyle}">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="{StaticResource NavigateFontSize}"/>
+                        <Setter Property="Margin" Value="10,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <RadioButton Checked="MenuItem_Checked" Content="预约登记" Tag="Mseiot.Medical.Client.Views.BookingManagetView" IsChecked="True"/>
+                <RadioButton Checked="MenuItem_Checked" Content="检查中心" Tag="Mseiot.Medical.Client.Views.InspectionManageView"/>
+                <RadioButton Checked="MenuItem_Checked" Content="病历中心" Tag="Mseiot.Medical.Client.Views.MedicalManageView"/>
+                <RadioButton Content="清洗中心" x:Name="rb_Cleaning"/>
+                <RadioButton Content="主任管理" x:Name="rb_Director"/>
+                <RadioButton Content="系统管理" x:Name="rb_System"/>
             </StackPanel>
-            <StackPanel Margin="0,0,10,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <StackPanel Margin="0,0,10,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="tb_time" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}"/>
                 </StackPanel>
@@ -62,6 +69,7 @@
             <Popup x:Name="pop_system" IsOpen="{Binding IsChecked, ElementName=rb_System, Mode=OneWay}" PopupAnimation="Fade" Placement="Bottom" VerticalOffset="10" StaysOpen="False" PlacementTarget="{Binding ElementName=rb_System}">
                 <StackPanel>
                     <Button Content="用户管理" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.UserManageView"/>
+                    <Button Content="角色管理" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.RoleManageView"/>
                     <Button Content="系统设置" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.SystemSettingView"/>
                     <Button Content="基础词库" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.BaseWordView"/>
                     <Button Content="诊断模板" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.DiagnosticTemplateView"/>

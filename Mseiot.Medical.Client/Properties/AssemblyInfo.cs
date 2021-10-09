@@ -7,11 +7,11 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("创云算网络医疗系统")]
+[assembly: AssemblyTitle("智慧医学影像图文信息网络系统")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("中科麦芒(北京)科技有限公司")]
-[assembly: AssemblyProduct("创云算网络医疗系统")]
+[assembly: AssemblyProduct("智慧医学影像图文信息网络系统")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -51,5 +51,5 @@ using System.Windows;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.04")]
-[assembly: AssemblyFileVersion("1.0.0.04")]
+[assembly: AssemblyVersion("1.0.0.05")]
+[assembly: AssemblyFileVersion("1.0.0.05")]
