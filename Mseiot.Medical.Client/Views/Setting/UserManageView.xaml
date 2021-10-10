@@ -15,14 +15,14 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Height="{StaticResource Title_Header_Height}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="新增" Margin="5,0"/>
-                <Button Content="编辑" Margin="5,0"/>
-                <Button Content="删除" Margin="5,0"/>
-                <Button Content="刷新" Margin="5,0"/>
+                <Button Click="Add_Click" Content="新增" Margin="5,0"/>
+                <Button Click="Edit_Click" Content="编辑" Margin="5,0"/>
+                <Button Click="Remove_Click" Content="删除" Margin="5,0"/>
+                <Button Click="Refresh_Click" Content="刷新" Margin="5,0"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <DataGrid>
+            <DataGrid x:Name="dg_user">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*" Header="用户名"/>
                     <DataGridTextColumn Width="*" Header="姓名"/>
@@ -31,6 +31,8 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <controls:Pager Grid.Row="2"/>
+        <controls:Pager x:Name="pager" Grid.Row="2"/>
+        <controls:SliderPanel x:Name="sp" Grid.RowSpan="3"/>
+        <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
     </Grid>
 </UserControl>

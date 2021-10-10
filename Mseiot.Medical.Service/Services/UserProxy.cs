@@ -29,17 +29,17 @@ namespace Mseiot.Medical.Service.Services
 
         public async Task<MsResult<string>> AddUser(User user)
         {
-            return await HttpProxy.PutMessage<string>("/api/user/adduser", user);
+            return await HttpProxy.PutMessage<string>("/api/user/add", user);
         }
 
         public async Task<MsResult<bool>> RemoveUser(string userId)
         {
-            return await HttpProxy.DeleteMessage<bool>("/api/user/removeuser", new KeyValuePair<string, string>("userid", userId));
+            return await HttpProxy.DeleteMessage<bool>("/api/user/remove", new KeyValuePair<string, string>("userid", userId));
         }
 
         public async Task<MsResult<bool>> ModifyUser(User user)
         {
-            return await HttpProxy.PostMessage<bool>("/api/user/modifyuser", user);
+            return await HttpProxy.PostMessage<bool>("/api/user/modify", user);
         }
 
         public async Task<MsResult<UserResult>> GetUsers(
@@ -60,7 +60,7 @@ namespace Mseiot.Medical.Service.Services
                 dir.Add("roles", string.Join(",", roleIds.Select(t => (int)t)));
             if (organizationids != null)
                 dir.Add("organizationids", string.Join(",", organizationids));
-            return await HttpProxy.GetMessage<UserResult>("/api/user/getusers", dir);
+            return await HttpProxy.GetMessage<UserResult>("/api/user/gets", dir);
         }
 
         public async Task<MsResult<User>> GetUserById(string userId)
@@ -70,7 +70,7 @@ namespace Mseiot.Medical.Service.Services
 
         public async Task<MsResult<string>> ImportUser(User user)
         {
-            return await HttpProxy.PostMessage<string>("/api/user/importuser", user);
+            return await HttpProxy.PostMessage<string>("/api/user/import", user);
         }
 
         public async Task<MsResult<string>> ModifyPwd(string userId, string oldPwd, string newPwd)

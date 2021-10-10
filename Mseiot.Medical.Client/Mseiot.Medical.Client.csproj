@@ -67,7 +67,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
+    <Compile Include="Entities\SystemSettingExtend.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
     <Compile Include="Entities\PageLevels.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
@@ -86,6 +88,12 @@
     </Compile>
     <Compile Include="Views\Clean\DeviceSettingView.xaml.cs">
       <DependentUpon>DeviceSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Component\AddRoleView.xaml.cs">
+      <DependentUpon>AddRoleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Component\AddUserView.xaml.cs">
+      <DependentUpon>AddUserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Component\PatientManageView.xaml.cs">
       <DependentUpon>PatientManageView.xaml</DependentUpon>
@@ -162,6 +170,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Clean\DeviceSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\AddRoleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\AddUserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -299,9 +315,7 @@
       <Name>Mseiot.Medical.Service</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Images\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

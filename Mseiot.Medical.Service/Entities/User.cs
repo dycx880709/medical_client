@@ -78,31 +78,6 @@ namespace Mseiot.Medical.Service.Entities
         public string Token { get; set; }
     }
 
-    public class Role : NotifyPropertyBase
-    {
-        private string name;
-
-        public int RoleID { get; set; }
-
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                name = value;
-                RaisePropertyChanged("Name");
-            }
-        }
-
-        public string Authority { get; set; }
-
-        public int[] Authoritys
-        {
-            get { return Authority.Split(',').Select(p => Convert.ToInt32(p)).ToArray(); }
-            set { this.Authority = string.Join(",", value); }
-        }
-    }
-
     /// <summary>
     /// 查询用户返回实例
     /// </summary>

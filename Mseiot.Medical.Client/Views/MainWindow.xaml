@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
         xmlns:local="clr-namespace:Mseiot.Medical.Client"
+        xmlns:converter="clr-namespace:Mseiot.Medical.Client.Converters"
         xmlns:core="clr-namespace:Mseiot.Medical.Client.Core"
         WindowState="Maximized" mc:Ignorable="d"
         Title="{x:Static core:CacheHelper.ProductName}">
+
+    <controls:MsWindow.Resources>
+        <converter:ItemIndexToBooleanConverter x:Key="ItemIndexToBooleanConverter"/>
+    </controls:MsWindow.Resources>
 
     <Grid Background="{StaticResource Color_Login_Bg}">
         <Grid.RowDefinitions>
@@ -102,7 +107,35 @@
                 </StackPanel>
             </Popup>
         </Grid>
-        <Grid Grid.Row="1" Height="{StaticResource  Title_Header_Height}">
+        <Grid Grid.Row="1" Height="{StaticResource Title_Header_Height}">
+            <ListBox x:Name="lb_nav" HorizontalAlignment="Left" Margin="5,0,0,0">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="FontSize" Value="{StaticResource NavigateFontSize}"/>
+                        <Setter Property="SnapsToDevicePixels" Value="True"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path x:Name="path" Stroke="{DynamicResource Color_Font_Primary}" StrokeThickness="1" VerticalAlignment="Center" Data="M0,0,3,3,6,0Z" Margin="0,0,3,0"/>
+                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <ControlTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource ItemIndexToBooleanConverter}}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed" TargetName="path"/>
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Secondary}"/>
         </Grid>
         <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
