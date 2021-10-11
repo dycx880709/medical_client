@@ -1,0 +1,34 @@
+﻿<Application x:Class="MM.Medical.Decontaminate.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MM.Medical.Decontaminate"
+             xmlns:converts="clr-namespace:Mseiot.Medical.Service.Converts;assembly=Mseiot.Medical.Service"
+             StartupUri="Views/Login/LoginView.xaml">
+    <Application.Resources>
+        
+        
+        <ResourceDictionary>
+
+            <converts:EnumDescriptionConvert x:Key="enumDescriptionConvert"></converts:EnumDescriptionConvert>
+            <SolidColorBrush x:Key="Color_Border_Primary">#06e9ecef</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_Font_Primary">#AAFFFFFF</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_Font_Import">#FFFFFF</SolidColorBrush>
+            
+            
+            <ResourceDictionary.MergedDictionaries>
+                
+                
+                <ResourceDictionary Source="pack://application:,,,/Ms.Controls;component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MM.Medical.Decontaminate;component/Themes/Images.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MM.Medical.Decontaminate;component/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+
+    
+        </ResourceDictionary>
+
+
+    </Application.Resources>
+    
+
+</Application>

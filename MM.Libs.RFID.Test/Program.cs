@@ -14,6 +14,12 @@ namespace MM.Libs.RFID.Test
             rfidProxy.NotifyEPCReceived += RfidProxy_NotifyEPCReceived;
             rfidProxy.NotifyDeviceStatusChanged += RfidProxy_NotifyDeviceStatusChanged;
             rfidProxy.Open("COM3");
+
+                RFIDProxy rfidProxy1 = new RFIDProxy();
+            rfidProxy1.NotifyEPCReceived += RfidProxy_NotifyEPCReceived;
+            rfidProxy1.NotifyDeviceStatusChanged += RfidProxy_NotifyDeviceStatusChanged;
+            rfidProxy1.Open("COM4");
+
             Console.ReadKey();
         }
 
