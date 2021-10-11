@@ -1,0 +1,68 @@
+﻿<controls:MsWindow x:Class="MM.Medical.Decontaminate.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+        xmlns:core="clr-namespace:MM.Medical.Decontaminate.Core" xmlns:decontaminate="clr-namespace:MM.Medical.Decontaminate.Views.Decontaminate"
+                   WindowState="Maximized" mc:Ignorable="d"
+        Title="{x:Static core:CacheHelper.ProductName}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.RowSpan="2" Background="#70000000">
+           
+        </Border>
+        <Grid Grid.Row="0">
+            <Border Background="#A2000000" BorderBrush="#30FFFFFF" BorderThickness="0,0,0,1">
+                <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" HorizontalAlignment="Center" Text="{x:Static core:CacheHelper.ProductName}" Foreground="White" FontWeight="Bold" FontFamily="宋体"/>
+            </Border>
+            <StackPanel Margin="0,0,10,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="tb_time" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}"/>
+                </StackPanel>
+                <ToggleButton x:Name="tg_User" Width="160" Margin="10,0" Background="Transparent" BorderThickness="0">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Height="25" Width="25" CornerRadius="25" BorderThickness="2" BorderBrush="{StaticResource Color_Border_Primary}">
+                            <Image Source="{StaticResource Img_User}" Height="{StaticResource LargeFontSize}"/>
+                        </Border>
+                        <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static core:CacheHelper.UserName}" FontSize="{StaticResource LargeFontSize}"/>
+                    </StackPanel>
+                </ToggleButton>
+                <Button Width="{StaticResource ButtonHeight}" BorderThickness="0" Background="Transparent" Click="Min_Click">
+                    <Path Stroke="{StaticResource Color_Font_Primary}" StrokeThickness="3" Data="M0,0,15,0"/>
+                </Button>
+                <controls:MediaButton Click="Close_Click" NormalSource="{StaticResource Img_Close}" HoverSource="{StaticResource Img_Close_Hover}" FISize="{StaticResource LargeExFontSize}"/>
+            </StackPanel>
+            <Popup Width="240" Height="170" PopupAnimation="Fade" VerticalOffset="10" Placement="Bottom" IsOpen="{Binding IsChecked, ElementName=tg_User}" StaysOpen="{Binding IsMouseOver, ElementName=tg_User}"
+                   PlacementTarget="{Binding ElementName=tg_User}">
+                <StackPanel VerticalAlignment="Center" Margin="10,0" HorizontalAlignment="Center">
+                    <!--当前登录用户-->
+                    <StackPanel Orientation="Horizontal" Margin="0,10">
+                        <TextBlock Width="80">
+                                <Run Text="用户名称"/>
+                                <Run Text=":"/>
+                        </TextBlock>
+                        <TextBlock Name="tbCurrentUserName" Text="{x:Static core:CacheHelper.UserName}" MaxWidth="100" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding RelativeSource={RelativeSource Self},Path=Text}"/>
+                    </StackPanel>
+                    <Border BorderBrush="{StaticResource Color_Split}" Margin="0,10" BorderThickness="0,1,0,0"></Border>
+                    <!--修改密码-->
+                    <Grid Margin="0,10">
+                        <controls:MediaButton Content="修改密码" Width="100" Name="ModifyUserPwd" Click="ModifyUserPwd_Click"/>
+                    </Grid>
+                    <!--注销-->
+                    <Grid Margin="0,10">
+                        <controls:MediaButton Content="注销" Width="100" Name="AccountLogout" Click="Logout_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Popup>
+        </Grid>
+        <Grid Grid.Row="1">
+            <decontaminate:DecontaminateTaskView></decontaminate:DecontaminateTaskView>
+        </Grid>
+        <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
+    </Grid>
+</controls:MsWindow>
