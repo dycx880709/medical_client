@@ -42,7 +42,7 @@ namespace Mseiot.Medical.Service.Services
             return await HttpProxy.PostMessage<bool>("/api/user/modify", user);
         }
 
-        public async Task<MsResult<UserResult>> GetUsers(
+        public async Task<MsResult<ListResult<User>>> GetUsers(
             int index,
             int count,
             string name,
@@ -60,7 +60,7 @@ namespace Mseiot.Medical.Service.Services
                 dir.Add("roles", string.Join(",", roleIds.Select(t => (int)t)));
             if (organizationids != null)
                 dir.Add("organizationids", string.Join(",", organizationids));
-            return await HttpProxy.GetMessage<UserResult>("/api/user/gets", dir);
+            return await HttpProxy.GetMessage<ListResult<User>>("/api/user/gets", dir);
         }
 
         public async Task<MsResult<User>> GetUserById(string userId)

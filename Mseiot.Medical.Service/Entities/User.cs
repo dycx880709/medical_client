@@ -77,19 +77,4 @@ namespace Mseiot.Medical.Service.Entities
 
         public string Token { get; set; }
     }
-
-    /// <summary>
-    /// 查询用户返回实例
-    /// </summary>
-    public class UserResult
-    {
-        /// <summary>
-        /// 总数
-        /// </summary>
-        public int Total { get; set; }
-        /// <summary>
-        /// 用户集合
-        /// </summary>
-        public List<User> Users { get; set; }
-    }
 }

@@ -43,7 +43,7 @@ namespace Mseiot.Medical.Client.Views
             if (result.IsSuccess)
             {
                 pager.TotalCount = result.Content.Total;
-                dg_user.ItemsSource = result.Content.Users;
+                dg_user.ItemsSource = result.Content.Results;
             }
             else MsWindow.ShowDialog($"获取用户失败,{ result.Error }", "软件提示");
         }

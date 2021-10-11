@@ -57,7 +57,7 @@ namespace Mseiot.Medical.Client.Views
         {
             var processPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CacheHelper.ProcessName + ".exe");
             Process.Start(processPath, message);
-            App.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)
@@ -84,8 +84,6 @@ namespace Mseiot.Medical.Client.Views
                 {
                     var type = Type.GetType(viewName);
                     var uc = Activator.CreateInstance(type) as UserControl;
-                    var headerHeight = Convert.ToDouble(Application.Current.Resources["Title_Header_Height"]);
-                    uc.Margin = new Thickness(0, -headerHeight, 0, 0);
                     navigateItems.Add(viewName, uc);
                 }
                 border.Child = navigateItems[viewName];

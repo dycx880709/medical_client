@@ -67,8 +67,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\EnumToIntConverter.cs" />
+    <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
+    <Compile Include="Converters\TimeStampToDateTimeConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
+    <Compile Include="Entities\BaseWordExtend.cs" />
     <Compile Include="Entities\SystemSettingExtend.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
     <Compile Include="Entities\PageLevels.cs" />
@@ -77,8 +81,8 @@
     <Compile Include="Views\Booking\AddBookingView.xaml.cs">
       <DependentUpon>AddBookingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Booking\BookingManagetView.xaml.cs">
-      <DependentUpon>BookingManagetView.xaml</DependentUpon>
+    <Compile Include="Views\Booking\BookingManageView.xaml.cs">
+      <DependentUpon>BookingManageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Clean\CleanCenterView.xaml.cs">
       <DependentUpon>CleanCenterView.xaml</DependentUpon>
@@ -94,6 +98,12 @@
     </Compile>
     <Compile Include="Views\Component\AddUserView.xaml.cs">
       <DependentUpon>AddUserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Component\AddWordItemView.xaml.cs">
+      <DependentUpon>AddWordItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Component\AddWordView.xaml.cs">
+      <DependentUpon>AddWordView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Component\PatientManageView.xaml.cs">
       <DependentUpon>PatientManageView.xaml</DependentUpon>
@@ -157,7 +167,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Booking\BookingManagetView.xaml">
+    <Page Include="Views\Booking\BookingManageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,6 +188,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Component\AddUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\AddWordItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\AddWordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

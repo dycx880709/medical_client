@@ -5,7 +5,7 @@
 
     <sys:Double x:Key="NavigateFontSize">18</sys:Double>
     
-    <s:Double x:Key="Title_Header_Height">40</s:Double>
+    <s:Double x:Key="Title_Header_Height">30</s:Double>
     
     <sys:Double x:Key="InputElementWidth">160</sys:Double>
     <sys:Double x:Key="InputElementHeight">30</sys:Double>

@@ -10,19 +10,53 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <GroupBox Header="词库类型" Grid.Column="0">
-            <ListBox />
-        </GroupBox>
-        <GroupBox Header="词库明细" Grid.Column="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="40"/>
-                </Grid.RowDefinitions>
-                <ListBox />
-            </Grid>
-        </GroupBox>
+        <controls:CustomGroupBox Header="词库词条" Grid.Column="0">
+            <controls:CustomGroupBox.AttachContent>
+                <ControlTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="刷新" Click="RefreshWord_Click"/>
+                        <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </controls:CustomGroupBox.AttachContent>
+            <ListBox x:Name="lb_words">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Margin="3,0,0,0" Text="{Binding Title}"/>
+                            <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <controls:MediaButton Click="ModifyWord_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
+                                <controls:MediaButton Click="RemoveWord_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </controls:CustomGroupBox>
+        <controls:CustomGroupBox Header="词条明细" Grid.Column="2">
+            <controls:CustomGroupBox.AttachContent>
+                <ControlTemplate>
+                    <Button Content="添加" Click="AddItem_Click"/>
+                </ControlTemplate>
+            </controls:CustomGroupBox.AttachContent>
+            <ListBox ItemsSource="{Binding SelectedValue.Items, ElementName=lb_words}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Margin="3,0,0,0" Text="{Binding}"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <controls:MediaButton Click="ModifyItem_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
+                                <controls:MediaButton Click="RemoveItem_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </controls:CustomGroupBox>
+        <controls:SliderPanel x:Name="sp" Grid.ColumnSpan="2"/>
+        <controls:Loading x:Name="loading" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>
