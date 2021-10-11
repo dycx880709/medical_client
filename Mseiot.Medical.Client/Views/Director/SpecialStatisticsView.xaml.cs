@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Mseiot.Medical.Client.Views
 {
     /// <summary>
-    /// MedicalWordView.xaml 的交互逻辑
+    /// SpecialStatisticsView.xaml 的交互逻辑
     /// </summary>
-    public partial class MedicalWordView : UserControl
+    public partial class SpecialStatisticsView : UserControl
     {
-        public MedicalWordView()
+        public SpecialStatisticsView()
         {
             InitializeComponent();
         }

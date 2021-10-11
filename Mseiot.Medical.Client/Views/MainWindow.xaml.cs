@@ -4,6 +4,7 @@ using Mseiot.Medical.Client.Core;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -28,15 +29,18 @@ namespace Mseiot.Medical.Client.Views
     {
         private readonly Dictionary<string, UserControl> navigateItems 
             = new Dictionary<string, UserControl>();
+        private ObservableCollection<string> navCol;
+
         public MainWindow()
         {
             InitializeComponent();
+            this.navCol = new ObservableCollection<string>() { "首页" };
             this.Loaded += MainWindow_Loaded;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = this;
+            lb_nav.ItemsSource = this.navCol;
             UpdateTime();
         }
 
@@ -75,13 +79,12 @@ namespace Mseiot.Medical.Client.Views
         {
             if (sender is FrameworkElement element &&  element.Tag is string viewName)
             {
-                if (pop_clean != null)
-                    pop_clean.IsOpen = viewName.Equals("Mseiot.Medical.Client.Views.CleanCenterView");
+                //pop_system.IsOpen = pop_director.IsOpen = pop_clean.IsOpen = false;
                 if (!string.IsNullOrEmpty(viewName) && !navigateItems.ContainsKey(viewName))
                 {
                     var type = Type.GetType(viewName);
                     var uc = Activator.CreateInstance(type) as UserControl;
-                    var headerHeight = Convert.ToDouble(App.Current.Resources["Title_Header_Height"]);
+                    var headerHeight = Convert.ToDouble(Application.Current.Resources["Title_Header_Height"]);
                     uc.Margin = new Thickness(0, -headerHeight, 0, 0);
                     navigateItems.Add(viewName, uc);
                 }
@@ -92,6 +95,16 @@ namespace Mseiot.Medical.Client.Views
         private void Min_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void CleanCenter_Checked(object sender, RoutedEventArgs e)
+        {
+            //pop_clean.IsOpen = true;
+        }
+
+        private void DirectorManage_Checked(object sender, RoutedEventArgs e)
+        {
+            //pop_director.IsOpen = true;
         }
     }
 }

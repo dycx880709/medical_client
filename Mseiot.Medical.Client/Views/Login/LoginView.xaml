@@ -13,47 +13,50 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="90"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Border x:Name="layout" Grid.Row="0" Background="Transparent">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Text="{x:Static core:CacheHelper.ProductName}" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Primary}" FontSize="{StaticResource LargeExFontSize}"/>
-                </StackPanel>
-                <StackPanel Grid.Column="1" Margin="0,10,10,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
-                    <controls:MediaButton FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Setting}" HoverSource="{StaticResource Img_Setting_Hover}" Click="SystemSetting_Click" Margin="5,0,0,0"/>
+                <StackPanel Grid.Column="1" Margin="0,10,10,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0.7">
+                    <TextBlock Grid.Row="0" VerticalAlignment="Bottom" Foreground="#42A5F3" FontSize="{StaticResource NormalFontSize}" FontStyle="Italic">
+                        <Run Text="版本号:" />
+                        <Run Text="{x:Static core:CacheHelper.ClientVersion}" x:Name="tb_version"/>
+                    </TextBlock>
+                    <controls:MediaButton FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Setting}" HoverSource="{StaticResource Img_Setting_Hover}" Click="SystemSetting_Click" Margin="15,0,0,0"/>
                     <controls:MediaButton FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Close}" HoverSource="{StaticResource Img_Close_Hover}" Click="Close_Click" Margin="5,0,0,0"/>
                 </StackPanel>
             </Grid>
         </Border>
         <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <controls:CustomTextBox x:Name="tbName" Removed="tbName_Removed" Selected="tbName_Selected" Grid.Row="0" Grid.Column="1" Width="300"/>
-            <controls:CustomTextBox x:Name="tbPwd" IsPassword="True" VerticalContentAlignment="Center"  Grid.Row="1" Grid.Column="1" Margin="0,10" Width="300" />
-            <CheckBox x:Name="cbRemember" Grid.Column="1" Grid.Row="2" IsChecked="True" IsEnabled="{Binding ElementName=pbPwd,Path=IsEnabled}" Margin="0,10" HorizontalAlignment="Right"
-                        Content="记住密码"  FontSize="{StaticResource NormalFontSize}" />
-            <Button x:Name="btLogin" Grid.Row="3" Grid.Column="1" Content="登录" Margin="0,10" IsDefault="True" Width="300" Click="Login_Click" BorderBrush="Transparent"/>
-            <TextBlock x:Name="tbTips" Foreground="{DynamicResource Color_Danger}" FontSize="{StaticResource LargeFontSize}" Margin="0,10,0,0" 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="/Mseiot.Medical.Client;component/Images/logo.png" Height="40" Stretch="Uniform" Margin="0,0,10,0"/>
+                    <TextBlock Text="{x:Static core:CacheHelper.ProductName}" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Primary}" FontSize="{StaticResource LargeExFontSize}"/>
+                </StackPanel>
+                <Grid Grid.Row="1" Width="300">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <controls:CustomTextBox x:Name="tbName" Removed="tbName_Removed" Selected="tbName_Selected" Grid.Row="0" Grid.Column="1" Width="Auto"/>
+                    <controls:CustomTextBox x:Name="tbPwd" IsPassword="True" VerticalContentAlignment="Center"  Grid.Row="1" Grid.Column="1" Margin="0,10" Width="Auto" />
+                    <CheckBox x:Name="cbRemember" Grid.Column="1" Grid.Row="2" IsChecked="True" IsEnabled="{Binding ElementName=pbPwd,Path=IsEnabled}" Margin="0,10" HorizontalAlignment="Left"
+                        Content="记住密码"  FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource HyperLinkButtonStyle}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Width="Auto" Height="Auto" Click="ForgetPwd_Click" Content="忘记密码?"/>
+                    <Button x:Name="btLogin" Grid.Row="3" Grid.Column="1" Content="登录" Margin="0,10" IsDefault="True" Width="300" Click="Login_Click" BorderBrush="Transparent"/>
+                    <TextBlock x:Name="tbTips" Foreground="{DynamicResource Color_Danger}" FontSize="{StaticResource LargeFontSize}" Margin="0,10,0,0" 
                         Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+            </Grid>
         </Grid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Grid.Row="0" VerticalAlignment="Bottom" Foreground="#42A5F3" FontSize="{StaticResource NormalFontSize}" FontStyle="Italic">
-                <Run Text="版本号:" />
-                <Run Text="{x:Static core:CacheHelper.ClientVersion}" x:Name="tb_version"/>
-            </TextBlock>
-        </StackPanel>
-        <Border x:Name="border" Grid.RowSpan="3"/>
+        <Border x:Name="border" Grid.RowSpan="2"/>
     </Grid>
 </controls:MsWindow>

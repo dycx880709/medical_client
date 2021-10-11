@@ -14,6 +14,8 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,11 +37,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,8 +67,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
+    <Compile Include="Entities\SystemSettingExtend.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
+    <Compile Include="Entities\PageLevels.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\UserRecord.cs" />
     <Compile Include="Views\Booking\AddBookingView.xaml.cs">
@@ -77,8 +89,20 @@
     <Compile Include="Views\Clean\DeviceSettingView.xaml.cs">
       <DependentUpon>DeviceSettingView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Component\AddRoleView.xaml.cs">
+      <DependentUpon>AddRoleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Component\AddUserView.xaml.cs">
+      <DependentUpon>AddUserView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Component\PatientManageView.xaml.cs">
       <DependentUpon>PatientManageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Director\ConditionStatisticsView.xaml.cs">
+      <DependentUpon>ConditionStatisticsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Director\SpecialStatisticsView.xaml.cs">
+      <DependentUpon>SpecialStatisticsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Inspection\InspectionManageView.xaml.cs">
       <DependentUpon>InspectionManageView.xaml</DependentUpon>
@@ -89,8 +113,32 @@
     <Compile Include="Views\Medical\MedicalManageView.xaml.cs">
       <DependentUpon>MedicalManageView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Setting\BaseWordView.xaml.cs">
+      <DependentUpon>BaseWordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Setting\ConsultingRoomManageView.xaml.cs">
+      <DependentUpon>ConsultingRoomManageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Setting\DataBackingView.xaml.cs">
+      <DependentUpon>DataBackingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Setting\DeviceManageView.xaml.cs">
+      <DependentUpon>DeviceManageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Setting\DiagnosticTemplateView.xaml.cs">
+      <DependentUpon>DiagnosticTemplateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Setting\MedicalWordView.xaml.cs">
       <DependentUpon>MedicalWordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Setting\RoleManageView.xaml.cs">
+      <DependentUpon>RoleManageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Setting\SystemSettingView.xaml.cs">
+      <DependentUpon>SystemSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Setting\UserManageView.xaml.cs">
+      <DependentUpon>UserManageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Update\AddVersion.xaml.cs">
       <DependentUpon>AddVersion.xaml</DependentUpon>
@@ -125,7 +173,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Component\AddRoleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\AddUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Component\PatientManageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Director\ConditionStatisticsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Director\SpecialStatisticsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -157,7 +221,39 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Setting\BaseWordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Setting\ConsultingRoomManageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Setting\DataBackingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Setting\DeviceManageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Setting\DiagnosticTemplateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Setting\MedicalWordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Setting\RoleManageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Setting\SystemSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Setting\UserManageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -219,8 +315,11 @@
       <Name>Mseiot.Medical.Service</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Converters\" />
+    <Content Include="Images\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

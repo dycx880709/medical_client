@@ -5,29 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
         xmlns:local="clr-namespace:Mseiot.Medical.Client"
+        xmlns:converter="clr-namespace:Mseiot.Medical.Client.Converters"
         xmlns:core="clr-namespace:Mseiot.Medical.Client.Core"
         WindowState="Maximized" mc:Ignorable="d"
         Title="{x:Static core:CacheHelper.ProductName}">
 
+    <controls:MsWindow.Resources>
+        <converter:ItemIndexToBooleanConverter x:Key="ItemIndexToBooleanConverter"/>
+    </controls:MsWindow.Resources>
+
     <Grid Background="{StaticResource Color_Login_Bg}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border x:Name="border" Grid.Row="2"/>
         <Grid Grid.Row="0">
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}"/>
-            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" FontSize="{StaticResource LargeExFontSize}" Text="{x:Static core:CacheHelper.ProductName}"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <RadioButton Checked="MenuItem_Checked" Content="预约登记" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.BookingManagetView" IsChecked="True"/>
-                <RadioButton Checked="MenuItem_Checked" Content="检查中心" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.InspectionManageView" Margin="10,0"/>
-                <RadioButton Checked="MenuItem_Checked" Content="病历中心" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.MedicalManageView" Margin="10,0"/>
-                <RadioButton Click="MenuItem_Checked" Content="清洗中心" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Tag="Mseiot.Medical.Client.Views.CleanCenterView" Margin="10,0" x:Name="rb_Cleaning"/>
-                <RadioButton Checked="MenuItem_Checked" Content="主任管理" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0"/>
-                <RadioButton Checked="MenuItem_Checked" Content="系统管理" FontSize="{StaticResource NavigateFontSize}" Style="{StaticResource NavigateRadioButtonStyle}" Margin="10,0"/>
+            <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
+                <Image Source="/Mseiot.Medical.Client;component/Images/logo.png" Stretch="Uniform" Height="30"/>
+                <TextBlock VerticalAlignment="Center" FontSize="{StaticResource LargeExFontSize}" FontWeight="Bold" Margin="5,0,0,0" Text="{x:Static core:CacheHelper.ProductName}"/>
             </StackPanel>
-            <StackPanel Margin="0,0,10,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource NavigateRadioButtonStyle}">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="{StaticResource NavigateFontSize}"/>
+                        <Setter Property="Margin" Value="10,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <RadioButton Checked="MenuItem_Checked" Content="预约登记" Tag="Mseiot.Medical.Client.Views.BookingManagetView" IsChecked="True"/>
+                <RadioButton Checked="MenuItem_Checked" Content="检查中心" Tag="Mseiot.Medical.Client.Views.InspectionManageView"/>
+                <RadioButton Checked="MenuItem_Checked" Content="病历中心" Tag="Mseiot.Medical.Client.Views.MedicalManageView"/>
+                <RadioButton Content="清洗中心" x:Name="rb_Cleaning"/>
+                <RadioButton Content="主任管理" x:Name="rb_Director"/>
+                <RadioButton Content="系统管理" x:Name="rb_System"/>
+            </StackPanel>
+            <StackPanel Margin="0,0,10,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="tb_time" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}"/>
                 </StackPanel>
@@ -44,10 +59,29 @@
                 </Button>
                 <controls:MediaButton Click="Close_Click" NormalSource="{StaticResource Img_Close}" HoverSource="{StaticResource Img_Close_Hover}" FISize="{StaticResource LargeExFontSize}"/>
             </StackPanel>
-            <Popup x:Name="pop_clean" PopupAnimation="Fade" Placement="Bottom" VerticalOffset="10" StaysOpen="False" PlacementTarget="{Binding ElementName=rb_Cleaning}">
+            <Popup x:Name="pop_clean" IsOpen="{Binding IsChecked, ElementName=rb_Cleaning, Mode=OneWay}" PopupAnimation="Fade" Placement="Bottom" VerticalOffset="10" StaysOpen="False" PlacementTarget="{Binding ElementName=rb_Cleaning}">
                 <StackPanel>
                     <Button Content="清洗记录" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.CleanRecordView"/>
                     <Button Content="设备管理" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.DeviceSettingView"/>
+                </StackPanel>
+            </Popup>
+            <Popup x:Name="pop_director" IsOpen="{Binding IsChecked, ElementName=rb_Director, Mode=OneWay}" PopupAnimation="Fade" Placement="Bottom" VerticalOffset="10" StaysOpen="False" PlacementTarget="{Binding ElementName=rb_Director}">
+                <StackPanel>
+                    <Button Content="条件统计" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.ConditionStatisticsView"/>
+                    <Button Content="专项统计" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.SpecialStatisticsView"/>
+                </StackPanel>
+            </Popup>
+            <Popup x:Name="pop_system" IsOpen="{Binding IsChecked, ElementName=rb_System, Mode=OneWay}" PopupAnimation="Fade" Placement="Bottom" VerticalOffset="10" StaysOpen="False" PlacementTarget="{Binding ElementName=rb_System}">
+                <StackPanel>
+                    <Button Content="用户管理" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.UserManageView"/>
+                    <Button Content="角色管理" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.RoleManageView"/>
+                    <Button Content="系统设置" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.SystemSettingView"/>
+                    <Button Content="基础词库" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.BaseWordView"/>
+                    <Button Content="诊断模板" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.DiagnosticTemplateView"/>
+                    <Button Content="医学词库" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.MedicalWordView"/>
+                    <Button Content="诊室管理" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.ConsultingRoomManageView"/>
+                    <Button Content="内镜管理" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.DeviceManageView"/>
+                    <Button Content="数据备份" FontSize="{StaticResource LargeFontSize}" Click="MenuItem_Checked" Tag="Mseiot.Medical.Client.Views.DataBackingView"/>
                 </StackPanel>
             </Popup>
             <Popup Width="240" Height="170" PopupAnimation="Fade" VerticalOffset="10" Placement="Bottom" IsOpen="{Binding IsChecked, ElementName=tg_User}" StaysOpen="{Binding IsMouseOver, ElementName=tg_User}"
@@ -73,7 +107,35 @@
                 </StackPanel>
             </Popup>
         </Grid>
-        <Grid Grid.Row="1" Height="{StaticResource  Title_Header_Height}">
+        <Grid Grid.Row="1" Height="{StaticResource Title_Header_Height}">
+            <ListBox x:Name="lb_nav" HorizontalAlignment="Left" Margin="5,0,0,0">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="FontSize" Value="{StaticResource NavigateFontSize}"/>
+                        <Setter Property="SnapsToDevicePixels" Value="True"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path x:Name="path" Stroke="{DynamicResource Color_Font_Primary}" StrokeThickness="1" VerticalAlignment="Center" Data="M0,0,3,3,6,0Z" Margin="0,0,3,0"/>
+                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <ControlTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource ItemIndexToBooleanConverter}}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed" TargetName="path"/>
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Secondary}"/>
         </Grid>
         <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
