@@ -67,15 +67,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\EnumToIntConverter.cs" />
-    <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
-    <Compile Include="Converters\TimeStampToDateTimeConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Entities\BaseWordExtend.cs" />
     <Compile Include="Entities\SystemSettingExtend.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
-    <Compile Include="Entities\PageLevels.cs" />
+    <Compile Include="Entities\AppLevel.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\UserRecord.cs" />
     <Compile Include="Views\Booking\AddBookingView.xaml.cs">
@@ -328,16 +325,15 @@
       <Project>{08b4fad7-31a0-46eb-ac31-2fcabd8b65e5}</Project>
       <Name>Mseiot.Updater</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MM.Medical.Share\MM.Medical.Share.csproj">
+      <Project>{66d5b357-f9c7-4325-93f2-f768f974f496}</Project>
+      <Name>MM.Medical.Share</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mseiot.Medical.Service\Mseiot.Medical.Service.csproj">
       <Project>{bd38a2a3-7b32-4127-8c45-06f23fea4041}</Project>
       <Name>Mseiot.Medical.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="Images\logo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

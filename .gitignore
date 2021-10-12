@@ -13,3 +13,7 @@
 /MM.Libs.RFID.Test/bin/
 /MM.Medical.Decontaminate/bin/Debug
 /MM.Libs.RFID/MM.Libs.RFID.csproj.user
+/MM.Medical.Management/bin/Debug
+/MM.Medical.Management/obj/Debug
+/MM.Medical.Share/bin/Debug
+/MM.Medical.Share/obj/Debug

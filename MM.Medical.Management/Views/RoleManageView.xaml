@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="MM.Medical.Management.Views.RoleManageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             xmlns:entities="clr-namespace:MM.Medical.Management.Entities"
+             xmlns:local="clr-namespace:MM.Medical.Management.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <controls:CustomGroupBox Header="角色列表" Margin="5">
+            <controls:CustomGroupBox.AttachContent>
+                <ControlTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Click="Add_Click" Content="新增" Margin="5,0"/>
+                        <Button Click="Refresh_Click" Content="刷新" Margin="5,0"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </controls:CustomGroupBox.AttachContent>
+            <ListBox x:Name="lb_role" SelectionChanged="Role_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Margin="3,0,0,0" Text="{Binding Name}"/>
+                            <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <controls:MediaButton Click="Edit_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
+                                <controls:MediaButton Click="Remove_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </controls:CustomGroupBox>
+        <controls:CustomGroupBox Header="权限分类" Grid.Column="1" Margin="5" IsEnabled="{Binding }">
+            <ListBox x:Name="lb_level" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border>
+                            <CheckBox Content="{Binding Name}" ToolTip="{Binding Describe}" Margin="2" Click="ModifyLevel_Click"
+                                IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </controls:CustomGroupBox>
+        <controls:SliderPanel x:Name="sp" Grid.ColumnSpan="2"/>
+        <controls:Loading x:Name="loading" Grid.ColumnSpan="2"/>
+    </Grid>
+</UserControl>

@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Libs.RFID.Test", "..\MM.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Decontaminate", "..\MM.Medical.Decontaminate\MM.Medical.Decontaminate.csproj", "{9D3EFFC8-948E-4ABD-A6BC-6BBFC3E294D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Management", "..\MM.Medical.Management\MM.Medical.Management.csproj", "{1C3699CF-5D62-4EFC-B5D6-606CC756B209}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Share", "..\MM.Medical.Share\MM.Medical.Share.csproj", "{66D5B357-F9C7-4325-93F2-F768F974F496}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +63,14 @@ Global
 		{9D3EFFC8-948E-4ABD-A6BC-6BBFC3E294D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D3EFFC8-948E-4ABD-A6BC-6BBFC3E294D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D3EFFC8-948E-4ABD-A6BC-6BBFC3E294D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C3699CF-5D62-4EFC-B5D6-606CC756B209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C3699CF-5D62-4EFC-B5D6-606CC756B209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C3699CF-5D62-4EFC-B5D6-606CC756B209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C3699CF-5D62-4EFC-B5D6-606CC756B209}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66D5B357-F9C7-4325-93F2-F768F974F496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66D5B357-F9C7-4325-93F2-F768F974F496}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66D5B357-F9C7-4325-93F2-F768F974F496}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66D5B357-F9C7-4325-93F2-F768F974F496}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
