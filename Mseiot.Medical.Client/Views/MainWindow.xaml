@@ -137,7 +137,7 @@
                 </ListBox.ItemsPanel>
             </ListBox>
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Secondary}"/>
-        </Grid>s
+        </Grid>
         <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
     </Grid>
 </controls:MsWindow>

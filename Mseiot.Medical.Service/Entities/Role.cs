@@ -23,13 +23,6 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
-        public string Authority { get; set; }
-
-        public int[] Authoritys
-        {
-            get { return Authority.Split(',').Select(p => Convert.ToInt32(p)).ToArray(); }
-            set { this.Authority = string.Join(",", value); }
-        }
+        public int Level { get; set; }
     }
-
 }

@@ -1,4 +1,5 @@
 ﻿using Ms.Controls;
+using Mseiot.Medical.Client.Entities;
 using Mseiot.Medical.Client.Views.Component;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
@@ -24,9 +25,24 @@ namespace Mseiot.Medical.Client.Views
     /// </summary>
     public partial class RoleManageView : UserControl
     {
+        public List<AppLevel> Levels
+        {
+            get
+            {
+                return new List<AppLevel>()
+                {
+                    new AppLevel { Name = "内镜综合管理系统", Level = 0 },
+                    new AppLevel { Name = "内镜预约登记系统", Level = 1 },
+                    new AppLevel { Name = "内镜消洗追溯系统", Level = 2 },
+                    new AppLevel { Name = "内镜数据分析系统", Level = 3 },
+                };
+            }
+        }
+
         public RoleManageView()
         {
             InitializeComponent();
+            lb_level.ItemsSource = this.Levels;
             this.Loaded += RoleManageView_Loaded;
         }
 
@@ -51,7 +67,7 @@ namespace Mseiot.Medical.Client.Views
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            if (lb_role.SelectedValue is Role role)
+            if (sender is FrameworkElement element && element.DataContext is Role role)
             {
                 var view = new AddRoleView(role, loading);
                 sp.ShowDialog("编辑角色", view);
@@ -60,7 +76,7 @@ namespace Mseiot.Medical.Client.Views
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            if (lb_role.SelectedValue is Role role)
+            if (sender is FrameworkElement element && element.DataContext is Role role)
             {
                 var result = loading.AsyncWait("删除角色中", SocketProxy.Instance.RemoveRole(role.RoleID));
                 if (result.Content)
@@ -72,6 +88,25 @@ namespace Mseiot.Medical.Client.Views
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             GetRoles();
+        }
+
+        private void ModifyLevel_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is AppLevel appLevel)
+            {
+                if (lb_level.SelectedValue is Role role)
+                    role.Level = appLevel.Level;
+                else appLevel.IsSelected = false;
+            }
+        }
+
+        private void Role_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is  FrameworkElement element && element.DataContext is Role role)
+            {
+                foreach (var pageLevel in Levels)
+                    pageLevel.IsSelected = role.Level == pageLevel.Level;
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mseiot.Medical.Client.Entities
 {
-    public class PageLevel : NotifyPropertyBase
+    public class AppLevel : NotifyPropertyBase
     {
         /// <summary>
         /// 层级
@@ -39,19 +39,18 @@ namespace Mseiot.Medical.Client.Entities
         /// <summary>
         /// 子集
         /// </summary>
-        public List<PageLevel> Children { get; set; }
+        public List<AppLevel> Children { get; set; }
 
-        public static List<PageLevel> PageLevels
+        public static List<AppLevel> PageLevels
         {
             get 
             {
-                return new List<PageLevel>()
+                return new List<AppLevel>()
                 {
-                    new PageLevel { Name = "预约登记", Level = 1 },
-                    new PageLevel { Name = "检查中心", Level = 2 },
-                    new PageLevel { Name = "病例中心", Level = 3 },
-                    new PageLevel { Name = "清洗中心", Level = 4 },
-                    new PageLevel { Name = "主任浏览", Level = 5 }
+                    new AppLevel { Name = "内镜综合管理系统", Level = 0 },
+                    new AppLevel { Name = "内镜预约登记系统", Level = 1 },
+                    new AppLevel { Name = "内镜消洗追溯系统", Level = 2 },
+                    new AppLevel { Name = "内镜数据分析系统", Level = 3 },
                 };
             }
         }
