@@ -95,7 +95,7 @@ namespace MM.Medical.Management.Views
             if (sender is FrameworkElement element && element.DataContext is AppLevel appLevel)
             {
                 if (lb_level.SelectedValue is Role role)
-                    role.Level = appLevel.Level;
+                    role.Authority = appLevel.Level;
                 else appLevel.IsSelected = false;
             }
         }
@@ -105,7 +105,7 @@ namespace MM.Medical.Management.Views
             if (sender is  FrameworkElement element && element.DataContext is Role role)
             {
                 foreach (var pageLevel in Levels)
-                    pageLevel.IsSelected = role.Level == pageLevel.Level;
+                    pageLevel.IsSelected = role.Authority == pageLevel.Level;
             }
         }
     }

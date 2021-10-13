@@ -11,21 +11,12 @@ namespace Mseiot.Medical.Service.Entities
     {
         private string title;
         private string content;
-        private int wordID;
         private bool editable = true;
 
         /// <summary>
         /// 基础词汇ID
         /// </summary>
-        public int WordID
-        {
-            get { return wordID; }
-            set
-            {
-                wordID = value;
-                RaisePropertyChanged("WordID");
-            }
-        }
+        public int BaseWordID { get; set; }
 
         /// <summary>
         /// 正文
@@ -66,5 +57,6 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        public int CreateTime { get; set; }
     }
 }

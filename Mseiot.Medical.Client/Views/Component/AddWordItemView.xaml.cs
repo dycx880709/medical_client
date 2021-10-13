@@ -31,7 +31,8 @@ namespace Mseiot.Medical.Client.Views.Component
         public AddWordItemView(BaseWordExtend word, int index, Loading loading)
         {
             InitializeComponent();
-            tb_name.Text = word.Items.ElementAt(index);
+            if (index >= 0)  
+                tb_name.Text = word.Items.ElementAt(index);
             this.word = word;
             this.index = index;
             this.loading = loading;
@@ -57,7 +58,7 @@ namespace Mseiot.Medical.Client.Views.Component
                 else
                 {
                     word_back.Items.Add(tb_name.Text.Trim());
-                    var result = loading.AsyncWait("添加明细名称中,请稍后", SocketProxy.Instance.AddBaseWord(word_back));
+                    var result = loading.AsyncWait("添加明细名称中,请稍后", SocketProxy.Instance.ModifyBaseWord(word_back));
                     if (result.IsSuccess)
                     {
                         word.Items.Add(tb_name.Text.Trim());

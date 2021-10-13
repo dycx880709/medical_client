@@ -14,7 +14,15 @@ namespace Mseiot.Medical.Client.Entities
         public BaseWordExtend(BaseWord word)
         {
             word.CopyTo(this);
-            this.Items = new ObservableCollection<string>(word.Content.Split(','));
+            this.Items = new ObservableCollection<string>();
+            if (!string.IsNullOrEmpty(word.Content))
+                Items.AddRange(word.Content.Split(','));
+            Items.CollectionChanged += (o, e) => this.Content = string.Join(",", this.Items);
+        }
+
+        public BaseWordExtend()
+        {
+            this.Items = new ObservableCollection<string>();
             Items.CollectionChanged += (o, e) => this.Content = string.Join(",", this.Items);
         }
     }

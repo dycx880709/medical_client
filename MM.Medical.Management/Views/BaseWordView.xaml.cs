@@ -57,7 +57,7 @@ namespace MM.Medical.Management.Views
         {
             if (sender is FrameworkElement element && element.DataContext is BaseWordExtend word)
             {
-                var result = loading.AsyncWait("删除词条中,请稍后", SocketProxy.Instance.RemoveBaseWord(word.WordID));
+                var result = loading.AsyncWait("删除词条中,请稍后", SocketProxy.Instance.RemoveBaseWord(word.BaseWordID));
                 if (result.IsSuccess) GetBaseWords();
                 else MsWindow.ShowDialog($"删除词条失败,{ result.Error }", "软件提示");
             }

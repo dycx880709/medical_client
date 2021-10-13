@@ -24,10 +24,10 @@
         <Grid Grid.Row="1">
             <DataGrid x:Name="dg_user">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Header="用户名"/>
-                    <DataGridTextColumn Width="*" Header="姓名"/>
-                    <DataGridTextColumn Width="*" Header="角色"/>
-                    <DataGridTextColumn Width="*" Header="创建时间"/>
+                    <DataGridTextColumn Width="*" Binding="{Binding LoginName}" Header="用户名"/>
+                    <DataGridTextColumn Width="*" Binding="{Binding Name}" Header="姓名"/>
+                    <DataGridTextColumn Width="*" Binding="{Binding RoleName}" Header="角色"/>
+                    <DataGridTextColumn Width="*" Binding="{Binding CreateTime, Converter={StaticResource TimeStampToDateTimeConverter}}" Header="创建时间"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

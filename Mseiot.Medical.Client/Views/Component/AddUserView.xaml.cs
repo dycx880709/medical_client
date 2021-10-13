@@ -38,6 +38,7 @@ namespace Mseiot.Medical.Client.Views.Component
 
         private void AddUserView_Loaded(object sender, RoutedEventArgs e)
         {
+            this.DataContext = this.user;
             GetRoles();
         }
 
@@ -58,30 +59,41 @@ namespace Mseiot.Medical.Client.Views.Component
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_roles.SelectedValue is  Role role)
+            if (string.IsNullOrEmpty(user.LoginName))
             {
-                user.RoleID = role.RoleID;
-                if (string.IsNullOrEmpty(user.UserID))
+                MsWindow.ShowDialog("登录名不能为空", "软件提示");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.LoginName))
+            {
+                MsWindow.ShowDialog("用户姓名不能为空", "软件提示");
+                return;
+            }
+            if (cb_roles.SelectedValue == null)
+            {
+                MsWindow.ShowDialog("用户角色不能为空", "软件提示");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.UserID))
+            {
+                var result = loading.AsyncWait("添加用户中,请稍后", SocketProxy.Instance.AddUser(user));
+                if (result.IsSuccess)
                 {
-                    var result = loading.AsyncWait("添加用户中,请稍后", SocketProxy.Instance.AddUser(user));
-                    if (result.IsSuccess)
-                    {
-                        user.UserID = result.Content;
-                        user.CopyTo(originUser);
-                        this.Close();
-                    }
-                    else MsWindow.ShowDialog($"添加用户失败,{ result.Error }", "软件提示");
+                    user.UserID = result.Content;
+                    user.CopyTo(originUser);
+                    this.Close();
                 }
-                else
+                else MsWindow.ShowDialog($"添加用户失败,{ result.Error }", "软件提示");
+            }
+            else
+            {
+                var result = loading.AsyncWait("编辑用户中,请稍后", SocketProxy.Instance.ModifyUser(user));
+                if (result.IsSuccess)
                 {
-                    var result = loading.AsyncWait("编辑用户中,请稍后", SocketProxy.Instance.ModifyUser(user));
-                    if (result.IsSuccess)
-                    {
-                        user.CopyTo(originUser);
-                        this.Close();
-                    }
-                    else MsWindow.ShowDialog($"编辑用户失败,{ result.Error }", "软件提示");
+                    user.CopyTo(originUser);
+                    this.Close();
                 }
+                else MsWindow.ShowDialog($"编辑用户失败,{ result.Error }", "软件提示");
             }
         }
     }

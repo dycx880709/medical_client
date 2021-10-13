@@ -12,7 +12,7 @@ namespace MM.Medical.Management.Entities
         /// <summary>
         /// 层级
         /// </summary>
-        public int Level { get; set; }
+        public string Level { get; set; }
         /// <summary>
         /// 名称
         /// </summary>
@@ -35,24 +35,9 @@ namespace MM.Medical.Management.Entities
                 RaisePropertyChanged("IsSelected");
             }
         }
-
         /// <summary>
         /// 子集
         /// </summary>
         public List<AppLevel> Children { get; set; }
-
-        public static List<AppLevel> PageLevels
-        {
-            get
-            {
-                return new List<AppLevel>()
-                {
-                    new AppLevel { Name = "内镜综合管理系统", Level = 0 },
-                    new AppLevel { Name = "内镜预约登记系统", Level = 1 },
-                    new AppLevel { Name = "内镜消洗追溯系统", Level = 2 },
-                    new AppLevel { Name = "内镜数据分析系统", Level = 3 },
-                };
-            }
-        }
     }
 }

@@ -16,6 +16,8 @@
             <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:TimeStampToDateTimeConverter x:Key="TimeStampToDateTimeConverter"/>
+
+            <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

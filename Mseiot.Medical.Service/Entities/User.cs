@@ -31,9 +31,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
         /// <summary>
-        /// 角色
+        /// 角色名称
         /// </summary>
-        public Role Role { get; set; }
+        public string RoleName { get; set; }
         /// <summary>
         /// 角色ID
         /// </summary>
@@ -74,7 +74,7 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("IsOnline");
             }
         }
-
+        public int CreateTime { get; set; }
         public string Token { get; set; }
     }
 }

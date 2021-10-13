@@ -28,8 +28,8 @@
                         <Grid>
                             <TextBlock Margin="3,0,0,0" Text="{Binding Title}"/>
                             <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <controls:MediaButton Click="ModifyWord_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
-                                <controls:MediaButton Click="RemoveWord_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
+                                <controls:MediaButton Click="ModifyWord_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
+                                <controls:MediaButton Click="RemoveWord_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -48,15 +48,15 @@
                         <Grid>
                             <TextBlock Margin="3,0,0,0" Text="{Binding}"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <controls:MediaButton Click="ModifyItem_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
-                                <controls:MediaButton Click="RemoveItem_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
+                                <controls:MediaButton Click="ModifyItem_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
+                                <controls:MediaButton Click="RemoveItem_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </controls:CustomGroupBox>
-        <controls:SliderPanel x:Name="sp" Grid.ColumnSpan="2"/>
-        <controls:Loading x:Name="loading" Grid.ColumnSpan="2"/>
+        <controls:SliderPanel x:Name="sp" Grid.ColumnSpan="3"/>
+        <controls:Loading x:Name="loading" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>

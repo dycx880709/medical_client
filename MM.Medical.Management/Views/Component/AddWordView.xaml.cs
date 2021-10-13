@@ -37,7 +37,7 @@ namespace MM.Medical.Management.Views.Component
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (word.WordID != 0)
+            if (word.BaseWordID != 0)
             {
                 var result = loading.AsyncWait("修改词条中,请稍后", SocketProxy.Instance.ModifyBaseWord(this.word));
                 if (result.IsSuccess) 
@@ -52,7 +52,7 @@ namespace MM.Medical.Management.Views.Component
                 var result = loading.AsyncWait("添加词条中,请稍后", SocketProxy.Instance.AddBaseWord(this.word));
                 if (result.IsSuccess)
                 {
-                    word.WordID = result.Content;
+                    word.BaseWordID = result.Content;
                     word.CopyTo(originWord);
                     this.Close(true);
                 }

@@ -12,23 +12,23 @@ namespace Mseiot.Medical.Service.Services
     {
         public async Task<MsResult<int>> AddBaseWord(BaseWord word)
         {
-            return await HttpProxy.PutMessage<int>("/api/word/add", word);
+            return await HttpProxy.PostMessage<int>("/api/word/add", word);
         }
 
         public async Task<MsResult<bool>> RemoveBaseWord(int wordId)
         {
-            return await HttpProxy.DeleteMessage<bool>("/api/word/remove", new KeyValuePair<string, string>("wordId", wordId.ToString()));
+            return await HttpProxy.DeleteMessage<bool>("/api/word/remove", new KeyValuePair<string, string>("baseWordId", wordId.ToString()));
         }
 
         public async Task<MsResult<List<BaseWord>>> GeBaseWords(params string[] titles)
         {
             var condition = titles != null ? string.Join(",", titles) : null;
-            return await HttpProxy.GetMessage<List<BaseWord>>("/api/word/getpatients", new KeyValuePair<string, string>("titles", condition));
+            return await HttpProxy.GetMessage<List<BaseWord>>("/api/word/gets", new KeyValuePair<string, string>("titles", condition));
         }
 
         public async Task<MsResult<bool>> ModifyBaseWord(BaseWord word)
         {
-            return await HttpProxy.DeleteMessage<bool>("/api/word/modify", word);
+            return await HttpProxy.PutMessage<bool>("/api/word/modify", word);
         }
     }
 }
