@@ -20,7 +20,7 @@ namespace Mseiot.Medical.Service.Services
             return await HttpProxy.DeleteMessage<bool>("/api/word/remove", new KeyValuePair<string, string>("baseWordId", wordId.ToString()));
         }
 
-        public async Task<MsResult<List<BaseWord>>> GeBaseWords(params string[] titles)
+        public async Task<MsResult<List<BaseWord>>> GetBaseWords(params string[] titles)
         {
             var condition = titles != null ? string.Join(",", titles) : null;
             return await HttpProxy.GetMessage<List<BaseWord>>("/api/word/gets", new KeyValuePair<string, string>("titles", condition));

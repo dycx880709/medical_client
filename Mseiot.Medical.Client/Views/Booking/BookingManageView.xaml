@@ -8,23 +8,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Height="{StaticResource Title_Header_Height}">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="预约登记" Margin="5,0" Click="Add_Click"/>
-                <Button Content="取消登记" Margin="5,0" Click="Remove_Click"/>
-                <Button Content="扫描签到" Margin="5,0"/>
-                <Button Content="手动签到" Margin="5,0"/>
-                <Button Content="刷新" Margin="5,0" Click="Refresh_Click"/>
-                <Button Content="设置" Margin="5,0"/>
-                <Button Content="打印" Margin="5,0"/>
-            </StackPanel>
-        </Grid>
-        <local:PatientManageView x:Name="pmv" Grid.Row="1"/>
-        <controls:ChildWindow x:Name="child" Grid.RowSpan="2"/>
-        <controls:Loading x:Name="loading" Grid.RowSpan="2"/>
+        <controls:CustomGroupBox Header="查询条件">
+            <controls:CustomGroupBox.AttachContent>
+                <ControlTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="预约登记" Margin="5,0" Click="Add_Click"/>
+                        <Button Content="取消登记" Margin="5,0" Click="Remove_Click"/>
+                        <Button Content="扫描签到" Margin="5,0"/>
+                        <Button Content="手动签到" Margin="5,0"/>
+                        <Button Content="刷新" Margin="5,0" Click="Refresh_Click"/>
+                        <Button Content="设置" Margin="5,0"/>
+                        <Button Content="打印" Margin="5,0"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </controls:CustomGroupBox.AttachContent>
+            <local:PatientManageView x:Name="pmv"/>
+        </controls:CustomGroupBox>
+        <controls:ChildWindow x:Name="child"/>
+        <controls:Loading x:Name="loading"/>
     </Grid>
 </UserControl>

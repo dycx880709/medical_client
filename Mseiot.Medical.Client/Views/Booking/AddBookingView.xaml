@@ -73,13 +73,13 @@
                 <ComboBox x:Name="cb_body" Grid.Row="1" Grid.Column="1" Text="{Binding CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding PatientCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding HospitalizationCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <ComboBox Grid.Row="2" Grid.Column="1" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox x:Name="cb_class" Grid.Row="2" Grid.Column="1" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding RoomCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <ComboBox Grid.Row="2" Grid.Column="5" Text="{Binding AreaCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox x:Name="cb_area" Grid.Row="2" Grid.Column="5" Text="{Binding AreaCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox x:Name="cb_doctor" Grid.Row="3" Grid.Column="1" Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DatePicker Grid.Row="3" Grid.Column="3" SelectedDate="{Binding CheckDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
-                <ComboBox x:Name="cb_charge" Grid.Row="3" Grid.Column="5" SelectedIndex="{Binding ChargeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToIntConverter}}"/>
-                <ComboBox x:Name="cb_check" Grid.Row="4" Grid.Column="1" Text="{Binding CheckType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox x:Name="cb_charge" Grid.Row="3" Grid.Column="5" Text="{Binding ChargeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox x:Name="cb_diagnose" Grid.Row="4" Grid.Column="1" Text="{Binding CheckType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="4" Grid.Column="3" Text="{Binding OutpatientCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="4" Grid.Column="5" Text="{Binding PathologyCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" Width="Auto" Text="{Binding PatientHistory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -118,10 +118,10 @@
                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding IdCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding SocialSecurityCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="0" Grid.Column="5" Text="{Binding TelphoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <ComboBox x:Name="cb_marry" Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding MarryType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToIntConverter}}"/>
-                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Occupation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox x:Name="cb_marry" Grid.Row="1" Grid.Column="1" Text="{Binding MarryType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox x:Name="cb_occupation" Grid.Row="1" Grid.Column="3" Text="{Binding Occupation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding ChildrenCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Nation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox x:Name="cb_nation" Grid.Row="2" Grid.Column="1" Text="{Binding Nation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" Width="Auto" Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

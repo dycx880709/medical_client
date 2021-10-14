@@ -39,7 +39,7 @@ namespace MM.Medical.Management.Views
 
         private void GetBaseWords()
         {
-            var result = loading.AsyncWait("获取基础词库中,请稍后", SocketProxy.Instance.GeBaseWords());
+            var result = loading.AsyncWait("获取基础词库中,请稍后", SocketProxy.Instance.GetBaseWords());
             if (result.IsSuccess) lb_words.ItemsSource = result.Content.Select(t => new BaseWordExtend(t));
             else MsWindow.ShowDialog($"获取基础词库失败,{ result.Error }", "软件提示");
         }

@@ -13,6 +13,5 @@ namespace Mseiot.Medical.Service.Entities
         public static List<string> Sex { get; set; } = EnumHelper.GetDescriptions<Sex>();
         public static List<string> AgeRange { get; set; } = EnumHelper.GetDescriptions<AgeRange>();
         public static List<string> DiagnoseType { get; set; } = EnumHelper.GetDescriptions<DiagnoseType>();
-        public static List<string> ChargeType { get; set; } = EnumHelper.GetDescriptions<ChargeType>();
     }
 }

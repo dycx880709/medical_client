@@ -11,10 +11,9 @@ namespace Mseiot.Medical.Service.Entities
 {
     public class PatientInfo : NotifyPropertyBase
     {
-        private int patientID;
         private string patientNumber;
         private string patientName;
-        private Sex sex;
+        private string sex;
         private AgeRange ageRange;
         private string checkBody;
         private string patientCode;
@@ -23,20 +22,20 @@ namespace Mseiot.Medical.Service.Entities
         private string roomCode;
         private string areaCode;
         private string doctorName;
-        private long checkDate = TimeHelper.ToUnixDate(DateTime.Now);
-        private ChargeType chargeType;
+        private int checkDate;
+        private string chargeType;
         private string checkType;
         private string outpatientCode;
         private string pathologyCode;
         private string patientHistory;
         private string patientTalk;
-        private DiagnoseType diagnoseType;
-        private long createDate = TimeHelper.ToUnixDate(DateTime.Now);
+        private string diagnoseType;
+        private long createTime;
 
         private string idCard;
         private string socialSecurityCode;
         private string telphoneNumber;
-        private MarryType marryType;
+        private string marryType;
         private string occupation;
         private int childrenCount;
         private string nation;
@@ -139,7 +138,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 婚姻状况
         /// </summary>
-        public MarryType MarryType
+        public string MarryType
         {
             get { return marryType; }
             set
@@ -191,20 +190,20 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 登记时间
         /// </summary>
-        public long CreateDate
+        public long CreateTime
         {
-            get { return createDate; }
+            get { return createTime; }
             set
             {
-                createDate = value;
-                RaisePropertyChanged("CreateDate");
+                createTime = value;
+                RaisePropertyChanged("CreateTime");
             }
         }
 
         /// <summary>
         /// 诊断类型 初/复诊
         /// </summary>
-        public DiagnoseType DiagnoseType
+        public string DiagnoseType
         {
             get { return diagnoseType; }
             set
@@ -278,7 +277,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 收费类型
         /// </summary>
-        public ChargeType ChargeType
+        public string ChargeType
         {
             get { return chargeType; }
             set
@@ -288,9 +287,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
         /// <summary>
-        /// 检查时间
+        /// 检查日期
         /// </summary>
-        public long CheckDate
+        public int CheckDate
         {
             get { return checkDate; }
             set
@@ -398,7 +397,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 性别
         /// </summary>
-        public Sex Sex
+        public string Sex
         {
             get { return sex; }
             set
@@ -435,15 +434,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 病患预约ID
         /// </summary>
-        public int PatientID
-        {
-            get { return patientID; }
-            set
-            {
-                patientID = value;
-                RaisePropertyChanged("PatientID");
-            }
-        }
+        public int PatientInfoID { get; set; }
     }
 
     public enum MarryType
@@ -486,13 +477,5 @@ namespace Mseiot.Medical.Service.Entities
         PrimeraConsulta,
         [Description("复诊")]
         NuevaConsulta
-    }
-
-    public enum ChargeType
-    {
-        [Description("自费")]
-        SelfPay,
-        [Description("医保")]
-        Insurance
     }
 }

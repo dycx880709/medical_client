@@ -39,7 +39,7 @@ namespace Mseiot.Medical.Client.Views
         {
             if (pmv.SelectedPatient != null)
             {
-                var result = loading.AsyncWait("移除预约中,请稍后", SocketProxy.Instance.RemovePatient(pmv.SelectedPatient.PatientID));
+                var result = loading.AsyncWait("移除预约中,请稍后", SocketProxy.Instance.RemovePatient(pmv.SelectedPatient.PatientInfoID));
                 if (result.IsSuccess) pmv.Refresh();
                 else MsWindow.ShowDialog($"删除预约失败,{ result.Error }", "软件提示");
             }

@@ -66,46 +66,45 @@
             <TextBlock Text="复/初诊" Grid.Row="1" Grid.Column="8"/>
             <TextBlock Text="收费类型" Grid.Row="1" Grid.Column="10"/>
 
-            <DatePicker Grid.Row="0" Grid.Column="1" SelectedDate="{Binding CreateDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+            <DatePicker Grid.Row="0" Grid.Column="1" SelectedDate="{Binding CreateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
             <DatePicker Grid.Row="0" Grid.Column="3" SelectedDate="{Binding CheckDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
-            <ComboBox Grid.Row="0" Grid.Column="5" Text="{Binding CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <ComboBox Grid.Row="0" Grid.Column="7" Text="{Binding CheckType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBox Grid.Row="0" Grid.Column="9" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBox Grid.Row="0" Grid.Column="11" Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_checkBody" Grid.Row="0" Grid.Column="5" Text="{Binding CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_checkType" Grid.Row="0" Grid.Column="7" Text="{Binding CheckType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_className" Grid.Row="0" Grid.Column="9" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_doctorName" Grid.Row="0" Grid.Column="11" Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Grid.Row="0" Grid.Column="13" Text="{Binding PatientNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PatientName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <ComboBox Grid.Row="1" Grid.Column="3" SelectedIndex="{Binding Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToIntConverter}}"/>
+            <ComboBox x:Name="cb_sex" Grid.Row="1" Grid.Column="3" ItemsSource="{x:Static entities:EnumItems.Sex}" Text="{Binding Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding IdCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Grid.Row="1" Grid.Column="7" Text="{Binding TelphoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <ComboBox Grid.Row="1" Grid.Column="9" ItemsSource="{x:Static entities:EnumItems.DiagnoseType}" SelectedIndex="{Binding DiagnoseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToIntConverter}}"/>
-            <ComboBox Grid.Row="1" Grid.Column="11" ItemsSource="{x:Static entities:EnumItems.ChargeType}" SelectedIndex="{Binding ChargeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToIntConverter}}"/>
+            <ComboBox Grid.Row="1" Grid.Column="9" ItemsSource="{x:Static entities:EnumItems.DiagnoseType}" Text="{Binding DiagnoseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_chargeType" Grid.Row="1" Grid.Column="11" Text="{Binding ChargeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="12" Grid.ColumnSpan="2" HorizontalAlignment="Center">
                 <Button Content="查询" Click="Get_Click" IsDefault="True"/>
                 <Button Content="重置" Click="Reset_Click" Margin="15,0,0,0"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1">
-            <DataGrid  x:Name="dg_patient" SelectedValue="{Binding SelectedPatient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <Border Grid.Row="1" BorderThickness="0,1,0,0" BorderBrush="{StaticResource Color_Border_Secondary}">
+            <DataGrid x:Name="dg_patient" SelectedValue="{Binding SelectedPatient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns>
-                    <!--<DataGridTextColumn Width="70" Header="序号"/>-->
                     <DataGridTextColumn Width="*" Header="检查序号" Binding="{Binding PatientNumber}"/>
                     <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding PatientName}"/>
-                    <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Sex, Converter={StaticResource EnumToStringConverter}}"/>
+                    <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Sex}"/>
                     <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding IdCard}"/>
                     <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding TelphoneNumber}"/>
-                    <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType, Converter={StaticResource EnumToStringConverter}}"/>
-                    <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType, Converter={StaticResource EnumToStringConverter}}"/>
-                    <DataGridTextColumn Width="*" Header="登记日期" Binding="{Binding CreateDate, StringFormat={}{0:yyyy/MM/dd}}"/>
-                    <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding CheckDate, StringFormat={}{0:yyyy/MM/dd}}"/>
+                    <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}"/>
+                    <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}"/>
+                    <DataGridTextColumn Width="*" Header="登记日期" Binding="{Binding CreateTime, Converter={StaticResource TimeStampToStringFormatConverter}}"/>
+                    <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding CheckDate, Converter={StaticResource TimeStampToStringFormatConverter}}"/>
                     <DataGridTextColumn Width="*" Header="检查部位" Binding="{Binding CheckBody}"/>
                     <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding CheckType}"/>
                     <DataGridTextColumn Width="*" Header="送检科室" Binding="{Binding ClassName}"/>
                     <DataGridTextColumn Width="*" Header="送检医生" Binding="{Binding DoctorName}"/>
                 </DataGrid.Columns>
             </DataGrid>
-        </Grid>
+        </Border>
         <controls:Pager x:Name="pager" Grid.Row="2"/>
         <controls:Loading x:Name="loading2" Grid.RowSpan="3"/>
     </Grid>

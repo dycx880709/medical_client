@@ -1,4 +1,5 @@
 ﻿using Ms.Controls;
+using Ms.Libs.SysLib;
 using Mseiot.Medical.Client.Core;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
@@ -25,7 +26,7 @@ namespace Mseiot.Medical.Client.Views
     /// </summary>
     public partial class PatientManageView : UserControl
     {
-        public PatientInfo Condition { get; } = new PatientInfo();
+        public PatientInfo Condition { get; private set; }
 
         public PatientInfo SelectedPatient
         {
@@ -42,6 +43,11 @@ namespace Mseiot.Medical.Client.Views
         {
             InitializeComponent();
             this.loading = loading2;
+            this.Condition = new PatientInfo
+            {
+                CreateTime = (int)TimeHelper.ToUnixDate(DateTime.Now),
+                CheckDate = (int)TimeHelper.ToUnixDate(DateTime.Now),
+            };
             this.DataContext = this;
             this.Loaded += PatientManageView_Loaded;
         }
@@ -53,7 +59,26 @@ namespace Mseiot.Medical.Client.Views
 
         private void PatientManageView_Loaded(object sender, RoutedEventArgs e)
         {
+            GetConditions();
             GetPatientInfos();
+        }
+
+        private void GetConditions()
+        {
+            var result = loading.AsyncWait("获取基础信息中,请稍后", SocketProxy.Instance.GetBaseWords("收费类型", "送检医生", "送检科室", "检查部位", "检查类型"));
+            if (result.IsSuccess)
+            {
+                var chargeType = result.Content.FirstOrDefault(t => t.Title.Equals("收费类型"));
+                cb_chargeType.ItemsSource = string.IsNullOrEmpty(chargeType.Content) ? new List<string>() : chargeType.Content.Split(',').ToList();
+                var checkBody = result.Content.FirstOrDefault(t => t.Title.Equals("检查部位"));
+                cb_checkBody.ItemsSource = string.IsNullOrEmpty(checkBody.Content) ? new List<string>() : checkBody.Content.Split(',').ToList();
+                var checkType = result.Content.FirstOrDefault(t => t.Title.Equals("检查类型"));
+                cb_checkType.ItemsSource = string.IsNullOrEmpty(checkType.Content) ? new List<string>() : checkType.Content.Split(',').ToList();
+                var doctorName = result.Content.FirstOrDefault(t => t.Title.Equals("送检医生"));
+                cb_doctorName.ItemsSource = string.IsNullOrEmpty(doctorName.Content) ? new List<string>() : doctorName.Content.Split(',').ToList();
+                var className = result.Content.FirstOrDefault(t => t.Title.Equals("送检科室"));
+                cb_className.ItemsSource = string.IsNullOrEmpty(className.Content) ? new List<string>() : className.Content.Split(',').ToList();
+            }
         }
 
         public void Refresh()

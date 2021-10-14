@@ -12,17 +12,17 @@ namespace Mseiot.Medical.Service.Services
     {
         public async Task<MsResult<int>> AddPatient(PatientInfo patient)
         {
-            return await HttpProxy.PutMessage<int>("/api/patient/add", patient);
+            return await HttpProxy.PutMessage<int>("/api/booking/add", patient);
         }
 
-        public async Task<MsResult<bool>> RemovePatient(int patientId)
+        public async Task<MsResult<bool>> RemovePatient(int patientInfoId)
         {
-            return await HttpProxy.DeleteMessage<bool>("/api/patient/remove", new KeyValuePair<string, string>("patientId", patientId.ToString()));
+            return await HttpProxy.DeleteMessage<bool>("/api/booking/remove", new KeyValuePair<string, string>("patientInfoId", patientInfoId.ToString()));
         }
 
-        public async Task<MsResult<PatientInfo>> GePatient(string id)
+        public async Task<MsResult<PatientInfo>> GePatientById(string patientInfoId)
         {
-            return await HttpProxy.GetMessage<PatientInfo>("/api/patient/getpatientbyid", id);
+            return await HttpProxy.GetMessage<PatientInfo>("/api/booking/getpatientbyid", new KeyValuePair<string, string>("patientInfoId", patientInfoId.ToString()));
         }
 
         public async Task<MsResult<ListResult<PatientInfo>>> GePatients(int index, int count)
@@ -30,7 +30,7 @@ namespace Mseiot.Medical.Service.Services
             var dir = new Dictionary<string, string>();
             dir.Add("index", index.ToString());
             dir.Add("count", count.ToString());
-            return await HttpProxy.GetMessage<ListResult<PatientInfo>>("/api/patient/gets", dir);
+            return await HttpProxy.GetMessage<ListResult<PatientInfo>>("/api/booking/gets", dir);
         }
     }
 }

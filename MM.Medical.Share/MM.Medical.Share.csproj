@@ -45,6 +45,7 @@
     <Compile Include="Converters\EnumToIntConverter.cs" />
     <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\TimeStampToDateTimeConverter.cs" />
+    <Compile Include="Converters\TimeStampToStringFormatConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
