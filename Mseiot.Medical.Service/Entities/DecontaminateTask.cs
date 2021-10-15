@@ -104,4 +104,17 @@ namespace Mseiot.Medical.Service.Entities
         /// </summary>
         public DecontaminateStepStatus DecontaminateStepStatus { get; set; }
     }
+
+    public class RFIDDevice
+    {
+        /// <summary>
+        /// ID
+        /// </summary>
+        public int RFIDDeviceID { get; set; }
+
+        /// <summary>
+        /// 编号
+        /// </summary>
+        public string SN { get; set; }
+    }
 }

@@ -9,8 +9,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using MM.Medical.Decontaminate.Core;
-using MM.Medical.Decontaminate.Views.Decontaminate;
 using Ms.Controls;
 using System;
 using System.Diagnostics;

@@ -12,9 +12,9 @@ DEBUG;TRACE
 D:\code\medical_client\MM.Medical.Decontaminate\App.xaml
 101394852028
 
-18467773595
-1724211484
+171222343379
+1211196529532
 Themes\Generic.xaml;Themes\Images.xaml;Views\Decontaminate\DecontaminateTaskView.xaml;Views\Login\LoginView.xaml;Views\Login\SeverSetting.xaml;Views\MainWindow.xaml;Views\RFID\AddRFIDDevice.xaml;Views\RFID\RFIDDeviceManage.xaml;Views\Update\AddVersion.xaml;Views\Update\UpdateMain.xaml;
 
-True
+False
 
