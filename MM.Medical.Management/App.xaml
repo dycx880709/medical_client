@@ -1,0 +1,19 @@
+﻿<Application x:Class="MM.Medical.Management.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:MM.Medical.Share.Converters;assembly=MM.Medical.Share"
+             xmlns:local="clr-namespace:MM.Medical.Management"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Ms.Controls;component/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:EnumToIntConverter x:Key="EnumToIntConverter"/>
+            <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:TimeStampToDateTimeConverter x:Key="TimeStampToDateTimeConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

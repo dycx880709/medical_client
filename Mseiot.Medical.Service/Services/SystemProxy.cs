@@ -12,12 +12,12 @@ namespace Mseiot.Medical.Service.Services
     {
         public async Task<MsResult<bool>> UpdateSystemSetting(SystemSetting setting)
         {
-            return await HttpProxy.PutMessage<bool>("/api/system/update", setting);
+            return await HttpProxy.PutMessage<bool>("/api/setting/update", setting);
         }
 
         public async Task<MsResult<SystemSetting>> GetSystemSetting()
         {
-            return await HttpProxy.PutMessage<SystemSetting>("/api/system/get", null);
+            return await HttpProxy.PutMessage<SystemSetting>("/api/setting/get", null);
         }
     }
 }

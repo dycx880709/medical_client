@@ -69,16 +69,17 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
+    <Compile Include="Entities\BaseWordExtend.cs" />
     <Compile Include="Entities\SystemSettingExtend.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
-    <Compile Include="Entities\PageLevels.cs" />
+    <Compile Include="Entities\AppLevel.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\UserRecord.cs" />
     <Compile Include="Views\Booking\AddBookingView.xaml.cs">
       <DependentUpon>AddBookingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Booking\BookingManagetView.xaml.cs">
-      <DependentUpon>BookingManagetView.xaml</DependentUpon>
+    <Compile Include="Views\Booking\BookingManageView.xaml.cs">
+      <DependentUpon>BookingManageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Clean\CleanCenterView.xaml.cs">
       <DependentUpon>CleanCenterView.xaml</DependentUpon>
@@ -94,6 +95,12 @@
     </Compile>
     <Compile Include="Views\Component\AddUserView.xaml.cs">
       <DependentUpon>AddUserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Component\AddWordItemView.xaml.cs">
+      <DependentUpon>AddWordItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Component\AddWordView.xaml.cs">
+      <DependentUpon>AddWordView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Component\PatientManageView.xaml.cs">
       <DependentUpon>PatientManageView.xaml</DependentUpon>
@@ -157,7 +164,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Booking\BookingManagetView.xaml">
+    <Page Include="Views\Booking\BookingManageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,6 +185,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Component\AddUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\AddWordItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\AddWordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -310,16 +325,15 @@
       <Project>{08b4fad7-31a0-46eb-ac31-2fcabd8b65e5}</Project>
       <Name>Mseiot.Updater</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MM.Medical.Share\MM.Medical.Share.csproj">
+      <Project>{66d5b357-f9c7-4325-93f2-f768f974f496}</Project>
+      <Name>MM.Medical.Share</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mseiot.Medical.Service\Mseiot.Medical.Service.csproj">
       <Project>{bd38a2a3-7b32-4127-8c45-06f23fea4041}</Project>
       <Name>Mseiot.Medical.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="Images\logo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

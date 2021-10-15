@@ -24,7 +24,7 @@
         <Grid Grid.Row="0">
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}"/>
             <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
-                <Image Source="/Mseiot.Medical.Client;component/Images/logo.png" Stretch="Uniform" Height="30"/>
+                <Image Source="/MM.Medical.Share;component/Images/logo.png" Stretch="Uniform" Height="30"/>
                 <TextBlock VerticalAlignment="Center" FontSize="{StaticResource LargeExFontSize}" FontWeight="Bold" Margin="5,0,0,0" Text="{x:Static core:CacheHelper.ProductName}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -35,9 +35,9 @@
                         <Setter Property="Margin" Value="10,0"/>
                     </Style>
                 </StackPanel.Resources>
-                <RadioButton Checked="MenuItem_Checked" Content="预约登记" Tag="Mseiot.Medical.Client.Views.BookingManagetView" IsChecked="True"/>
-                <RadioButton Checked="MenuItem_Checked" Content="检查中心" Tag="Mseiot.Medical.Client.Views.InspectionManageView"/>
-                <RadioButton Checked="MenuItem_Checked" Content="病历中心" Tag="Mseiot.Medical.Client.Views.MedicalManageView"/>
+                <RadioButton Checked="MenuItem_Checked" Content="预约登记" Tag="Mseiot.Medical.Client.Views.BookingManageView" IsChecked="True" x:Name="rb_booking"/>
+                <RadioButton Checked="MenuItem_Checked" Content="检查中心" Tag="Mseiot.Medical.Client.Views.InspectionManageView" x:Name="rb_Inspection"/>
+                <RadioButton Checked="MenuItem_Checked" Content="病历中心" Tag="Mseiot.Medical.Client.Views.MedicalManageView" x:Name="rb_medical"/>
                 <RadioButton Content="清洗中心" x:Name="rb_Cleaning"/>
                 <RadioButton Content="主任管理" x:Name="rb_Director"/>
                 <RadioButton Content="系统管理" x:Name="rb_System"/>

@@ -21,7 +21,10 @@ namespace Mseiot.Medical.Service.Entities
         private int mediaCount;
         private string wakeupCallName;
         private string cutshotKeyboard;
-
+        
+        /// <summary>
+        /// 采图热键
+        /// </summary>
         public string CutshotKeyboard
         {
             get { return cutshotKeyboard; }
@@ -32,6 +35,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 语音唤醒称呼
+        /// </summary>
         public string WakeupCallName
         {
             get { return wakeupCallName; }
@@ -42,6 +48,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 录像数量上限
+        /// </summary>
         public int MediaCount
         {
             get { return mediaCount; }
@@ -51,7 +60,10 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("MediaCount");
             }
         }
-
+        
+        /// <summary>
+        /// 报告打印图片上限
+        /// </summary>
         public int PrintImageCount
         {
             get { return printImageCount; }
@@ -62,6 +74,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 采图数量上限
+        /// </summary>
         public int CutshotImageCount
         {
             get { return cutshotImageCount; }
@@ -72,6 +87,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 采图生效
+        /// </summary>
         public string CutshotSound
         {
             get { return cutshotSound; }
@@ -82,6 +100,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 检查序号长度
+        /// </summary>
         public int OrderLength
         {
             get { return orderLength; }
@@ -92,6 +113,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 检查序号前缀
+        /// </summary>
         public string OrderPrefix
         {
             get { return orderPrefix; }
@@ -102,6 +126,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 报告单图标
+        /// </summary>
         public string ReportIcon
         {
             get { return reportIcon; }
@@ -112,6 +139,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 报告单名称
+        /// </summary>
         public string ReportName
         {
             get { return reportName; }
@@ -122,6 +152,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 科室名称
+        /// </summary>
         public string ClassName
         {
             get { return className; }
@@ -132,6 +165,9 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        /// <summary>
+        /// 医院名称
+        /// </summary>
         public string HospitalName
         {
             get { return hospitalName; }

@@ -33,17 +33,17 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <GroupBox Header="列表一" Margin="5">
+        <controls:CustomGroupBox Header="列表一" Margin="5,0">
             <ListBox x:Name="lt_diagnosis" Grid.Column="0"/>
-        </GroupBox>
-        <GroupBox Grid.Column="1" Header="列表二" Margin="5" HeaderTemplate="{StaticResource GroupBoxHeaderDataTemplate}"> 
+        </controls:CustomGroupBox>
+        <controls:CustomGroupBox Grid.Column="1" Header="列表二" Margin="5,0"> 
             <ListBox x:Name="lt_body"/>
-        </GroupBox>
-        <GroupBox Grid.Column="2" Header="列表三" Margin="5">
+        </controls:CustomGroupBox>
+        <controls:CustomGroupBox Grid.Column="2" Header="列表三" Margin="5,0">
             <ListBox x:Name="lt_describe"/>
-        </GroupBox>
-        <GroupBox Grid.Column="3" Header="列表四" Margin="5">
+        </controls:CustomGroupBox>
+        <controls:CustomGroupBox Grid.Column="3" Header="列表四" Margin="5,0">
             <ListBox x:Name="lt_symptom" Grid.Column="3"/>
-        </GroupBox>
+        </controls:CustomGroupBox>
     </Grid>
 </UserControl>

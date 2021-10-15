@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="MM.Medical.Management.Views.MedicalWordView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="1080" d:DesignWidth="1920">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="GroupBoxHeaderDataTemplate">
+            <Grid Margin="6,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding}" HorizontalAlignment="Left"/>
+                <Border Grid.Column="1" VerticalAlignment="Center" BorderThickness="0,1,0,0" Margin="6,0" BorderBrush="{StaticResource Color_Border_Group}"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+                    <!--<controls:MediaButton NormalSource="{StaticResource Img_Add}" HoverSource="{StaticResource Img_Add_Hover}" />-->
+                    <controls:MediaButton NormalSource="{StaticResource Img_Setting}" HoverSource="{StaticResource Img_Setting_Hover}" />
+                    <controls:MediaButton NormalSource="{StaticResource Img_Close}" HoverSource="{StaticResource Img_Close_Hover}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="列表一" Margin="5">
+            <ListBox x:Name="lt_diagnosis" Grid.Column="0"/>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="列表二" Margin="5" HeaderTemplate="{StaticResource GroupBoxHeaderDataTemplate}"> 
+            <ListBox x:Name="lt_body"/>
+        </GroupBox>
+        <GroupBox Grid.Column="2" Header="列表三" Margin="5">
+            <ListBox x:Name="lt_describe"/>
+        </GroupBox>
+        <GroupBox Grid.Column="3" Header="列表四" Margin="5">
+            <ListBox x:Name="lt_symptom" Grid.Column="3"/>
+        </GroupBox>
+    </Grid>
+</UserControl>

@@ -35,7 +35,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Mseiot.Medical.Client;component/Images/logo.png" Height="40" Stretch="Uniform" Margin="0,0,10,0"/>
+                    <Image Source="/MM.Medical.Share;component/Images/logo.png" Height="40" Stretch="Uniform" Margin="0,0,10,0"/>
                     <TextBlock Text="{x:Static core:CacheHelper.ProductName}" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Primary}" FontSize="{StaticResource LargeExFontSize}"/>
                 </StackPanel>
                 <Grid Grid.Row="1" Width="300">
