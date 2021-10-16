@@ -11,9 +11,10 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <controls:CustomGroupBox Header="角色列表" Margin="5">
+        <controls:CustomGroupBox Header="角色列表" Grid.Column="0">
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -36,7 +37,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </controls:CustomGroupBox>
-        <controls:CustomGroupBox Header="权限分类" Grid.Column="1" Margin="5">
+        <controls:CustomGroupBox Header="权限分类" Grid.Column="2">
             <ListBox x:Name="lb_level" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource DefaultListBoxItemStyle}">

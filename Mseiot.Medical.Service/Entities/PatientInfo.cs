@@ -11,10 +11,6 @@ namespace Mseiot.Medical.Service.Entities
 {
     public class PatientInfo : NotifyPropertyBase
     {
-        private string patientNumber;
-        private string patientName;
-        private string sex;
-        private AgeRange ageRange;
         private string checkBody;
         private string patientCode;
         private string hospitalizationCode;
@@ -22,7 +18,7 @@ namespace Mseiot.Medical.Service.Entities
         private string roomCode;
         private string areaCode;
         private string doctorName;
-        private int checkDate;
+        private int? checkTime;
         private string chargeType;
         private string checkType;
         private string outpatientCode;
@@ -30,167 +26,26 @@ namespace Mseiot.Medical.Service.Entities
         private string patientHistory;
         private string patientTalk;
         private string diagnoseType;
-        private long createTime;
-
-        private string idCard;
-        private string socialSecurityCode;
-        private string telphoneNumber;
-        private string marryType;
-        private string occupation;
-        private int childrenCount;
-        private string nation;
-        private int height;
-        private int weight;
-        private string address;
-        private string permanent;
-        
+        private int? createTime;
+        private PatientStatus patientStatus;
         /// <summary>
-        /// 户籍地址
+        /// 病患预约ID
         /// </summary>
-        public string Permanent
-        {
-            get { return permanent; }
-            set
-            {
-                permanent = value;
-                RaisePropertyChanged("Permanent");
-            }
-        }
-
+        public int PatientInfoID { get; set; }
         /// <summary>
-        /// 居住地址
+        /// 病患人员ID
         /// </summary>
-        public string Address
-        {
-            get { return address; }
-            set
-            {
-                address = value;
-                RaisePropertyChanged("Address");
-            }
-        }
-
+        public int PatientID { get; set; }
+        public Patient Patient { get; set; } = new Patient();
         /// <summary>
-        /// 体重
+        /// 检查数据 
         /// </summary>
-        public int Weight
-        {
-            get { return weight; }
-            set
-            {
-                weight = value;
-                RaisePropertyChanged("Weight");
-            }
-        }
-
-        /// <summary>
-        /// 身高
-        /// </summary>
-        public int Height
-        {
-            get { return height; }
-            set
-            {
-                height = value;
-                RaisePropertyChanged("Height");
-            }
-        }
-
-        /// <summary>
-        /// 民族 
-        /// </summary>
-        public string Nation
-        {
-            get { return nation; }
-            set
-            {
-                nation = value;
-                RaisePropertyChanged("Nation");
-            }
-        }
-
-        /// <summary>
-        /// 子女数
-        /// </summary>
-        public int ChildrenCount
-        {
-            get { return childrenCount; }
-            set
-            {
-                childrenCount = value;
-                RaisePropertyChanged("ChildrenCount");
-            }
-        }
-
-        /// <summary>
-        /// 职业
-        /// </summary>
-        public string Occupation
-        {
-            get { return occupation; }
-            set
-            {
-                occupation = value;
-                RaisePropertyChanged("Occupation");
-            }
-        }
-
-        /// <summary>
-        /// 婚姻状况
-        /// </summary>
-        public string MarryType
-        {
-            get { return marryType; }
-            set
-            {
-                marryType = value;
-                RaisePropertyChanged("MarryType");
-            }
-        }
-
-        /// <summary>
-        /// 电话号码
-        /// </summary>
-        public string TelphoneNumber
-        {
-            get { return telphoneNumber; }
-            set
-            {
-                telphoneNumber = value;
-                RaisePropertyChanged("TelphoneNumber");
-            }
-        }
-
-        /// <summary>
-        /// 社保号码
-        /// </summary>
-        public string SocialSecurityCode
-        {
-            get { return socialSecurityCode; }
-            set
-            {
-                socialSecurityCode = value;
-                RaisePropertyChanged("SocialSecurityCode");
-            }
-        }
-
-        /// <summary>
-        /// 身份证号
-        /// </summary>
-        public string IdCard
-        {
-            get { return idCard; }
-            set
-            {
-                idCard = value;
-                RaisePropertyChanged("IdCard");
-            }
-        }
-
+        public CheckInfo CheckInfo { get; set; } = new CheckInfo();
+        #region 预约信息
         /// <summary>
         /// 登记时间
         /// </summary>
-        public long CreateTime
+        public int? CreateTime
         {
             get { return createTime; }
             set
@@ -199,7 +54,6 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("CreateTime");
             }
         }
-
         /// <summary>
         /// 诊断类型 初/复诊
         /// </summary>
@@ -212,7 +66,6 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("DiagnoseType");
             }
         }
-
         /// <summary>
         /// 主诉
         /// </summary>
@@ -225,7 +78,6 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("PatientTalk");
             }
         }
-
         /// <summary>
         /// 病史
         /// </summary>
@@ -289,13 +141,13 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 检查日期
         /// </summary>
-        public int CheckDate
+        public int? CheckTime
         {
-            get { return checkDate; }
+            get { return checkTime; }
             set
             {
-                checkDate = value;
-                RaisePropertyChanged("CheckDate");
+                checkTime = value;
+                RaisePropertyChanged("CheckTime");
             }
         }
         /// <summary>
@@ -382,94 +234,23 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("CheckBody");
             }
         }
+      
         /// <summary>
-        /// 年龄
+        /// 签到状态
         /// </summary>
-        public AgeRange AgeRange
+        public PatientStatus PatientStatus
         {
-            get { return ageRange; }
+            get { return patientStatus; }
             set
             {
-                ageRange = value;
-                RaisePropertyChanged("AgeRange");
-            }
-        }
-        /// <summary>
-        /// 性别
-        /// </summary>
-        public string Sex
-        {
-            get { return sex; }
-            set
-            {
-                sex = value;
-                RaisePropertyChanged("Sex");
-            }
-        }
-        /// <summary>
-        /// 患者姓名
-        /// </summary>
-        public string PatientName
-        {
-            get { return patientName; }
-            set
-            {
-                patientName = value;
-                RaisePropertyChanged("PatientName");
-            }
-        }
-        /// <summary>
-        /// 预约序号
-        /// </summary>
-        public string PatientNumber
-        {
-            get { return patientNumber; }
-            set
-            {
-                patientNumber = value;
-                RaisePropertyChanged("PatientNumber");
+                patientStatus = value;
+                RaisePropertyChanged("PatientStatus");
             }
         }
 
-        /// <summary>
-        /// 病患预约ID
-        /// </summary>
-        public int PatientInfoID { get; set; }
+        #endregion
     }
 
-    public enum MarryType
-    {
-        [Description("未婚")]
-        Unmarried,
-        [Description("已婚")]
-        Married,
-        [Description("离异")]
-        Divorced
-    }
-
-    public enum Sex
-    { 
-        [Description("男")]
-        Male,
-        [Description("女")]
-        Female,
-        [Description("未知")]
-        Noknown
-    }
-
-    public enum AgeRange
-    { 
-        [Description("小孩")]
-        Child,
-        [Description("少年")]
-        Juvenile,
-        [Description("成年人")]
-        Adult,
-        [Description("中年人")]
-        MiddleAger,
-        [Description("老人")]
-        Older
-    }
 
     public enum DiagnoseType
     {
@@ -477,5 +258,17 @@ namespace Mseiot.Medical.Service.Entities
         PrimeraConsulta,
         [Description("复诊")]
         NuevaConsulta
+    }
+
+    public enum PatientStatus
+    {
+        [Description("未签到")]
+        UnRegist,
+        [Description("已签到")]
+        Regist,
+        [Description("检查中")]
+        Checking,
+        [Description("已检查")]
+        Checked
     }
 }

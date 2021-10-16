@@ -3,10 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:local="clr-namespace:Mseiot.Medical.Client.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
-            
+        <controls:CustomGroupBox Header="诊室管理">
+            <controls:CustomGroupBox.AttachContent>
+                <ControlTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="添加" Margin="5,0,0,0" Click="Add_Click"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </controls:CustomGroupBox.AttachContent>
+            <ListBox x:Name="lb_rooms">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Margin="3,0,0,0" Text="{Binding Name}"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <controls:MediaButton Click="Edit_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="0,0,10,0"/>
+                                <controls:MediaButton Click="Remove_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </controls:CustomGroupBox>
+        <controls:SliderPanel x:Name="sp"/>
+        <controls:Loading x:Name="loading"/>
     </Grid>
 </UserControl>

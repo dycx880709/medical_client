@@ -48,6 +48,8 @@
     <Compile Include="Converters\TimeStampToStringFormatConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validations\NumberRangeValidationRule.cs" />
+    <Compile Include="Validations\StringEmptyOrNullValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs_csharp\Ms.Libs\Ms.Libs.csproj">
