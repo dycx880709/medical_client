@@ -19,6 +19,8 @@ namespace MM.Medical.Decontaminate.Entities
         public string LoginName { get { return UserRecord.LoginName; } }
         public string LoginPwd { get { return UserRecord.LoginPwd; } }
 
+        public string RFIDCom { get; set; }
+
         public LocalSetting()
         {
             this.UserRecords = new List<UserRecord>();

@@ -30,11 +30,11 @@ namespace MM.Medical.Decontaminate.Views.RFID
         public AddRFIDDevice()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            RFIDDevice.SN = tbSN.Text;
             var result = await SocketProxy.Instance.AddRFIDDevice(RFIDDevice);
             if (result.IsSuccess)
             {

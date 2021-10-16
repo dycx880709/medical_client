@@ -105,7 +105,7 @@ namespace Mseiot.Medical.Service.Entities
         public DecontaminateStepStatus DecontaminateStepStatus { get; set; }
     }
 
-    public class RFIDDevice
+    public class RFIDDevice: BaseModel
     {
         /// <summary>
         /// ID
@@ -116,5 +116,102 @@ namespace Mseiot.Medical.Service.Entities
         /// 编号
         /// </summary>
         public string SN { get; set; }
+
+        /// <summary>
+        /// 设备名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 是否在使用
+        /// </summary>
+        public bool Used { get; set; }
+    }
+
+    public class Endoscope : BaseModel
+    {
+
+        private int endoscopeID;
+        /// <summary>
+        /// ID
+        /// </summary>
+        public int EndoscopeID 
+        {
+            get
+            {
+                return endoscopeID;
+            }
+            set
+            {
+                endoscopeID = value;
+                NotifyPropertyChanged("EndoscopeID");
+            }
+        }
+
+        /// <summary>
+        /// 厂家
+        /// </summary>
+        public string Factory { get; set; }
+
+        /// <summary>
+        /// 型号
+        /// </summary>
+        public string Model { get; set; }
+
+        /// <summary>
+        /// 采购时间
+        /// </summary>
+        public long Time { get; set; }
+    }
+
+    public class DecontaminateFlow : BaseModel
+    {
+        /// <summary>
+        /// 流程ID
+        /// </summary>
+        public int DecontaminateFlowID { get; set; }
+
+        /// <summary>
+        /// 厂家
+        /// </summary>
+        public string Factory { get; set; }
+
+        /// <summary>
+        /// 型号
+        /// </summary>
+        public string Model { get; set; }
+    }
+
+    public class DecontaminateFlowStep : BaseModel
+    {
+        /// <summary>
+        /// 步骤ID
+        /// </summary>
+        public int DecontaminateFlowStepID { get; set; }
+
+        /// <summary>
+        /// 流程ID
+        /// </summary>
+        public int DecontaminateFlowID { get; set; }
+
+        /// <summary>
+        /// 步骤名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 超时时间
+        /// </summary>
+        public long Timeout { get; set; }
+
+        /// <summary>
+        /// ID
+        /// </summary>
+        public int RFIDDeviceID { get; set; }
+
+        /// <summary>
+        /// 设备名称
+        /// </summary>
+        public string RFIDDeviceName { get; set; }
     }
 }

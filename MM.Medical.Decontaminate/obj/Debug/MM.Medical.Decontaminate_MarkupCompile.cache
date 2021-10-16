@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\code\medical_client\MM.Medical.Decontaminate\App.xaml
-101394852028
+16-1003191956
 
-171222343379
-1211196529532
-Themes\Generic.xaml;Themes\Images.xaml;Views\Decontaminate\DecontaminateTaskView.xaml;Views\Login\LoginView.xaml;Views\Login\SeverSetting.xaml;Views\MainWindow.xaml;Views\RFID\AddRFIDDevice.xaml;Views\RFID\RFIDDeviceManage.xaml;Views\Update\AddVersion.xaml;Views\Update\UpdateMain.xaml;
+23382587810
+123-757178258
+Themes\Generic.xaml;Themes\Images.xaml;Views\Decontaminate\AddDecontaminateFlowStep.xaml;Views\Decontaminate\AddDecontaminateFlow.xaml;Views\Decontaminate\DecontaminateFlowView.xaml;Views\Decontaminate\DecontaminateTaskView.xaml;Views\EndoscopeViews\AddEndoscope.xaml;Views\EndoscopeViews\EndoscopeManage.xaml;Views\Login\LoginView.xaml;Views\Login\SeverSetting.xaml;Views\MainWindow.xaml;Views\RFID\AddRFIDDevice.xaml;Views\RFID\RFIDDeviceManage.xaml;Views\SystemViews\SystemSetting.xaml;Views\Update\AddVersion.xaml;Views\Update\UpdateMain.xaml;
 
 False
 

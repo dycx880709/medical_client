@@ -65,5 +65,27 @@ namespace MM.Medical.Decontaminate.Views.Decontaminate
         }
 
         #endregion
+
+        #region 列数
+
+
+        public int ColumnCount
+        {
+            get { return (int)GetValue(ColumnCountProperty); }
+            set { SetValue(ColumnCountProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ColumnCount.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ColumnCountProperty =
+            DependencyProperty.Register("ColumnCount", typeof(int), typeof(DecontaminateTaskView), new PropertyMetadata(0));
+
+
+        private void lvTasks_Loaded(object sender, RoutedEventArgs e)
+        {
+            ColumnCount = (int)(Math.Floor(lvTasks.ActualWidth / 120));
+
+        }
+
+        #endregion+
     }
 }

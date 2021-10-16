@@ -1,0 +1,10 @@
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.csproj.AssemblyReference.cache
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.ChangeIPdlg.resources
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.fNhSetDlg.resources
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.Form1.resources
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.fPhSetDlg.resources
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.fSetdlg.resources
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.locateForm.resources
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.Properties.Resources.resources
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.csproj.GenerateResource.cache
+C:\Users\fugit\Downloads\RD915M\3.二次开发\SDK(多种开发语言）\中文版\Demo\Csharp\Csharp chV2.71(扩展读写)\obj\Debug\UHFReader18demomain.csproj.CoreCompileInputs.cache

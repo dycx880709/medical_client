@@ -59,6 +59,14 @@ namespace MM.Libs.RFID
             });
         }
 
+        public void OpenWait(string com)
+        {
+            serialPort = new SerialPort();
+            serialPort.BaudRate = 57600;
+            serialPort.PortName = com;
+            serialPort.DataReceived += SerialPort_DataReceived;
+            serialPort.Open();
+        }
 
         /// <summary>
         /// 关闭
@@ -67,6 +75,7 @@ namespace MM.Libs.RFID
         {
             if (serialPort != null)
             {
+                serialPort.DataReceived -= SerialPort_DataReceived;
                 serialPort.Close();
                 serialPort.Dispose();
             }

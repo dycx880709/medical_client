@@ -10,7 +10,7 @@ namespace Mseiot.Medical.Service.Services
 {
     public partial class SocketProxy
     {
-        public async Task<MsResult<List<RFIDDevice>>> GetRFIDDevices(List<DecontaminateTaskStatus> decontaminateTaskStatuses)
+        public async Task<MsResult<List<RFIDDevice>>> GetRFIDDevices()
         {
             return await HttpProxy.GetMessage<List<RFIDDevice>>("/api/rfiddevice/get");
         }
@@ -18,6 +18,14 @@ namespace Mseiot.Medical.Service.Services
         public async Task<MsResult<int>> AddRFIDDevice(RFIDDevice rfidDevice)
         {
             return await HttpProxy.PostMessage<int>("/api/rfiddevice/add", rfidDevice);
+        }
+
+        public async Task<MsResult<bool>> RemoveRFIDDevices(List<int> ids)
+        {
+            return await HttpProxy.DeleteMessage<bool>("/api/rfiddevice/remove", new
+            {
+                IDS = string.Join(",", ids)
+            });
         }
     }
 }

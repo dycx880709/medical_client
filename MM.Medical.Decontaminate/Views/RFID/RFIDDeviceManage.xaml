@@ -7,25 +7,40 @@
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Border Padding="10,0,10,0">
-            <Grid>
-                <controls:MediaButton FISize="{StaticResource LargeExFontSize}" Click="Add_Click" Content="添加"  HorizontalAlignment="Right"/>
-            </Grid>
-        </Border>
-        <Border Grid.Row="1">
-            <ListView>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="设备编号"></GridViewColumn>
-                        <GridViewColumn Header="设备编号"></GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Border>
-    </Grid>
+    <Border Style="{StaticResource Module}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Padding="10,0,10,0">
+                <Grid>
+                    <TextBlock Text="RFID设备列表" Style="{StaticResource Module_Title}"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Click="Add_Click" Content="添加" Margin="0,0,5,0"/>
+                        <Button Style="{StaticResource DangerButtonStyle}" Click="Remove_Click" Content="删除"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border Grid.Row="1">
+                <DataGrid x:Name="lvDatas">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="100">
+                            <DataGridTemplateColumn.Header>
+                                <CheckBox Click="AllDevice_Selected"/>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="*" Header="设备编号" Binding="{Binding SN}"/>
+                        <DataGridTextColumn Width="*" Header="设备名称" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Width="*" Header="是否使用" Binding="{Binding Used,Converter={StaticResource ynToCNConvert}}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
+    </Border>
 </UserControl>

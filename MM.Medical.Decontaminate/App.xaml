@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MM.Medical.Decontaminate"
              xmlns:converts="clr-namespace:Mseiot.Medical.Service.Converts;assembly=Mseiot.Medical.Service"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="Views/Login/LoginView.xaml">
     <Application.Resources>
 
@@ -10,9 +11,30 @@
         <ResourceDictionary>
 
             <converts:EnumDescriptionConvert x:Key="enumDescriptionConvert"></converts:EnumDescriptionConvert>
+            <converts:YNToCNConvert x:Key="ynToCNConvert"></converts:YNToCNConvert>
+            <converts:IntToFormatString x:Key="intToFormatString"></converts:IntToFormatString>
+
+            <SolidColorBrush x:Key="Color_Primary">#3F80EA</SolidColorBrush>
+
+            <SolidColorBrush x:Key="Color_Checkbox_Border">#3F80EA</SolidColorBrush>
+            
+
             <SolidColorBrush x:Key="Color_Border_Primary">#06e9ecef</SolidColorBrush>
-            <SolidColorBrush x:Key="Color_Font_Primary">#AAFFFFFF</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_Font_Primary">#6c757d</SolidColorBrush>
             <SolidColorBrush x:Key="Color_Font_Import">#FFFFFF</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_Font_HighLight">#3F80EA</SolidColorBrush>
+
+            <SolidColorBrush x:Key="Color_DataGrid_Row_Hover">#e9ecef</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_DataGrid_Row_Selected">#A0e9ecef</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_DataGrid_Row_One">White</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_DataGrid_Row_Two">#f4f7f9</SolidColorBrush>
+            <sys:Double x:Key="DataGrdiRowHeight">44</sys:Double>
+
+            <SolidColorBrush x:Key="Color_Button_BorderBrush">#3F80EA</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_Button_Background">#3F80EA</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_Button_Hover">#366dc7</SolidColorBrush>
+
+            <CornerRadius x:Key="ControlCornerRadius">3</CornerRadius>
 
             <!--编辑-->
             <Style TargetType="StackPanel" x:Key="editorFormItem">
@@ -29,6 +51,23 @@
 
             <Style TargetType="TextBox" x:Key="editorFormItemInput" BasedOn="{StaticResource {x:Type TextBox}}">
                 <Setter Property="Width" Value="200"/>
+            </Style>
+
+            <!--模块-->
+            <Style TargetType="Border" x:Key="Module">
+                <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadius}"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Opacity="0.1" Direction="270" ShadowDepth="5" BlurRadius="15"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="Module_Title" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
 
             <ResourceDictionary.MergedDictionaries>

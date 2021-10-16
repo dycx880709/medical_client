@@ -1,0 +1,199 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/epc0"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rm_6c_et_height"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:editable="false"
+            android:focusable="false" />
+        <!--
+        <EditText
+            android:id="@+id/epc1" 
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rm_6c_et_height"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:editable="false"
+            android:focusable="false"
+            />
+        
+        <EditText
+            android:id="@+id/epc2" 
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rm_6c_et_height"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:editable="false"
+            android:focusable="false"
+            />
+        
+        <EditText
+            android:id="@+id/epc3" 
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rm_6c_et_height"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:editable="false"
+            android:focusable="false"
+            />
+        -->
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" >
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="存储区:" />
+
+            <Spinner
+                android:id="@+id/mem_spinner"
+                android:layout_width="230dp"
+                android:layout_height="@dimen/rm_6c_et_height"
+                android:layout_weight="4"
+                android:gravity="left" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="起始地址:" />
+
+            <EditText
+                android:id="@+id/et_wordptr"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/rm_6c_et_height"
+                android:layout_weight="4"
+                
+                android:gravity="left" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="长度:" />
+
+            <EditText
+                android:id="@+id/et_length"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/rm_6c_et_height"
+                android:layout_weight="4"
+                
+                android:gravity="left" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="访问密码(Hex):" />
+
+            <EditText
+                android:id="@+id/et_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/rm_6c_et_height"
+                android:layout_weight="4"
+                
+                android:gravity="left" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="读写数据(Hex):" />
+
+            <EditText
+                android:id="@+id/et_content_6c"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/rm_6c_et_height"
+                android:layout_weight="4"
+                
+                android:gravity="left" />
+
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="@dimen/list_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" >
+
+            <Button
+                android:id="@+id/button_read_6c"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:textColor="#cc0000"
+                android:text="读" />
+
+            <Button
+                android:id="@+id/button_write_6c"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:textColor="#cc0000"
+                android:text="写" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

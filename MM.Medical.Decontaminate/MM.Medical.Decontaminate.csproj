@@ -63,8 +63,23 @@
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\UserRecord.cs" />
+    <Compile Include="Views\Decontaminate\AddDecontaminateFlowStep.xaml.cs">
+      <DependentUpon>AddDecontaminateFlowStep.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Decontaminate\AddDecontaminateFlow.xaml.cs">
+      <DependentUpon>AddDecontaminateFlow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Decontaminate\DecontaminateFlowView.xaml.cs">
+      <DependentUpon>DecontaminateFlowView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Decontaminate\DecontaminateTaskView.xaml.cs">
       <DependentUpon>DecontaminateTaskView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EndoscopeViews\AddEndoscope.xaml.cs">
+      <DependentUpon>AddEndoscope.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EndoscopeViews\EndoscopeManage.xaml.cs">
+      <DependentUpon>EndoscopeManage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -80,6 +95,9 @@
     </Compile>
     <Compile Include="Views\RFID\RFIDDeviceManage.xaml.cs">
       <DependentUpon>RFIDDeviceManage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SystemViews\SystemSetting.xaml.cs">
+      <DependentUpon>SystemSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Update\AddVersion.xaml.cs">
       <DependentUpon>AddVersion.xaml</DependentUpon>
@@ -99,7 +117,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Decontaminate\AddDecontaminateFlowStep.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Decontaminate\AddDecontaminateFlow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Decontaminate\DecontaminateFlowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Decontaminate\DecontaminateTaskView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EndoscopeViews\AddEndoscope.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EndoscopeViews\EndoscopeManage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -120,6 +158,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RFID\RFIDDeviceManage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SystemViews\SystemSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -167,6 +209,14 @@
     <ProjectReference Include="..\..\libs_csharp\Ms.Libs\Ms.Libs.csproj">
       <Project>{680BC546-CEA8-4F54-A80B-4C386CEB5DF4}</Project>
       <Name>Ms.Libs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MM.Libs.RFID\MM.Libs.RFID.csproj">
+      <Project>{dd36c5d8-efa7-432b-a0fd-11b4cbfda32c}</Project>
+      <Name>MM.Libs.RFID</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MM.Medical.Share\MM.Medical.Share.csproj">
+      <Project>{66d5b357-f9c7-4325-93f2-f768f974f496}</Project>
+      <Name>MM.Medical.Share</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mseiot.Medical.Service\Mseiot.Medical.Service.csproj">
       <Project>{bd38a2a3-7b32-4127-8c45-06f23fea4041}</Project>

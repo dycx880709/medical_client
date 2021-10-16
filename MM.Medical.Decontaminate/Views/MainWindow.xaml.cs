@@ -1,6 +1,9 @@
 ﻿using MM.Medical.Decontaminate.Core;
 using MM.Medical.Decontaminate.Views.Decontaminate;
+using MM.Medical.Decontaminate.Views.EndoscopeViews;
+using MM.Medical.Decontaminate.Views.SystemViews;
 using Ms.Controls;
+using Mseiot.Medical.Service.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,6 +54,16 @@ namespace MM.Medical.Decontaminate.Views
                 Name = "设备管理",
                 Identify = "RFIDManage"
             });
+            Menus.Add(new Entities.Menu
+            {
+                Name = "流程管理",
+                Identify = "DecontaminateFlowManage"
+            });
+            Menus.Add(new Entities.Menu
+            {
+                Name = "系统设置",
+                Identify = "SystemSetting"
+            });
             lvMenus.ItemsSource = Menus;
             lvMenus.SelectedIndex = 0;
         }
@@ -63,12 +76,19 @@ namespace MM.Medical.Decontaminate.Views
             switch (menu.Identify)
             {
                 case "EndoscopeManage":
+                    container.Child = new EndoscopeManage();
                     break;
                 case "RFIDManage":
                     container.Child = new RFID.RFIDDeviceManage();
                     break;
                 case "DecontaminateCenter":
                     container.Child = decontaminateTaskView;
+                    break;
+                case "SystemSetting":
+                    container.Child = new SystemViews.SystemSetting();
+                    break;
+                case "DecontaminateFlowManage":
+                    container.Child = new DecontaminateFlowView();
                     break;
             }
         }
