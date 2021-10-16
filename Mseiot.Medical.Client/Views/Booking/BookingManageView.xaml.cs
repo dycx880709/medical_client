@@ -1,4 +1,5 @@
 ﻿using Ms.Controls;
+using Mseiot.Medical.Client.Views.Component;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
@@ -49,6 +50,40 @@ namespace Mseiot.Medical.Client.Views
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             pmv.Refresh();
+        }
+
+        private void Sign_Click(object sender, RoutedEventArgs e)
+        {
+            if (pmv.SelectedPatient != null)
+            {
+                var result = loading.AsyncWait("签到预约中,请稍后", SocketProxy.Instance.SignPatient(pmv.SelectedPatient.PatientInfoID));
+                if (result.IsSuccess) pmv.Refresh();
+                else MsWindow.ShowDialog($"签到预约失败,{ result.Error }", "软件提示");
+            }
+            else MsWindow.ShowDialog($"请选择签到项", "软件提示");
+        }
+
+        private void UnSign_Click(object sender, RoutedEventArgs e)
+        {
+            if (pmv.SelectedPatient != null)
+            {
+                if (pmv.SelectedPatient.PatientStatus == PatientStatus.Regist)
+                {
+                    var result = loading.AsyncWait("取消签到预约中,请稍后", SocketProxy.Instance.UnSignPatient(pmv.SelectedPatient.PatientInfoID));
+                    if (result.IsSuccess) pmv.Refresh();
+                    else MsWindow.ShowDialog($"取消签到预约失败,{ result.Error }", "软件提示");
+                }
+                else MsWindow.ShowDialog($"签到不能取消", "软件提示");
+            }
+            else MsWindow.ShowDialog($"请选择取消签到项", "软件提示");
+        }
+
+        private void SetConsulting_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new SetConsultingView(this.loading);
+            view.Height = SystemParameters.PrimaryScreenHeight * 0.8;
+            view.Width = SystemParameters.PrimaryScreenWidth * 0.75;
+            child.ShowDialog("设置诊室", view);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace MM.Medical.Share.Converters
                 DateTime dateTime = TimeHelper.FromUnixTime(timeStamp);
                 return dateTime.ToLocalTime();
             }
-            return DateTime.Now;
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -46,8 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\BaseWord.cs" />
+    <Compile Include="Entities\CheckInfo.cs" />
+    <Compile Include="Entities\ConsultingRoom.cs" />
     <Compile Include="Entities\EnumItems.cs" />
     <Compile Include="Entities\ListResult.cs" />
+    <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\PatientInfo.cs" />
     <Compile Include="Entities\SystemSetting.cs" />
     <Compile Include="Entities\Role.cs" />
@@ -57,6 +60,7 @@
     <Compile Include="Entities\Version.cs" />
     <Compile Include="Models\Command.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ConsultingProxy.cs" />
     <Compile Include="Services\DecontaminateTaskProxy.cs" />
     <Compile Include="Services\BaseWordProxy.cs" />
     <Compile Include="Services\PatientProxy.cs" />

@@ -6,6 +6,7 @@ using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,47 +38,42 @@ namespace Mseiot.Medical.Client.Views
         public static readonly DependencyProperty SelectedPatientProperty =
             DependencyProperty.Register("SelectedPatient", typeof(PatientInfo), typeof(PatientManageView), new PropertyMetadata(null));
 
-        private Loading loading;
-
         public PatientManageView()
         {
             InitializeComponent();
-            this.loading = loading2;
-            this.Condition = new PatientInfo
+            if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                CreateTime = (int)TimeHelper.ToUnixDate(DateTime.Now),
-                CheckDate = (int)TimeHelper.ToUnixDate(DateTime.Now),
-            };
-            this.DataContext = this;
-            this.Loaded += PatientManageView_Loaded;
-        }
-
-        public PatientManageView(Loading loading) : this()
-        { 
-            this.loading = loading;
+                this.Condition = new PatientInfo { CreateTime = (int)TimeHelper.ToUnixDate(DateTime.Now) };
+                this.DataContext = this;
+                this.Loaded += PatientManageView_Loaded;
+            }
         }
 
         private void PatientManageView_Loaded(object sender, RoutedEventArgs e)
         {
+            dg_patient.LoadingRow += (o, ex) => ex.Row.Header = ex.Row.GetIndex() + 1;
             GetConditions();
             GetPatientInfos();
         }
 
         private void GetConditions()
         {
-            var result = loading.AsyncWait("获取基础信息中,请稍后", SocketProxy.Instance.GetBaseWords("收费类型", "送检医生", "送检科室", "检查部位", "检查类型"));
+            var result = loading.AsyncWait("获取预约信息中,请稍后", SocketProxy.Instance.GetBaseWords(
+                "收费类型",
+                "送检医生",
+                "送检科室",
+                "检查部位",
+                "检查类型",
+                "性别"
+            ));
             if (result.IsSuccess)
             {
-                var chargeType = result.Content.FirstOrDefault(t => t.Title.Equals("收费类型"));
-                cb_chargeType.ItemsSource = string.IsNullOrEmpty(chargeType.Content) ? new List<string>() : chargeType.Content.Split(',').ToList();
-                var checkBody = result.Content.FirstOrDefault(t => t.Title.Equals("检查部位"));
-                cb_checkBody.ItemsSource = string.IsNullOrEmpty(checkBody.Content) ? new List<string>() : checkBody.Content.Split(',').ToList();
-                var checkType = result.Content.FirstOrDefault(t => t.Title.Equals("检查类型"));
-                cb_checkType.ItemsSource = string.IsNullOrEmpty(checkType.Content) ? new List<string>() : checkType.Content.Split(',').ToList();
-                var doctorName = result.Content.FirstOrDefault(t => t.Title.Equals("送检医生"));
-                cb_doctorName.ItemsSource = string.IsNullOrEmpty(doctorName.Content) ? new List<string>() : doctorName.Content.Split(',').ToList();
-                var className = result.Content.FirstOrDefault(t => t.Title.Equals("送检科室"));
-                cb_className.ItemsSource = string.IsNullOrEmpty(className.Content) ? new List<string>() : className.Content.Split(',').ToList();
+                cb_chargeType.ItemsSource = result.SplitContent("收费类型");
+                cb_checkBody.ItemsSource = result.SplitContent("检查部位");
+                cb_checkType.ItemsSource = result.SplitContent("检查类型");
+                cb_doctorName.ItemsSource = result.SplitContent("送检医生");
+                cb_className.ItemsSource = result.SplitContent("送检科室");
+                cb_sex.ItemsSource = result.SplitContent("性别");
             }
         }
 
@@ -89,10 +85,24 @@ namespace Mseiot.Medical.Client.Views
         private void GetPatientInfos()
         {
             RefreshItemCount();
-            var result = loading.AsyncWait("获取预约信息中,请稍后", SocketProxy.Instance.GePatients
+            var result = loading.AsyncWait("获取预约信息中,请稍后", SocketProxy.Instance.GetPatients
             (
                 pager.PageIndex + 1, 
-                pager.SelectedCount
+                pager.SelectedCount,
+                Condition.CreateTime ?? 0,
+                Condition.CheckTime ?? 0,
+                checkBody: Condition.CheckBody,
+                checkType: Condition.CheckType,
+                className: Condition.ClassName,
+                doctorName: Condition.DoctorName,
+                patientNumber: Condition.Patient.PatientNumber,
+                patientName: Condition.Patient.Name,
+                sex: Condition.Patient.Sex,
+                idCard: Condition.Patient.IdCard,
+                telphoneNumber: Condition.Patient.TelphoneNumber,
+                diagnoseType: Condition.DiagnoseType,
+                chargeType: Condition.ChargeType,
+                patientStatuses: new PatientStatus[] { PatientStatus.UnRegist, PatientStatus.Regist }
             ));
             if (result.IsSuccess)
             {

@@ -20,7 +20,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border x:Name="border" Grid.Row="2"/>
+        <Border x:Name="border" Grid.Row="2" Margin="5"/>
         <Grid Grid.Row="0">
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}"/>
             <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
@@ -38,7 +38,7 @@
                 <RadioButton Checked="MenuItem_Checked" Content="预约登记" Tag="Mseiot.Medical.Client.Views.BookingManageView" IsChecked="True" x:Name="rb_booking"/>
                 <RadioButton Checked="MenuItem_Checked" Content="检查中心" Tag="Mseiot.Medical.Client.Views.InspectionManageView" x:Name="rb_Inspection"/>
                 <RadioButton Checked="MenuItem_Checked" Content="病历中心" Tag="Mseiot.Medical.Client.Views.MedicalManageView" x:Name="rb_medical"/>
-                <RadioButton Content="清洗中心" x:Name="rb_Cleaning"/>
+                <RadioButton Content="清洗中心" x:Name="rb_Cleaning" Visibility="Collapsed"/>
                 <RadioButton Content="主任管理" x:Name="rb_Director"/>
                 <RadioButton Content="系统管理" x:Name="rb_System"/>
             </StackPanel>
@@ -107,7 +107,7 @@
                 </StackPanel>
             </Popup>
         </Grid>
-        <Grid Grid.Row="1" Height="{StaticResource Title_Header_Height}">
+        <!--<Grid Grid.Row="1" Height="{StaticResource Title_Header_Height}">
             <ListBox x:Name="lb_nav" HorizontalAlignment="Left" Margin="5,0,0,0">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
@@ -137,7 +137,7 @@
                 </ListBox.ItemsPanel>
             </ListBox>
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Secondary}"/>
-        </Grid>
+        </Grid>-->
         <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
     </Grid>
 </controls:MsWindow>

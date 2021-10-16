@@ -40,7 +40,7 @@ namespace Mseiot.Medical.Client.Views
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            lb_nav.ItemsSource = this.navCol;
+            //lb_nav.ItemsSource = this.navCol;
             UpdateTime();
         }
 
