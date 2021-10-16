@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
+    <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\UserRecord.cs" />
     <Compile Include="Views\Decontaminate\DecontaminateTaskView.xaml.cs">
@@ -73,6 +74,12 @@
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RFID\AddRFIDDevice.xaml.cs">
+      <DependentUpon>AddRFIDDevice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RFID\RFIDDeviceManage.xaml.cs">
+      <DependentUpon>RFIDDeviceManage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Update\AddVersion.xaml.cs">
       <DependentUpon>AddVersion.xaml</DependentUpon>
@@ -107,6 +114,14 @@
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\RFID\AddRFIDDevice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RFID\RFIDDeviceManage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Update\AddVersion.xaml">
       <Generator>MSBuild:Compile</Generator>

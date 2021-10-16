@@ -61,6 +61,7 @@
     <Compile Include="Models\Command.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ConsultingProxy.cs" />
+    <Compile Include="Services\RFIDDeviceProxy.cs" />
     <Compile Include="Services\DecontaminateTaskProxy.cs" />
     <Compile Include="Services\BaseWordProxy.cs" />
     <Compile Include="Services\PatientProxy.cs" />

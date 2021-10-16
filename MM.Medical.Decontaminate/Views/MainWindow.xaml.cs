@@ -1,4 +1,5 @@
 ﻿using MM.Medical.Decontaminate.Core;
+using MM.Medical.Decontaminate.Views.Decontaminate;
 using Ms.Controls;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,53 @@ namespace MM.Medical.Decontaminate.Views
         {
             this.DataContext = this;
             UpdateTime();
+            LoadMenus();
         }
+
+        #region 菜单栏
+
+        public List<Entities.Menu> Menus { get; set; } = new List<Entities.Menu>();
+
+        public void LoadMenus()
+        {
+            Menus.Add(new Entities.Menu
+            {
+                Name = "消洗中心",
+                Identify = "DecontaminateCenter"
+            });
+            Menus.Add(new Entities.Menu
+            {
+                Name = "内镜管理",
+                Identify = "EndoscopeManage"
+            });
+            Menus.Add(new Entities.Menu
+            {
+                Name = "设备管理",
+                Identify = "RFIDManage"
+            });
+            lvMenus.ItemsSource = Menus;
+            lvMenus.SelectedIndex = 0;
+        }
+
+        DecontaminateTaskView decontaminateTaskView = new DecontaminateTaskView();
+
+        private void Menu_Selected(object sender, SelectionChangedEventArgs e)
+        {
+            var menu = lvMenus.SelectedItem as Entities.Menu;
+            switch (menu.Identify)
+            {
+                case "EndoscopeManage":
+                    break;
+                case "RFIDManage":
+                    container.Child = new RFID.RFIDDeviceManage();
+                    break;
+                case "DecontaminateCenter":
+                    container.Child = decontaminateTaskView;
+                    break;
+            }
+        }
+
+        #endregion
 
         private void UpdateTime()
         {
@@ -63,5 +110,7 @@ namespace MM.Medical.Decontaminate.Views
         {
             this.WindowState = WindowState.Minimized;
         }
+
+      
     }
 }
