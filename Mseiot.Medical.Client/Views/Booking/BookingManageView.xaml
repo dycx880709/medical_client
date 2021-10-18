@@ -14,8 +14,48 @@
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="预约登记" Margin="5,0" Click="Add_Click"/>
-                        <Button Content="取消登记" Margin="5,0" Click="Remove_Click"/>
-                        <Button Content="扫描签到" Margin="5,0"/>
+                        <Button Content="编辑登记" Margin="5,0" Click="Modify_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedPatient.PatientStatus, ElementName=pmv}" Value="{x:Static entities:PatientStatus.UnRegist}">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedPatient.PatientStatus, ElementName=pmv}" Value="{x:Static entities:PatientStatus.Regist}">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="取消登记" Margin="5,0" Click="Remove_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedPatient.PatientStatus, ElementName=pmv}" Value="{x:Static entities:PatientStatus.UnRegist}">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedPatient.PatientStatus, ElementName=pmv}" Value="{x:Static entities:PatientStatus.Regist}">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="扫描签到" Margin="5,0">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedPatient.PatientStatus, ElementName=pmv}" Value="{x:Static entities:PatientStatus.UnRegist}">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                         <Button Content="手动签到" Margin="5,0" Click="Sign_Click">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">

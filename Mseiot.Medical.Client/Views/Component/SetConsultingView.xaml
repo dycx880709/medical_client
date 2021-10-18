@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Mseiot.Medical.Client.Views.Component"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <controls:CustomGroupBox Header="诊所列表">
+    <controls:CustomGroupBox Header="诊室列表">
         <DataGrid x:Name="lb_consulting">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="100" Header="在线状态">
@@ -22,9 +22,9 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Width="*" Header="诊所名称" Binding="{Binding Name}"/>
-                <DataGridTextColumn Width="*" Header="使用医生" Binding="{Binding UserName}"/>
-                <DataGridTemplateColumn Width="*" Header="是否使用">
+                <DataGridTextColumn Width="*" Header="诊室名称" Binding="{Binding Name}"/>
+                <DataGridTextColumn Width="*" Header="出诊医生" Binding="{Binding UserName}"/>
+                <DataGridTemplateColumn Width="*" Header="是否启动">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ToggleButton IsChecked="{Binding IsUsed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

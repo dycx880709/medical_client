@@ -35,6 +35,7 @@ namespace Mseiot.Medical.Client.Views.Component
             this.patientInfo = patientInfo.Copy();
             if (patientInfo.PatientInfoID == 0)
                 patientInfo.CheckTime = (int)TimeHelper.ToUnixDate(DateTime.Now);
+            else cp_date.IsEnabled = false;
             this.loading = loading;
             LoadViewProperty();
             this.Loaded += AddBookingView_Loaded;
@@ -92,16 +93,49 @@ namespace Mseiot.Medical.Client.Views.Component
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            patientInfo.DiagnoseType = "初诊";
-            patientInfo.Patient.PatientNumber = Guid.NewGuid().ToString("N");
-            var result = loading.AsyncWait("新增预约中,请稍后", SocketProxy.Instance.AddPatientInfo(this.patientInfo));
-            if (result.IsSuccess)
+            if (string.IsNullOrWhiteSpace(patientInfo.Patient.Name))
             {
-                patientInfo.PatientInfoID = result.Content;
-                patientInfo.CopyTo(originPatientInfo);
-                this.Close();
+                MsWindow.ShowDialog("输入患者姓名不合法", "软件提示");
+                return;
             }
-            else MsWindow.ShowDialog($"新增预约失败,{ result.Error }", "软件提示");
+            if (string.IsNullOrWhiteSpace(patientInfo.Patient.Sex))
+            {
+                MsWindow.ShowDialog("输入患者性别不能为空", "软件提示");
+                return;
+            }
+            if (patientInfo.Patient.Age == 0)
+            {
+                MsWindow.ShowDialog("输入患者年龄不能为零", "软件提示");
+                return;
+            }
+            if (patientInfo.CheckTime < TimeHelper.ToUnixDate(DateTime.Now))
+            {
+                MsWindow.ShowDialog("预约检查时间不能早于当天", "软件提示");
+                return;
+            }
+            if (patientInfo.PatientInfoID == 0)
+            {
+                patientInfo.DiagnoseType = "初诊";
+                patientInfo.Patient.PatientNumber = Guid.NewGuid().ToString("N");
+                var result = loading.AsyncWait("新增预约中,请稍后", SocketProxy.Instance.AddPatientInfo(this.patientInfo));
+                if (result.IsSuccess)
+                {
+                    patientInfo.PatientInfoID = result.Content;
+                    patientInfo.CopyTo(originPatientInfo);
+                    this.Close(true);
+                }
+                else MsWindow.ShowDialog($"新增预约失败,{ result.Error }", "软件提示");
+            }
+            else
+            {
+                var result = loading.AsyncWait("编辑预约中,请稍后", SocketProxy.Instance.ModifyPatientInfo(this.patientInfo));
+                if (result.IsSuccess)
+                {
+                    patientInfo.CopyTo(originPatientInfo);
+                    this.Close(true);
+                }
+                else MsWindow.ShowDialog($"编辑预约失败,{ result.Error }", "软件提示");
+            }
         }
 
         private void GetPatient_Click(object sender, RoutedEventArgs e)

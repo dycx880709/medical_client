@@ -72,7 +72,7 @@
                     <TextBox.Text>
                         <Binding Path="Patient.Name" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
-                                <validation:StringLengthValidationRule Title="患者名称" MinValue="2" MaxValue="10" ValidatesOnTargetUpdated="True" />
+                                <validation:StringLengthValidationRule Title="患者名称长度" MinValue="2" MaxValue="10" ValidatesOnTargetUpdated="False" />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -81,20 +81,32 @@
                     <ComboBox.Text>
                         <Binding Path="Patient.Sex" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
-                                <validation:StringLengthValidationRule Title="性别" ValidatesOnTargetUpdated="True" />
+                                <validation:StringLengthValidationRule Title="性别" ValidatesOnTargetUpdated="False" />
                             </Binding.ValidationRules>
                         </Binding>
                     </ComboBox.Text>
                 </ComboBox>
-                <TextBox x:Name="cb_age" Grid.Row="0" Grid.Column="5">
-                    <TextBox.Text>
-                        <Binding Path="Patient.Age" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
-                            <Binding.ValidationRules>
-                                <validation:NumberRangeValidationRule Title="年龄" MinValue="0" MaxValue="150" ValidatesOnTargetUpdated="True" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+               
+                <Grid Grid.Row="0" Grid.Column="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="cb_age" Width="Auto" HorizontalAlignment="Stretch">
+                        <TextBox.Text>
+                            <Binding Path="Patient.Age" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
+                                <Binding.ValidationRules>
+                                    <validation:NumberRangeValidationRule Title="年龄" MinValue="0" MaxValue="150" ValidatesOnTargetUpdated="False" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <!--<ComboBox Width="Auto" HorizontalAlignment="Center" Grid.Column="1" SelectedIndex="0">
+                        <ComboBoxItem>岁</ComboBoxItem>
+                        <ComboBoxItem>周</ComboBoxItem>
+                        <ComboBoxItem>天</ComboBoxItem>
+                    </ComboBox>-->
+                </Grid>
                 <ComboBox x:Name="cb_body" Grid.Row="1" Grid.Column="1" Text="{Binding CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding PatientCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding HospitalizationCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -102,7 +114,7 @@
                 <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding RoomCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox x:Name="cb_area" Grid.Row="2" Grid.Column="5" Text="{Binding AreaCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox x:Name="cb_doctor" Grid.Row="3" Grid.Column="1" Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DatePicker Grid.Row="3" Grid.Column="3" SelectedDate="{Binding CheckDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+                <DatePicker x:Name="cp_date" Grid.Row="3" Grid.Column="3" SelectedDate="{Binding CheckTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
                 <ComboBox x:Name="cb_charge" Grid.Row="3" Grid.Column="5" Text="{Binding ChargeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox x:Name="cb_diagnose" Visibility="Collapsed" Grid.Row="4" Grid.Column="1" Text="{Binding DiagnoseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox x:Name="cb_checkType" Grid.Row="4" Grid.Column="1" Text="{Binding CheckType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

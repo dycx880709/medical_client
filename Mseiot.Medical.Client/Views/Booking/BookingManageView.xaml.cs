@@ -73,7 +73,6 @@ namespace Mseiot.Medical.Client.Views
                     if (result.IsSuccess) pmv.Refresh();
                     else MsWindow.ShowDialog($"取消签到预约失败,{ result.Error }", "软件提示");
                 }
-                else MsWindow.ShowDialog($"签到不能取消", "软件提示");
             }
             else MsWindow.ShowDialog($"请选择取消签到项", "软件提示");
         }
@@ -84,6 +83,21 @@ namespace Mseiot.Medical.Client.Views
             view.Height = SystemParameters.PrimaryScreenHeight * 0.8;
             view.Width = SystemParameters.PrimaryScreenWidth * 0.75;
             child.ShowDialog("设置诊室", view);
+        }
+
+        private void Modify_Click(object sender, RoutedEventArgs e)
+        {
+            if (pmv.SelectedPatient != null)
+            {
+                var view = new AddBookingView(pmv.SelectedPatient, this.loading);
+                if (child.ShowDialog("编辑登记", view))
+                {
+                    var result = loading.AsyncWait("编辑预约中,请稍后", SocketProxy.Instance.ModifyPatientInfo(pmv.SelectedPatient));
+                    if (result.IsSuccess) pmv.Refresh();
+                    else MsWindow.ShowDialog($"编辑预约失败,{ result.Error }", "软件提示");
+                }
+            }
+            else MsWindow.ShowDialog($"请选择编辑预约项", "软件提示");
         }
     }
 }

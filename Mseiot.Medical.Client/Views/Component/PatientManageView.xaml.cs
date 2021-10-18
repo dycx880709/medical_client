@@ -124,6 +124,7 @@ namespace Mseiot.Medical.Client.Views
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             new PatientInfo().CopyTo(this.Condition);
+            Condition.CheckTime = (int)TimeHelper.ToUnixDate(DateTime.Now);
         }
 
         private void Get_Click(object sender, RoutedEventArgs e)

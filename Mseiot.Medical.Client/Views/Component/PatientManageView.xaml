@@ -61,7 +61,7 @@
             <TextBlock Text="检查序号" Grid.Row="0" Grid.Column="12"/>
             <TextBlock Text="患者姓名" Grid.Row="1" Grid.Column="0"/>
             <TextBlock Text="性别 " Grid.Row="1" Grid.Column="2"/>
-            <TextBlock Text="身份证号" Grid.Row="1" Grid.Column="4"/>
+            <TextBlock Text="证件号码" Grid.Row="1" Grid.Column="4"/>
             <TextBlock Text="电话号码" Grid.Row="1" Grid.Column="6"/>
             <TextBlock Text="复/初诊" Grid.Row="1" Grid.Column="8"/>
             <TextBlock Text="收费类型" Grid.Row="1" Grid.Column="10"/>
