@@ -43,7 +43,7 @@ namespace Mseiot.Medical.Client.Views
             InitializeComponent();
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                this.Condition = new PatientInfo { CreateTime = (int)TimeHelper.ToUnixDate(DateTime.Now) };
+                this.Condition = new PatientInfo { CheckTime = (int)TimeHelper.ToUnixDate(DateTime.Now) };
                 this.DataContext = this;
                 this.Loaded += PatientManageView_Loaded;
             }
@@ -85,7 +85,7 @@ namespace Mseiot.Medical.Client.Views
         private void GetPatientInfos()
         {
             RefreshItemCount();
-            var result = loading.AsyncWait("获取预约信息中,请稍后", SocketProxy.Instance.GetPatients
+            var result = loading.AsyncWait("获取预约信息中,请稍后", SocketProxy.Instance.GetPatientInfos
             (
                 pager.PageIndex + 1, 
                 pager.SelectedCount,
@@ -101,8 +101,7 @@ namespace Mseiot.Medical.Client.Views
                 idCard: Condition.Patient.IdCard,
                 telphoneNumber: Condition.Patient.TelphoneNumber,
                 diagnoseType: Condition.DiagnoseType,
-                chargeType: Condition.ChargeType,
-                patientStatuses: new PatientStatus[] { PatientStatus.UnRegist, PatientStatus.Regist }
+                chargeType: Condition.ChargeType
             ));
             if (result.IsSuccess)
             {

@@ -40,7 +40,7 @@ namespace Mseiot.Medical.Client.Views
         {
             if (pmv.SelectedPatient != null)
             {
-                var result = loading.AsyncWait("移除预约中,请稍后", SocketProxy.Instance.RemovePatient(pmv.SelectedPatient.PatientInfoID));
+                var result = loading.AsyncWait("移除预约中,请稍后", SocketProxy.Instance.RemovePatientInfo(pmv.SelectedPatient.PatientInfoID));
                 if (result.IsSuccess) pmv.Refresh();
                 else MsWindow.ShowDialog($"删除预约失败,{ result.Error }", "软件提示");
             }
@@ -56,7 +56,7 @@ namespace Mseiot.Medical.Client.Views
         {
             if (pmv.SelectedPatient != null)
             {
-                var result = loading.AsyncWait("签到预约中,请稍后", SocketProxy.Instance.SignPatient(pmv.SelectedPatient.PatientInfoID));
+                var result = loading.AsyncWait("签到预约中,请稍后", SocketProxy.Instance.SignPatientInfo(pmv.SelectedPatient.PatientInfoID));
                 if (result.IsSuccess) pmv.Refresh();
                 else MsWindow.ShowDialog($"签到预约失败,{ result.Error }", "软件提示");
             }
@@ -69,7 +69,7 @@ namespace Mseiot.Medical.Client.Views
             {
                 if (pmv.SelectedPatient.PatientStatus == PatientStatus.Regist)
                 {
-                    var result = loading.AsyncWait("取消签到预约中,请稍后", SocketProxy.Instance.UnSignPatient(pmv.SelectedPatient.PatientInfoID));
+                    var result = loading.AsyncWait("取消签到预约中,请稍后", SocketProxy.Instance.UnSignPatientInfo(pmv.SelectedPatient.PatientInfoID));
                     if (result.IsSuccess) pmv.Refresh();
                     else MsWindow.ShowDialog($"取消签到预约失败,{ result.Error }", "软件提示");
                 }

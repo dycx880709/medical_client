@@ -28,6 +28,8 @@ namespace Mseiot.Medical.Service.Entities
         private string diagnoseType;
         private int? createTime;
         private PatientStatus patientStatus;
+        private string consultingRoom;
+        
         /// <summary>
         /// 病患预约ID
         /// </summary>
@@ -42,6 +44,18 @@ namespace Mseiot.Medical.Service.Entities
         /// </summary>
         public CheckInfo CheckInfo { get; set; } = new CheckInfo();
         #region 预约信息
+        /// <summary>
+        /// 检查诊室
+        /// </summary>
+        public string ConsultingRoom
+        {
+            get { return consultingRoom; }
+            set
+            {
+                consultingRoom = value;
+                RaisePropertyChanged("ConsultingRoom");
+            }
+        }
         /// <summary>
         /// 登记时间
         /// </summary>

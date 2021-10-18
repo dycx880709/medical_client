@@ -94,7 +94,7 @@ namespace Mseiot.Medical.Client.Views.Component
         {
             patientInfo.DiagnoseType = "初诊";
             patientInfo.Patient.PatientNumber = Guid.NewGuid().ToString("N");
-            var result = loading.AsyncWait("新增预约中,请稍后", SocketProxy.Instance.AddPatient(this.patientInfo));
+            var result = loading.AsyncWait("新增预约中,请稍后", SocketProxy.Instance.AddPatientInfo(this.patientInfo));
             if (result.IsSuccess)
             {
                 patientInfo.PatientInfoID = result.Content;
