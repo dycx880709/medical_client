@@ -12,22 +12,22 @@ namespace Mseiot.Medical.Service.Services
     {
         public async Task<MsResult<int>> AddConsultingRoom(ConsultingRoom room)
         {
-            return await HttpProxy.PostMessage<int>("/api/room/add", room);
+            return await HttpProxy.PostMessage<int>("/api/consulting/add", room);
         }
 
         public async Task<MsResult<bool>> RemoveConsultingRoom(int roomId)
         {
-            return await HttpProxy.DeleteMessage<bool>("/api/room/remove", new KeyValuePair<string, string>("roomId", roomId.ToString()));
+            return await HttpProxy.DeleteMessage<bool>("/api/consulting/remove", new KeyValuePair<string, string>("roomId", roomId.ToString()));
         }
 
         public async Task<MsResult<List<ConsultingRoom>>> GetConsultingRooms()
         {
-            return await HttpProxy.GetMessage<List<ConsultingRoom>>("/api/room/gets", null);
+            return await HttpProxy.GetMessage<List<ConsultingRoom>>("/api/consulting/gets", null);
         }
 
         public async Task<MsResult<bool>> ModifyConsultingRoom(ConsultingRoom room)
         {
-            return await HttpProxy.PutMessage<bool>("/api/room/modify", room);
+            return await HttpProxy.PutMessage<bool>("/api/consulting/modify", room);
         }
     }
 }

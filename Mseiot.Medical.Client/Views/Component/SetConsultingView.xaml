@@ -13,10 +13,10 @@
                 <DataGridTemplateColumn Width="100" Header="在线状态">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Border x:Name="bd" Background="#FF7875" Grid.Column="0" Height="15" Width="15" CornerRadius="20"/>
+                            <Border x:Name="bd" Background="#95DE64" Grid.Column="0" Height="15" Width="15" CornerRadius="20"/>
                             <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding IsUsed}" Value="True">
-                                    <Setter Property="Background" TargetName="bd" Value="#95DE64"/>
+                                <DataTrigger Binding="{Binding UserID}" Value="">
+                                    <Setter Property="Background" TargetName="bd" Value="#FF7875"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
