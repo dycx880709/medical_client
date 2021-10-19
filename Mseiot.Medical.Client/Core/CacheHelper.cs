@@ -3,6 +3,7 @@ using Mseiot.Medical.Service.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,18 @@ namespace Mseiot.Medical.Client.Core
         public static LocalSetting LocalSetting { get; private set; }
         public static User CurrentUser { get; set; } = new User();
 
+        public static string GetConfig(string name)
+        {
+            if (ConfigurationManager.AppSettings.HasKeys())
+            {
+                foreach (var key in ConfigurationManager.AppSettings.AllKeys)
+                {
+                    if (key.ToUpper().Equals(name.ToUpper()))
+                        return ConfigurationManager.AppSettings[key];
+                }
+            }
+            return "";
+        }
 
         public static void LoadLocalSetting()
         {

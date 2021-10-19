@@ -17,20 +17,28 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="400" MaxWidth="450"/>
-            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <controls:CustomGroupBox Grid.Column="0" Header="检查列表">
+        <controls:CustomGroupBox Width="450" Grid.Column="0" Header="检查列表" Margin="0,0,5,0">
+            <controls:CustomGroupBox.Style>
+                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecking, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type local:InspectionManageView}, Mode=FindAncestor}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:CustomGroupBox.Style>
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="编辑" Margin="5,0"/>
-                        <Button Content="删除" Margin="5,0,0,0"/>
+                        <Button Content="刷新" Margin="5,0" Click="Refresh_Click"/>
+                        <Button Content="删除" Margin="5,0,0,0" Click="Remove_Click"/>
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
-            <Grid Grid.Column="0">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="*"/>
@@ -49,7 +57,8 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Width="80" Height="30" CornerRadius="5" Background="{Binding PatientStatus, Converter={StaticResource PatientStatusToColorConverter}}">
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding PatientStatus, Converter={StaticResource EnumToStringConverter}}"/>
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}"
+                                                   Text="{Binding PatientStatus, Converter={StaticResource EnumToStringConverter}}"/>
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -60,7 +69,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border>
-                                        <TextBlock x:Name="tb" Text="--"/>
+                                        <TextBlock x:Name="tb" Text="--" Foreground="{StaticResource Color_Font_Light}"/>
                                     </Border>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding PatientStatus}" Value="{x:Static entities:PatientStatus.Checked}">
@@ -75,12 +84,34 @@
                 <controls:Pager Grid.Row="2"/>
             </Grid>
         </controls:CustomGroupBox>
-        <controls:CustomGroupBox Grid.Column="2" Header="检查明细" DataContext="{Binding SelectedValue, ElementName=dg_patients}">
+        <controls:CustomGroupBox Grid.Column="1" Header="检查明细" DataContext="{Binding SelectedValue, ElementName=dg_patients}">
+            <controls:CustomGroupBox.Style>
+                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedValue, ElementName=dg_patients}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:CustomGroupBox.Style>
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <ToggleButton IsChecked="{Binding IsChecking, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type local:InspectionManageView}, Mode=FindAncestor}}"
+                            Click="Check_Click" VerticalAlignment="Center" Margin="5,0">
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                                    <Setter Property="Content" Value="开始检查"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Content" Value="停止检查" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
                         <Button Content="彩图配置" Margin="5,0"/>
-                        <Button Content="打印报告" Margin="5,0,0,0"/>
+                        <Button Content="打印报告" Click="Print_Click" Margin="5,0,0,0"/>
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
@@ -88,7 +119,6 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="10">
                     <Grid.Resources>
@@ -152,25 +182,14 @@
                     <TextBox Grid.Row="0" Grid.Column="7" IsReadOnly="True" Text="{Binding CheckBody}"/>
                     <ComboBox x:Name="cb_bodyLoc" Grid.Row="0" Grid.Column="9" Text="{Binding CheckInfo.BodyLoc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <ComboBox x:Name="cb_anesthesia" Grid.Row="0" Grid.Column="11" Text="{Binding CheckInfo.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Width="{StaticResource InputElementWidth}" IsReadOnly="True">
-                        <TextBox.Style>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Setter Property="Text" Value="--"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PatientStatus}" Value="{x:Static entities:PatientStatus.Checked}">
-                                        <Setter Property="Text" Value="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}" Width="{StaticResource InputElementWidth}" IsReadOnly="True"/>
                     <TextBox Grid.Row="2" Grid.Column="3" Width="{StaticResource InputElementWidth}" IsReadOnly="True">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                                 <Setter Property="Text" Value="--"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding PatientStatus}" Value="{x:Static entities:PatientStatus.Checked}">
-                                        <Setter Property="Text" Value="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm/ss}"/>
+                                        <Setter Property="Text" Value="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -179,7 +198,7 @@
                     <TextBox Grid.Row="2" Grid.Column="5" Width="{StaticResource InputElementWidth}" IsReadOnly="True">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Setter Property="Text" Value="{Binding CheckInfo.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm/ss}"/>
+                                <Setter Property="Text" Value="{Binding CheckInfo.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ReportTime}" Value="0">
                                         <Setter Property="Text" Value="--"/>
@@ -190,7 +209,7 @@
                     </TextBox>
                     <TextBox Grid.Row="2" Grid.Column="7" IsReadOnly="True" Text="{Binding DoctorName}"/>
                     <TextBox Grid.Row="2" Grid.Column="9" Text="{Binding CheckInfo.CheckResult}"/>
-                    <ComboBox x:Name="cb_preoperative" Grid.Row="2" Grid.Column="11" Text="{Binding CheckInfo.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ComboBox x:Name="cb_preoperative" Grid.Row="2" Grid.Column="11" Text="{Binding CheckInfo.Preoperative, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <ComboBox x:Name="cb_insert" Grid.Row="4" Grid.Column="1" Text="{Binding CheckInfo.InsertType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <ComboBox x:Name="cb_org" Grid.Row="4" Grid.Column="3" Text="{Binding CheckInfo.CollectOrg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <ComboBox x:Name="cb_cell" Grid.Row="4" Grid.Column="5" Text="{Binding CheckInfo.CollectCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -212,9 +231,8 @@
                             </Style>
                         </Grid.Resources>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="450"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition MinWidth="200"/>
                         </Grid.ColumnDefinitions>
                         <ScrollViewer Grid.Column="0">
                             <StackPanel Margin="10">
@@ -238,14 +256,10 @@
                                 </Expander>
                             </StackPanel>
                         </ScrollViewer>
-                        <GridSplitter Grid.Column="1" Width="1" VerticalAlignment="Stretch" Background="{StaticResource Color_Border_Primary}"/>
-                        <Grid Grid.Column="2">
+                        <Grid Grid.Column="1">
                             <GroupBox Header="图片及录像" Margin="5"/>
                         </Grid>
                     </Grid>
-                </Border>
-                <Border Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Secondary}">
-                    <Button Click="Start_Click" Content="开始检查" IsDefault="True" VerticalAlignment="Center"/>
                 </Border>
             </Grid>
         </controls:CustomGroupBox>

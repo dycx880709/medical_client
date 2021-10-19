@@ -61,13 +61,13 @@
             <TextBlock Text="检查序号" Grid.Row="0" Grid.Column="12"/>
             <TextBlock Text="患者姓名" Grid.Row="1" Grid.Column="0"/>
             <TextBlock Text="性别 " Grid.Row="1" Grid.Column="2"/>
-            <TextBlock Text="身份证号" Grid.Row="1" Grid.Column="4"/>
+            <TextBlock Text="证件号码" Grid.Row="1" Grid.Column="4"/>
             <TextBlock Text="电话号码" Grid.Row="1" Grid.Column="6"/>
             <TextBlock Text="复/初诊" Grid.Row="1" Grid.Column="8"/>
             <TextBlock Text="收费类型" Grid.Row="1" Grid.Column="10"/>
 
             <DatePicker Grid.Row="0" Grid.Column="1" SelectedDate="{Binding CreateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
-            <DatePicker Grid.Row="0" Grid.Column="3" SelectedDate="{Binding CheckDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+            <DatePicker Grid.Row="0" Grid.Column="3" SelectedDate="{Binding CheckTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
             <ComboBox x:Name="cb_checkBody" Grid.Row="0" Grid.Column="5" Text="{Binding CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <ComboBox x:Name="cb_checkType" Grid.Row="0" Grid.Column="7" Text="{Binding CheckType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <ComboBox x:Name="cb_className" Grid.Row="0" Grid.Column="9" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -101,16 +101,8 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border x:Name="border" Background="{Binding PatientStatus, Converter={StaticResource PatientStatusToColorConverter}}" Width="80" Height="30" CornerRadius="5">
-                                    <TextBlock x:Name="tb" Foreground="{StaticResource Color_Font_Light}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding PatientStatus, Converter={StaticResource EnumToStringConverter}}" Foreground="{StaticResource Color_Font_Light}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Border>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding PatientStatus}" Value="{x:Static entities:PatientStatus.UnRegist}">
-                                        <Setter Property="Text" TargetName="tb" Value="未签到"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding PatientStatus}" Value="{x:Static entities:PatientStatus.Regist}">
-                                        <Setter Property="Text" TargetName="tb" Value="已签到"/>
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -118,10 +110,22 @@
                     <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Patient.Sex}"/>
                     <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding Patient.IdCard}"/>
                     <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Patient.TelphoneNumber}"/>
+                    <DataGridTemplateColumn Width="*" Header="检查诊室">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="tb" Foreground="{StaticResource Color_Font_Light}" Text="{Binding ConsultingRoom}"/>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding PatientStatus}" Value="{x:Static entities:PatientStatus.UnRegist}">
+                                        <Setter Property="Text" TargetName="tb" Value="--"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}"/>
                     <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}"/>
                     <DataGridTextColumn Width="*" Header="登记日期" Binding="{Binding CreateTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
-                    <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding CheckDate, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                    <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
                     <DataGridTextColumn Width="*" Header="检查部位" Binding="{Binding CheckBody}"/>
                     <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding CheckType}"/>
                     <DataGridTextColumn Width="*" Header="送检科室" Binding="{Binding ClassName}"/>

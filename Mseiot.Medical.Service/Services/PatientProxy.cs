@@ -11,29 +11,39 @@ namespace Mseiot.Medical.Service.Services
 {
     public partial class SocketProxy
     {
-        public async Task<MsResult<int>> AddPatient(PatientInfo patient)
+        public async Task<MsResult<int>> AddPatientInfo(PatientInfo patient)
         {
             return await HttpProxy.PutMessage<int>("/api/booking/add", patient);
         }
 
-        public async Task<MsResult<bool>> RemovePatient(int patientInfoId)
+        public async Task<MsResult<bool>> RemovePatientInfo(int patientInfoId)
         {
             return await HttpProxy.DeleteMessage<bool>("/api/booking/remove", new KeyValuePair<string, string>("patientInfoId", patientInfoId.ToString()));
         }
 
-        public async Task<MsResult<bool>> SignPatient(int patientInfoId)
+        public async Task<MsResult<bool>> SignPatientInfo(int patientInfoId)
         {
             return await HttpProxy.GetMessage<bool>("/api/booking/sign", new KeyValuePair<string, string>("patientInfoId", patientInfoId.ToString()));
         }
 
-        public async Task<MsResult<bool>> UnSignPatient(int patientInfoId)
+        public async Task<MsResult<bool>> UnSignPatientInfo(int patientInfoId)
         {
             return await HttpProxy.GetMessage<bool>("/api/booking/unsign", new KeyValuePair<string, string>("patientInfoId", patientInfoId.ToString()));
         }
 
-        public async Task<MsResult<PatientInfo>> GetPatientById(string patientInfoId)
+        public async Task<MsResult<PatientInfo>> GetPatientInfoById(string patientInfoId)
         {
             return await HttpProxy.GetMessage<PatientInfo>("/api/booking/getpatientbyid", new KeyValuePair<string, string>("patientInfoId", patientInfoId.ToString()));
+        }
+
+        public async Task<MsResult<bool>> ModifyPatientInfo(PatientInfo patientInfo)
+        {
+            return await HttpProxy.PutMessage<bool>("/api/booking/modify", patientInfo);
+        }
+
+        public async Task<MsResult<bool>> ModifyCheckInfo(CheckInfo checkInfo)
+        {
+            return await HttpProxy.PutMessage<bool>("/api/checking/modify", checkInfo);
         }
 
         public async Task<MsResult<Patient>> GetPatientByCondition(string idCard = "", string socialId = "", string telphoneNumber = "")
@@ -47,7 +57,7 @@ namespace Mseiot.Medical.Service.Services
             return await HttpProxy.GetMessage<Patient>("/api/patient/getpatientbycondition", dir);
         }
 
-        public async Task<MsResult<ListResult<PatientInfo>>> GetPatients(
+        public async Task<MsResult<ListResult<PatientInfo>>> GetPatientInfos(
             int index,
             int count,
             int createTime = 0,
@@ -63,6 +73,7 @@ namespace Mseiot.Medical.Service.Services
             string telphoneNumber = "",
             string diagnoseType = "",
             string chargeType = "",
+            string[] consultingRooms = null,
             PatientStatus[] patientStatuses = null)
         {
             var dir = new Dictionary<string, string>();
@@ -81,7 +92,9 @@ namespace Mseiot.Medical.Service.Services
             dir.Add("telphoneNumber", telphoneNumber);
             dir.Add("diagnoseType", diagnoseType);
             dir.Add("chargeType", chargeType);
-            if (patientStatuses != null)
+            if (consultingRooms != null && consultingRooms.Length > 0)
+                dir.Add("consultingRooms", string.Join(",", consultingRooms));
+            if (patientStatuses != null && patientStatuses.Length > 0)
                 dir.Add("patientStatuses", string.Join(",", patientStatuses.Select(t => (int)t)));
             return await HttpProxy.GetMessage<ListResult<PatientInfo>>("/api/booking/gets", dir);
         }
