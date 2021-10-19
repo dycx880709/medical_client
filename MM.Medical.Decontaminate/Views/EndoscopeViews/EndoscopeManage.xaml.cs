@@ -114,11 +114,12 @@ namespace MM.Medical.Decontaminate.Views.EndoscopeViews
             {
                 rfidProxy.OpenWait("COM3");
                 rfidProxy.WriteEPC(endoscope.EndoscopeID);
-                Alert.ShowMessage(true, AlertType.Success, "写卡成功");
+                MsPrompt.ShowDialogResult("写卡成功");
             }
             catch(Exception ex)
             {
-                MsPrompt.ShowDialog("写卡失败:"+ex.Message);
+               MsPrompt.ShowDialogResult("写卡失败:"+ex.Message);
+                
             }
             finally
             {

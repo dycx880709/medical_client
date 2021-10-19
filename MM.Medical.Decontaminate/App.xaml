@@ -21,6 +21,7 @@
 
             <SolidColorBrush x:Key="Color_Border_Primary">#06e9ecef</SolidColorBrush>
             <SolidColorBrush x:Key="Color_Font_Primary">#6c757d</SolidColorBrush>
+            <SolidColorBrush x:Key="Color_Font_Title">#7FFFFFFF</SolidColorBrush>
             <SolidColorBrush x:Key="Color_Font_Import">#FFFFFF</SolidColorBrush>
             <SolidColorBrush x:Key="Color_Font_HighLight">#3F80EA</SolidColorBrush>
 

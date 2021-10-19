@@ -12,7 +12,7 @@
                 <TextBlock Text="发卡器串口" Style="{StaticResource editorFormItemText}"></TextBlock>
                 <ComboBox x:Name="cbSerialPorts" DropDownOpened="cbSerialPorts_DropDownOpened"></ComboBox>
             </StackPanel>
-            <controls:MediaButton FISize="{StaticResource LargeExFontSize}" Click="Save_Click" Content="保存" />
+            <Button Click="Save_Click" Content="保存" />
         </StackPanel>
     </Grid>
 </UserControl>

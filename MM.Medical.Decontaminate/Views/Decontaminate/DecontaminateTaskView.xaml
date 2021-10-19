@@ -52,15 +52,6 @@
                                                                         <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Wait">
                                                                             <Setter Property="Background" TargetName="bg" Value="Gray"></Setter>
                                                                         </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Normal">
-                                                                            <Setter Property="Background" TargetName="bg" Value="#0dcaf0"></Setter>
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Warning">   
-                                                                            <Setter Property="Background" TargetName="bg" Value="#fd7e14"></Setter>
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Timeout">
-                                                                            <Setter Property="Background" TargetName="bg" Value="#dc3545"></Setter>
-                                                                        </DataTrigger>
                                                                         <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Complete">
                                                                             <Setter Property="Background" TargetName="bg" Value="#198754"></Setter>
                                                                         </DataTrigger>

@@ -14,7 +14,7 @@ namespace MM.Medical.Decontaminate.Views
     /// <summary>
     /// LoginView.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginView : MsWindow
+    public partial class LoginView : Window
     {
         public LoginView()
         {
@@ -56,7 +56,6 @@ namespace MM.Medical.Decontaminate.Views
                 SocketProxy.Instance.Load(serverSetting.Address, serverSetting.HttpPort, serverSetting.TcpPort);
                 btLogin.IsEnabled = true;
             }
-            tb_version.Text = CacheHelper.ClientVersion;
             layout.MouseMove += (o, e) => 
             {
                 if (e.LeftButton == MouseButtonState.Pressed)
@@ -114,26 +113,6 @@ namespace MM.Medical.Decontaminate.Views
 
         #endregion
 
-        private void SystemSetting_Click(object sender, RoutedEventArgs e)
-        {
-            var view = new SeverSetting();
-            border.Child = view;
-            void SaveSystemSetting(object obj, EventArgs ex)
-            {
-                var serverSetting = CacheHelper.LocalSetting.ServerSetting;
-                SocketProxy.Instance.Load(serverSetting.Address, serverSetting.HttpPort, serverSetting.TcpPort);
-                this.Updater();
-                btLogin.IsEnabled = true;
-                tbTips.Text = "";
-            }
-            view.Save += SaveSystemSetting;
-            view.Close += (o, ex) =>
-            {
-                view.Save -= SaveSystemSetting;
-                border.Child = null;
-            };
-        }
-
         private void tbName_Selected(object sender, CustomEventArgs e)
         {
             var localSetting = CacheHelper.LocalSetting;
@@ -150,6 +129,14 @@ namespace MM.Medical.Decontaminate.Views
             var localSetting = CacheHelper.LocalSetting;
             localSetting.UserRecords.RemoveAll(t => t.LoginName.Equals(e.PropertyValue));
             CacheHelper.SaveLocalSetting();
+        }
+
+        private void Move_Click(object sender, MouseButtonEventArgs e)
+        {
+            if(e.LeftButton== MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
         }
     }
 }
