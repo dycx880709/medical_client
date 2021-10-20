@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="MM.Medical.Client.Views.Booking.PatientManageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="1080" d:DesignWidth="1920">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" DataContext="{Binding Condition}">
+            <Grid.Resources>
+                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="5"/>
+                </Style>
+                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+                <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource {x:Type DatePicker}}">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="Width" Value="{StaticResource InputElementWidth}"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="登记日期" Grid.Row="0" Grid.Column="0"/>
+            <TextBlock Text="检查日期" Grid.Row="0" Grid.Column="2"/>
+            <TextBlock Text="检查部位" Grid.Row="0" Grid.Column="4"/>
+            <TextBlock Text="检查类型" Grid.Row="0" Grid.Column="6"/>
+            <TextBlock Text="送检科室" Grid.Row="0" Grid.Column="8"/>
+            <TextBlock Text="送检医生" Grid.Row="0" Grid.Column="10"/>
+            <TextBlock Text="检查序号" Grid.Row="0" Grid.Column="12"/>
+            <TextBlock Text="患者姓名" Grid.Row="1" Grid.Column="0"/>
+            <TextBlock Text="性别 " Grid.Row="1" Grid.Column="2"/>
+            <TextBlock Text="证件号码" Grid.Row="1" Grid.Column="4"/>
+            <TextBlock Text="电话号码" Grid.Row="1" Grid.Column="6"/>
+            <TextBlock Text="复/初诊" Grid.Row="1" Grid.Column="8"/>
+            <TextBlock Text="收费类型" Grid.Row="1" Grid.Column="10"/>
+
+            <DatePicker Grid.Row="0" Grid.Column="1" SelectedDate="{Binding CreateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+            <DatePicker Grid.Row="0" Grid.Column="3" SelectedDate="{Binding CheckTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+            <ComboBox x:Name="cb_checkBody" Grid.Row="0" Grid.Column="5" Text="{Binding CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_checkType" Grid.Row="0" Grid.Column="7" Text="{Binding CheckType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_className" Grid.Row="0" Grid.Column="9" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_doctorName" Grid.Row="0" Grid.Column="11" Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="0" Grid.Column="13" Text="{Binding PatientNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Patient.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_sex" Grid.Row="1" Grid.Column="3" Text="{Binding Patient.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding Patient.IdCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="1" Grid.Column="7" Text="{Binding Patient.TelphoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox Grid.Row="1" Grid.Column="9" ItemsSource="{x:Static entities:EnumItems.DiagnoseType}" Text="{Binding DiagnoseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_chargeType" Grid.Row="1" Grid.Column="11" Text="{Binding ChargeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="12" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                <Button Content="查询" Click="Get_Click" IsDefault="True"/>
+                <Button Content="重置" Click="Reset_Click" Margin="15,0,0,0"/>
+            </StackPanel>
+        </Grid>
+        <Border Grid.Row="1" BorderThickness="0,1,0,0" BorderBrush="{StaticResource Color_Border_Secondary}">
+            <DataGrid x:Name="dg_patient" SelectedValue="{Binding SelectedPatient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn  Width="55" Header="序号">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DataGridRow}}, Path=Header}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="*" Header="检查序号" Binding="{Binding PatientNumber}"/>
+                    <DataGridTemplateColumn Width="*" Header="预约状态">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border x:Name="border" Background="{Binding PatientStatus, Converter={StaticResource PatientStatusToColorConverter}}" Width="80" Height="30" CornerRadius="5">
+                                    <TextBlock Text="{Binding PatientStatus, Converter={StaticResource EnumToStringConverter}}" Foreground="{StaticResource Color_Font_Light}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Patient.Name}"/>
+                    <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Patient.Sex}"/>
+                    <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding Patient.IdCard}"/>
+                    <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Patient.TelphoneNumber}"/>
+                    <DataGridTemplateColumn Width="*" Header="检查诊室">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="tb" Foreground="{StaticResource Color_Font_Light}" Text="{Binding ConsultingRoom}"/>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding PatientStatus}" Value="{x:Static entities:PatientStatus.UnRegist}">
+                                        <Setter Property="Text" TargetName="tb" Value="--"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}"/>
+                    <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}"/>
+                    <DataGridTextColumn Width="*" Header="登记日期" Binding="{Binding CreateTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                    <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                    <DataGridTextColumn Width="*" Header="检查部位" Binding="{Binding CheckBody}"/>
+                    <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding CheckType}"/>
+                    <DataGridTextColumn Width="*" Header="送检科室" Binding="{Binding ClassName}"/>
+                    <DataGridTextColumn Width="*" Header="送检医生" Binding="{Binding DoctorName}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        <controls:Pager x:Name="pager" Grid.Row="2"/>
+        <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
+    </Grid>
+</UserControl>

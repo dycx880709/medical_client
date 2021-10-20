@@ -1,6 +1,6 @@
-﻿using Ms.Controls;
+﻿using MM.Medical.Client.Core;
+using Ms.Controls;
 using Ms.Libs.SysLib;
-using Mseiot.Medical.Client.Core;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
@@ -10,15 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Mseiot.Medical.Client.Views.Component
+namespace MM.Medical.Client.Views.Booking
 {
     /// <summary>
     /// AddBookingView.xaml 的交互逻辑
