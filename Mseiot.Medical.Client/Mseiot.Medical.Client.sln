@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Management", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Share", "..\MM.Medical.Share\MM.Medical.Share.csproj", "{66D5B357-F9C7-4325-93F2-F768F974F496}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Client", "..\MM.Medical.Client\MM.Medical.Client.csproj", "{21389702-69C8-485E-9F9E-E37746C774C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{66D5B357-F9C7-4325-93F2-F768F974F496}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66D5B357-F9C7-4325-93F2-F768F974F496}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66D5B357-F9C7-4325-93F2-F768F974F496}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21389702-69C8-485E-9F9E-E37746C774C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21389702-69C8-485E-9F9E-E37746C774C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21389702-69C8-485E-9F9E-E37746C774C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21389702-69C8-485E-9F9E-E37746C774C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
