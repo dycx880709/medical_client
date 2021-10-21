@@ -7,43 +7,52 @@
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
 
-    <UserControl.Resources>
-        <DataTemplate x:Key="GroupBoxHeaderDataTemplate">
-            <Grid Margin="6,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding}" HorizontalAlignment="Left"/>
-                <Border Grid.Column="1" VerticalAlignment="Center" BorderThickness="0,1,0,0" Margin="6,0" BorderBrush="{StaticResource Color_Border_Group}"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
-                    <!--<controls:MediaButton NormalSource="{StaticResource Img_Add}" HoverSource="{StaticResource Img_Add_Hover}" />-->
-                    <controls:MediaButton NormalSource="{StaticResource Img_Setting}" HoverSource="{StaticResource Img_Setting_Hover}" />
-                    <controls:MediaButton NormalSource="{StaticResource Img_Close}" HoverSource="{StaticResource Img_Close_Hover}"/>
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-    </UserControl.Resources>
-    
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <controls:CustomGroupBox Header="列表一" Margin="5,0">
-            <ListBox x:Name="lt_diagnosis" Grid.Column="0"/>
+            <ListBox x:Name="lt_diagnosis" Grid.Column="0" DisplayMemberPath="Name"/>
         </controls:CustomGroupBox>
-        <controls:CustomGroupBox Grid.Column="1" Header="列表二" Margin="5,0"> 
-            <ListBox x:Name="lt_body"/>
+        <controls:CustomGroupBox Grid.Column="1" Header="列表二" Margin="5,0">
+            <controls:CustomGroupBox.Style>
+                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedValue, ElementName=lt_diagnosis}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:CustomGroupBox.Style>
+            <ListBox x:Name="lt_body" DisplayMemberPath="Name" ItemsSource="{Binding SelectedValue.MedicalWords, ElementName=lt_diagnosis}"/>
         </controls:CustomGroupBox>
         <controls:CustomGroupBox Grid.Column="2" Header="列表三" Margin="5,0">
-            <ListBox x:Name="lt_describe"/>
+            <controls:CustomGroupBox.Style>
+                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedValue, ElementName=lt_body}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:CustomGroupBox.Style>
+            <ListBox x:Name="lt_describe" DisplayMemberPath="Name" ItemsSource="{Binding SelectedValue.MedicalWords, ElementName=lt_body}"/>
         </controls:CustomGroupBox>
         <controls:CustomGroupBox Grid.Column="3" Header="列表四" Margin="5,0">
-            <ListBox x:Name="lt_symptom" Grid.Column="3"/>
+            <controls:CustomGroupBox.Style>
+                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedValue, ElementName=lt_describe}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:CustomGroupBox.Style>
+            <ListBox x:Name="lt_symptom" DisplayMemberPath="Name" ItemsSource="{Binding SelectedValue.MedicalWords, ElementName=lt_describe}"/>
         </controls:CustomGroupBox>
+        <controls:Loading x:Name="loading" Grid.ColumnSpan="4"/>
     </Grid>
 </UserControl>

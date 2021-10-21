@@ -46,6 +46,7 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -73,7 +74,6 @@
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Core\Extension.cs" />
     <Compile Include="Entities\BaseWordExtend.cs" />
-    <Compile Include="Entities\CheckResult.cs" />
     <Compile Include="Entities\SystemSettingExtend.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
     <Compile Include="Entities\AppLevel.cs" />
@@ -156,6 +156,9 @@
     </Compile>
     <Compile Include="Views\Setting\UserManageView.xaml.cs">
       <DependentUpon>UserManageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TextWindow.xaml.cs">
+      <DependentUpon>TextWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Update\AddVersion.xaml.cs">
       <DependentUpon>AddVersion.xaml</DependentUpon>
@@ -287,6 +290,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Setting\UserManageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TextWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
