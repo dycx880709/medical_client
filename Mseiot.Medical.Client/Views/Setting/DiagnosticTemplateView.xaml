@@ -13,7 +13,7 @@
         <DataTemplate x:Key="MedicalTemplateDataTemplate" DataType="{x:Type entities:MedicalTemplate}">
             <Grid>
                 <TextBox x:Name="tb_name" IsReadOnly="True" IsHitTestVisible="False" Margin="3,0,0,0" HorizontalAlignment="Left" 
-                         Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" LostFocus="ResetTemplate_Click"/>
+                         Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0" Click="ModifyTemplate_Click"/>
                     <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="0,0,10,0" Click="StartModify_Click"/>

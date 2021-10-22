@@ -98,10 +98,6 @@ namespace Mseiot.Medical.Client.Views
                 tb.Focus();
             }
         }
-        private void ResetTemplate_Click(object sender, RoutedEventArgs e)
-        {
-            this.editTextBox = sender as TextBox;
-        }
         private void ModifyTemplate_Click(object sender, RoutedEventArgs e)
         {
             if (sender is FrameworkElement element && element.DataContext is MedicalTemplate template)
@@ -122,7 +118,6 @@ namespace Mseiot.Medical.Client.Views
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateSource();
                         template.MedicalTemplateID = result.Content;
                         template.IsSelected = false;
-                        this.editTextBox = null;
                     }
                 }
                 else
@@ -213,28 +208,34 @@ namespace Mseiot.Medical.Client.Views
 
         private void GetMedicalTemplates()
         {
-            this.editTextBox = null;
             var result = loading.AsyncWait("获取模板信息中,请稍后", SocketProxy.Instance.GetMedicalTemplates());
             if (result.IsSuccess) lb_template.ItemsSource = SortMedicalTemplates(result.Content, 0);
             else MsWindow.ShowDialog($"获取模板信息失败,{ result.Error }", "软件提示");
         }
 
-        private TextBox editTextBox;
         private void ResetMedicalTemplate()
         {
-            if (this.editTextBox != null && editTextBox.DataContext is MedicalTemplate template)
+            void ResetListBox(ListBox lb, MedicalTemplate template)
             {
                 if (template.MedicalTemplateID == 0)
-                {
-                    var lb = ControlHelper.GetParentObject<ListBox>(this.editTextBox);
                     (lb.ItemsSource as ObservableCollection<MedicalTemplate>).Remove(template);
-                }
                 else
                 {
-                    editTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                    var index = lb.Items.IndexOf(template);
+                    var lbi = lb.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
+                    var tb = ControlHelper.GetVisualChild<TextBox>(lbi);
+                    tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                     template.IsSelected = false;
                 }
-                this.editTextBox = null;
+            }
+            var medicalTemplate = lb_template.Items.OfType<MedicalTemplate>().FirstOrDefault(t => t.IsSelected);
+            if (medicalTemplate != null)
+                ResetListBox(lb_template, medicalTemplate);
+            else
+            {
+                medicalTemplate = lb_item.Items.OfType<MedicalTemplate>().FirstOrDefault(t => t.IsSelected);
+                if (medicalTemplate != null)
+                    ResetListBox(lb_item, medicalTemplate);
             }
         }
     }

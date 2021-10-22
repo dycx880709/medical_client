@@ -15,6 +15,7 @@ namespace Mseiot.Medical.Service.Entities
         private string moddia;
         private string name;
         private bool isSelected;
+        private int medicalTemplateID;
         [JsonIgnore]
         public bool IsSelected
         {
@@ -26,7 +27,15 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
-        public int MedicalTemplateID { get; set; }
+        public int MedicalTemplateID
+        {
+            get { return medicalTemplateID; }
+            set
+            {
+                medicalTemplateID = value;
+                RaisePropertyChanged("MedicalTemplateID");
+            }
+        }
         public int ParentID { get; set; }
 
         public string Name
