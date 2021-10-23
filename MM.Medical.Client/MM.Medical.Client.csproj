@@ -59,7 +59,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
+    <Compile Include="Converters\PatientStatusToColorConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
+    <Compile Include="Core\Const.cs" />
     <Compile Include="Core\Extension.cs" />
     <Compile Include="Entities\AppLevel.cs" />
     <Compile Include="Entities\BaseWordExtend.cs" />
@@ -68,17 +71,23 @@
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\SystemSettingExtend.cs" />
     <Compile Include="Entities\UserRecord.cs" />
-    <Compile Include="Views\Booking\AddBookingView.xaml.cs">
-      <DependentUpon>AddBookingView.xaml</DependentUpon>
+    <Compile Include="Views\AppointmentModule\AddAppointment.xaml.cs">
+      <DependentUpon>AddAppointment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Booking\BookingManageView.xaml.cs">
-      <DependentUpon>BookingManageView.xaml</DependentUpon>
+    <Compile Include="Views\AppointmentModule\AppointmentManage.xaml.cs">
+      <DependentUpon>AppointmentManage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Booking\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Booking\PatientManageView.xaml.cs">
+    <Compile Include="Views\AppointmentModule\PatientManageView.xaml.cs">
       <DependentUpon>PatientManageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Login\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Update\AddVersion.xaml.cs">
+      <DependentUpon>AddVersion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Update\UpdateMain.xaml.cs">
+      <DependentUpon>UpdateMain.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -100,19 +109,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Booking\AddBookingView.xaml">
+    <Page Include="Views\AppointmentModule\AddAppointment.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Booking\BookingManageView.xaml">
+    <Page Include="Views\AppointmentModule\AppointmentManage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Booking\MainWindow.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\AppointmentModule\PatientManageView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Booking\PatientManageView.xaml">
+    <Page Include="Views\Login\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Update\AddVersion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Update\UpdateMain.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

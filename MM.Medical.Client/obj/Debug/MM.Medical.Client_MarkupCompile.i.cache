@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\code\medical_client\MM.Medical.Client\App.xaml
-71164499982
+92047851766
 
-191783054400
+24254373695
 19-1370308637
-MainWindow.xaml;Themes\Generic.xaml;Themes\Images.xaml;Views\Booking\AddBookingView.xaml;Views\Booking\BookingManageView.xaml;Views\Booking\MainWindow.xaml;Views\Booking\PatientManageView.xaml;
+MainWindow.xaml;Themes\Generic.xaml;Themes\Images.xaml;Views\AppointmentModule\AddAppointment.xaml;Views\AppointmentModule\AppointmentManage.xaml;Views\AppointmentModule\PatientManageView.xaml;Views\Login\LoginView.xaml;Views\Update\AddVersion.xaml;Views\Update\UpdateMain.xaml;
 
 True
 

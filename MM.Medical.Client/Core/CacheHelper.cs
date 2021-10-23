@@ -17,6 +17,9 @@ namespace MM.Medical.Client.Core
     public class CacheHelper : MM.Medical.Share.Core.CacheHelper
     {
         public static string UserName { get { return CurrentUser.Name; } }
+
+        public static string APPTitle { get; set; } = "智慧医学影像图文系统";
+
         public static LocalSetting LocalSetting { get; private set; }
         public static User CurrentUser { get; set; } = new User();
 
