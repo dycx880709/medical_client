@@ -22,6 +22,18 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("Name");
             }
         }
-        public ObservableCollection<MedicalWord> MedicalWords { get; set; }
+        private bool isSelected;
+
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                isSelected = value;
+                RaisePropertyChanged("IsSelected");
+            }
+        }
+
+        public ObservableCollection<MedicalWord> MedicalWords { get; set; } = new ObservableCollection<MedicalWord>();
     }
 }

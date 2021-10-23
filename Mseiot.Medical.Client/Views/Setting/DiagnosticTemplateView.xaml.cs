@@ -34,15 +34,7 @@ namespace Mseiot.Medical.Client.Views
         private void DiagnosticTemplateView_Loaded(object sender, RoutedEventArgs e)
         {
             GetMedicalTemplates();
-            this.MouseLeftButtonDown += DiagnosticTemplateView_MouseLeftButtonDown;
-        }
-
-        private void DiagnosticTemplateView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ResetMedicalTemplate();
-            HitTestResult hitResult = VisualTreeHelper.HitTest(this, e.GetPosition(this));
-            if (hitResult.VisualHit is FrameworkElement element && !element.Focusable)
-                tb_focus.Focus();
+            this.MouseLeftButtonDown += (o, ex)=> ResetMedicalTemplate();
         }
 
         private void AddItem_Click(object sender, RoutedEventArgs e)
@@ -50,7 +42,6 @@ namespace Mseiot.Medical.Client.Views
             if (lb_template.SelectedValue is MedicalTemplate parent)
             {
                 ResetMedicalTemplate();
-                lb_item.Items.OfType<MedicalTemplate>().ForEach(t => t.IsSelected = false);
                 var template = new MedicalTemplate { IsSelected = true, ParentID = parent.MedicalTemplateID };
                 (lb_item.ItemsSource as ObservableCollection<MedicalTemplate>).Add(template);
                 lb_item.SelectedValue = template;
@@ -66,7 +57,6 @@ namespace Mseiot.Medical.Client.Views
         private void AddTemplate_Click(object sender, RoutedEventArgs e)
         {
             ResetMedicalTemplate();
-            lb_template.Items.OfType<MedicalTemplate>().ForEach(t => t.IsSelected = false);
             var template = new MedicalTemplate { IsSelected = true };
             (lb_template.ItemsSource as ObservableCollection<MedicalTemplate>).Add(template);
             lb_template.SelectedValue = template;
@@ -87,8 +77,6 @@ namespace Mseiot.Medical.Client.Views
             if (sender is FrameworkElement element && element.DataContext is MedicalTemplate template)
             {
                 ResetMedicalTemplate();
-                lb_template.Items.OfType<MedicalTemplate>().ForEach(t => t.IsSelected = false);
-                lb_item.Items.OfType<MedicalTemplate>().ForEach(t => t.IsSelected = false);
                 if (template.ParentID == 0) lb_template.SelectedValue = template;
                 else lb_item.SelectedValue = template;
                 template.IsSelected = true;
