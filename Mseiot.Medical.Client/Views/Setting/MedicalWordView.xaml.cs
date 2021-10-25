@@ -69,11 +69,11 @@ namespace Mseiot.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"新建医疗信息项名称不能为空", "软件提示");
+                        MsWindow.ShowDialog($"新建医学词库名称不能为空", "软件提示");
                         return;
                     }
                     var add = new MedicalWord { Name = tb.Text, ParentID = template.ParentID };
-                    var result = loading.AsyncWait("新建医疗信息项中,请稍后", SocketProxy.Instance.AddMedicalWord(add));
+                    var result = loading.AsyncWait("新建医学词库中,请稍后", SocketProxy.Instance.AddMedicalWord(add));
                     if (result.IsSuccess)
                     {
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateSource();
@@ -85,7 +85,7 @@ namespace Mseiot.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"编辑医疗信息项名称不能为空", "软件提示");
+                        MsWindow.ShowDialog($"编辑医学词库名称不能为空", "软件提示");
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         return;
                     }
@@ -97,7 +97,7 @@ namespace Mseiot.Medical.Client.Views
                             Name = tb.Text,
                             ParentID = template.ParentID
                         };
-                        var result = loading.AsyncWait("更新医疗信息项中,请稍后", SocketProxy.Instance.ModifyMedicalWord(update));
+                        var result = loading.AsyncWait("更新医学词库中,请稍后", SocketProxy.Instance.ModifyMedicalWord(update));
                         if (result.IsSuccess)
                         {
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateSource();
@@ -105,7 +105,7 @@ namespace Mseiot.Medical.Client.Views
                         }
                         else
                         {
-                            MsWindow.ShowDialog($"更新医疗信息项失败,{ result.Error }", "软件提示");
+                            MsWindow.ShowDialog($"更新医学词库失败,{ result.Error }", "软件提示");
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         }
                     }
@@ -138,11 +138,11 @@ namespace Mseiot.Medical.Client.Views
                 {
                     if (template.ParentID == 0)
                     {
-                        if (!MsPrompt.ShowDialog("删除医疗信息项将清空其列表中的全部子项,是否继续"))
+                        if (!MsPrompt.ShowDialog("删除医学词库将清空其列表中的全部子项,是否继续"))
                             return;
                     }
-                    var result = loading.AsyncWait("删除医疗信息项中,请稍后", SocketProxy.Instance.RemoveMedicalWord(template.MedicalWordID));
-                    if (!result.IsSuccess) MsWindow.ShowDialog($"删除医疗信息失败,{ result.Error }", "软件提示");
+                    var result = loading.AsyncWait("删除医学词库中,请稍后", SocketProxy.Instance.RemoveMedicalWord(template.MedicalWordID));
+                    if (!result.IsSuccess) MsWindow.ShowDialog($"删除医学词库失败,{ result.Error }", "软件提示");
                     else medicalWords.Remove(template);
                 }
             }
@@ -150,9 +150,9 @@ namespace Mseiot.Medical.Client.Views
 
         private void GetMedicalWords()
         {
-            var result = loading.AsyncWait("获取医疗信息中,请稍后", SocketProxy.Instance.GetMedicalWords());
+            var result = loading.AsyncWait("获取医学词库中,请稍后", SocketProxy.Instance.GetMedicalWords());
             if (result.IsSuccess) lt_diagnosis.ItemsSource = SortMedicalWords(result.Content, 0);
-            else MsWindow.ShowDialog($"获取医疗信息失败,{ result.Error }", "软件提示");
+            else MsWindow.ShowDialog($"获取医学词库失败,{ result.Error }", "软件提示");
         }
         private ObservableCollection<MedicalWord> SortMedicalWords(IEnumerable<MedicalWord> words, int parentId)
         {
