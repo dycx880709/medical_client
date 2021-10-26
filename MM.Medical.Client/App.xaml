@@ -20,15 +20,17 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:TimeStampToDateTimeConverter x:Key="TimeStampToDateTimeConverter"/>
             <converters:TimeStampToStringFormatConverter x:Key="TimeStampToStringFormatConverter"/>
+            <converters:SexConverter x:Key="SexConverter"/>
 
 
 
-
+          
 
             <CornerRadius x:Key="ControlCornerRadius">3</CornerRadius>
 
             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="Foreground" Value="{DynamicResource Color_Font_Primary}"/>
+                <Setter Property="FontWeight" Value="Normal"/>
             </Style>
 
             <!--编辑-->

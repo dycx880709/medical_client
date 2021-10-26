@@ -27,11 +27,11 @@ namespace MM.Medical.Client.Views.AppointmentModule
             this.loading = loading;
             Appointment = rawAppointment.Copy();
             LoadTimes();
+            cbHours.SelectedIndex = 0;
+            cbMinutes.SelectedIndex = 0;
             if (rawAppointment.AppointmentID == 0)
             {
                 Appointment.AppointmentTime = (int)TimeHelper.ToUnixTime(DateTime.Now.Date);
-                cbHours.SelectedIndex = 0;
-                cbMinutes.SelectedIndex = 0;
             }
             else
             {
@@ -65,7 +65,7 @@ namespace MM.Medical.Client.Views.AppointmentModule
                 }
                 else
                 {
-                    Alert.ShowMessage(false, AlertType.Success, "新增预约失败", result.Error);
+                    Alert.ShowMessage(false, AlertType.Error, "新增预约失败", result.Error);
                 }
             }
             else
@@ -75,7 +75,10 @@ namespace MM.Medical.Client.Views.AppointmentModule
                 {
                     this.Close(true);
                 }
-                else MsWindow.ShowDialog($"编辑预约失败,{ result.Error }", "软件提示");
+                else
+                {
+                    Alert.ShowMessage(false, AlertType.Error, "编辑预约失败", result.Error);
+                }
             }
         }
 

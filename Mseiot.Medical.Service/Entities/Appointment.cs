@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,13 +30,28 @@ namespace Mseiot.Medical.Service.Entities
         public long AppointmentTime { get; set; }
 
         /// <summary>
-        /// 出生日期
+        /// 身份证
         /// </summary>
-        public long Birthday { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
         /// 性别
         /// </summary>
         public bool Sex { get; set; }
+
+        /// <summary>
+        /// 预约状态
+        /// </summary>
+        public AppointmentStatus AppointmentStatus { get; set; }
+    }
+
+    public enum AppointmentStatus
+    {
+        [Description("已预约")]
+        Reserved,
+        [Description("已报到")]
+        Report,
+        [Description("已检查")]
+        Check
     }
 }
