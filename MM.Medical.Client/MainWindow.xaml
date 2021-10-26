@@ -7,16 +7,16 @@
         xmlns:core="clr-namespace:MM.Medical.Client.Core" 
         FontFamily="微软雅黑"
         Foreground="{StaticResource Color_Font_Primary}"
-        WindowStyle="None" AllowsTransparency="True" WindowState="Maximized"
+        WindowStyle="None" AllowsTransparency="True" WindowState="Normal"
         mc:Ignorable="d" x:Name="self"
-        Height="450" Width="800">
+        Height="1080" Width="1920">
     <Border Background="{StaticResource Color_Content_Primary}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Border Background="{StaticResource Color_Nav_Background}">
+            <Border Background="{StaticResource Color_Nav_Background}" PreviewMouseLeftButtonDown="Move_Click">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="5" BlurRadius="5" Opacity="0.2" Direction="270"/>
                 </Border.Effect>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:core="clr-namespace:MM.Medical.Client.Core"
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:validation="clr-namespace:MM.Medical.Share.Validations;assembly=MM.Medical.Share"
              Width="580" Height="300"
              mc:Ignorable="d" >
@@ -35,22 +36,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="预约时间" Style="{StaticResource editorFormItemText}"/>
-                <DatePicker x:Name="dpAppointmentTime" SelectedDate="{Binding Appointment.AppointmentTime,Converter={StaticResource TimeStampToDateTimeConverter}}"/>
-                <ComboBox Width="60" Margin="5,0,5,0" x:Name="cbHours" HorizontalContentAlignment="Center">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding StringFormat=d2}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <TextBlock Text=":" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <ComboBox Width="60" x:Name="cbMinutes" HorizontalContentAlignment="Center">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding StringFormat=d2}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                <controls:DateTimePicker x:Name="dpAppointmentTime" SelectedDateTime="{Binding Appointment.AppointmentTime,Converter={StaticResource TimeStampToDateTimeConverter}}"/>
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">

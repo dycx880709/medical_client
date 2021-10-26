@@ -34,7 +34,8 @@ namespace MM.Medical.Client.Views.AppointmentModule
         {
             this.Loaded -= AppointmentManage_Loaded;
             this.dgAppointments.ItemsSource = appointments;
-            dtpTime.SelectedDateTime = DateTime.Now;
+            dtiTime.StartTime = DateTime.Now.AddDays(-14);
+            dtiTime.EndTime = DateTime.Now.AddDays(14);
             LoadAppointments();
         }
 
@@ -45,7 +46,7 @@ namespace MM.Medical.Client.Views.AppointmentModule
         private async void LoadAppointments()
         {
             appointments.Clear();
-            var result = await SocketProxy.Instance.GetAppointments();
+            var result = await SocketProxy.Instance.GetAppointments(dtiTime.StartTime,dtiTime.EndTime,tbSearchName.Text);
             if (result.IsSuccess)
             {
                 if (result.Content != null)

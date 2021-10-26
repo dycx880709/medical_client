@@ -31,6 +31,7 @@
             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="Foreground" Value="{DynamicResource Color_Font_Primary}"/>
                 <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}"/>
             </Style>
 
             <!--编辑-->

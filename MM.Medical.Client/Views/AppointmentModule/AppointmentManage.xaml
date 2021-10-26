@@ -43,7 +43,7 @@
                     </Grid.Resources>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="检查日期"/>
-                        <controls:DateTimePicker x:Name="dtpTime"/>
+                        <controls:DateTimeInterval x:Name="dtiTime"/>
 
                         <TextBlock Text="患者信息"/>
                         <controls:CustomTextBox Margin="5,0" x:Name="tbSearchName" Watermark="身份证、姓名"/>
