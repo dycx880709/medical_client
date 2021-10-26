@@ -64,9 +64,10 @@
                                 </StackPanel>
                             </Border>
                         </Border>
-                     
+
                     </Popup>
                 </Grid>
+         
             </Border>
             <Border Grid.Row="1" Padding="15" x:Name="borderContainer">
                 
