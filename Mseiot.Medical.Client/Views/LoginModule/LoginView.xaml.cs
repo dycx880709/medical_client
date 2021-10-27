@@ -137,13 +137,13 @@ namespace MM.Medical.Client.Views
         {
             var view = new SeverSetting();
             border.Child = view;
-            void SaveSystemSetting(object obj, EventArgs ex)
+            async void SaveSystemSetting(object obj, EventArgs ex)
             {
-                var serverSetting = CacheHelper.LocalSetting.ServerSetting;
+                var serverSetting = LocalSetting.ServerSetting;
                 SocketProxy.Instance.Load(serverSetting.Address, serverSetting.HttpPort, serverSetting.TcpPort);
-                this.Updater();
                 btLogin.IsEnabled = true;
                 tbTips.Text = "";
+                await Updater();
             }
             view.Save += SaveSystemSetting;
             view.Close += (o, ex) =>
@@ -155,19 +155,17 @@ namespace MM.Medical.Client.Views
 
         private void tbName_Selected(object sender, CustomEventArgs e)
         {
-            var localSetting = CacheHelper.LocalSetting;
-            var userRecord = localSetting.UserRecords.FirstOrDefault(t => t.LoginName.Equals(e.PropertyValue));
+            var userRecord = LocalSetting.UserRecords.FirstOrDefault(t => t.LoginName.Equals(e.PropertyValue));
             if (TimeHelper.ToUnixTime(DateTime.Now) - userRecord.LoginTime > 3600 * 24 * 7)
                 tbPwd.Text = userRecord.LoginPwd = "";
             else
                 tbPwd.Text = userRecord.LoginPwd;
-            userRecord.CopyTo(localSetting.UserRecord);
+            userRecord.CopyTo(LocalSetting.UserRecord);
         }
 
         private void tbName_Removed(object sender, CustomEventArgs e)
         {
-            var localSetting = CacheHelper.LocalSetting;
-            localSetting.UserRecords.RemoveAll(t => t.LoginName.Equals(e.PropertyValue));
+            LocalSetting.UserRecords.RemoveAll(t => t.LoginName.Equals(e.PropertyValue));
             CacheHelper.SaveLocalSetting();
         }
     }
