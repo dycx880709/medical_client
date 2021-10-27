@@ -106,6 +106,7 @@
     <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
     <Compile Include="Converters\PatientStatusToColorConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
+    <Compile Include="Core\Const.cs" />
     <Compile Include="Core\Extension.cs" />
     <Compile Include="Entities\BaseWordExtend.cs" />
     <Compile Include="Entities\SystemSettingExtend.cs" />
@@ -116,26 +117,23 @@
     <Compile Include="Video.xaml.cs">
       <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AppointmentModule\AddAppointment.xaml.cs">
+      <DependentUpon>AddAppointment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppointmentModule\AppointmentManage.xaml.cs">
+      <DependentUpon>AppointmentManage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Component\AddBookingView.xaml.cs">
       <DependentUpon>AddBookingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AppointmentModule\BookingManageView.xaml.cs">
       <DependentUpon>BookingManageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Component\AddConsultingView.xaml.cs">
-      <DependentUpon>AddConsultingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Component\AddRoleView.xaml.cs">
-      <DependentUpon>AddRoleView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Component\AddUserView.xaml.cs">
       <DependentUpon>AddUserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Component\AddWordItemView.xaml.cs">
       <DependentUpon>AddWordItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Component\AddWordView.xaml.cs">
-      <DependentUpon>AddWordView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Component\PatientManageView.xaml.cs">
       <DependentUpon>PatientManageView.xaml</DependentUpon>
@@ -225,6 +223,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AppointmentModule\AddAppointment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AppointmentModule\AppointmentManage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Component\AddBookingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -233,23 +239,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Component\AddConsultingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Component\AddRoleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Component\AddUserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Component\AddWordItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Component\AddWordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

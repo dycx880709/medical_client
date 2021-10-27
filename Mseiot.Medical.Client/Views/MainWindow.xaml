@@ -35,7 +35,7 @@
                         <Setter Property="Margin" Value="10,0"/>
                     </Style>
                 </StackPanel.Resources>
-                <RadioButton Checked="MenuItem_Checked" Content="预约登记" Tag="MM.Medical.Client.Views.BookingManageView" IsChecked="True" x:Name="rb_booking"/>
+                <RadioButton Checked="MenuItem_Checked" Content="预约登记" Tag="MM.Medical.Client.Views.AppointmentManage" IsChecked="True" x:Name="rb_booking"/>
                 <RadioButton Checked="MenuItem_Checked" Content="检查中心" Tag="MM.Medical.Client.Views.InspectionManageView" x:Name="rb_Inspection"/>
                 <RadioButton Checked="MenuItem_Checked" Content="病历中心" Tag="MM.Medical.Client.Views.MedicalManageView" x:Name="rb_medical"/>
                 <RadioButton Click="MemuItems_Click" Content="清洗中心" x:Name="rb_Cleaning"/>

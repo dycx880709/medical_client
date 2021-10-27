@@ -58,7 +58,7 @@ namespace MM.Medical.Client.Views
 
         private void GetConditions()
         {
-            var result = loading.AsyncWait("获取预约信息中,请稍后", SocketProxy.Instance.GetBaseWords(
+            var result = loading.AsyncWait("数据加载中,请稍后", SocketProxy.Instance.GetBaseWords(
                 "收费类型",
                 "送检医生",
                 "送检科室",

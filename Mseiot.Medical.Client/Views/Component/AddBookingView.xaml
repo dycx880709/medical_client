@@ -100,11 +100,11 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <!--<ComboBox Width="Auto" HorizontalAlignment="Center" Grid.Column="1" SelectedIndex="0">
+                    <ComboBox Width="Auto" HorizontalAlignment="Center" Grid.Column="1" SelectedIndex="0">
                         <ComboBoxItem>岁</ComboBoxItem>
                         <ComboBoxItem>周</ComboBoxItem>
                         <ComboBoxItem>天</ComboBoxItem>
-                    </ComboBox>-->
+                    </ComboBox>
                 </Grid>
                 <ComboBox x:Name="cb_body" Template="{StaticResource MultipleComboBoxTemplate}" Grid.Row="1" Grid.Column="1" Text="{Binding CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>

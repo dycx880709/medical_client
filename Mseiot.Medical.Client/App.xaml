@@ -23,6 +23,23 @@
             <converters:IntToFormatString x:Key="IntToFormatStringConverter"/>
             <converters:YNToCNConvert x:Key="YNToCNConvert"/>
 
+            <!--编辑-->
+            <Style TargetType="StackPanel" x:Key="editorFormItem">
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="Orientation" Value="Horizontal"/>
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="editorFormItemText" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="Width" Value="80"/>
+                <Setter Property="TextAlignment" Value="Right"/>
+                <Setter Property="Margin" Value="0,0,10,0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+
+            <Style TargetType="TextBox" x:Key="editorFormItemInput" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="Width" Value="200"/>
+            </Style>
+            
             <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}"/>
             <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource CustomGroupBoxStyle2}"/>
             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
