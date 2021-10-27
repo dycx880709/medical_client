@@ -12,7 +12,29 @@ namespace Mseiot.Medical.Service.Entities
         private string name;
         private bool isUsed;
         private string userName;
-        public int ConsultingRoomID { get; set; }
+        private int consultingRoomID;
+        private bool isSelected;
+
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                isSelected = value;
+                RaisePropertyChanged("IsSelected");
+            }
+        }
+
+        public int ConsultingRoomID
+        {
+            get { return consultingRoomID; }
+            set
+            {
+                consultingRoomID = value;
+                RaisePropertyChanged("ConsultingRoomID");
+            }
+        }
+
         public string UserID { get; set; }
         /// <summary>
         /// 创建时间

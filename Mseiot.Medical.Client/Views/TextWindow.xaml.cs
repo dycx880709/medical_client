@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Mseiot.Medical.Client.Views
+namespace MM.Medical.Client.Views
 {
     /// <summary>
     /// TextWindow.xaml 的交互逻辑

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mseiot.Medical.Client.Entities
+namespace MM.Medical.Client.Entities
 {
     public class LocalSetting
     {
@@ -16,9 +16,13 @@ namespace Mseiot.Medical.Client.Entities
         /// 是否记住密码
         /// </summary>
         public bool IsRemember { get; set; }
+        /// <summary>
+        /// 自动登录
+        /// </summary>
+        public bool AutoLogin { get; set; }
         public string LoginName { get { return UserRecord.LoginName; } }
         public string LoginPwd { get { return UserRecord.LoginPwd; } }
-
+        public string RFIDCom { get; set; }
         public LocalSetting()
         {
             this.UserRecords = new List<UserRecord>();

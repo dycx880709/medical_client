@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
-namespace Mseiot.Medical.Client.Converters
+namespace MM.Medical.Client.Converters
 {
     public class ItemIndexToBooleanConverter : IValueConverter
     {

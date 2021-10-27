@@ -11,9 +11,18 @@ namespace Mseiot.Medical.Service.Entities
     public class Role : NotifyPropertyBase
     {
         private string name;
+        private int roleID;
+        private bool isSelected;
 
-        public int RoleID { get; set; }
-
+        public int RoleID
+        {
+            get { return roleID; }
+            set
+            {
+                roleID = value;
+                RaisePropertyChanged("RoleID");
+            }
+        }
         public string Name
         {
             get { return name; }
@@ -21,6 +30,15 @@ namespace Mseiot.Medical.Service.Entities
             {
                 name = value;
                 RaisePropertyChanged("Name");
+            }
+        }
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                isSelected = value;
+                RaisePropertyChanged("IsSelected");
             }
         }
         /// <summary>

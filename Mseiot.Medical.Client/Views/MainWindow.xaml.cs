@@ -1,26 +1,15 @@
 ﻿using Ms.Controls;
-using Ms.Libs.SysLib;
-using Mseiot.Medical.Client.Core;
-using Mseiot.Medical.Service.Services;
+using MM.Medical.Client.Core;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
+using Ms.Controls.Core;
+using System.Windows.Controls.Primitives;
 
-namespace Mseiot.Medical.Client.Views
+namespace MM.Medical.Client.Views
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
@@ -29,12 +18,10 @@ namespace Mseiot.Medical.Client.Views
     {
         private readonly Dictionary<string, UserControl> navigateItems 
             = new Dictionary<string, UserControl>();
-        private ObservableCollection<string> navCol;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.navCol = new ObservableCollection<string>() { "首页" };
             this.Loaded += MainWindow_Loaded;
         }
 
@@ -80,7 +67,11 @@ namespace Mseiot.Medical.Client.Views
         {
             if (sender is FrameworkElement element &&  element.Tag is string viewName)
             {
-                //pop_system.IsOpen = pop_director.IsOpen = pop_clean.IsOpen = false;
+                //if (this.IsLoaded)
+                //{
+                //    var popup = ControlHelper.GetLogicParent<Popup>(element);
+                //    if (popup != null) popup.IsOpen = false;
+                //}
                 if (!string.IsNullOrEmpty(viewName) && !navigateItems.ContainsKey(viewName))
                 {
                     var type = Type.GetType(viewName);
@@ -96,14 +87,13 @@ namespace Mseiot.Medical.Client.Views
             this.WindowState = WindowState.Minimized;
         }
 
-        private void CleanCenter_Checked(object sender, RoutedEventArgs e)
+        private void MemuItems_Click(object sender, RoutedEventArgs e)
         {
-            //pop_clean.IsOpen = true;
-        }
-
-        private void DirectorManage_Checked(object sender, RoutedEventArgs e)
-        {
-            //pop_director.IsOpen = true;
+            if (sender is RadioButton radioButton && radioButton.IsChecked.Value)
+            {
+                radioButton.IsChecked = false;
+                radioButton.IsChecked = true;
+            }
         }
     }
 }

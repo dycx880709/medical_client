@@ -12,11 +12,23 @@ namespace Mseiot.Medical.Service.Entities
         private string title;
         private string content;
         private bool editable = true;
+        private int baseWordID;
+        private bool isSelected;
 
         /// <summary>
         /// 基础词汇ID
         /// </summary>
-        public int BaseWordID { get; set; }
+
+        public int BaseWordID
+        {
+            get { return baseWordID; }
+            set
+            {
+                baseWordID = value;
+                RaisePropertyChanged("BaseWordID");
+            }
+        }
+
 
         /// <summary>
         /// 正文
@@ -54,6 +66,16 @@ namespace Mseiot.Medical.Service.Entities
             {
                 editable = value;
                 RaisePropertyChanged("Editable");
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                isSelected = value;
+                RaisePropertyChanged("IsSelected");
             }
         }
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace Mseiot.Medical.Client.Converters
+namespace MM.Medical.Client.Converters
 {
     public class PatientStatusToColorConverter : IValueConverter
     {

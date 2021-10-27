@@ -17,7 +17,7 @@ namespace Mseiot.Medical.Service.Services
 
         public async Task<MsResult<bool>> RemoveConsultingRoom(int roomId)
         {
-            return await HttpProxy.DeleteMessage<bool>("/api/consulting/remove", new KeyValuePair<string, string>("roomId", roomId.ToString()));
+            return await HttpProxy.DeleteMessage<bool>("/api/consulting/remove", new KeyValuePair<string, string>("consultingroomid", roomId.ToString()));
         }
 
         public async Task<MsResult<List<ConsultingRoom>>> GetConsultingRooms()

@@ -1,6 +1,7 @@
 ﻿using Ms.Controls;
+using Ms.Controls.Core;
 using Ms.Libs.SysLib;
-using Mseiot.Medical.Client.Core;
+using MM.Medical.Client.Core;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
@@ -18,7 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Mseiot.Medical.Client.Views.Component
+namespace MM.Medical.Client.Views.Component
 {
     /// <summary>
     /// AddBookingView.xaml 的交互逻辑
@@ -147,6 +148,20 @@ namespace Mseiot.Medical.Client.Views.Component
             ));
             if (result.IsSuccess && result.Content != null && result.Content.PatientID != 0)
                 result.Content.CopyTo(patientInfo.Patient);
+        }
+
+        private void SelectedBody_Click(object sender, RoutedEventArgs e)
+        {
+            cb_body.Text = string.Empty;
+            for (int i = 0; i < cb_body.Items.Count; i++)
+            {
+                var cbi = cb_body.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
+                var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
+                if (cb.IsChecked.Value)
+                    cb_body.Text += cb.Content.ToString() + ",";
+            }
+            if (!string.IsNullOrEmpty(cb_body.Text))
+                cb_body.Text = cb_body.Text.Substring(0, cb_body.Text.Length - 1);
         }
     }
 }

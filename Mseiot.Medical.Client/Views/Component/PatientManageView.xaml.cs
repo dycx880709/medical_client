@@ -1,6 +1,6 @@
 ﻿using Ms.Controls;
 using Ms.Libs.SysLib;
-using Mseiot.Medical.Client.Core;
+using MM.Medical.Client.Core;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
@@ -20,7 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Mseiot.Medical.Client.Views
+namespace MM.Medical.Client.Views
 {
     /// <summary>
     /// PatientManageView.xaml 的交互逻辑

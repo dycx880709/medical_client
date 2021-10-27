@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mseiot.Medical.Client.Core
+namespace MM.Medical.Client.Core
 {
     internal static class Extension
     {

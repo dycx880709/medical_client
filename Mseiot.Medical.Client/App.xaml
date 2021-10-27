@@ -1,16 +1,17 @@
-﻿<Application x:Class="Mseiot.Medical.Client.App"
+﻿<Application x:Class="MM.Medical.Client.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:lc="clr-namespace:Mseiot.Medical.Client.Converters"
+             xmlns:lc="clr-namespace:MM.Medical.Client.Converters"
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:converters="clr-namespace:MM.Medical.Share.Converters;assembly=MM.Medical.Share"
-             StartupUri="Views/Login/LoginView.xaml">
+             StartupUri="Views/LoginModule/LoginView.xaml">
     
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Ms.Controls;component/Themes/Generic.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Mseiot.Medical.Client;component/Themes/Images.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Mseiot.Medical.Client;component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Ms.Controls;component/Themes/Generic_Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MM.Medical.Share;component/Themes/Images.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MM.Medical.Share;component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <converters:EnumToIntConverter x:Key="EnumToIntConverter"/>
@@ -19,8 +20,17 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:TimeStampToDateTimeConverter x:Key="TimeStampToDateTimeConverter"/>
             <converters:TimeStampToStringFormatConverter x:Key="TimeStampToStringFormatConverter"/>
+            <converters:IntToFormatString x:Key="IntToFormatStringConverter"/>
+            <converters:YNToCNConvert x:Key="YNToCNConvert"/>
 
             <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}"/>
+            <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource CustomGroupBoxStyle2}"/>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="Foreground" Value="{DynamicResource Color_Font_Primary}"/>
+                <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
+                <Setter Property="Foreground" Value="{StaticResource Color_Font_Primary}"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily}"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

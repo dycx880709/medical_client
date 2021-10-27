@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Mseiot.Medical.Client
+namespace MM.Medical.Client
 {
     /// <summary>
     /// Video.xaml 的交互逻辑

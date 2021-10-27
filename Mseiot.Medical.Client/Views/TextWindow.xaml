@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Mseiot.Medical.Client.Views"
-        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" x:Class="Mseiot.Medical.Client.Views.TextWindow"
+        xmlns:local="clr-namespace:MM.Medical.Client.Views"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" x:Class="MM.Medical.Client.Views.TextWindow"
         mc:Ignorable="d"
         Title="TextWindow" Height="450" Width="800">
     <Window.Resources>
@@ -31,7 +31,7 @@
                                 <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" 
                                     MaxWidth="{Binding ActualWidth, ElementName=templateRoot}"
                                     MinHeight="120" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
-                                    <Border x:Name="DropDownBorder" Background="{DynamicResource Color_Content_Primary}" BorderBrush="{DynamicResource Color_Border_Secondary}" BorderThickness="1" Padding="0">
+                                    <Border x:Name="DropDownBorder" Background="{DynamicResource Color_Content_Primary}" BorderThickness="1" Padding="0">
                                         <Border.Effect>
                                             <DropShadowEffect Color="{DynamicResource Color_Popup_Shadow}" BlurRadius="2" ShadowDepth="0" Opacity="1"/>
                                         </Border.Effect>
@@ -49,7 +49,7 @@
                             </Popup>
                             <ToggleButton x:Name="toggleButton" Grid.Column="0" Grid.ColumnSpan="2" Cursor="Hand" Style="{DynamicResource ComboBoxToggleButton}"
                                 IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"                                     
-                                Background="{DynamicResource Color_Input_Background}" Foreground="{DynamicResource Color_Font_Primary}" BorderBrush="{DynamicResource Color_Border_Secondary}"/>
+                                Background="{DynamicResource Color_Input_Background}" Foreground="{DynamicResource Color_Font_Primary}"/>
                             <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                 Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"  
                                 TextElement.Foreground="{DynamicResource Color_Font_Primary}" TextBlock.Foreground="{DynamicResource Color_Font_Primary}"

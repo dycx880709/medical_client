@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Mseiot.Medical.Client.Views
+namespace MM.Medical.Client.Views
 {
     /// <summary>
     /// CleanRecordView.xaml 的交互逻辑

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mseiot.Medical.Client.Entities
+namespace MM.Medical.Client.Entities
 {
     public class UserRecord
     {

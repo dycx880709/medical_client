@@ -1,4 +1,4 @@
-﻿using Mseiot.Medical.Client.Entities;
+﻿using MM.Medical.Client.Entities;
 using Mseiot.Medical.Service.Entities;
 using Newtonsoft.Json;
 using System;
@@ -12,9 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Mseiot.Medical.Client.Core
+namespace MM.Medical.Client.Core
 {
-    public class CacheHelper : MM.Medical.Share.Core.CacheHelper
+    public class CacheHelper : Share.Core.CacheHelper
     {
         public static string UserName { get { return CurrentUser.Name; } }
         public static LocalSetting LocalSetting { get; private set; }

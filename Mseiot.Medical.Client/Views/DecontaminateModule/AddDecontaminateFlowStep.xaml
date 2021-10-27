@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="MM.Medical.Client.Views.AddDecontaminateFlowStep"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock Text="步骤名称" Style="{StaticResource editorFormItemText}"></TextBlock>
+                <TextBox Text="{Binding DecontaminateFlowStep.Name}" Style="{StaticResource editorFormItemInput}"></TextBox>
+
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock Text="超时(秒)" Style="{StaticResource editorFormItemText}"></TextBlock>
+                <TextBox Text="{Binding DecontaminateFlowStep.Timeout}" Style="{StaticResource editorFormItemInput}"></TextBox>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock Text="采集设备" Style="{StaticResource editorFormItemText}"></TextBlock>
+                <ComboBox x:Name="cbRFIDDevices" DisplayMemberPath="Name" SelectedValue="{Binding DecontaminateFlowStep.RFIDDeviceID}" SelectedValuePath="RFIDDeviceID"></ComboBox>
+            </StackPanel>
+
+            <controls:MediaButton FISize="{StaticResource LargeExFontSize}" Click="Save_Click" Content="保存" />
+        </StackPanel>
+    </Grid>
+</UserControl>
