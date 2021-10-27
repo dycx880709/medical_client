@@ -50,7 +50,7 @@ namespace MM.Medical.Client.Views
 
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
-            Restart();
+            Restart("Logout");
         }
 
         private void ModifyUserPwd_Click(object sender, RoutedEventArgs e)

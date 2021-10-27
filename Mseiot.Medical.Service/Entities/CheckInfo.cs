@@ -24,7 +24,7 @@ namespace Mseiot.Medical.Service.Entities
         private string checkResult;
         private string bodyLoc;
         private int? checkTime;
-
+        private string checkBody;
         private string clinicalDiagnosis;
         private string endoscopicFindings;
         private string microscopicDiagnosis;
@@ -41,10 +41,6 @@ namespace Mseiot.Medical.Service.Entities
         /// 关联预约ID
         /// </summary>
         public int PatientInfoID { get; set; }
-        /// <summary>
-        /// 检查序号
-        /// </summary>
-        public int CheckIndex { get; set; }
         /// <summary>
         /// 医生建议
         /// </summary>
@@ -103,6 +99,18 @@ namespace Mseiot.Medical.Service.Entities
             {
                 endoscopicFindings = value;
                 RaisePropertyChanged("EndoscopicFindings");
+            }
+        }
+        /// <summary>
+        /// 检查部位
+        /// </summary>
+        public string CheckBody
+        {
+            get { return checkBody; }
+            set
+            {
+                checkBody = value;
+                RaisePropertyChanged("CheckBody");
             }
         }
         /// <summary>

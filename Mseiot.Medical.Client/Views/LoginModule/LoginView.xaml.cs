@@ -22,7 +22,6 @@ namespace MM.Medical.Client.Views
         public LoginView()
         {
             InitializeComponent();
-            CacheHelper.LoadLocalSetting();
             this.Loaded += LoginView_Loaded;
         }
 
@@ -133,11 +132,11 @@ namespace MM.Medical.Client.Views
 
         #endregion
 
-        private void SystemSetting_Click(object sender, RoutedEventArgs e)
+        private async void SystemSetting_Click(object sender, RoutedEventArgs e)
         {
             var view = new SeverSetting();
-            border.Child = view;
-            async void SaveSystemSetting(object obj, EventArgs ex)
+            var result = cw.ShowDialog("服务配置", view);
+            if (result)
             {
                 var serverSetting = LocalSetting.ServerSetting;
                 SocketProxy.Instance.Load(serverSetting.Address, serverSetting.HttpPort, serverSetting.TcpPort);
@@ -145,12 +144,6 @@ namespace MM.Medical.Client.Views
                 tbTips.Text = "";
                 await Updater();
             }
-            view.Save += SaveSystemSetting;
-            view.Close += (o, ex) =>
-            {
-                view.Save -= SaveSystemSetting;
-                border.Child = null;
-            };
         }
 
         private void tbName_Selected(object sender, CustomEventArgs e)

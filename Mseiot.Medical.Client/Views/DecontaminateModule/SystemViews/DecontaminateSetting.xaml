@@ -8,8 +8,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel>
-                <TextBlock Text="发卡器串口"></TextBlock>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock Text="发卡器串口" Style="{StaticResource editorFormItemText}"></TextBlock>
                 <ComboBox x:Name="cbSerialPorts" DropDownOpened="cbSerialPorts_DropDownOpened"></ComboBox>
             </StackPanel>
             <Button Click="Save_Click" Content="保存" />

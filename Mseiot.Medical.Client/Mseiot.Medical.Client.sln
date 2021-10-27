@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mseiot.Medical.Client", "Mseiot.Medical.Client.csproj", "{771C8A73-AFAA-4137-8273-8044D0E6CE1D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Client", "MM.Medical.Client.csproj", "{771C8A73-AFAA-4137-8273-8044D0E6CE1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ms.Controls", "..\..\libs_csharp\Ms.Controls\Ms.Controls.csproj", "{658D1289-6EAF-40E9-9B98-FD78FFB4A5EA}"
 EndProject
@@ -24,8 +24,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Management", "..\MM.Medical.Management\MM.Medical.Management.csproj", "{1C3699CF-5D62-4EFC-B5D6-606CC756B209}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Share", "..\MM.Medical.Share\MM.Medical.Share.csproj", "{66D5B357-F9C7-4325-93F2-F768F974F496}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.Medical.Client", "..\MM.Medical.Client\MM.Medical.Client.csproj", "{21389702-69C8-485E-9F9E-E37746C774C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,10 +71,6 @@ Global
 		{66D5B357-F9C7-4325-93F2-F768F974F496}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66D5B357-F9C7-4325-93F2-F768F974F496}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66D5B357-F9C7-4325-93F2-F768F974F496}.Release|Any CPU.Build.0 = Release|Any CPU
-		{21389702-69C8-485E-9F9E-E37746C774C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21389702-69C8-485E-9F9E-E37746C774C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{21389702-69C8-485E-9F9E-E37746C774C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21389702-69C8-485E-9F9E-E37746C774C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

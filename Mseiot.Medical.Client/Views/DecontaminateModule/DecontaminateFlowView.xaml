@@ -17,7 +17,7 @@
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Click="AddFlow_Click" Content="添加" Margin="5,0"/>
-                        <Button Style="{StaticResource DangerButtonStyle}" Click="RemoveFlow_Click" Content="删除" />
+                        <Button Style="{StaticResource Button_Danger}" Click="RemoveFlow_Click" Content="删除" />
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
@@ -50,7 +50,7 @@
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button  Click="AddFlowStep_Click" Content="添加" Margin="0,0,5,0"/>
-                        <Button Style="{StaticResource DangerButtonStyle}" Click="RemoveFlowStep_Click" Content="删除" />
+                        <Button Style="{StaticResource Button_Danger}" Click="RemoveFlowStep_Click" Content="删除" />
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>

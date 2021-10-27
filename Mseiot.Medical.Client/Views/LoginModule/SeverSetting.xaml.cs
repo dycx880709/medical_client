@@ -23,8 +23,6 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class SeverSetting : UserControl
     {
-        public event EventHandler Save;
-        public event EventHandler Close;
         public SeverSetting()
         {
             InitializeComponent();
@@ -47,11 +45,6 @@ namespace MM.Medical.Client.Views
             tb_address.Focus();
         }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            Close?.Invoke(this, new EventArgs());
-        }
-
         private void tbAddress_Selected(object sender, CustomEventArgs e)
         {
             var localSetting = CacheHelper.LocalSetting;
@@ -68,17 +61,17 @@ namespace MM.Medical.Client.Views
             var tcpPort = Convert.ToInt32(tb_tcpPort.Text.Trim());
             if (string.IsNullOrEmpty(address))
             {
-                MsWindow.ShowDialog("服务地址不能为空", "软件提示");
+                Alert.ShowMessage(true, AlertType.Warning, "服务地址不能为空");
                 return;
             }
             if (httpPort == 0)
             {
-                MsWindow.ShowDialog("Http端口不能为0", "软件提示");
+                Alert.ShowMessage(true, AlertType.Warning, "Http端口不能为0");
                 return;
             }
             if (tcpPort == 0)
             {
-                MsWindow.ShowDialog("Tcp端口不能为0", "软件提示");
+                Alert.ShowMessage(true, AlertType.Warning, "Tcp端口不能为0");
                 return;
             }
             var localSetting = CacheHelper.LocalSetting;
@@ -87,17 +80,10 @@ namespace MM.Medical.Client.Views
             serverSetting.HttpPort = httpPort;
             serverSetting.TcpPort = tcpPort;
             var condition = localSetting.ServerSettingRecords.FirstOrDefault(t => t.Address.Equals(address));
-            if (condition == null)
-            {
-                localSetting.ServerSettingRecords.Add(serverSetting.Copy());
-            }
-            else
-            {
-                serverSetting.CopyTo(condition);
-            }
+            if (condition == null) localSetting.ServerSettingRecords.Add(serverSetting.Copy());
+            else serverSetting.CopyTo(condition);
             CacheHelper.SaveLocalSetting();
-            Save?.Invoke(this, new EventArgs());
-            this.Visibility = Visibility.Hidden;
+            this.Close(true);
         }
 
         private void server_TextChanged(object sender, TextChangedEventArgs e)

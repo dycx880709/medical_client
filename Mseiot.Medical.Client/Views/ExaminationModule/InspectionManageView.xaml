@@ -175,7 +175,13 @@
                     <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Text="{Binding Patient.Name}"/>
                     <TextBox Grid.Row="0" Grid.Column="3" IsReadOnly="True" Text="{Binding Patient.Sex}"/>
                     <TextBox Grid.Row="0" Grid.Column="5" IsReadOnly="True" Text="{Binding Patient.Age}"/>
-                    <TextBox Grid.Row="0" Grid.Column="7" IsReadOnly="True" Text="{Binding CheckBody}"/>
+                    <ComboBox x:Name="cb_body" Template="{StaticResource MultipleComboBoxTemplate}" Grid.Row="0" Grid.Column="7" Text="{Binding CheckInfo.CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Content="{Binding}" Click="SelectedBody_Click" VerticalContentAlignment="Center" HorizontalAlignment="Left"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <ComboBox x:Name="cb_bodyLoc" Grid.Row="0" Grid.Column="9" Text="{Binding CheckInfo.BodyLoc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <ComboBox x:Name="cb_anesthesia" Grid.Row="0" Grid.Column="11" Text="{Binding CheckInfo.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}" Width="{StaticResource InputElementWidth}" IsReadOnly="True"/>

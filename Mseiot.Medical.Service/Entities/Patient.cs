@@ -25,6 +25,8 @@ namespace Mseiot.Medical.Service.Entities
         private string patientNumber;
         private string sex;
         private int age;
+        private AgeType ageType;
+
 
         #region 病人信息
         public int PatientID { get; set; }
@@ -50,6 +52,18 @@ namespace Mseiot.Medical.Service.Entities
             {
                 age = value;
                 RaisePropertyChanged("Age");
+            }
+        }
+        /// <summary>
+        /// 年龄类型
+        /// </summary>
+        public AgeType AgeType
+        {
+            get { return ageType; }
+            set
+            {
+                ageType = value;
+                RaisePropertyChanged("AgeType");
             }
         }
         /// <summary>
@@ -213,6 +227,16 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
         #endregion
+    }
+
+    public enum AgeType
+    { 
+        [Description("岁")]
+        Year,
+        [Description("周")]
+        Week,
+        [Description("天")]
+        Day
     }
 
     public enum Sex

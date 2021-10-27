@@ -11,7 +11,6 @@ namespace Mseiot.Medical.Service.Entities
 {
     public class PatientInfo : NotifyPropertyBase
     {
-        private string checkBody;
         private string patientCode;
         private string hospitalizationCode;
         private string className;
@@ -235,20 +234,7 @@ namespace Mseiot.Medical.Service.Entities
                 patientCode = value;
                 RaisePropertyChanged("PatientCode");
             }
-        }
-        /// <summary>
-        /// 检查部位
-        /// </summary>
-        public string CheckBody
-        {
-            get { return checkBody; }
-            set
-            {
-                checkBody = value;
-                RaisePropertyChanged("CheckBody");
-            }
-        }
-      
+        }      
         /// <summary>
         /// 签到状态
         /// </summary>

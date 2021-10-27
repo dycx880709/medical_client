@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using Ms.Controls.Core;
 
 namespace MM.Medical.Client.Views
 {
@@ -80,6 +81,7 @@ namespace MM.Medical.Client.Views
                 "插入途径",
                 "检查体位",
                 "麻醉方法",
+                "检查部位",
                 "术前用药"
             ));
             cb_bodyLoc.ItemsSource = result.SplitContent("检查体位");
@@ -91,6 +93,7 @@ namespace MM.Medical.Client.Views
             cb_hiv.ItemsSource = result.SplitContent("HIV");
             cb_hcv.ItemsSource = result.SplitContent("HCV");
             cb_hbasg.ItemsSource = result.SplitContent("HBasg");
+            cb_body.ItemsSource = result.SplitContent("检查部位");
         }
 
         private void Check_Click(object sender, RoutedEventArgs e)
@@ -144,6 +147,20 @@ namespace MM.Medical.Client.Views
                     if (!result.IsSuccess) Alert.ShowMessage(true, AlertType.Error, $"生成报告失败,{ result.Error }");
                 }
             }
+        }
+
+        private void SelectedBody_Click(object sender, RoutedEventArgs e)
+        {
+            cb_body.Text = string.Empty;
+            for (int i = 0; i < cb_body.Items.Count; i++)
+            {
+                var cbi = cb_body.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
+                var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
+                if (cb.IsChecked.Value)
+                    cb_body.Text += cb.Content.ToString() + ",";
+            }
+            if (!string.IsNullOrEmpty(cb_body.Text))
+                cb_body.Text = cb_body.Text.Substring(0, cb_body.Text.Length - 1);
         }
     }
 }

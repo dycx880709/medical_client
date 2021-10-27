@@ -13,7 +13,7 @@
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button  Click="Add_Click" Content="添加" Margin="0,0,10,0" HorizontalAlignment="Right"/>
-                        <Button Style="{StaticResource DangerButtonStyle}" Click="Remove_Click" Content="删除"  HorizontalAlignment="Right"/>
+                        <Button Style="{StaticResource Button_Danger}" Click="Remove_Click" Content="删除"  HorizontalAlignment="Right"/>
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>

@@ -58,7 +58,7 @@
             <TextBlock Text="检查类型" Grid.Row="0" Grid.Column="6"/>
             <TextBlock Text="送检科室" Grid.Row="0" Grid.Column="8"/>
             <TextBlock Text="送检医生" Grid.Row="0" Grid.Column="10"/>
-            <TextBlock Text="检查序号" Grid.Row="0" Grid.Column="12"/>
+            <!--<TextBlock Text="检查序号" Grid.Row="0" Grid.Column="12"/>-->
             <TextBlock Text="患者姓名" Grid.Row="1" Grid.Column="0"/>
             <TextBlock Text="性别 " Grid.Row="1" Grid.Column="2"/>
             <TextBlock Text="证件号码" Grid.Row="1" Grid.Column="4"/>
@@ -68,11 +68,11 @@
 
             <DatePicker Grid.Row="0" Grid.Column="1" SelectedDate="{Binding CreateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
             <DatePicker Grid.Row="0" Grid.Column="3" SelectedDate="{Binding CheckTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
-            <ComboBox x:Name="cb_checkBody" Grid.Row="0" Grid.Column="5" Text="{Binding CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox x:Name="cb_checkBody" Grid.Row="0" Grid.Column="5" Text="{Binding CheckInfo.CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <ComboBox x:Name="cb_checkType" Grid.Row="0" Grid.Column="7" Text="{Binding CheckType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <ComboBox x:Name="cb_className" Grid.Row="0" Grid.Column="9" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <ComboBox x:Name="cb_doctorName" Grid.Row="0" Grid.Column="11" Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBox Grid.Row="0" Grid.Column="13" Text="{Binding PatientNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--<TextBox Grid.Row="0" Grid.Column="13" Text="{Binding PatientNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
 
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Patient.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <ComboBox x:Name="cb_sex" Grid.Row="1" Grid.Column="3" Text="{Binding Patient.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -81,10 +81,12 @@
             <ComboBox Grid.Row="1" Grid.Column="9" ItemsSource="{x:Static entities:EnumItems.DiagnoseType}" Text="{Binding DiagnoseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <ComboBox x:Name="cb_chargeType" Grid.Row="1" Grid.Column="11" Text="{Binding ChargeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="12" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+            <Button Grid.Row="0" Grid.Column="13" Content="重置" Click="Reset_Click" Margin="15,0,0,0"/>
+            <Button Grid.Row="1" Grid.Column="13" Content="查询" Click="Get_Click" Margin="15,0,0,0"/>
+            <!--<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="12" Grid.ColumnSpan="2" HorizontalAlignment="Center">
                 <Button Content="查询" Click="Get_Click" IsDefault="True"/>
                 <Button Content="重置" Click="Reset_Click" Margin="15,0,0,0"/>
-            </StackPanel>
+            </StackPanel>-->
         </Grid>
         <Border Grid.Row="1">
             <DataGrid x:Name="dg_patient" SelectedValue="{Binding SelectedPatient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -96,7 +98,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Width="*" Header="检查序号" Binding="{Binding PatientNumber}"/>
+                    <!--<DataGridTextColumn Width="*" Header="检查序号" Binding="{Binding PatientNumber}"/>
                     <DataGridTemplateColumn Width="*" Header="预约状态">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -105,10 +107,25 @@
                                 </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    </DataGridTemplateColumn>-->
                     <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Patient.Name}"/>
                     <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Patient.Sex}"/>
+                    <DataGridTemplateColumn Width="*" Header="年龄">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}{1}">
+                                            <Binding Path="Patient.Age" />
+                                            <Binding Path="Patient.AgeType" Converter="{StaticResource EnumToStringConverter}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding Patient.IdCard}"/>
+                    <DataGridTextColumn Width="*" Header="社保号码" Binding="{Binding Patient.SocialSecurityCode}"/>
                     <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Patient.TelphoneNumber}"/>
                     <DataGridTemplateColumn Width="*" Header="检查诊室">
                         <DataGridTemplateColumn.CellTemplate>
@@ -126,7 +143,7 @@
                     <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}"/>
                     <DataGridTextColumn Width="*" Header="登记日期" Binding="{Binding CreateTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
                     <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
-                    <DataGridTextColumn Width="*" Header="检查部位" Binding="{Binding CheckBody}"/>
+                    <DataGridTextColumn Width="*" Header="检查部位" Binding="{Binding CheckInfo.CheckBody}"/>
                     <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding CheckType}"/>
                     <DataGridTextColumn Width="*" Header="送检科室" Binding="{Binding ClassName}"/>
                     <DataGridTextColumn Width="*" Header="送检医生" Binding="{Binding DoctorName}"/>

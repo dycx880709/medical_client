@@ -91,7 +91,7 @@ namespace MM.Medical.Client.Views
                 pager.SelectedCount,
                 Condition.CreateTime ?? 0,
                 Condition.CheckTime ?? 0,
-                checkBody: Condition.CheckBody,
+                checkBody: Condition.CheckInfo.CheckBody,
                 checkType: Condition.CheckType,
                 className: Condition.ClassName,
                 doctorName: Condition.DoctorName,
