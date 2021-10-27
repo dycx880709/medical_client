@@ -3,6 +3,7 @@ using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,84 +27,81 @@ namespace MM.Medical.Client.Views.AppointmentModule
         public AppointmentManage()
         {
             InitializeComponent();
+            this.Loaded += AppointmentManage_Loaded;
         }
+
+        private void AppointmentManage_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Loaded -= AppointmentManage_Loaded;
+            this.dgAppointments.ItemsSource = appointments;
+            dtiTime.StartTime = DateTime.Now.AddDays(-14);
+            dtiTime.EndTime = DateTime.Now.AddDays(14);
+            LoadAppointments();
+        }
+
+        #region 数据
+
+        ObservableCollection<Appointment> appointments = new ObservableCollection<Appointment>();
+
+        private async void LoadAppointments()
+        {
+            appointments.Clear();
+            var result = await SocketProxy.Instance.GetAppointments(dtiTime.StartTime,dtiTime.EndTime,tbSearchName.Text);
+            if (result.IsSuccess)
+            {
+                if (result.Content != null)
+                {
+                    appointments.AddRange(result.Content);
+                }
+            }
+            else
+            {
+                Alert.ShowMessage(false, AlertType.Error, result.Error);
+            }
+        }
+
+        #endregion
+
+        #region 搜索
+
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            LoadAppointments();
+        }
+
+        #endregion
+
+        #region 添加、删除、修改
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             var view = new AddAppointment(new Appointment(), this.loading);
             if (child.ShowDialog("预约登记", view))
             {
-
+                LoadAppointments();
             }
         }
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            if (pmv.SelectedPatient != null)
-            {
-                var result = loading.AsyncWait("移除预约中,请稍后", SocketProxy.Instance.RemovePatientInfo(pmv.SelectedPatient.PatientInfoID));
-                if (result.IsSuccess) pmv.Refresh();
-                else MsWindow.ShowDialog($"删除预约失败,{ result.Error }", "软件提示");
-            }
-            else MsWindow.ShowDialog($"请选择移除预约项", "软件提示");
-            */
-        }
-
-        private void Refresh_Click(object sender, RoutedEventArgs e)
-        {
-            //pmv.Refresh();
-        }
-
-        private void Sign_Click(object sender, RoutedEventArgs e)
-        {
-            /*
-            if (pmv.SelectedPatient != null)
-            {
-                var result = loading.AsyncWait("签到预约中,请稍后", SocketProxy.Instance.SignPatientInfo(pmv.SelectedPatient.PatientInfoID));
-                if (result.IsSuccess) pmv.Refresh();
-                else MsWindow.ShowDialog($"签到预约失败,{ result.Error }", "软件提示");
-            }
-            else MsWindow.ShowDialog($"请选择签到项", "软件提示");
-            */
-        }
-
-        private void UnSign_Click(object sender, RoutedEventArgs e)
-        {
-            /*
-            if (pmv.SelectedPatient != null)
-            {
-                if (pmv.SelectedPatient.PatientStatus == PatientStatus.Regist)
-                {
-                    var result = loading.AsyncWait("取消签到预约中,请稍后", SocketProxy.Instance.UnSignPatientInfo(pmv.SelectedPatient.PatientInfoID));
-                    if (result.IsSuccess) pmv.Refresh();
-                    else MsWindow.ShowDialog($"取消签到预约失败,{ result.Error }", "软件提示");
-                }
-            }
-            else MsWindow.ShowDialog($"请选择取消签到项", "软件提示");
-            */
-        }
-
-        private void SetConsulting_Click(object sender, RoutedEventArgs e)
-        {
-     
+            Appointment appointment = (sender as FrameworkElement).Tag as Appointment;
+            var result = loading.AsyncWait("移除预约中,请稍后", SocketProxy.Instance.RemoveAppointments(new List<int> { appointment.AppointmentID }));
+            if (result.IsSuccess) LoadAppointments();
+            else Alert.ShowMessage(false, AlertType.Error, "删除预约失败", result.Error);
         }
 
         private void Modify_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            if (pmv.SelectedPatient != null)
+            Appointment appointment = (sender as FrameworkElement).Tag as Appointment;
+
+            var view = new AddAppointment(appointment, this.loading);
+            if (child.ShowDialog("编辑登记", view))
             {
-                var view = new AddAppointment(pmv.SelectedPatient, this.loading);
-                if (child.ShowDialog("编辑登记", view))
-                {
-                    var result = loading.AsyncWait("编辑预约中,请稍后", SocketProxy.Instance.ModifyPatientInfo(pmv.SelectedPatient));
-                    if (result.IsSuccess) pmv.Refresh();
-                    else MsWindow.ShowDialog($"编辑预约失败,{ result.Error }", "软件提示");
-                }
+                LoadAppointments();
             }
-            else MsWindow.ShowDialog($"请选择编辑预约项", "软件提示");
-            */
         }
+
+        #endregion
+
     }
 }

@@ -26,12 +26,9 @@ namespace MM.Medical.Client.Views.AppointmentModule
             InitializeComponent();
             this.loading = loading;
             Appointment = rawAppointment.Copy();
-            LoadTimes();
             if (rawAppointment.AppointmentID == 0)
             {
-                Appointment.AppointmentTime = (int)TimeHelper.ToUnixTime(DateTime.Now.Date);
-                cbHours.SelectedIndex = 0;
-                cbMinutes.SelectedIndex = 0;
+                Appointment.AppointmentTime = TimeHelper.ToUnixTime(DateTime.Now);
             }
             else
             {
@@ -40,22 +37,8 @@ namespace MM.Medical.Client.Views.AppointmentModule
             DataContext = this;
         }
 
-        private void LoadTimes()
-        {
-            List<int> hours = new List<int>();
-            for(int i = 9; i < 17; i++)
-            {
-                hours.Add(i);
-            }
-            cbHours.ItemsSource = hours;
-
-            List<int> minutes = new List<int>() { 0, 30 };
-            cbMinutes.ItemsSource = minutes;
-        }
-
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Appointment.AppointmentTime = TimeHelper.ToUnixTime(((DateTime)dpAppointmentTime.SelectedDate).Date.AddHours((int)cbHours.SelectedItem).AddMinutes((int)cbMinutes.SelectedItem));
             if (Appointment.AppointmentID == 0)
             {
                 var result = loading.AsyncWait("新增预约中,请稍后", SocketProxy.Instance.AddAppointment(Appointment));
@@ -65,7 +48,7 @@ namespace MM.Medical.Client.Views.AppointmentModule
                 }
                 else
                 {
-                    Alert.ShowMessage(false, AlertType.Success, "新增预约失败", result.Error);
+                    Alert.ShowMessage(false, AlertType.Error, "新增预约失败", result.Error);
                 }
             }
             else
@@ -75,7 +58,10 @@ namespace MM.Medical.Client.Views.AppointmentModule
                 {
                     this.Close(true);
                 }
-                else MsWindow.ShowDialog($"编辑预约失败,{ result.Error }", "软件提示");
+                else
+                {
+                    Alert.ShowMessage(false, AlertType.Error, "编辑预约失败", result.Error);
+                }
             }
         }
 

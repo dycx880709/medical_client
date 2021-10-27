@@ -90,5 +90,13 @@ namespace MM.Medical.Client
         }
 
         #endregion
+
+        private void Move_Click(object sender, MouseButtonEventArgs e)
+        {
+            if(e.LeftButton== MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+        }
     }
 }
