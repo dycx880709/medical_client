@@ -259,7 +259,18 @@
                         </ComboBox>
                         <ComboBox x:Name="cb_bodyLoc" Grid.Row="0" Grid.Column="9" Text="{Binding Examination.BodyPose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <ComboBox x:Name="cb_anesthesia" Grid.Row="0" Grid.Column="11" Text="{Binding Examination.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Examination.ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}" IsReadOnly="True"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="True">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                    <Setter Property="Text" Value="--"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
+                                            <Setter Property="Text" Value="{Binding Examination.ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
                         <TextBox Grid.Row="2" Grid.Column="3" IsReadOnly="True">
                             <TextBox.Style>
                                 <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
