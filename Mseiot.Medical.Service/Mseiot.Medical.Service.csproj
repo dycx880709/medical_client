@@ -68,6 +68,7 @@
     <Compile Include="Services\DecontaminateFlowProxy.cs" />
     <Compile Include="Services\EndoscopeProxy.cs" />
     <Compile Include="Services\ConsultingRoomProxy.cs" />
+    <Compile Include="Services\ExaminationProxy.cs" />
     <Compile Include="Services\MedicalTemplateProxy.cs" />
     <Compile Include="Services\MedicalWordProxy.cs" />
     <Compile Include="Services\RFIDDeviceProxy.cs" />

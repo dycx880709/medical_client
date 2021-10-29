@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ms.Libs.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,8 +8,17 @@ using System.Threading.Tasks;
 
 namespace Mseiot.Medical.Service.Entities
 {
-    public class Appointment
+    public class Appointment : NotifyPropertyBase
     {
+        private string name;
+        private long appointmentTime;
+        private string idCard;
+        private string socialSecurityCode;
+        private bool sex;
+        private long birthday;
+        private AppointmentStatus appointmentStatus;
+        private Examination examination;
+
         /// <summary>
         /// 预约ID
         /// </summary>
@@ -18,37 +28,103 @@ namespace Mseiot.Medical.Service.Entities
         /// </summary>
         public int Number { get; set; }
         /// <summary>
-        /// 病人姓名
+        /// 性别
         /// </summary>
-        public string Name { get; set; }
-        /// <summary>
-        /// 预约时间
-        /// </summary>
-        public long AppointmentTime { get; set; }
-        /// <summary>
-        /// 身份证
-        /// </summary>
-        public string IDCard { get; set; }
+        public bool Sex
+        {
+            get { return sex; }
+            set
+            {
+                sex = value;
+                RaisePropertyChanged("Sex");
+            }
+        }
+
         /// <summary>
         /// 社保账号
         /// </summary>
-        public string SocialSecurityCode { get; set; }
+        public string SocialSecurityCode
+        {
+            get { return socialSecurityCode; }
+            set
+            {
+                socialSecurityCode = value;
+                RaisePropertyChanged("SocialSecurityCode");
+            }
+        }
         /// <summary>
-        /// 性别
+        /// 预约时间
         /// </summary>
-        public bool Sex { get; set; }
+        public long AppointmentTime
+        {
+            get { return appointmentTime; }
+            set
+            {
+                appointmentTime = value;
+                RaisePropertyChanged("AppointmentTime");
+            }
+        }
+        /// <summary>
+        /// 病人姓名
+        /// </summary>
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+                RaisePropertyChanged("Name");
+            }
+        }
+        /// <summary>
+        /// 身份证
+        /// </summary>
+        public string IDCard
+        {
+            get { return idCard; }
+            set
+            {
+                idCard = value;
+                RaisePropertyChanged("IDCard");
+            }
+        }
         /// <summary>
         /// 年龄
         /// </summary>
-        public long Birthday { get; set; }
+        public long Birthday
+        {
+            get { return birthday; }
+            set
+            {
+                birthday = value;
+                RaisePropertyChanged("Birthday");
+            }
+        }
+
         /// <summary>
         /// 预约状态
         /// </summary>
-        public AppointmentStatus AppointmentStatus { get; set; }
+        public AppointmentStatus AppointmentStatus
+        {
+            get { return appointmentStatus; }
+            set
+            {
+                appointmentStatus = value;
+                RaisePropertyChanged("AppointmentStatus");
+            }
+        }
         /// <summary>
         /// 检查信息
         /// </summary>
-        public Examination Examination { get; set; }
+        public Examination Examination
+        {
+            get { return examination; }
+            set
+            {
+                examination = value;
+                RaisePropertyChanged("Examination");
+            }
+        }
     }
 
     public enum AppointmentStatus

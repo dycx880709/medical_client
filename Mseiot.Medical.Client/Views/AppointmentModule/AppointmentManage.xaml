@@ -13,7 +13,7 @@
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="预约登记" Margin="5,0" Click="Add_Click"/>
-                        <Button Content="编辑登记" Margin="5,0" Click="Modify_Click">
+                        <Button Content="编辑登记" Visibility="Collapsed" Margin="5,0" Click="Modify_Click">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>

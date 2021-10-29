@@ -11,7 +11,6 @@ namespace Mseiot.Medical.Service.Services
 {
     public partial class SocketProxy
     {
-
         public async Task<MsResult<ListResult<Appointment>>> GetAppointments(
             int index, 
             int count, 
@@ -26,9 +25,9 @@ namespace Mseiot.Medical.Service.Services
             {
                 Index = index.ToString(),
                 Count = count.ToString(),
-                StartTime = startTime == null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
+                StartTime = startTime != null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
                 EndTime = endTime != null ? TimeHelper.ToUnixTime(endTime.Value) : long.MaxValue,
-                UserInfo = userInfo,
+                UserInfo = userInfo ?? "",
                 ConsultingRoomID = consultingRoomID,
                 Statuses = appointmentStatuses != null ? string.Join(",", appointmentStatuses.Select(t => (int)t)) : null
             });

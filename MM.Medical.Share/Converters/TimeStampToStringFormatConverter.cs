@@ -16,7 +16,7 @@ namespace MM.Medical.Share.Converters
             DateTime? dateTime = null;
             if (value is int timeStamp)
                 dateTime = TimeHelper.FromUnixTime(timeStamp);
-            if (value is long timeStampL)
+            else if (value is long timeStampL)
                 dateTime = TimeHelper.FromUnixTime(timeStampL);
             else if (value is DateTime dt)
                 dateTime = dt;

@@ -279,6 +279,7 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("DoctorName");
             }
         }
+        public Appointment Appointment { get; set; }
         /// <summary>
         /// 检查录像
         /// </summary>

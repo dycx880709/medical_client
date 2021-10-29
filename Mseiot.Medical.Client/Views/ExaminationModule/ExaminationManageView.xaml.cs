@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using Ms.Libs.TcpLib;
 using System.Threading.Tasks;
 using Mseiot.Medical.Service.Models;
+using System.Linq;
 
 namespace MM.Medical.Client.Views
 {
@@ -56,6 +57,26 @@ namespace MM.Medical.Client.Views
             SocketProxy.Instance.TcpProxy.ConnectStateChanged += TcpProxy_ConnectStateChanged;
             SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
             LoadConsultingRoom();
+            ResetCheckingExamination();
+        }
+
+        private async void ResetCheckingExamination()
+        {
+            if (dg_appointments.ItemsSource is IEnumerable<Appointment> appointments)
+            {
+                var condition = appointments.FirstOrDefault(t => t.AppointmentStatus == AppointmentStatus.Checking);
+                if (condition != null)
+                {
+                    loading.Start("检查恢复中,请稍后");
+                    await Task.Delay(3000);
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        dg_appointments.SelectedValue = condition;
+                        this.IsChecking = true;
+                        loading.Stop();
+                    });
+                }
+            }
         }
 
         private void LoadConsultingRoom()
@@ -173,7 +194,7 @@ namespace MM.Medical.Client.Views
                 if (tb.IsChecked.Value)
                 {
                     info.AppointmentStatus = AppointmentStatus.Checking;
-                    var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyAppointment(info));
+                    var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(info));
                     if (!result.IsSuccess)
                     {
                         Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result.Error }");
@@ -184,7 +205,7 @@ namespace MM.Medical.Client.Views
                 else
                 {
                     info.AppointmentStatus = AppointmentStatus.Checked;
-                    var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointment(info));
+                    var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(info));
                     if (!result.IsSuccess)
                     {
                         Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result.Error }");
@@ -269,7 +290,26 @@ namespace MM.Medical.Client.Views
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            if (dg_appointments.SelectedValue is Appointment appointment && appointment.Examination != null)
+            {
+                var result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyExamination(appointment.Examination));
+                if (result.IsSuccess) Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
+                else Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败,{ result.Error }");
+            }
+        }
 
+        private void Appointments_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dg_appointments.SelectedValue is Appointment appointment)
+            {
+                if (appointment.AppointmentStatus != AppointmentStatus.Waiting)
+                {
+                    var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetExaminationsByAppointmentID(appointment.AppointmentID));
+                    if (result.IsSuccess) appointment.Examination = result.Content;
+                    else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
+                }
+                else appointment.Examination = new Examination();
+            }
         }
     }
 }

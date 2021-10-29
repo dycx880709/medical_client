@@ -24,7 +24,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <controls:CustomGroupBox Width="450" Grid.Column="0" Header="检查列表" Margin="0,0,5,0">
+        <controls:CustomGroupBox Width="350" Grid.Column="0" Header="检查列表" Margin="0,0,5,0">
             <controls:CustomGroupBox.Style>
                 <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
                     <Style.Triggers>
@@ -49,8 +49,8 @@
                                 </Style>
                             </ToggleButton.Style>
                         </ToggleButton>
-                        <Button Content="刷新" Margin="5,0" Click="Refresh_Click"/>
-                        <Button Content="删除" Margin="5,0,0,0" Click="Remove_Click"/>
+                        <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
+                        <Button Content="删除" Margin="5,0,0,0" Click="Remove_Click" Visibility="Collapsed"/>
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
@@ -66,13 +66,13 @@
                     <RadioButton x:Name="rb_waiting" Click="AppointmentStatus_CheckChanged" Content="待检查" Margin="15,0"/>
                     <RadioButton x:Name="rb_checked" Click="AppointmentStatus_CheckChanged" Content="已检查"/>
                 </StackPanel>
-                <DataGrid x:Name="dg_appointments" Grid.Row="1">
+                <DataGrid x:Name="dg_appointments" Grid.Row="1" SelectionChanged="Appointments_SelectionChanged">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="70" Visibility="Collapsed" Header="序号" Binding="{Binding Number}"/>
                         <DataGridTemplateColumn Width="*" Header="检查状态">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Width="80" Height="30" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
+                                    <Border Width="60" Height="30" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
                                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding AppointmentStatus, Converter={StaticResource EnumToStringConverter}}"/>
                                     </Border>
                                 </DataTemplate>
@@ -128,13 +128,55 @@
                                         <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Waiting}">
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Checking}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </ToggleButton.Style>
                         </ToggleButton>
-                        <Button Content="采图配置" Margin="5,0" Click="CaptureSetting_Click"/>
-                        <Button Content="保存报告" Margin="5,0" Click="Save_Click"/>
-                        <Button Content="打印报告" Click="Print_Click" Margin="5,0,0,0"/>
+                        <Button Content="采图配置" Click="CaptureSetting_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Margin" Value="5,0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Checking}">
+                                            <Setter Property="Margin" Value="5,0,0,0"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="保存报告" Margin="5,0" Click="Save_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Checking}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Waiting}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="打印报告" Click="Print_Click" Margin="5,0,0,0">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Checking}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Waiting}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
@@ -233,10 +275,10 @@
                         <TextBox Grid.Row="2" Grid.Column="5" IsReadOnly="True">
                             <TextBox.Style>
                                 <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                    <Setter Property="Text" Value="{Binding Examination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
+                                    <Setter Property="Text" Value="--"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ReportTime}" Value="0">
-                                            <Setter Property="Text" Value="--"/>
+                                        <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reported}">
+                                            <Setter Property="Text" Value="{Binding Examination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

@@ -44,7 +44,6 @@ namespace MM.Medical.Client.Views
 
         #region 数据
 
-
         private async void LoadAppointments()
         {
             pager.SelectedCount = dgAppointments.GetFullCountWithoutScroll();
@@ -86,18 +85,22 @@ namespace MM.Medical.Client.Views
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            Appointment appointment = (sender as FrameworkElement).Tag as Appointment;
-            var result = loading.AsyncWait("删除预约中,请稍后", SocketProxy.Instance.RemoveAppointments(new List<int> { appointment.AppointmentID }));
-            if (result.IsSuccess) LoadAppointments();
-            else Alert.ShowMessage(false, AlertType.Error, "删除预约失败", result.Error);
+            if (dgAppointments.SelectedValue is Appointment appointment)
+            {
+                var result = loading.AsyncWait("删除预约中,请稍后", SocketProxy.Instance.RemoveAppointments(new List<int> { appointment.AppointmentID }));
+                if (result.IsSuccess) LoadAppointments();
+                else Alert.ShowMessage(false, AlertType.Error, "删除预约失败", result.Error);
+            }
         }
 
         private void Modify_Click(object sender, RoutedEventArgs e)
         {
-            Appointment appointment = (sender as FrameworkElement).Tag as Appointment;
-            var view = new AddAppointment(appointment, this.loading);
-            if (child.ShowDialog("修改预约", view))
-                LoadAppointments();
+            if (dgAppointments.SelectedValue is Appointment appointment)
+            {
+                var view = new AddAppointment(appointment, this.loading);
+                if (child.ShowDialog("修改预约", view))
+                    LoadAppointments();
+            }
         }
 
         #endregion
