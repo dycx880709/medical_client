@@ -1,4 +1,5 @@
 ﻿using Ms.Controls;
+using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
@@ -33,31 +34,24 @@ namespace MM.Medical.Client.Views
         private void AppointmentManage_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= AppointmentManage_Loaded;
-            this.dgAppointments.ItemsSource = appointments;
-            dtiTime.StartTime = DateTime.Now.AddDays(-14);
-            dtiTime.EndTime = DateTime.Now.AddDays(14);
+            var overTime = TimeHelper.ToUnixTime(DateTime.Now) % (24 * 60 * 60);
+            var startTime = TimeHelper.ToUnixDate(DateTime.Now) - overTime;
+            var today = TimeHelper.FromUnixTime(startTime);
+            dtiTime.StartTime = today.AddDays(-14);
+            dtiTime.EndTime = today.AddDays(14);
             LoadAppointments();
         }
 
         #region 数据
 
-        ObservableCollection<Appointment> appointments = new ObservableCollection<Appointment>();
 
         private async void LoadAppointments()
         {
-            appointments.Clear();
             var result = await SocketProxy.Instance.GetAppointments(dtiTime.StartTime,dtiTime.EndTime,tbSearchName.Text);
             if (result.IsSuccess)
-            {
-                if (result.Content != null)
-                {
-                    appointments.AddRange(result.Content);
-                }
-            }
+                dgAppointments.ItemsSource = new ObservableCollection<Appointment>(result.Content);
             else
-            {
                 Alert.ShowMessage(false, AlertType.Error, result.Error);
-            }
         }
 
         #endregion
@@ -77,9 +71,7 @@ namespace MM.Medical.Client.Views
         {
             var view = new AddAppointment(new Appointment(), this.loading);
             if (child.ShowDialog("预约登记", view))
-            {
                 LoadAppointments();
-            }
         }
 
         private void Remove_Click(object sender, RoutedEventArgs e)
@@ -93,15 +85,48 @@ namespace MM.Medical.Client.Views
         private void Modify_Click(object sender, RoutedEventArgs e)
         {
             Appointment appointment = (sender as FrameworkElement).Tag as Appointment;
-
             var view = new AddAppointment(appointment, this.loading);
             if (child.ShowDialog("编辑登记", view))
-            {
                 LoadAppointments();
-            }
         }
 
         #endregion
 
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            LoadAppointments();
+        }
+
+        private void PunchIn_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgAppointments.SelectedValue is Appointment appointment)
+            {
+                if (appointment.AppointmentStatus == AppointmentStatus.Reserved)
+                {
+                    var bakAppointment = appointment.Copy();
+                    bakAppointment.AppointmentStatus = AppointmentStatus.PunchIn;
+                    var result = loading.AsyncWait("签到预约中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(bakAppointment));
+                    if (result.IsSuccess) LoadAppointments();
+                    else Alert.ShowMessage(true, AlertType.Error, $"签到预约失败,{ result.Error }");
+                }
+            }
+            else Alert.ShowMessage(true, AlertType.Warning, $"请选择签到项");
+        }
+
+        private void UnPunch_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgAppointments.SelectedValue is Appointment appointment)
+            {
+                if (appointment.AppointmentStatus == AppointmentStatus.PunchIn)
+                {
+                    var bakAppointment = appointment.Copy();
+                    bakAppointment.AppointmentStatus = AppointmentStatus.Reserved;
+                    var result = loading.AsyncWait("取消签到预约中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(bakAppointment));
+                    if (result.IsSuccess) LoadAppointments();
+                    else Alert.ShowMessage(true, AlertType.Error, $"取消签到预约失败,{ result.Error }");
+                }
+            }
+            else Alert.ShowMessage(true, AlertType.Warning, $"请选择取消签到项");
+        }
     }
 }

@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using Ms.Controls.Core;
 using System.Windows.Controls.Primitives;
+using Mseiot.Medical.Service.Services;
+using Ms.Libs.TcpLib;
 
 namespace MM.Medical.Client.Views
 {
@@ -25,11 +27,71 @@ namespace MM.Medical.Client.Views
             this.Loaded += MainWindow_Loaded;
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //lb_nav.ItemsSource = this.navCol;
-            CacheHelper.GetConfig("");
             UpdateTime();
+            await ReConnectServer();
+        }
+
+        private void TcpProxy_ReceiveMessaged(object sender, Message e)
+        {
+
+        }
+
+        private async void TcpProxy_ConnectStateChanged(object sender, ConnectStateArgs e)
+        {
+            switch (e.ConnectState)
+            {
+                case ConnectState.Faild:
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        foreach (var win in Application.Current.Windows)
+                        {
+                            if (win is MainWindow) continue;
+                            (win as Window).WindowState = WindowState.Minimized;
+                        }
+                        loading.Start("启动连接已断开,断线重连中");
+                    });
+                    SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
+                    await System.Threading.Tasks.Task.Delay(1000);
+                    await ReConnectServer();
+                    break;
+                case ConnectState.Success:
+                    await System.Threading.Tasks.Task.Delay(3 * 100);
+                    var result = await SocketProxy.Instance.Login(CacheHelper.CurrentUser.UserID);
+                    if (result.IsSuccess)
+                    {
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            foreach (var win in Application.Current.Windows)
+                            {
+                                if (win is MainWindow) continue;
+                                (win as Window).WindowState = WindowState.Normal;
+                            }
+                            loading.Stop();
+                        });
+                        SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+                    }
+                    else
+                    {
+                        await System.Threading.Tasks.Task.Delay(3 * 1000);
+                        this.Dispatcher.Invoke(() => loading.Start("服务连接失败,重试连接中"));
+                        await ReConnectServer();
+                    }
+                    break;
+            }
+        }
+
+        private async System.Threading.Tasks.Task ReConnectServer()
+        {
+            if (SocketProxy.Instance.TcpProxy != null)
+            {
+                SocketProxy.Instance.TcpProxy.ConnectStateChanged -= TcpProxy_ConnectStateChanged;
+                SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
+                await SocketProxy.Instance.TcpProxy.Stop();
+            }
+            SocketProxy.Instance.TcpProxy.ConnectStateChanged += TcpProxy_ConnectStateChanged;
+            await SocketProxy.Instance.TcpProxy.Start();
         }
 
         private void UpdateTime()
@@ -53,13 +115,20 @@ namespace MM.Medical.Client.Views
             Restart("Logout");
         }
 
-        private void ModifyUserPwd_Click(object sender, RoutedEventArgs e)
+        private void ModifyPwd_Click(object sender, RoutedEventArgs e)
         {
-
+            var view = new ResetPwdView(this.loading);
+            child.ShowDialog("修改密码", view);
         }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
+        private async void Close_Click(object sender, RoutedEventArgs e)
         {
+            if (SocketProxy.Instance.TcpProxy != null)
+            {
+                SocketProxy.Instance.TcpProxy.ConnectStateChanged -= TcpProxy_ConnectStateChanged;
+                SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
+                await SocketProxy.Instance.TcpProxy.Stop();
+            }
             App.Current.Shutdown();
         }
 
@@ -67,11 +136,6 @@ namespace MM.Medical.Client.Views
         {
             if (sender is FrameworkElement element &&  element.Tag is string viewName)
             {
-                //if (this.IsLoaded)
-                //{
-                //    var popup = ControlHelper.GetLogicParent<Popup>(element);
-                //    if (popup != null) popup.IsOpen = false;
-                //}
                 if (!string.IsNullOrEmpty(viewName) && !navigateItems.ContainsKey(viewName))
                 {
                     var type = Type.GetType(viewName);

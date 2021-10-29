@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="MM.Medical.Client.Views.InspectionManageView"
+﻿<UserControl x:Class="MM.Medical.Client.Views.ExaminationManageView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -24,7 +24,7 @@
             <controls:CustomGroupBox.Style>
                 <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsChecking, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type local:InspectionManageView}, Mode=FindAncestor}}" Value="True">
+                        <DataTrigger Binding="{Binding IsChecking, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type local:ExaminationManageView}, Mode=FindAncestor}}" Value="True">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -46,18 +46,18 @@
                 </Grid.RowDefinitions>
                 <StackPanel Margin="20,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="今日患者"/>
-                    <RadioButton x:Name="rb_all" Click="PatientStatus_CheckChanged" Content="全部" IsChecked="True"/>
-                    <RadioButton x:Name="rb_waiting" Click="PatientStatus_CheckChanged" Content="待检查" Margin="15,0"/>
-                    <RadioButton x:Name="rb_checked" Click="PatientStatus_CheckChanged" Content="已检查"/>
+                    <RadioButton x:Name="rb_all" Click="AppointmentStatus_CheckChanged" Content="全部" IsChecked="True"/>
+                    <RadioButton x:Name="rb_waiting" Click="AppointmentStatus_CheckChanged" Content="待检查" Margin="15,0"/>
+                    <RadioButton x:Name="rb_checked" Click="AppointmentStatus_CheckChanged" Content="已检查"/>
                 </StackPanel>
-                <DataGrid x:Name="dg_patients" Grid.Row="1">
+                <DataGrid x:Name="dg_appointments" Grid.Row="1">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="70" Header="序号"/>
                         <DataGridTemplateColumn Width="*" Header="检查状态">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Width="80" Height="30" CornerRadius="5" Background="{Binding PatientStatus, Converter={StaticResource PatientStatusToColorConverter}}">
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding PatientStatus, Converter={StaticResource EnumToStringConverter}}"/>
+                                    <Border Width="80" Height="30" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding AppointmentStatus, Converter={StaticResource EnumToStringConverter}}"/>
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -71,7 +71,10 @@
                                         <TextBlock x:Name="tb" Text="--"/>
                                     </Border>
                                     <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding PatientStatus}" Value="{x:Static entities:PatientStatus.Checked}">
+                                        <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
+                                            <Setter Property="Text" TargetName="tb" Value="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reported}">
                                             <Setter Property="Text" TargetName="tb" Value="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
@@ -96,7 +99,7 @@
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <ToggleButton IsChecked="{Binding IsChecking, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type local:InspectionManageView}, Mode=FindAncestor}}"
+                        <ToggleButton IsChecked="{Binding IsChecking, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type local:ExaminationManageView}, Mode=FindAncestor}}"
                             Click="Check_Click" VerticalAlignment="Center" Margin="5,0">
                             <ToggleButton.Style>
                                 <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
@@ -190,7 +193,7 @@
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                                 <Setter Property="Text" Value="--"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PatientStatus}" Value="{x:Static entities:PatientStatus.Checked}">
+                                    <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
                                         <Setter Property="Text" Value="{Binding CheckTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
                                     </DataTrigger>
                                 </Style.Triggers>

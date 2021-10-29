@@ -32,7 +32,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 身份证
         /// </summary>
-        public string ID { get; set; }
+        public string IDCard { get; set; }
 
         /// <summary>
         /// 性别
@@ -43,15 +43,29 @@ namespace Mseiot.Medical.Service.Entities
         /// 预约状态
         /// </summary>
         public AppointmentStatus AppointmentStatus { get; set; }
+        /// <summary>
+        /// 检查信息
+        /// </summary>
+        public Examination Examination { get; set; }
     }
 
     public enum AppointmentStatus
     {
         [Description("已预约")]
         Reserved,
-        [Description("已报到")]
-        Report,
+        [Description("已签到")]
+        PunchIn,
+        [Description("候诊中")]
+        Waiting,
+        [Description("检查中")]
+        Checking,
         [Description("已检查")]
-        Check
+        Checked,
+        [Description("已报告")]
+        Reported,
+        [Description("已取消")]
+        Cancel,
+        [Description("已过期")]
+        Exprire
     }
 }

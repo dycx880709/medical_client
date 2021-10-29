@@ -51,6 +51,7 @@
     <Compile Include="Entities\CheckInfo.cs" />
     <Compile Include="Entities\ConsultingRoom.cs" />
     <Compile Include="Entities\EnumItems.cs" />
+    <Compile Include="Entities\Examination.cs" />
     <Compile Include="Entities\ListResult.cs" />
     <Compile Include="Entities\MedicalTemplate.cs" />
     <Compile Include="Entities\MedicalWord.cs" />

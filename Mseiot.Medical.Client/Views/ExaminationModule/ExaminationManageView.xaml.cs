@@ -9,13 +9,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Ms.Controls.Core;
+using System.Collections.ObjectModel;
 
 namespace MM.Medical.Client.Views
 {
     /// <summary>
-    /// InspectionManageView.xaml 的交互逻辑
+    /// ExaminationManageView.xaml 的交互逻辑
     /// </summary>
-    public partial class InspectionManageView : UserControl
+    public partial class ExaminationManageView : UserControl
     {
         public bool IsChecking
         {
@@ -25,18 +26,18 @@ namespace MM.Medical.Client.Views
 
         // Using a DependencyProperty as the backing store for IsChecking.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsCheckingProperty =
-            DependencyProperty.Register("IsChecking", typeof(bool), typeof(InspectionManageView), new PropertyMetadata(false));
+            DependencyProperty.Register("IsChecking", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
 
         private string consultingRoom = "";
 
-        public InspectionManageView()
+        public ExaminationManageView()
         {
             InitializeComponent();
             this.consultingRoom = CacheHelper.GetConfig("ConsultingRoom");
-            this.Loaded += InspectionManageView_Loaded;
+            this.Loaded += ExaminationManageView_Loaded;
         }
 
-        private void InspectionManageView_Loaded(object sender, RoutedEventArgs e)
+        private void ExaminationManageView_Loaded(object sender, RoutedEventArgs e)
         {
             GetBaseWords();
             GetPatientInfos();
@@ -51,22 +52,26 @@ namespace MM.Medical.Client.Views
                     Alert.ShowMessage(true, AlertType.Error, "诊室信息未配置");
                     return;
                 }
-                var patientStatuses = new List<PatientStatus>();
+                var patientStatuses = new List<AppointmentStatus>();
                 if (rb_all.IsChecked.Value)
-                    patientStatuses.AddRange(new PatientStatus[] { PatientStatus.Regist, PatientStatus.Checking, PatientStatus.Checked });
+                    patientStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Checking, AppointmentStatus.Checked });
                 else if (rb_waiting.IsChecked.Value)
-                    patientStatuses.Add(PatientStatus.Regist);
+                    patientStatuses.Add(AppointmentStatus.Waiting);
                 else
-                    patientStatuses.Add(PatientStatus.Checked);
-                var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetPatientInfos(
-                    1,
-                    1000,
-                    checkTime: (int)TimeHelper.ToUnixDate(DateTime.Now),
-                    consultingRooms: new string[] { consultingRoom.Trim() },
-                    patientStatuses: new PatientStatus[] { PatientStatus.Regist, PatientStatus.Checking, PatientStatus.Checked }
-                ));
-                if (result.IsSuccess) dg_patients.ItemsSource = result.Content.Results;
-                else Alert.ShowMessage(true, AlertType.Error, $"获取病人信息失败,{ result.Error }");
+                    patientStatuses.Add(AppointmentStatus.Checked);
+                //var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetAppointments(
+                //    1,
+                //    1000,
+                //    checkTime: (int)TimeHelper.ToUnixDate(DateTime.Now),
+                //    consultingRooms: new string[] { consultingRoom.Trim() },
+                //    patientStatuses: new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Checking, AppointmentStatus.Checked }
+                //));
+                var overTime = TimeHelper.ToUnixDate(DateTime.Now) % (24 * 60 * 60);
+                var startTime = TimeHelper.ToUnixDate(DateTime.Now) - overTime;
+                var endTime = startTime + 24 * 60 * 60 - 1;
+                var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetAppointments(TimeHelper.FromUnixTime(startTime), TimeHelper.FromUnixTime(endTime), ""));
+                if (result.IsSuccess) dg_appointments.ItemsSource = new ObservableCollection<Appointment>(result.Content);
+                else Alert.ShowMessage(true, AlertType.Error, $"获取预约信息失败,{ result.Error }");
             }
         }
 
@@ -98,30 +103,36 @@ namespace MM.Medical.Client.Views
 
         private void Check_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ToggleButton tb && dg_patients.SelectedValue is PatientInfo info)
+            if (sender is ToggleButton tb && dg_appointments.SelectedValue is Appointment info)
             {
+                var oldAppointmentStatus = info.AppointmentStatus;
                 if (tb.IsChecked.Value)
                 {
-                    info.PatientStatus = PatientStatus.Checking;
-                    var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyPatientInfo(info));
-                    if (!result.IsSuccess) Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result.Error }");
-                    else 
+                    info.AppointmentStatus = AppointmentStatus.Checking;
+                    var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyAppointment(info));
+                    if (!result.IsSuccess)
                     {
-                        info.CheckInfo.CheckTime = info.CheckTime = (int)TimeHelper.ToUnixTime(DateTime.Now);
-                        Alert.ShowMessage(true, AlertType.Success, "检查已启动");
+                        Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result.Error }");
+                        info.AppointmentStatus = oldAppointmentStatus;
                     }
+                    else
+                        Alert.ShowMessage(true, AlertType.Success, "检查已启动");
                 }
                 else
                 {
-                    info.PatientStatus = PatientStatus.Checked;
-                    var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyPatientInfo(info));
-                    if (!result.IsSuccess) Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result.Error }");
+                    info.AppointmentStatus = AppointmentStatus.Checked;
+                    var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointment(info));
+                    if (!result.IsSuccess)
+                    {
+                        Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result.Error }");
+                        info.AppointmentStatus = oldAppointmentStatus;
+                    }
                     else Alert.ShowMessage(true, AlertType.Success, "检查已结束");
                 }
             }
         }
 
-        private void PatientStatus_CheckChanged(object sender, RoutedEventArgs e)
+        private void AppointmentStatus_CheckChanged(object sender, RoutedEventArgs e)
         {
             GetPatientInfos();
         }
@@ -138,7 +149,7 @@ namespace MM.Medical.Client.Views
 
         private void Print_Click(object sender, RoutedEventArgs e)
         {
-            if (dg_patients.SelectedValue is PatientInfo info)
+            if (dg_appointments.SelectedValue is PatientInfo info)
             {
                 if (info.CheckInfo.ReportTime == 0)
                 {

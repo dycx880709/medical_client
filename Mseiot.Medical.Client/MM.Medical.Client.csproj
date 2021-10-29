@@ -138,6 +138,9 @@
     <Compile Include="Views\Component\PatientManageView.xaml.cs">
       <DependentUpon>PatientManageView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Component\ResetPwdView.xaml.cs">
+      <DependentUpon>ResetPwdView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Component\SetConsultingView.xaml.cs">
       <DependentUpon>SetConsultingView.xaml</DependentUpon>
     </Compile>
@@ -174,8 +177,8 @@
     <Compile Include="Views\StatisticsModule\SpecialStatisticsView.xaml.cs">
       <DependentUpon>SpecialStatisticsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ExaminationModule\InspectionManageView.xaml.cs">
-      <DependentUpon>InspectionManageView.xaml</DependentUpon>
+    <Compile Include="Views\ExaminationModule\ExaminationManageView.xaml.cs">
+      <DependentUpon>ExaminationManageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginModule\SeverSetting.xaml.cs">
       <DependentUpon>SeverSetting.xaml</DependentUpon>
@@ -251,6 +254,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Component\ResetPwdView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Component\SetConsultingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -299,7 +306,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExaminationModule\InspectionManageView.xaml">
+    <Page Include="Views\ExaminationModule\ExaminationManageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

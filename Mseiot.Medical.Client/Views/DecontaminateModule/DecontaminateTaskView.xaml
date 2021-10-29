@@ -11,7 +11,7 @@
         <ListView x:Name="lvTasks" BorderThickness="0" Padding="0" Loaded="lvTasks_Loaded">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="{Binding ColumnCount,ElementName=self}"></UniformGrid>
+                    <UniformGrid Columns="{Binding ColumnCount,ElementName=self}"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemContainerStyle>

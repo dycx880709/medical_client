@@ -27,13 +27,7 @@ namespace MM.Medical.Client.Views
             this.loading = loading;
             Appointment = rawAppointment.Copy();
             if (rawAppointment.AppointmentID == 0)
-            {
                 Appointment.AppointmentTime = TimeHelper.ToUnixTime(DateTime.Now);
-            }
-            else
-            {
-                DateTime time = TimeHelper.FromUnixTime(Appointment.AppointmentTime);
-            }
             DataContext = this;
         }
 
@@ -42,26 +36,14 @@ namespace MM.Medical.Client.Views
             if (Appointment.AppointmentID == 0)
             {
                 var result = loading.AsyncWait("新增预约中,请稍后", SocketProxy.Instance.AddAppointment(Appointment));
-                if (result.IsSuccess)
-                {
-                    this.Close(true);
-                }
-                else
-                {
-                    Alert.ShowMessage(false, AlertType.Error, "新增预约失败", result.Error);
-                }
+                if (result.IsSuccess) this.Close(true);
+                else Alert.ShowMessage(false, AlertType.Error, "新增预约失败", result.Error);
             }
             else
             {
                 var result = loading.AsyncWait("编辑预约中,请稍后", SocketProxy.Instance.ModifyAppointment(Appointment));
-                if (result.IsSuccess)
-                {
-                    this.Close(true);
-                }
-                else
-                {
-                    Alert.ShowMessage(false, AlertType.Error, "编辑预约失败", result.Error);
-                }
+                if (result.IsSuccess) this.Close(true);
+                else Alert.ShowMessage(false, AlertType.Error, "编辑预约失败", result.Error);
             }
         }
 

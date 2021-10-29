@@ -1,5 +1,5 @@
 ﻿using Ms.Controls;
-using MM.Medical.Client.Views.Component;
+using MM.Medical.Client.Views;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;

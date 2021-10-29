@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MM.Medical.Client.Views.Component
+namespace MM.Medical.Client.Views
 {
     /// <summary>
     /// SetConsultingView.xaml 的交互逻辑

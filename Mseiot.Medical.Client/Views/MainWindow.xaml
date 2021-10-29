@@ -36,7 +36,7 @@
                     </Style>
                 </StackPanel.Resources>
                 <RadioButton Checked="MenuItem_Checked" Content="预约登记" Tag="MM.Medical.Client.Views.AppointmentManage" IsChecked="True" x:Name="rb_booking"/>
-                <RadioButton Checked="MenuItem_Checked" Content="检查中心" Tag="MM.Medical.Client.Views.InspectionManageView" x:Name="rb_Inspection"/>
+                <RadioButton Checked="MenuItem_Checked" Content="检查中心" Tag="MM.Medical.Client.Views.ExaminationManageView" x:Name="rb_Inspection"/>
                 <RadioButton Checked="MenuItem_Checked" Content="病历中心" Tag="MM.Medical.Client.Views.MedicalManageView" x:Name="rb_medical"/>
                 <RadioButton Click="MemuItems_Click" Content="清洗中心" x:Name="rb_Cleaning"/>
                 <RadioButton Click="MemuItems_Click" Content="主任管理" x:Name="rb_Director"/>
@@ -99,7 +99,7 @@
                     </StackPanel>
                     <!--修改密码-->
                     <Grid Margin="0,10">
-                        <controls:MediaButton Content="修改密码" Width="100" Name="ModifyUserPwd" Click="ModifyUserPwd_Click"/>
+                        <controls:MediaButton Content="修改密码" Width="100" Name="ModifyUserPwd" Click="ModifyPwd_Click"/>
                     </Grid>
                     <!--注销-->
                     <Grid Margin="0,10">
@@ -108,6 +108,7 @@
                 </StackPanel>
             </Popup>
         </Grid>
+        <controls:ChildWindow x:Name="child" Grid.RowSpan="3"/>
         <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
     </Grid>
 </controls:MsWindow>
