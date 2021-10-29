@@ -17,6 +17,7 @@
             <converters:EnumToIntConverter x:Key="EnumToIntConverter"/>
             <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
             <lc:PatientStatusToColorConverter x:Key="PatientStatusToColorConverter"/>
+            <lc:AppointmentStatusToColorConverter x:Key="AppointmentStatusToColorConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:TimeStampToDateTimeConverter x:Key="TimeStampToDateTimeConverter"/>
             <converters:TimeStampToStringFormatConverter x:Key="TimeStampToStringFormatConverter"/>

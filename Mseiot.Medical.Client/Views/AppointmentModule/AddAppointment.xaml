@@ -39,12 +39,16 @@
                 <ComboBox SelectedIndex="0" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding Appointment.Sex}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock Text="年龄" Style="{StaticResource editorFormItemText}"/>
+                <TextBox x:Name="dpAppointmentTime" Text="{Binding Appointment.Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="预约时间" Style="{StaticResource editorFormItemText}"/>
-                <controls:DateTimePicker x:Name="dpAppointmentTime" SelectedDateTime="{Binding Appointment.AppointmentTime,Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+                <controls:DateTimePicker SelectedDateTime="{Binding Appointment.AppointmentTime,Converter={StaticResource TimeStampToDateTimeConverter}}"/>
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="重新扫描" Click="Rescan_Click"/>
+            <Button Content="重新扫描" Click="Rescan_Click" IsEnabled="False"/>
             <Button Content="确定" Margin="20,0,0,0" IsDefault="True" Click="Save_Click"/>
         </StackPanel>
     </Grid>

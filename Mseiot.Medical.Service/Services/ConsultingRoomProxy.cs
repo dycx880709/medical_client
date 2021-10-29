@@ -1,5 +1,6 @@
 ﻿using Ms.Libs.Models;
 using Mseiot.Medical.Service.Entities;
+using Mseiot.Medical.Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,10 @@ namespace Mseiot.Medical.Service.Services
 {
     public partial class SocketProxy
     {
+        public async Task<MsResult<ConsultingRoom>> LoginConsultingRoom(string consultingRoomName)
+        {
+            return await TcpProxy.SendMessage<ConsultingRoom>(Command.Module_System, Command.ConsultingRoom_Login, consultingRoomName);
+        }
         public async Task<MsResult<int>> AddConsultingRoom(ConsultingRoom room)
         {
             return await HttpProxy.PostMessage<int>("/api/consulting/add", room);
@@ -29,5 +34,11 @@ namespace Mseiot.Medical.Service.Services
         {
             return await HttpProxy.PutMessage<bool>("/api/consulting/modify", room);
         }
+
+        public async Task<MsResult<bool>> AcceptConsultingRoom(int consultingRoomID, bool isUsed)
+        {
+            return await HttpProxy.PutMessage<bool>("/api/consulting/accept", new { ConsultingRoomID = consultingRoomID, IsUsed = isUsed });
+        }
+
     }
 }

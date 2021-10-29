@@ -10,6 +10,9 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Ms.Controls.Core;
 using System.Collections.ObjectModel;
+using Ms.Libs.TcpLib;
+using System.Threading.Tasks;
+using Mseiot.Medical.Service.Models;
 
 namespace MM.Medical.Client.Views
 {
@@ -28,50 +31,108 @@ namespace MM.Medical.Client.Views
         public static readonly DependencyProperty IsCheckingProperty =
             DependencyProperty.Register("IsChecking", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
 
-        private string consultingRoom = "";
+        public bool IsDoctorVisit
+        {
+            get { return (bool)GetValue(IsDoctorVisitProperty); }
+            set { SetValue(IsDoctorVisitProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsDoctorVisit.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsDoctorVisitProperty =
+            DependencyProperty.Register("IsDoctorVisit", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+
+        private int consultingRoomId;
 
         public ExaminationManageView()
         {
             InitializeComponent();
-            this.consultingRoom = CacheHelper.GetConfig("ConsultingRoom");
             this.Loaded += ExaminationManageView_Loaded;
+            this.IsEnabled = false;
         }
 
         private void ExaminationManageView_Loaded(object sender, RoutedEventArgs e)
         {
             GetBaseWords();
-            GetPatientInfos();
+            SocketProxy.Instance.TcpProxy.ConnectStateChanged += TcpProxy_ConnectStateChanged;
+            SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+            LoadConsultingRoom();
         }
 
-        private void GetPatientInfos()
+        private void LoadConsultingRoom()
+        {
+            var consultingRoomName = CacheHelper.GetConfig("ConsultingRoom");
+            if (!string.IsNullOrEmpty(consultingRoomName))
+            {
+                var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.LoginConsultingRoom(consultingRoomName));
+                if (result.IsSuccess)
+                {
+                    this.IsEnabled = true;
+                    this.consultingRoomId = result.Content.ConsultingRoomID;
+                    this.IsDoctorVisit = result.Content.IsUsed;
+                    LoadAppointmentInfos();
+                }
+                else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
+            }
+            else Alert.ShowMessage(false, AlertType.Error, $"检查诊室未配置,模块不可能");
+        }
+
+        private void TcpProxy_ReceiveMessaged(object sender, Message e)
+        {
+            if (e.Module == Command.Module_Appointment)
+            {
+                if (e.Method == Command.ChangeStatus_Appointment)
+                {
+
+                }
+            }
+        }
+
+        private void TcpProxy_ConnectStateChanged(object sender, ConnectStateArgs e)
+        {
+            switch (e.ConnectState)
+            {
+                case ConnectState.Success:
+                    SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
+                    SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+                    this.Dispatcher.Invoke(() => LoadConsultingRoom());
+                    break;
+                case ConnectState.Faild:
+                    SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
+                    this.Dispatcher.Invoke(() => this.IsEnabled = false);
+                    break;
+            }
+        }
+
+        private void LoadAppointmentInfos()
         {
             if (this.IsLoaded)
             {
-                if (string.IsNullOrEmpty(consultingRoom.Trim()))
-                {
-                    Alert.ShowMessage(true, AlertType.Error, "诊室信息未配置");
+                if (this.consultingRoomId == 0)
                     return;
-                }
-                var patientStatuses = new List<AppointmentStatus>();
+                var appointmentStatuses = new List<AppointmentStatus>();
                 if (rb_all.IsChecked.Value)
-                    patientStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Checking, AppointmentStatus.Checked });
+                    appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Reported, AppointmentStatus.Checking, AppointmentStatus.Checked });
                 else if (rb_waiting.IsChecked.Value)
-                    patientStatuses.Add(AppointmentStatus.Waiting);
+                    appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Checking });
                 else
-                    patientStatuses.Add(AppointmentStatus.Checked);
-                //var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetAppointments(
-                //    1,
-                //    1000,
-                //    checkTime: (int)TimeHelper.ToUnixDate(DateTime.Now),
-                //    consultingRooms: new string[] { consultingRoom.Trim() },
-                //    patientStatuses: new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Checking, AppointmentStatus.Checked }
-                //));
-                var overTime = TimeHelper.ToUnixDate(DateTime.Now) % (24 * 60 * 60);
-                var startTime = TimeHelper.ToUnixDate(DateTime.Now) - overTime;
+                    appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Checked, AppointmentStatus.Reported });
+                var startTime = TimeHelper.ToUnixDate(DateTime.Now);
                 var endTime = startTime + 24 * 60 * 60 - 1;
-                var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetAppointments(TimeHelper.FromUnixTime(startTime), TimeHelper.FromUnixTime(endTime), ""));
-                if (result.IsSuccess) dg_appointments.ItemsSource = new ObservableCollection<Appointment>(result.Content);
-                else Alert.ShowMessage(true, AlertType.Error, $"获取预约信息失败,{ result.Error }");
+                pager.SelectedCount = dg_appointments.GetFullCountWithoutScroll();
+                var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetAppointments(
+                    pager.PageIndex,
+                    pager.SelectedCount, 
+                    TimeHelper.FromUnixTime(startTime),
+                    TimeHelper.FromUnixTime(endTime),
+                    userInfo: "",
+                    consultingRoomID: consultingRoomId,
+                    appointmentStatuses: new AppointmentStatus[] { AppointmentStatus.Checking, AppointmentStatus.Checked, AppointmentStatus.Waiting, AppointmentStatus.Reported }));
+                if (result.IsSuccess)
+                {
+                    dg_appointments.ItemsSource = new ObservableCollection<Appointment>(result.Content.Results);
+                    pager.TotalCount = result.Content.Total;
+                }
+                else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
             }
         }
 
@@ -106,6 +167,9 @@ namespace MM.Medical.Client.Views
             if (sender is ToggleButton tb && dg_appointments.SelectedValue is Appointment info)
             {
                 var oldAppointmentStatus = info.AppointmentStatus;
+                if (info.Examination == null) info.Examination = new Examination();
+                if (string.IsNullOrEmpty(info.Examination.DoctorName))
+                    info.Examination.DoctorName = CacheHelper.CurrentUser.Name;
                 if (tb.IsChecked.Value)
                 {
                     info.AppointmentStatus = AppointmentStatus.Checking;
@@ -115,8 +179,7 @@ namespace MM.Medical.Client.Views
                         Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result.Error }");
                         info.AppointmentStatus = oldAppointmentStatus;
                     }
-                    else
-                        Alert.ShowMessage(true, AlertType.Success, "检查已启动");
+                    else Alert.ShowMessage(true, AlertType.Success, "检查已启动");
                 }
                 else
                 {
@@ -134,12 +197,12 @@ namespace MM.Medical.Client.Views
 
         private void AppointmentStatus_CheckChanged(object sender, RoutedEventArgs e)
         {
-            GetPatientInfos();
+            LoadAppointmentInfos();
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            GetPatientInfos();
+            LoadAppointmentInfos();
         }
 
         private void Remove_Click(object sender, RoutedEventArgs e)
@@ -149,12 +212,12 @@ namespace MM.Medical.Client.Views
 
         private void Print_Click(object sender, RoutedEventArgs e)
         {
-            if (dg_appointments.SelectedValue is PatientInfo info)
+            if (dg_appointments.SelectedValue is Appointment info)
             {
-                if (info.CheckInfo.ReportTime == 0)
+                if (info.Examination.ReportTime == 0)
                 {
-                    info.CheckInfo.ReportTime = (int)TimeHelper.ToUnixTime(DateTime.Now);
-                    var result = loading.AsyncWait("生成报告中,请稍后", SocketProxy.Instance.ModifyPatientInfo(info));
+                    info.Examination.ReportTime = (int)TimeHelper.ToUnixTime(DateTime.Now);
+                    var result = loading.AsyncWait("生成报告中,请稍后", SocketProxy.Instance.ModifyAppointment(info));
                     if (!result.IsSuccess) Alert.ShowMessage(true, AlertType.Error, $"生成报告失败,{ result.Error }");
                 }
             }
@@ -172,6 +235,41 @@ namespace MM.Medical.Client.Views
             }
             if (!string.IsNullOrEmpty(cb_body.Text))
                 cb_body.Text = cb_body.Text.Substring(0, cb_body.Text.Length - 1);
+        }
+
+        private void StartCheck_Click(object sender, RoutedEventArgs e)
+        {
+            var result = loading.AsyncWait("更新出诊状态中,请稍后", SocketProxy.Instance.AcceptConsultingRoom(this.consultingRoomId, this.IsDoctorVisit));
+            if (!result.IsSuccess)
+            {
+                Alert.ShowMessage(true, AlertType.Error, $"设置出诊状态失败,{ result.Error }");
+                this.IsDoctorVisit = !this.IsDoctorVisit;
+            }
+        }
+
+        private void ExaminationText_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Shotcut_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Record_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CaptureSetting_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

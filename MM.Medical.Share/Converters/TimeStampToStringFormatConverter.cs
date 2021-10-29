@@ -16,10 +16,11 @@ namespace MM.Medical.Share.Converters
             DateTime? dateTime = null;
             if (value is int timeStamp)
                 dateTime = TimeHelper.FromUnixTime(timeStamp);
+            if (value is long timeStampL)
+                dateTime = TimeHelper.FromUnixTime(timeStampL);
             else if (value is DateTime dt)
-                value = dt;
-            else
-                dateTime = new DateTime();
+                dateTime = dt;
+            else dateTime = new DateTime();
             dateTime = dateTime.Value.ToLocalTime();
             string stringFormat = "yyyy/MM/dd HH:mm:ss";
             if (parameter is string format)

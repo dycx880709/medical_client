@@ -41,9 +41,9 @@ namespace MM.Medical.Client.Views
             }
             else
             {
-                var result = loading.AsyncWait("编辑预约中,请稍后", SocketProxy.Instance.ModifyAppointment(Appointment));
+                var result = loading.AsyncWait("修改预约中,请稍后", SocketProxy.Instance.ModifyAppointment(Appointment));
                 if (result.IsSuccess) this.Close(true);
-                else Alert.ShowMessage(false, AlertType.Error, "编辑预约失败", result.Error);
+                else Alert.ShowMessage(false, AlertType.Error, "修改预约失败", result.Error);
             }
         }
 

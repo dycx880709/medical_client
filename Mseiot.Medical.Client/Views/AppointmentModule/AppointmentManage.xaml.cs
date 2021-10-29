@@ -1,4 +1,5 @@
-﻿using Ms.Controls;
+﻿using MM.Medical.Client.Core;
+using Ms.Controls;
 using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
@@ -34,8 +35,7 @@ namespace MM.Medical.Client.Views
         private void AppointmentManage_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= AppointmentManage_Loaded;
-            var overTime = TimeHelper.ToUnixTime(DateTime.Now) % (24 * 60 * 60);
-            var startTime = TimeHelper.ToUnixDate(DateTime.Now) - overTime;
+            var startTime = TimeHelper.ToUnixDate(DateTime.Now);
             var today = TimeHelper.FromUnixTime(startTime);
             dtiTime.StartTime = today.AddDays(-14);
             dtiTime.EndTime = today.AddDays(14);
@@ -47,9 +47,19 @@ namespace MM.Medical.Client.Views
 
         private async void LoadAppointments()
         {
-            var result = await SocketProxy.Instance.GetAppointments(dtiTime.StartTime,dtiTime.EndTime,tbSearchName.Text);
+            pager.SelectedCount = dgAppointments.GetFullCountWithoutScroll();
+            var result = await SocketProxy.Instance.GetAppointments(
+                pager.PageIndex + 1,
+                pager.SelectedCount,
+                dtiTime.StartTime,
+                dtiTime.EndTime,
+                tbSearchName.Text
+            );
             if (result.IsSuccess)
-                dgAppointments.ItemsSource = new ObservableCollection<Appointment>(result.Content);
+            { 
+                dgAppointments.ItemsSource = new ObservableCollection<Appointment>(result.Content.Results);
+                pager.TotalCount = result.Content.Total;
+            }
             else
                 Alert.ShowMessage(false, AlertType.Error, result.Error);
         }
@@ -70,14 +80,14 @@ namespace MM.Medical.Client.Views
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             var view = new AddAppointment(new Appointment(), this.loading);
-            if (child.ShowDialog("预约登记", view))
+            if (child.ShowDialog("新增预约", view))
                 LoadAppointments();
         }
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
             Appointment appointment = (sender as FrameworkElement).Tag as Appointment;
-            var result = loading.AsyncWait("移除预约中,请稍后", SocketProxy.Instance.RemoveAppointments(new List<int> { appointment.AppointmentID }));
+            var result = loading.AsyncWait("删除预约中,请稍后", SocketProxy.Instance.RemoveAppointments(new List<int> { appointment.AppointmentID }));
             if (result.IsSuccess) LoadAppointments();
             else Alert.ShowMessage(false, AlertType.Error, "删除预约失败", result.Error);
         }
@@ -86,7 +96,7 @@ namespace MM.Medical.Client.Views
         {
             Appointment appointment = (sender as FrameworkElement).Tag as Appointment;
             var view = new AddAppointment(appointment, this.loading);
-            if (child.ShowDialog("编辑登记", view))
+            if (child.ShowDialog("修改预约", view))
                 LoadAppointments();
         }
 

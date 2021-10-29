@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace MM.Medical.Client.Core
 {
@@ -16,6 +18,14 @@ namespace MM.Medical.Client.Core
             var word = result.Content.FirstOrDefault(t => t.Title.Equals(title));
             if (word == null) return null;
             else return string.IsNullOrEmpty(word.Content) ? null : word.Content.Split(separator).ToList();
+        }
+
+        public static int GetFullCountWithoutScroll(this DataGrid selector)
+        {
+            var columnHeight = CacheHelper.GetResource<int>("DataGrdiColumnHeight");
+            var rowHeight = CacheHelper.GetResource<int>("DataGrdiRowHeight");
+            var height = selector.ActualHeight - columnHeight;
+            return (int)(height / rowHeight);
         }
     }
 }

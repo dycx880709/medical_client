@@ -113,14 +113,22 @@
                         <TextBlock Text="检查日期"/>
                         <controls:DateTimeInterval x:Name="dtiTime"/>
                         <TextBlock Text="患者信息"/>
-                        <controls:CustomTextBox Margin="5,0" x:Name="tbSearchName" Watermark="身份证、姓名"/>
+                        <controls:CustomTextBox Margin="5,0" Width="200" x:Name="tbSearchName" Watermark="身份证、社保号码、姓名"/>
                         <Button Content="查询" Click="Search_Click" IsDefault="True"/>
                     </StackPanel>
                 </Grid>
                 <Border Grid.Row="1">
                     <DataGrid x:Name="dgAppointments">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="预约状态" Binding="{Binding AppointmentStatus,Converter={StaticResource EnumToStringConverter}}"/>
+                            <DataGridTemplateColumn Width="*" Header="预约状态">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Width="80" Height="30" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
+                                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding AppointmentStatus, Converter={StaticResource EnumToStringConverter}}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Name}"/>
                             <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Sex, Converter={StaticResource SexConverter}}"/>
                             <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding IDCard}"/>

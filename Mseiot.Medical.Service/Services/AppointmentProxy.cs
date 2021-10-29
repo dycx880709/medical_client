@@ -12,13 +12,25 @@ namespace Mseiot.Medical.Service.Services
     public partial class SocketProxy
     {
 
-        public async Task<MsResult<List<Appointment>>> GetAppointments(DateTime? startTime, DateTime? endTime, string userInfo)
+        public async Task<MsResult<ListResult<Appointment>>> GetAppointments(
+            int index, 
+            int count, 
+            DateTime? startTime = null, 
+            DateTime? endTime = null, 
+            string userInfo = "",
+            int consultingRoomID = 0,
+            AppointmentStatus[] appointmentStatuses = null
+        )
         {
-            return await HttpProxy.GetMessage<List<Appointment>>("/api/Appointment/GetAppointments", new
+            return await HttpProxy.GetMessage<ListResult<Appointment>>("/api/Appointment/GetAppointments", new
             {
-                StartTime = startTime == null ? 0 : TimeHelper.ToUnixTime((DateTime)startTime),
-                EndTime = endTime == null ? long.MaxValue : TimeHelper.ToUnixTime((DateTime)endTime),
-                UserInfo = userInfo
+                Index = index.ToString(),
+                Count = count.ToString(),
+                StartTime = startTime == null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
+                EndTime = endTime != null ? TimeHelper.ToUnixTime(endTime.Value) : long.MaxValue,
+                UserInfo = userInfo,
+                ConsultingRoomID = consultingRoomID,
+                Statuses = appointmentStatuses != null ? string.Join(",", appointmentStatuses.Select(t => (int)t)) : null
             });
         }
 

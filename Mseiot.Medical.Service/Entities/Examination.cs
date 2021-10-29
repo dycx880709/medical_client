@@ -29,6 +29,7 @@ namespace Mseiot.Medical.Service.Entities
         private string pathologicalDiagnosis;
         private string doctorAdvice;
         private int reportTime;
+        private string doctorName;
 
         /// <summary>
         /// 检查ID
@@ -264,6 +265,18 @@ namespace Mseiot.Medical.Service.Entities
             {
                 hcv = value;
                 RaisePropertyChanged("HCV");
+            }
+        }
+        /// <summary>
+        /// 送检医生
+        /// </summary>
+        public string DoctorName
+        {
+            get { return doctorName; }
+            set
+            {
+                doctorName = value;
+                RaisePropertyChanged("DoctorName");
             }
         }
         /// <summary>
