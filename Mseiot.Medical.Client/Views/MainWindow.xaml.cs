@@ -30,7 +30,7 @@ namespace MM.Medical.Client.Views
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateTime();
-            await ReConnectServer();
+            await ConnectServer();
         }
 
         private void TcpProxy_ReceiveMessaged(object sender, Message e)
@@ -54,7 +54,7 @@ namespace MM.Medical.Client.Views
                     });
                     SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
                     await System.Threading.Tasks.Task.Delay(1000);
-                    await ReConnectServer();
+                    await ConnectServer();
                     break;
                 case ConnectState.Success:
                     await System.Threading.Tasks.Task.Delay(3 * 100);
@@ -76,13 +76,13 @@ namespace MM.Medical.Client.Views
                     {
                         await System.Threading.Tasks.Task.Delay(3 * 1000);
                         this.Dispatcher.Invoke(() => loading.Start("服务连接失败,重试连接中"));
-                        await ReConnectServer();
+                        await ConnectServer();
                     }
                     break;
             }
         }
 
-        private async System.Threading.Tasks.Task ReConnectServer()
+        private async System.Threading.Tasks.Task ConnectServer()
         {
             if (SocketProxy.Instance.TcpProxy != null)
             {

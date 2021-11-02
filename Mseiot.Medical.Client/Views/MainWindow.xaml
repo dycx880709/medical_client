@@ -52,6 +52,8 @@
                             <Image Source="{StaticResource Img_User}" Height="{StaticResource LargeFontSize}"/>
                         </Border>
                         <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static core:CacheHelper.UserName}" FontSize="{StaticResource LargeFontSize}"/>
+                        <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="|" FontSize="{StaticResource LargeFontSize}"/>
+                        <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static core:CacheHelper.ConsultingRoomName}" FontSize="{StaticResource LargeFontSize}"/>
                     </StackPanel>
                 </ToggleButton>
                 <Button Width="{StaticResource ButtonHeight}" BorderThickness="0" Background="Transparent" Click="Min_Click">

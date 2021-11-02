@@ -1,4 +1,5 @@
-﻿using Ms.Controls;
+﻿using MM.Medical.Client.Core;
+using Ms.Controls;
 using Ms.Controls.Core;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
@@ -152,22 +153,10 @@ namespace MM.Medical.Client.Views
         private void GetMedicalWords()
         {
             var result = loading.AsyncWait("获取医学词库中,请稍后", SocketProxy.Instance.GetMedicalWords());
-            if (result.IsSuccess) lt_diagnosis.ItemsSource = SortMedicalWords(result.Content, 0);
+            if (result.IsSuccess) lt_diagnosis.ItemsSource = CacheHelper.SortMedicalWords(result.Content, 0);
             else MsWindow.ShowDialog($"获取医学词库失败,{ result.Error }", "软件提示");
         }
-        private ObservableCollection<MedicalWord> SortMedicalWords(IEnumerable<MedicalWord> words, int parentId)
-        {
-            var results = new ObservableCollection<MedicalWord>();
-            foreach (var word in words)
-            {
-                if (word.ParentID == parentId)
-                {
-                    word.MedicalWords = SortMedicalWords(words, word.MedicalWordID);
-                    results.Add(word);
-                }
-            }
-            return results;
-        }
+        
 
         private void ResetMedicalWord()
         {

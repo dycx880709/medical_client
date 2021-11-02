@@ -81,7 +81,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <TextBlock Margin="3,0,0,0" Text="{Binding}" Foreground="{StaticResource Color_Border_Primary}"/>
+                            <TextBlock Margin="3,0,0,0" Text="{Binding}" Foreground="{StaticResource Color_Font_Primary}"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <controls:MediaButton Click="ModifyItem_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
                                 <controls:MediaButton Click="RemoveItem_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}" Margin="10,0,0,0"/>

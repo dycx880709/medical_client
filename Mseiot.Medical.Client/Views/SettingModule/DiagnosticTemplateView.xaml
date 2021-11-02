@@ -28,9 +28,29 @@
                 </StackPanel>
             </Grid>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding MedicalTemplates.Count}" Value="0">
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Modsee}" Value="{x:Null}"/>
+                        <Condition Binding="{Binding Moddia}" Value="{x:Null}"/>
+                        <Condition Binding="{Binding MedicalTemplates.Count}" Value="0"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Visibility" TargetName="path" Value="Hidden"/>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Modsee}" Value=""/>
+                        <Condition Binding="{Binding Moddia}" Value=""/>
+                        <Condition Binding="{Binding MedicalTemplates.Count}" Value="0"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Visibility" TargetName="path" Value="Hidden"/>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <!--<DataTrigger Binding="{Binding MedicalTemplates.Count}" Value="0">
                     <Setter Property="Visibility" TargetName="path" Value="Hidden"/>
-                </DataTrigger>
+                </DataTrigger>-->
                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
                     <Setter Property="Visibility" TargetName="bt_comfirm" Value="Visible"/>
                     <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>

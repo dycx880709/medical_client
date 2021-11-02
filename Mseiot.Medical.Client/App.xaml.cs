@@ -1,5 +1,6 @@
 ﻿using MM.Medical.Client.Core;
 using MM.Medical.Client.Views;
+using Ms.Libs.SysLib;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -7,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace MM.Medical.Client
 {
@@ -26,6 +28,15 @@ namespace MM.Medical.Client
                     CacheHelper.SaveLocalSetting();
                 }
             }
+            CacheHelper.InitialLogSetting();
+            #region 异常处理注册
+            //UI线程未捕获异常处理事件
+            this.DispatcherUnhandledException += (o,ex) => LogHelper.Instance.Error("捕获主线程未处理异常:", ex.Exception);
+            //Task线程内未捕获异常处理事件
+            TaskScheduler.UnobservedTaskException += (o,ex) => LogHelper.Instance.Error(ex.Exception);
+            //非UI线程未捕获异常处理事件
+            AppDomain.CurrentDomain.UnhandledException += (o,ex)=> LogHelper.Instance.Error($"程序发生错误：\n{(Exception)ex.ExceptionObject}");
+            #endregion
             var login = new LoginView();
             login.ShowDialog();
         }

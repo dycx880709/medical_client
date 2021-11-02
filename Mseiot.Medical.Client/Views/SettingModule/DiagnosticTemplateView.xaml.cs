@@ -1,4 +1,5 @@
-﻿using Ms.Controls;
+﻿using MM.Medical.Client.Core;
+using Ms.Controls;
 using Ms.Controls.Core;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
@@ -180,24 +181,11 @@ namespace MM.Medical.Client.Views
                 else MsWindow.ShowDialog($"修改模板信息失败,{ result.Error }", "软件提示");
             }
         }
-        private ObservableCollection<MedicalTemplate> SortMedicalTemplates(IEnumerable<MedicalTemplate> templates, int parentId)
-        {
-            var results = new ObservableCollection<MedicalTemplate>();
-            foreach (var template in templates)
-            {
-                if (template.ParentID == parentId)
-                {
-                    template.MedicalTemplates = SortMedicalTemplates(templates, template.MedicalTemplateID);
-                    results.Add(template);
-                }
-            }
-            return results;
-        }
 
         private void GetMedicalTemplates()
         {
             var result = loading.AsyncWait("获取模板信息中,请稍后", SocketProxy.Instance.GetMedicalTemplates());
-            if (result.IsSuccess) lb_template.ItemsSource = SortMedicalTemplates(result.Content, 0);
+            if (result.IsSuccess) lb_template.ItemsSource = CacheHelper.SortMedicalTemplates(result.Content, 0);
             else MsWindow.ShowDialog($"获取模板信息失败,{ result.Error }", "软件提示");
         }
 

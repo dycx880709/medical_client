@@ -14,6 +14,10 @@ using Ms.Libs.TcpLib;
 using System.Threading.Tasks;
 using Mseiot.Medical.Service.Models;
 using System.Linq;
+using System.Windows.Input;
+using Ms.Libs.Models;
+using System.Windows.Data;
+using System.ComponentModel;
 
 namespace MM.Medical.Client.Views
 {
@@ -27,20 +31,24 @@ namespace MM.Medical.Client.Views
             get { return (bool)GetValue(IsCheckingProperty); }
             set { SetValue(IsCheckingProperty, value); }
         }
-
-        // Using a DependencyProperty as the backing store for IsChecking.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsCheckingProperty =
-            DependencyProperty.Register("IsChecking", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
-
         public bool IsDoctorVisit
         {
             get { return (bool)GetValue(IsDoctorVisitProperty); }
             set { SetValue(IsDoctorVisitProperty, value); }
         }
-
-        // Using a DependencyProperty as the backing store for IsDoctorVisit.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsDoctorVisitProperty =
-            DependencyProperty.Register("IsDoctorVisit", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+        public bool IsFullScreen
+        {
+            get { return (bool)GetValue(IsFullScreenProperty); }
+            set { SetValue(IsFullScreenProperty, value); }
+        }
+        public static readonly DependencyProperty IsCheckingProperty = DependencyProperty.Register("IsChecking", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsFullScreenProperty = DependencyProperty.Register("IsFullScreen", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsDoctorVisitProperty = DependencyProperty.Register("IsDoctorVisit", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+        public ObservableCollection<Appointment> Appointments { get; set; } = new ObservableCollection<Appointment>();
+        private ICollectionView collectionView { get { return CollectionViewSource.GetDefaultView(Appointments); }}
+        public IEnumerable<MedicalTemplate> MedicalTemplates { get; set; }
+        public IEnumerable<MedicalWord> OriginMedicalWords { get; set; }
+        public IEnumerable<MedicalWord> MedicalWords { get; set; }
 
         private int consultingRoomId;
 
@@ -48,43 +56,57 @@ namespace MM.Medical.Client.Views
         {
             InitializeComponent();
             this.Loaded += ExaminationManageView_Loaded;
+            dg_appointments.ItemsSource = this.Appointments;
+            collectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
+            collectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
+            collectionView.Filter = t => t is Appointment appointment && (appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Cancel || appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Exprire);
             this.IsEnabled = false;
         }
 
         private void ExaminationManageView_Loaded(object sender, RoutedEventArgs e)
         {
             GetBaseWords();
-            SocketProxy.Instance.TcpProxy.ConnectStateChanged += TcpProxy_ConnectStateChanged;
-            SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+            GetMedicalDatas();
             LoadConsultingRoom();
             ResetCheckingExamination();
+            SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+        }
+
+        private void GetMedicalDatas()
+        {
+            var result1 = loading.AsyncWait("获取诊断模板中,请稍后", SocketProxy.Instance.GetMedicalTemplates());
+            if (result1.IsSuccess) tv_template.ItemsSource = CacheHelper.SortMedicalTemplates(result1.Content, 0);
+            else Alert.ShowMessage(false, AlertType.Error, $"获取诊断模板失败,{ result1.Error }");
+            var result2 = loading.AsyncWait("获取医学词库中,请稍后", SocketProxy.Instance.GetMedicalWords());
+            if (result2.IsSuccess)
+            { 
+                this.OriginMedicalWords = result2.Content;
+                this.MedicalWords = CacheHelper.SortMedicalWords(this.OriginMedicalWords, 0);
+            }
+            else Alert.ShowMessage(false, AlertType.Error, $"获取医学词库失败,{ result2.Error }");
         }
 
         private async void ResetCheckingExamination()
         {
-            if (dg_appointments.ItemsSource is IEnumerable<Appointment> appointments)
+            var condition = Appointments.FirstOrDefault(t => t.AppointmentStatus == AppointmentStatus.Checking);
+            if (condition != null)
             {
-                var condition = appointments.FirstOrDefault(t => t.AppointmentStatus == AppointmentStatus.Checking);
-                if (condition != null)
+                loading.Start("检查恢复中,请稍后");
+                await Task.Delay(2000);
+                this.Dispatcher.Invoke(() =>
                 {
-                    loading.Start("检查恢复中,请稍后");
-                    await Task.Delay(3000);
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        dg_appointments.SelectedValue = condition;
-                        this.IsChecking = true;
-                        loading.Stop();
-                    });
-                }
+                    dg_appointments.SelectedValue = condition;
+                    this.IsChecking = true;
+                    loading.Stop();
+                });
             }
         }
 
         private void LoadConsultingRoom()
         {
-            var consultingRoomName = CacheHelper.GetConfig("ConsultingRoom");
-            if (!string.IsNullOrEmpty(consultingRoomName))
+            if (!string.IsNullOrEmpty(CacheHelper.ConsultingRoomName))
             {
-                var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.LoginConsultingRoom(consultingRoomName));
+                var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.LoginConsultingRoom(CacheHelper.ConsultingRoomName));
                 if (result.IsSuccess)
                 {
                     this.IsEnabled = true;
@@ -108,22 +130,6 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        private void TcpProxy_ConnectStateChanged(object sender, ConnectStateArgs e)
-        {
-            switch (e.ConnectState)
-            {
-                case ConnectState.Success:
-                    SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
-                    SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
-                    this.Dispatcher.Invoke(() => LoadConsultingRoom());
-                    break;
-                case ConnectState.Faild:
-                    SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
-                    this.Dispatcher.Invoke(() => this.IsEnabled = false);
-                    break;
-            }
-        }
-
         private void LoadAppointmentInfos()
         {
             if (this.IsLoaded)
@@ -139,10 +145,10 @@ namespace MM.Medical.Client.Views
                     appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Checked, AppointmentStatus.Reported });
                 var startTime = TimeHelper.ToUnixDate(DateTime.Now);
                 var endTime = startTime + 24 * 60 * 60 - 1;
-                pager.SelectedCount = dg_appointments.GetFullCountWithoutScroll();
+                //pager.SelectedCount = dg_appointments.GetFullCountWithoutScroll();
                 var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetAppointments(
-                    pager.PageIndex,
-                    pager.SelectedCount, 
+                    0,      //pager.PageIndex
+                    1000,   //pager.SelectedCount
                     TimeHelper.FromUnixTime(startTime),
                     TimeHelper.FromUnixTime(endTime),
                     userInfo: "",
@@ -150,8 +156,10 @@ namespace MM.Medical.Client.Views
                     appointmentStatuses: new AppointmentStatus[] { AppointmentStatus.Checking, AppointmentStatus.Checked, AppointmentStatus.Waiting, AppointmentStatus.Reported }));
                 if (result.IsSuccess)
                 {
-                    dg_appointments.ItemsSource = new ObservableCollection<Appointment>(result.Content.Results);
-                    pager.TotalCount = result.Content.Total;
+                    Appointments.Clear();
+                    Appointments.AddRange(result.Content.Results);
+                    collectionView.Refresh();
+                    //pager.TotalCount = result.Content.Total;
                 }
                 else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
             }
@@ -200,7 +208,11 @@ namespace MM.Medical.Client.Views
                         Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result.Error }");
                         info.AppointmentStatus = oldAppointmentStatus;
                     }
-                    else Alert.ShowMessage(true, AlertType.Success, "检查已启动");
+                    else
+                    {
+                        Alert.ShowMessage(true, AlertType.Success, "检查已启动");
+                        collectionView.Refresh();
+                    }
                 }
                 else
                 {
@@ -211,7 +223,11 @@ namespace MM.Medical.Client.Views
                         Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result.Error }");
                         info.AppointmentStatus = oldAppointmentStatus;
                     }
-                    else Alert.ShowMessage(true, AlertType.Success, "检查已结束");
+                    else
+                    {
+                        Alert.ShowMessage(true, AlertType.Success, "检查已结束");
+                        collectionView.Refresh();
+                    }
                 }
             }
         }
@@ -270,7 +286,72 @@ namespace MM.Medical.Client.Views
 
         private void ExaminationText_GotFocus(object sender, RoutedEventArgs e)
         {
+            if (sender is FrameworkElement element)
+            {
+                var expander = ControlHelper.GetParentObject<Expander>(element);
+                var title = expander.Header.ToString();
+                var medicalWord = MedicalWords.FirstOrDefault(t => t.Name.Equals(title));
+                if (title.Equals("内镜所见") || title.Equals("镜下诊断"))
+                    ti_template.IsSelected = true;
+                else
+                {
+                    if (medicalWord == null) tv_medicalWord.ItemsSource = null;
+                    else tv_medicalWord.ItemsSource = medicalWord.MedicalWords;
+                    ti_word.IsSelected = true;
+                }
+            }
+        }
 
+        private void MedicalWord_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2 && sender is FrameworkElement element && dg_appointments.SelectedValue is Appointment appointment && appointment.Examination != null)
+            {
+                if (element.DataContext is MedicalWord word && (word.MedicalWords == null || word.MedicalWords.Count == 0))
+                {
+                    var rootMedicalWord = CacheHelper.GetMedicalWordParent(this.OriginMedicalWords, word.MedicalWordID, 0);
+                    var examination = appointment.Examination;
+                    switch (rootMedicalWord.Name)
+                    {
+                        case "临床诊断":
+                            examination.ClinicalDiagnosis = word.Name;
+                            break;
+                        case "内镜所见":
+                            examination.EndoscopicFindings = word.Name;
+                            break;
+                        case "镜下诊断":
+                            examination.MicroscopicDiagnosis = word.Name;
+                            break;
+                        case "活检部位":
+                            examination.BiopsySite = word.Name;
+                            break;
+                        case "病理诊断":
+                            examination.PathologicalDiagnosis = word.Name;
+                            break;
+                        case "医生建议":
+                            examination.DoctorAdvice = word.Name;
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void MedicalTemplate_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2 && sender is FrameworkElement element && dg_appointments.SelectedValue is Appointment appointment && appointment.Examination != null)
+            {
+                if (element.DataContext is MedicalTemplate template && (!string.IsNullOrEmpty(template.Moddia) || !string.IsNullOrEmpty(template.Modsee)))
+                {
+                    var examination = appointment.Examination;
+                    if (string.IsNullOrEmpty(examination.EndoscopicFindings))
+                        examination.EndoscopicFindings = template.Modsee;
+                    else if (!examination.EndoscopicFindings.Contains(template.Modsee))
+                        examination.EndoscopicFindings += "\n" + template.Modsee;
+                    if (string.IsNullOrEmpty(examination.MicroscopicDiagnosis))
+                        examination.MicroscopicDiagnosis = template.Moddia;
+                    else if (examination.MicroscopicDiagnosis.Contains(template.Moddia))
+                        examination.MicroscopicDiagnosis += "\n" + template.Moddia;
+                }
+            }
         }
 
         private void Shotcut_Click(object sender, RoutedEventArgs e)
@@ -290,7 +371,7 @@ namespace MM.Medical.Client.Views
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (dg_appointments.SelectedValue is Appointment appointment && appointment.Examination != null)
+            if (sender is ToggleButton tb && !tb.IsChecked.Value && dg_appointments.SelectedValue is Appointment appointment && appointment.Examination != null)
             {
                 var result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyExamination(appointment.Examination));
                 if (result.IsSuccess) Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
@@ -310,6 +391,11 @@ namespace MM.Medical.Client.Views
                 }
                 else appointment.Examination = new Examination();
             }
+        }
+
+        private void Call_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

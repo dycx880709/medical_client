@@ -2,10 +2,12 @@
 using Ms.Controls;
 using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
+using Mseiot.Medical.Service.Models;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +28,8 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class AppointmentManage : UserControl
     {
+        public ObservableCollection<Appointment> Appointments { get; set; } = new ObservableCollection<Appointment>();
+        private ICollectionView collectionView { get { return CollectionViewSource.GetDefaultView(Appointments); } }
         public AppointmentManage()
         {
             InitializeComponent();
@@ -39,14 +43,26 @@ namespace MM.Medical.Client.Views
             var today = TimeHelper.FromUnixTime(startTime);
             dtiTime.StartTime = today.AddDays(-14);
             dtiTime.EndTime = today.AddDays(14);
+            dg_appointment.ItemsSource = this.Appointments;
+            collectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
+            collectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
             LoadAppointments();
+            SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+        }
+
+        private void TcpProxy_ReceiveMessaged(object sender, Ms.Libs.TcpLib.Message e)
+        {
+            if (e.Module == Command.Module_Appointment && e.Method == Command.ChangeStatus_Appointment)
+            {
+
+            }
         }
 
         #region 数据
 
         private async void LoadAppointments()
         {
-            pager.SelectedCount = dgAppointments.GetFullCountWithoutScroll();
+            pager.SelectedCount = dg_appointment.GetFullCountWithoutScroll();
             var result = await SocketProxy.Instance.GetAppointments(
                 pager.PageIndex + 1,
                 pager.SelectedCount,
@@ -55,12 +71,13 @@ namespace MM.Medical.Client.Views
                 tbSearchName.Text
             );
             if (result.IsSuccess)
-            { 
-                dgAppointments.ItemsSource = new ObservableCollection<Appointment>(result.Content.Results);
+            {
+                Appointments.Clear();
+                Appointments.AddRange(result.Content.Results);
+                collectionView.Refresh();
                 pager.TotalCount = result.Content.Total;
             }
-            else
-                Alert.ShowMessage(false, AlertType.Error, result.Error);
+            else Alert.ShowMessage(false, AlertType.Error, result.Error);
         }
 
         #endregion
@@ -85,7 +102,7 @@ namespace MM.Medical.Client.Views
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            if (dgAppointments.SelectedValue is Appointment appointment)
+            if (dg_appointment.SelectedValue is Appointment appointment)
             {
                 var result = loading.AsyncWait("删除预约中,请稍后", SocketProxy.Instance.RemoveAppointments(new List<int> { appointment.AppointmentID }));
                 if (result.IsSuccess) LoadAppointments();
@@ -95,7 +112,7 @@ namespace MM.Medical.Client.Views
 
         private void Modify_Click(object sender, RoutedEventArgs e)
         {
-            if (dgAppointments.SelectedValue is Appointment appointment)
+            if (dg_appointment.SelectedValue is Appointment appointment)
             {
                 var view = new AddAppointment(appointment, this.loading);
                 if (child.ShowDialog("修改预约", view))
@@ -112,7 +129,7 @@ namespace MM.Medical.Client.Views
 
         private void PunchIn_Click(object sender, RoutedEventArgs e)
         {
-            if (dgAppointments.SelectedValue is Appointment appointment)
+            if (dg_appointment.SelectedValue is Appointment appointment)
             {
                 if (appointment.AppointmentStatus == AppointmentStatus.Reserved)
                 {
@@ -128,7 +145,7 @@ namespace MM.Medical.Client.Views
 
         private void UnPunch_Click(object sender, RoutedEventArgs e)
         {
-            if (dgAppointments.SelectedValue is Appointment appointment)
+            if (dg_appointment.SelectedValue is Appointment appointment)
             {
                 if (appointment.AppointmentStatus == AppointmentStatus.PunchIn)
                 {

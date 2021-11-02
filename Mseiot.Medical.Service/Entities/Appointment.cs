@@ -18,6 +18,7 @@ namespace Mseiot.Medical.Service.Entities
         private long birthday;
         private AppointmentStatus appointmentStatus;
         private Examination examination;
+        private int endoscopeID;
 
         /// <summary>
         /// 预约ID
@@ -100,7 +101,18 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("Birthday");
             }
         }
-
+        /// <summary>
+        /// 内镜编号
+        /// </summary>
+        public int EndoscopeID
+        {
+            get { return endoscopeID; }
+            set
+            {
+                endoscopeID = value;
+                RaisePropertyChanged("EndoscopeID");
+            }
+        }
         /// <summary>
         /// 预约状态
         /// </summary>
@@ -144,6 +156,8 @@ namespace Mseiot.Medical.Service.Entities
         [Description("已取消")]
         Cancel,
         [Description("已过期")]
-        Exprire
+        Exprire,
+        [Description("已过号")]
+        Cross
     }
 }
