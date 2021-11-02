@@ -29,7 +29,7 @@ namespace MM.Medical.Client.Views
     public partial class AppointmentManage : UserControl
     {
         public ObservableCollection<Appointment> Appointments { get; set; } = new ObservableCollection<Appointment>();
-        private ICollectionView collectionView { get { return CollectionViewSource.GetDefaultView(Appointments); } }
+        private ICollectionView CollectionView { get { return CollectionViewSource.GetDefaultView(Appointments); } }
         public AppointmentManage()
         {
             InitializeComponent();
@@ -44,8 +44,8 @@ namespace MM.Medical.Client.Views
             dtiTime.StartTime = today.AddDays(-14);
             dtiTime.EndTime = today.AddDays(14);
             dg_appointment.ItemsSource = this.Appointments;
-            collectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
-            collectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
+            CollectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
+            CollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
             LoadAppointments();
             SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
         }
@@ -74,7 +74,7 @@ namespace MM.Medical.Client.Views
             {
                 Appointments.Clear();
                 Appointments.AddRange(result.Content.Results);
-                collectionView.Refresh();
+                CollectionView.Refresh();
                 pager.TotalCount = result.Content.Total;
             }
             else Alert.ShowMessage(false, AlertType.Error, result.Error);

@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView x:Name="lvTasks" BorderThickness="0" Padding="0" Loaded="lvTasks_Loaded">
+        <ListView x:Name="lvTasks" BorderThickness="0" Padding="0" Loaded="Tasks_Loaded">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="{Binding ColumnCount,ElementName=self}"/>

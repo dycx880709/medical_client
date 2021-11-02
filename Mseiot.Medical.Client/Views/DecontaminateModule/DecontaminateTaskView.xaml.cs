@@ -80,7 +80,7 @@ namespace MM.Medical.Client.Views
             DependencyProperty.Register("ColumnCount", typeof(int), typeof(DecontaminateTaskView), new PropertyMetadata(0));
 
 
-        private void lvTasks_Loaded(object sender, RoutedEventArgs e)
+        private void Tasks_Loaded(object sender, RoutedEventArgs e)
         {
             ColumnCount = (int)(Math.Floor(lvTasks.ActualWidth / 120));
 

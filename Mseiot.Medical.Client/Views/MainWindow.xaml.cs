@@ -97,8 +97,10 @@ namespace MM.Medical.Client.Views
         private void UpdateTime()
         {
             tb_time.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            var timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
             timer.Tick += (o, ex) => tb_time.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             timer.Start();
         }

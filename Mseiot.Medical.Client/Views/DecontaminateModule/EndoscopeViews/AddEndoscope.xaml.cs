@@ -25,48 +25,42 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class AddEndoscope : UserControl
     {
-        public bool IsSuccess { get; set; }
-        public Endoscope Endoscope { get; set; } = new Endoscope();
+        private readonly Endoscope endoscope;
+        private readonly Endoscope endoscope_origin;
+        private readonly Loading loading;
 
-        public AddEndoscope(Endoscope endoscope = null)
+        public AddEndoscope(Endoscope endoscope, Loading loading)
         {
             InitializeComponent();
-            if (endoscope != null)
-            {
-                Endoscope = endoscope;
-            }
-            DataContext = this;
+            this.endoscope_origin = endoscope;
+            this.endoscope = endoscope.Copy();
+            this.loading = loading;
+            DataContext = this.endoscope;
         }
 
-        private async void Save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
 
-            if (Endoscope.EndoscopeID == 0)
+            if (endoscope.EndoscopeID == 0)
             {
-                var result = await SocketProxy.Instance.AddEndoscope(Endoscope);
+                var result = loading.AsyncWait("添加内窥镜中,请稍后", SocketProxy.Instance.AddEndoscope(endoscope));
                 if (result.IsSuccess)
                 {
-                    Endoscope.EndoscopeID = result.Content;
-                    IsSuccess = true;
-                    this.Close();
+                    endoscope.EndoscopeID = result.Content;
+                    endoscope.CopyTo(endoscope_origin);
+                    this.Close(true);
                 }
-                else
-                {
-                    MsPrompt.ShowDialog("保存失败");
-                }
+                else Alert.ShowMessage(true, AlertType.Error, $"添加内窥镜失败,{ result.Error }");
             }
             else
             {
-                var result = await SocketProxy.Instance.ModifyEndoscope(Endoscope);
+                var result = loading.AsyncWait("编辑内窥镜中,请稍后", SocketProxy.Instance.ModifyEndoscope(endoscope));
                 if (result.IsSuccess)
                 {
-                    IsSuccess = true;
-                    this.Close();
+                    endoscope.CopyTo(endoscope_origin);
+                    this.Close(true);
                 }
-                else
-                {
-                    MsPrompt.ShowDialog("保存失败");
-                }
+                else Alert.ShowMessage(true, AlertType.Error, $"编辑内窥镜失败,{ result.Error }");
             }
         }
     }

@@ -7,22 +7,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="步骤名称" Style="{StaticResource editorFormItemText}"></TextBlock>
-                <TextBox Text="{Binding DecontaminateFlowStep.Name}" Style="{StaticResource editorFormItemInput}"></TextBox>
-
+                <TextBlock Text="步骤名称" Style="{StaticResource editorFormItemText}"/>
+                <TextBox Text="{Binding Name}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="超时(秒)" Style="{StaticResource editorFormItemText}"></TextBlock>
-                <TextBox Text="{Binding DecontaminateFlowStep.Timeout}" Style="{StaticResource editorFormItemInput}"></TextBox>
+                <TextBlock Text="超时(秒)" Style="{StaticResource editorFormItemText}"/>
+                <TextBox Text="{Binding Timeout}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="采集设备" Style="{StaticResource editorFormItemText}"></TextBlock>
-                <ComboBox x:Name="cbRFIDDevices" DisplayMemberPath="Name" SelectedValue="{Binding DecontaminateFlowStep.RFIDDeviceID}" SelectedValuePath="RFIDDeviceID"></ComboBox>
+                <TextBlock Text="采集设备" Style="{StaticResource editorFormItemText}"/>
+                <ComboBox x:Name="cbRFIDDevices" DisplayMemberPath="Name" SelectedValue="{Binding RFIDDeviceID}" SelectedValuePath="RFIDDeviceID"/>
             </StackPanel>
-
-            <controls:MediaButton FISize="{StaticResource LargeExFontSize}" Click="Save_Click" Content="保存" />
+            <Button Click="Save_Click" Content="保存" IsDefault="True"/>
         </StackPanel>
     </Grid>
 </UserControl>

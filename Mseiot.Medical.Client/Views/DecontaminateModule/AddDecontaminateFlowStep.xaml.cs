@@ -23,58 +23,47 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class AddDecontaminateFlowStep : UserControl
     {
-        public bool IsSuccess { get; set; }
-        public DecontaminateFlowStep DecontaminateFlowStep { get; set; } = new DecontaminateFlowStep();
-
-        public AddDecontaminateFlowStep(DecontaminateFlowStep decontaminateFlowStep = null)
+        private readonly DecontaminateFlowStep decontaminateFlowStep;
+        private readonly DecontaminateFlowStep decontaminateFlowStep_orgin;
+        private readonly Loading loading;
+        public AddDecontaminateFlowStep(DecontaminateFlowStep decontaminateFlowStep, Loading loading)
         {
             InitializeComponent();
-            if (DecontaminateFlowStep != null)
-            {
-                DecontaminateFlowStep = decontaminateFlowStep;
-            }
+            this.decontaminateFlowStep = decontaminateFlowStep.Copy();
+            this.decontaminateFlowStep_orgin = decontaminateFlowStep;
+            this.loading = loading;
             LoadRFIDDevices();
-            DataContext = this;
+            DataContext = this.decontaminateFlowStep;
         }
 
-        private async void LoadRFIDDevices()
+        private void LoadRFIDDevices()
         {
-            var result = await SocketProxy.Instance.GetRFIDDevices();
-            if (result.IsSuccess)
-            {
-                cbRFIDDevices.ItemsSource = result.Content;
-            }
+            var result = loading.AsyncWait("获取采集设备中,请稍后", SocketProxy.Instance.GetRFIDDevices());
+            if (result.IsSuccess) cbRFIDDevices.ItemsSource = result.Content;
         }
 
-        private async void Save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
-
-            if (DecontaminateFlowStep.DecontaminateFlowID == 0)
+            if (decontaminateFlowStep.DecontaminateFlowID == 0)
             {
-                var result = await SocketProxy.Instance.AddDecontaminateFlowStep(DecontaminateFlowStep);
+                var result = loading.AsyncWait("新建流程步骤中,请稍后", SocketProxy.Instance.AddDecontaminateFlowStep(decontaminateFlowStep));
                 if (result.IsSuccess)
                 {
-                    DecontaminateFlowStep.DecontaminateFlowID = result.Content;
-                    IsSuccess = true;
-                    this.Close();
+                    decontaminateFlowStep.DecontaminateFlowID = result.Content;
+                    decontaminateFlowStep.CopyTo(decontaminateFlowStep_orgin);
+                    this.Close(true);
                 }
-                else
-                {
-                    MsPrompt.ShowDialog("保存失败:"+result.Error);
-                }
+                else Alert.ShowMessage(true, AlertType.Error, "新建保存失败:"+result.Error);
             }
             else
             {
-                var result = await SocketProxy.Instance.ModifyDecontaminateFlowStep(DecontaminateFlowStep);
+                var result = loading.AsyncWait("编辑流程步骤中,请稍后", SocketProxy.Instance.ModifyDecontaminateFlowStep(decontaminateFlowStep));
                 if (result.IsSuccess)
                 {
-                    IsSuccess = true;
-                    this.Close();
+                    decontaminateFlowStep.CopyTo(decontaminateFlowStep_orgin);
+                    this.Close(true);
                 }
-                else
-                {
-                    MsPrompt.ShowDialog("保存失败:" + result.Error);
-                }
+                else Alert.ShowMessage(true, AlertType.Error, "编辑保存失败:" + result.Error);
             }
         }
     }

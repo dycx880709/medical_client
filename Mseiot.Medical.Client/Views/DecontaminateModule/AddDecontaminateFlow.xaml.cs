@@ -23,48 +23,42 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class AddDecontaminateFlow : UserControl
     {
-        public bool IsSuccess { get; set; }
-        public DecontaminateFlow DecontaminateFlow { get; set; } = new DecontaminateFlow();
+        private readonly DecontaminateFlow decontaminateFlow;
+        private readonly DecontaminateFlow decontaminateFlow_origin;
 
-        public AddDecontaminateFlow(DecontaminateFlow decontaminateFlow = null)
+        private readonly Loading loading;
+        public AddDecontaminateFlow(DecontaminateFlow decontaminateFlow, Loading loading)
         {
             InitializeComponent();
-            if (decontaminateFlow != null)
-            {
-                DecontaminateFlow = decontaminateFlow;
-            }
-            DataContext = this;
+            this.decontaminateFlow = decontaminateFlow.Copy();
+            this.decontaminateFlow_origin = decontaminateFlow;
+            this.DataContext = this.decontaminateFlow;
+            this.loading = loading;
         }
 
-        private async void Save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
 
-            if (DecontaminateFlow.DecontaminateFlowID == 0)
+            if (decontaminateFlow.DecontaminateFlowID == 0)
             {
-                var result = await SocketProxy.Instance.AddDecontaminateFlow(DecontaminateFlow);
+                var result = loading.AsyncWait("新建流程中,请稍后", SocketProxy.Instance.AddDecontaminateFlow(decontaminateFlow));
                 if (result.IsSuccess)
                 {
-                    DecontaminateFlow.DecontaminateFlowID = result.Content;
-                    IsSuccess = true;
-                    this.Close();
+                    decontaminateFlow.DecontaminateFlowID = result.Content;
+                    decontaminateFlow.CopyTo(decontaminateFlow_origin);
+                    this.Close(true);
                 }
-                else
-                {
-                    MsPrompt.ShowDialog("保存失败:"+result.Error);
-                }
+                else Alert.ShowMessage(true, AlertType.Error, "保存失败:"+result.Error);
             }
             else
             {
-                var result = await SocketProxy.Instance.ModifyDecontaminateFlow(DecontaminateFlow);
+                var result = loading.AsyncWait("编辑流程中,请稍后", SocketProxy.Instance.ModifyDecontaminateFlow(decontaminateFlow));
                 if (result.IsSuccess)
                 {
-                    IsSuccess = true;
-                    this.Close();
+                    decontaminateFlow.CopyTo(decontaminateFlow_origin);
+                    this.Close(true);
                 }
-                else
-                {
-                    MsPrompt.ShowDialog("保存失败:" + result.Error);
-                }
+                else Alert.ShowMessage(true, AlertType.Error, "保存失败:" + result.Error);
             }
         }
     }

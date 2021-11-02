@@ -24,6 +24,8 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class RFIDDeviceManage : UserControl
     {
+        public ObservableCollection<RFIDDevice> RFIDDevices { get; set; } = new ObservableCollection<RFIDDevice>();
+
         public RFIDDeviceManage()
         {
             InitializeComponent();
@@ -34,24 +36,17 @@ namespace MM.Medical.Client.Views
         {
             this.Loaded -= RFIDDeviceManage_Loaded;
             lvDatas.ItemsSource = RFIDDevices;
-            LoadDatas();
+            LoadRFIDDevices();
         }
 
         #region 数据
 
-        public ObservableCollection<RFIDDevice> RFIDDevices { get; set; } = new ObservableCollection<RFIDDevice>();
-
-        private async void LoadDatas()
+        private void LoadRFIDDevices()
         {
             RFIDDevices.Clear();
-            var result = await SocketProxy.Instance.GetRFIDDevices();
-            if (result.IsSuccess)
-            {
-                if (result.Content != null)
-                {
-                    RFIDDevices.AddRange(result.Content);
-                }
-            }
+            var result = loading.AsyncWait("获取采集设备中,请稍后", SocketProxy.Instance.GetRFIDDevices());
+            if (result.IsSuccess) RFIDDevices.AddRange(result.Content);
+            else Alert.ShowMessage(true, AlertType.Error, $"获取采集设备失败,{ result.Error }");
         }
 
         #endregion
@@ -60,21 +55,17 @@ namespace MM.Medical.Client.Views
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            AddRFIDDevice addRFIDDevice = new AddRFIDDevice();
-            MsWindow.ShowDialog(addRFIDDevice);
-            if (addRFIDDevice.IsSuccess)
-            {
-                LoadDatas();
-            }
+            var rfidDevice = new RFIDDevice();
+            var addRFIDDevice = new AddRFIDDevice(rfidDevice, this.loading);
+            if (child.ShowDialog("添加采集设备", addRFIDDevice))
+                LoadRFIDDevices();
         }
 
-        private async void Remove_Click(object sender, RoutedEventArgs e)
+        private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            var result = await SocketProxy.Instance.RemoveRFIDDevices(RFIDDevices.Where(f => f.IsSelected).Select(f => f.RFIDDeviceID).ToList());
-            if (result.IsSuccess)
-            {
-                LoadDatas();
-            }
+            var result = loading.AsyncWait("删除采集设备中,请稍后", SocketProxy.Instance.RemoveRFIDDevices(RFIDDevices.Where(f => f.IsSelected).Select(f => f.RFIDDeviceID).ToList()));
+            if (result.IsSuccess) LoadRFIDDevices();
+            else Alert.ShowMessage(true, AlertType.Error, $"删除采集设备失败,{ result.Error }");
         }
 
         #endregion
@@ -84,9 +75,7 @@ namespace MM.Medical.Client.Views
         private void AllDevice_Selected(object sender, RoutedEventArgs e)
         {
             foreach(var item in RFIDDevices)
-            {
                 item.IsSelected = (bool)(sender as CheckBox).IsChecked;
-            }
         }
 
         #endregion

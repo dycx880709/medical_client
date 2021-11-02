@@ -42,7 +42,7 @@ namespace MM.Medical.Client.Views
             cbSerialPorts.ItemsSource = serialPorts;
             cbSerialPorts.SelectedItem = CacheHelper.LocalSetting.RFIDCom;
         }
-        private void cbSerialPorts_DropDownOpened(object sender, EventArgs e)
+        private void SerialPorts_DropDownOpened(object sender, EventArgs e)
         {
 
             LoadSerialPorts();

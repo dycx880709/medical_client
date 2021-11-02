@@ -7,18 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="生产厂家" Style="{StaticResource editorFormItemText}"></TextBlock>
-                <TextBox Text="{Binding DecontaminateFlow.Factory}" Style="{StaticResource editorFormItemInput}"></TextBox>
-
+                <TextBlock Text="生产厂家" Style="{StaticResource editorFormItemText}"/>
+                <TextBox Text="{Binding Factory}" Style="{StaticResource editorFormItemInput}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="设备型号" Style="{StaticResource editorFormItemText}"></TextBlock>
-                <TextBox Text="{Binding DecontaminateFlow.Model}" Style="{StaticResource editorFormItemInput}"></TextBox>
+                <TextBlock Text="设备型号" Style="{StaticResource editorFormItemText}"/>
+                <TextBox Text="{Binding Model}" Style="{StaticResource editorFormItemInput}"/>
             </StackPanel>
 
-            <controls:MediaButton FISize="{StaticResource LargeExFontSize}" Click="Save_Click" Content="保存" />
+            <Button Click="Save_Click" Content="保存" IsDefault="True"/>
         </StackPanel>
     </Grid>
 </UserControl>

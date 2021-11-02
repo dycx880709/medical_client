@@ -24,9 +24,9 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class AddWordItemView : UserControl
     {
-        private BaseWordExtend word;
-        private Loading loading;
-        private int index;
+        private readonly BaseWordExtend word;
+        private readonly Loading loading;
+        private readonly int index;
 
         public AddWordItemView(BaseWordExtend word, int index, Loading loading)
         {

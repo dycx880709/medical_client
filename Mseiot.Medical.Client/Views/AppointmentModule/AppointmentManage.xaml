@@ -134,19 +134,22 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border>
-                                            <TextBlock x:Name="tb" Text="{Binding ConsultingRoom}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock x:Name="tb" Text="{Binding ConsultingRoomName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                         <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.Reserved}">
+                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reserved}">
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.Exprire}">
+                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Exprire}">
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.Cancel}">
+                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Cancel}">
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.Cross}">
+                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Cross}">
+                                                <Setter Property="Text" TargetName="tb" Value="--"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.PunchIn}">
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
                                         </DataTemplate.Triggers>

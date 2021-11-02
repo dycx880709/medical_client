@@ -137,6 +137,7 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("Examination");
             }
         }
+        public string ConsultingRoomName { get; set; }
     }
 
     public enum AppointmentStatus

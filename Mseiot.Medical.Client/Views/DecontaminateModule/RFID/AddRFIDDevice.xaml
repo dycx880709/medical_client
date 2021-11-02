@@ -10,13 +10,13 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="设备编号" Style="{StaticResource editorFormItemText}"></TextBlock>
-                <TextBox Text="{Binding RFIDDevice.SN}" Style="{StaticResource editorFormItemInput}"></TextBox>
+                <TextBox Text="{Binding SN}" Style="{StaticResource editorFormItemInput}"></TextBox>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="设备名称" Style="{StaticResource editorFormItemText}"></TextBlock>
-                <TextBox Text="{Binding RFIDDevice.Name}" Style="{StaticResource editorFormItemInput}"></TextBox>
+                <TextBox Text="{Binding Name}" Style="{StaticResource editorFormItemInput}"></TextBox>
             </StackPanel>
-            <controls:MediaButton FISize="{StaticResource LargeExFontSize}" Click="Save_Click" Content="保存" />
+            <Button Click="Save_Click" Content="保存" IsEnabled="True" />
         </StackPanel>
     </Grid>
 </UserControl>

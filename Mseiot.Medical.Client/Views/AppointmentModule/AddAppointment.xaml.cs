@@ -19,7 +19,7 @@ namespace MM.Medical.Client.Views
     public partial class AddAppointment : UserControl
     {
         public Appointment Appointment { get; set; } = new Appointment();
-        Loading loading;
+        private readonly Loading loading;
 
         public AddAppointment(Appointment rawAppointment, Loading loading)
         {

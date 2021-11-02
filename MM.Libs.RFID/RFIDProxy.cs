@@ -31,14 +31,16 @@ namespace MM.Libs.RFID
         /// <param name="com"></param>
         public void Open(string com)
         {
-            serialPort = new SerialPort();
-            serialPort.BaudRate = 57600;
-            serialPort.PortName = com;
+            serialPort = new SerialPort
+            {
+                BaudRate = 57600,
+                PortName = com
+            };
             serialPort.DataReceived += SerialPort_DataReceived;
-
+            this.isStart = true;
             Task.Run(() =>
             {
-                while (isStart)
+                while (this.isStart)
                 {
                     if (!serialPort.IsOpen)
                     {
@@ -61,9 +63,11 @@ namespace MM.Libs.RFID
 
         public void OpenWait(string com)
         {
-            serialPort = new SerialPort();
-            serialPort.BaudRate = 57600;
-            serialPort.PortName = com;
+            serialPort = new SerialPort
+            {
+                BaudRate = 57600,
+                PortName = com
+            };
             serialPort.DataReceived += SerialPort_DataReceived;
             serialPort.Open();
         }
@@ -79,6 +83,7 @@ namespace MM.Libs.RFID
                 serialPort.Close();
                 serialPort.Dispose();
             }
+            this.isStart = false;
         }
 
         #endregion
@@ -169,7 +174,7 @@ namespace MM.Libs.RFID
         /// <returns></returns>
         public int GetEPC()
         {
-            int epc = 0;
+            int epc;
             byte cmd = 0x0F;
             List<byte> datas = new List<byte> { 0xFF, cmd };
             byte[] result = WriteMessage(datas);

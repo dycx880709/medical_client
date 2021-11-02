@@ -24,6 +24,7 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class DecontaminateFlowView : UserControl
     {
+
         public DecontaminateFlowView()
         {
             InitializeComponent();
@@ -33,28 +34,22 @@ namespace MM.Medical.Client.Views
         private void DecontaminateFlowView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= DecontaminateFlowView_Loaded;
-            LoadDatas();
             lvDecontaminateFlows.ItemsSource = DecontaminateFlows;
             lvFlowSteps.ItemsSource = DecontaminateFlowSteps;
+            this.LoadDecontaminateFlows();
         }
 
         #region 流程
 
         #region 数据
-
         public ObservableCollection<DecontaminateFlow> DecontaminateFlows { get; set; } = new ObservableCollection<DecontaminateFlow>();
 
-        private async void LoadDatas()
+        private void LoadDecontaminateFlows()
         {
             DecontaminateFlows.Clear();
-            var result = await SocketProxy.Instance.GetDecontaminateFlows();
-            if (result.IsSuccess)
-            {
-                if (result.Content != null)
-                {
-                    DecontaminateFlows.AddRange(result.Content);
-                }
-            }
+            var result = loading.AsyncWait("获取流程列表中,请稍后", SocketProxy.Instance.GetDecontaminateFlows());
+            if (result.IsSuccess) DecontaminateFlows.AddRange(result.Content);
+            else Alert.ShowMessage(true, AlertType.Error, $"获取流程列表失败,{ result.Error }");
         }
 
         #endregion
@@ -63,30 +58,27 @@ namespace MM.Medical.Client.Views
 
         private void AddFlow_Click(object sender, RoutedEventArgs e)
         {
-            AddDecontaminateFlow addDecontaminateFlow = new AddDecontaminateFlow();
-            MsWindow.ShowDialog(addDecontaminateFlow);
-            LoadDatas();
+            var decontaminateFlow = new DecontaminateFlow();
+            var addDecontaminateFlow = new AddDecontaminateFlow(decontaminateFlow, this.loading);
+            if (child.ShowDialog("新建流程", addDecontaminateFlow))
+                this.LoadDecontaminateFlows();
         }
 
-        private async void RemoveFlow_Click(object sender, RoutedEventArgs e)
+        private void RemoveFlow_Click(object sender, RoutedEventArgs e)
         {
-            var result = await SocketProxy.Instance.RemoveDecontaminateFlows(DecontaminateFlows.Where(f => f.IsSelected).Select(f => f.DecontaminateFlowID).ToList());
-            if (result.IsSuccess)
-            {
-                LoadDatas();
-            }
-            else
-            {
-                MsPrompt.ShowDialog("删除失败");
-            }
+            var result = loading.AsyncWait("删除流程列表中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlows(DecontaminateFlows.Where(f => f.IsSelected).Select(f => f.DecontaminateFlowID).ToList()));
+            if (result.IsSuccess) LoadDecontaminateFlows();
+            else Alert.ShowMessage(true, AlertType.Error, $"删除失败,{ result.Error }");
         }
 
         private void ModifyFlow_Click(object sender, RoutedEventArgs e)
         {
-            DecontaminateFlow decontaminateFlow = (sender as FrameworkElement).Tag as DecontaminateFlow;
-            AddDecontaminateFlow addDecontaminateFlow = new AddDecontaminateFlow(decontaminateFlow);
-            MsWindow.ShowDialog(addDecontaminateFlow);
-            LoadDatas(); 
+            if (sender is FrameworkElement element && element.DataContext is DecontaminateFlow decontaminateFlow)
+            {
+                var addDecontaminateFlow = new AddDecontaminateFlow(decontaminateFlow, this.loading);
+                if (child.ShowDialog("修改流程", addDecontaminateFlow))
+                    this.LoadDecontaminateFlows();
+            }
         }
 
         #endregion
@@ -96,15 +88,13 @@ namespace MM.Medical.Client.Views
         private void AllDecontaminateFlow_Selected(object sender, RoutedEventArgs e)
         {
             foreach (var item in DecontaminateFlows)
-            {
                 item.IsSelected = true;
-            }
         }
 
 
         #endregion
 
-        private void lvDecontaminateFlows_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DecontaminateFlows_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadDecontaminateSteps();
         }
@@ -117,20 +107,15 @@ namespace MM.Medical.Client.Views
 
         public ObservableCollection<DecontaminateFlowStep> DecontaminateFlowSteps { get; set; } = new ObservableCollection<DecontaminateFlowStep>();
 
-        private async void LoadDecontaminateSteps()
+        private void LoadDecontaminateSteps()
         {
             DecontaminateFlowSteps.Clear();
             if (lvDecontaminateFlows.SelectedItem != null)
             {
                 var decontaminateFlow = lvDecontaminateFlows.SelectedItem as DecontaminateFlow;
-                var result = await SocketProxy.Instance.GetDecontaminateFlowSteps(decontaminateFlow.DecontaminateFlowID);
-                if (result.IsSuccess)
-                {
-                    if (result.Content != null)
-                    {
-                        DecontaminateFlowSteps.AddRange(result.Content);
-                    }
-                }
+                var result = loading.AsyncWait("获取流程步骤中,请稍后", SocketProxy.Instance.GetDecontaminateFlowSteps(decontaminateFlow.DecontaminateFlowID));
+                if (result.IsSuccess) DecontaminateFlowSteps.AddRange(result.Content);
+                else Alert.ShowMessage(true, AlertType.Error, $"获取流程步骤失败,{ result.Error }");
             }
         }
 
@@ -142,35 +127,30 @@ namespace MM.Medical.Client.Views
         {
             if (lvDecontaminateFlows.SelectedItem == null)
             {
-                MsPrompt.ShowDialog("请选择流程");
+                Alert.ShowMessage(true, AlertType.Warning, "请选择流程");
                 return;
             }
-            DecontaminateFlowStep decontaminateFlowStep = new DecontaminateFlowStep();
-            decontaminateFlowStep.DecontaminateFlowID = (lvDecontaminateFlows.SelectedItem as DecontaminateFlow).DecontaminateFlowID;
-            AddDecontaminateFlowStep addDecontaminateFlowStep = new AddDecontaminateFlowStep(decontaminateFlowStep);
-            MsWindow.ShowDialog(addDecontaminateFlowStep);
-            LoadDecontaminateSteps();
+            var decontaminateFlowStep = new DecontaminateFlowStep { DecontaminateFlowID = (lvDecontaminateFlows.SelectedItem as DecontaminateFlow).DecontaminateFlowID };
+            var addDecontaminateFlowStep = new AddDecontaminateFlowStep(decontaminateFlowStep, this.loading);
+            if (child.ShowDialog("新增流程步骤", addDecontaminateFlowStep))
+                LoadDecontaminateSteps();
         }
 
-        private async void RemoveFlowStep_Click(object sender, RoutedEventArgs e)
+        private void RemoveFlowStep_Click(object sender, RoutedEventArgs e)
         {
-            var result = await SocketProxy.Instance.RemoveDecontaminateFlowSteps(DecontaminateFlowSteps.Where(f => f.IsSelected).Select(f => f.DecontaminateFlowStepID).ToList());
-            if (result.IsSuccess)
-            {
-                LoadDecontaminateSteps();
-            }
-            else
-            {
-                MsPrompt.ShowDialog("删除失败");
-            }
+            var result = loading.AsyncWait("删除流程步骤中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlowSteps(DecontaminateFlowSteps.Where(f => f.IsSelected).Select(f => f.DecontaminateFlowStepID).ToList()));
+            if (result.IsSuccess) LoadDecontaminateSteps();
+            else Alert.ShowMessage(true, AlertType.Error, $"流程步骤删除失败,{ result.Error }");
         }
 
         private void ModifyFlowStep_Click(object sender, RoutedEventArgs e)
         {
-            DecontaminateFlowStep decontaminateFlowStep = (sender as FrameworkElement).Tag as DecontaminateFlowStep;
-            AddDecontaminateFlowStep addDecontaminateFlow = new AddDecontaminateFlowStep(decontaminateFlowStep);
-            MsWindow.ShowDialog(addDecontaminateFlow);
-            LoadDecontaminateSteps();
+            if (sender is FrameworkElement element && element.DataContext is DecontaminateFlowStep decontaminateFlowStep)
+            {
+                var addDecontaminateFlow = new AddDecontaminateFlowStep(decontaminateFlowStep, this.loading);
+                if (child.ShowDialog("修改流程步骤", addDecontaminateFlow))
+                    LoadDecontaminateSteps();
+            }
         }
 
         #endregion
@@ -180,16 +160,12 @@ namespace MM.Medical.Client.Views
         private void AllDecontaminateFlowStep_Selected(object sender, RoutedEventArgs e)
         {
             foreach (var item in DecontaminateFlowSteps)
-            {
                 item.IsSelected = true;
-            }
         }
-
-
-        #endregion
-
-        #endregion
-
         
+
+        #endregion
+
+        #endregion
     }
 }

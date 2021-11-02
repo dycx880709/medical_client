@@ -45,7 +45,7 @@ namespace MM.Medical.Client.Views
         public static readonly DependencyProperty IsFullScreenProperty = DependencyProperty.Register("IsFullScreen", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
         public static readonly DependencyProperty IsDoctorVisitProperty = DependencyProperty.Register("IsDoctorVisit", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
         public ObservableCollection<Appointment> Appointments { get; set; } = new ObservableCollection<Appointment>();
-        private ICollectionView collectionView { get { return CollectionViewSource.GetDefaultView(Appointments); }}
+        private ICollectionView CollectionView { get { return CollectionViewSource.GetDefaultView(Appointments); }}
         public IEnumerable<MedicalTemplate> MedicalTemplates { get; set; }
         public IEnumerable<MedicalWord> OriginMedicalWords { get; set; }
         public IEnumerable<MedicalWord> MedicalWords { get; set; }
@@ -57,9 +57,9 @@ namespace MM.Medical.Client.Views
             InitializeComponent();
             this.Loaded += ExaminationManageView_Loaded;
             dg_appointments.ItemsSource = this.Appointments;
-            collectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
-            collectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
-            collectionView.Filter = t => t is Appointment appointment && (appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Cancel || appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Exprire);
+            CollectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
+            CollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
+            CollectionView.Filter = t => t is Appointment appointment && (appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Cancel || appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Exprire);
             this.IsEnabled = false;
         }
 
@@ -158,7 +158,7 @@ namespace MM.Medical.Client.Views
                 {
                     Appointments.Clear();
                     Appointments.AddRange(result.Content.Results);
-                    collectionView.Refresh();
+                    CollectionView.Refresh();
                     //pager.TotalCount = result.Content.Total;
                 }
                 else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
@@ -211,7 +211,7 @@ namespace MM.Medical.Client.Views
                     else
                     {
                         Alert.ShowMessage(true, AlertType.Success, "检查已启动");
-                        collectionView.Refresh();
+                        CollectionView.Refresh();
                     }
                 }
                 else
@@ -226,7 +226,7 @@ namespace MM.Medical.Client.Views
                     else
                     {
                         Alert.ShowMessage(true, AlertType.Success, "检查已结束");
-                        collectionView.Refresh();
+                        CollectionView.Refresh();
                     }
                 }
             }

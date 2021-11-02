@@ -13,7 +13,7 @@ namespace MM.Medical.Share.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DateTime? dateTime = null;
+            DateTime? dateTime;
             if (value is int timeStamp)
                 dateTime = TimeHelper.FromUnixTime(timeStamp);
             else if (value is long timeStampL)

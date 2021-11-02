@@ -24,28 +24,29 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class AddRFIDDevice : UserControl
     {
-        public bool IsSuccess { get; set; }
-        public RFIDDevice RFIDDevice { get; set; } = new RFIDDevice();
+        private readonly RFIDDevice rfidDevice;
+        private readonly RFIDDevice rfidDevice_origin;
+        private readonly Loading loading;
 
-        public AddRFIDDevice()
+        public AddRFIDDevice(RFIDDevice rfidDevice, Loading loading)
         {
             InitializeComponent();
-            DataContext = this;
+            this.rfidDevice = rfidDevice.Copy();
+            this.rfidDevice_origin = rfidDevice;
+            this.DataContext = this.rfidDevice;
+            this.loading = loading;
         }
 
-        private async void Save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
-            var result = await SocketProxy.Instance.AddRFIDDevice(RFIDDevice);
+            var result = loading.AsyncWait("添加采集设备中,请稍后", SocketProxy.Instance.AddRFIDDevice(rfidDevice));
             if (result.IsSuccess)
             {
-                RFIDDevice.RFIDDeviceID = result.Content;
-                IsSuccess = true;
-                this.Close();
+                rfidDevice.RFIDDeviceID = result.Content;
+                rfidDevice.CopyTo(rfidDevice_origin);
+                this.Close(true);
             }
-            else
-            {
-                MsPrompt.ShowDialog("保存失败");
-            }
+            else Alert.ShowMessage(true, AlertType.Error, $"添加采集设备失败,{ result.Error }");
         }
     }
 }

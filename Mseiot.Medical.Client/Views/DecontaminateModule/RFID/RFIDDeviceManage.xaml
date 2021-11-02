@@ -36,5 +36,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </controls:CustomGroupBox>
+        <controls:ChildWindow x:Name="child"/>
+        <controls:Loading x:Name="loading"/>
     </Grid>
 </UserControl>

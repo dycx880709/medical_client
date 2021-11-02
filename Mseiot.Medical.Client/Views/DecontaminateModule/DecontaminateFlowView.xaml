@@ -21,7 +21,7 @@
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
-            <DataGrid x:Name="lvDecontaminateFlows" Grid.Row="1" SelectionChanged="lvDecontaminateFlows_SelectionChanged">
+            <DataGrid x:Name="lvDecontaminateFlows" Grid.Row="1" SelectionChanged="DecontaminateFlows_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="100">
                         <DataGridTemplateColumn.Header>
@@ -38,7 +38,7 @@
                     <DataGridTemplateColumn Width="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="修改" Tag="{Binding}" Click="ModifyFlow_Click"/>
+                                <Button Content="修改" Click="ModifyFlow_Click"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -79,5 +79,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </controls:CustomGroupBox>
+        <controls:ChildWindow x:Name="child"/>
+        <controls:Loading x:Name="loading" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>

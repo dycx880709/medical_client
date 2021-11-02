@@ -35,7 +35,7 @@ namespace MM.Medical.Client.Views
         {
             this.Loaded -= EndoscopeManage_Loaded;
             lvDatas.ItemsSource = Endoscopes;
-            LoadDatas();
+            LoadEndoscopes();
         }
 
 
@@ -43,17 +43,12 @@ namespace MM.Medical.Client.Views
 
         public ObservableCollection<Endoscope> Endoscopes { get; set; } = new ObservableCollection<Endoscope>();
 
-        private async void LoadDatas()
+        private void LoadEndoscopes()
         {
             Endoscopes.Clear();
-            var result = await SocketProxy.Instance.GetEndoscopes();
+            var result = loading.AsyncWait("获取内窥镜列表中,请稍后", SocketProxy.Instance.GetEndoscopes());
             if (result.IsSuccess)
-            {
-                if (result.Content != null)
-                {
-                    Endoscopes.AddRange(result.Content);
-                }
-            }
+                Endoscopes.AddRange(result.Content);
         }
 
         #endregion
@@ -62,30 +57,28 @@ namespace MM.Medical.Client.Views
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            AddEndoscope addEndoscope = new AddEndoscope();
-            MsWindow.ShowDialog(addEndoscope);
-            LoadDatas();
+            var endoscope = new Endoscope();
+            AddEndoscope addEndoscope = new AddEndoscope(endoscope, this.loading);
+            if (child.ShowDialog("添加内窥镜", addEndoscope))
+                LoadEndoscopes();
         }
 
-        private async void Remove_Click(object sender, RoutedEventArgs e)
+        private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            var result = await SocketProxy.Instance.RemoveEndoscopes(Endoscopes.Where(f => f.IsSelected).Select(f => f.EndoscopeID).ToList());
+            var result = loading.AsyncWait("删除内窥镜中,请稍后", SocketProxy.Instance.RemoveEndoscopes(Endoscopes.Where(f => f.IsSelected).Select(f => f.EndoscopeID).ToList()));
             if (result.IsSuccess)
-            {
-                LoadDatas();
-            }
-            else
-            {
-                MsPrompt.ShowDialog("删除失败");
-            }
+                LoadEndoscopes();
+            else Alert.ShowMessage(true, AlertType.Error, $"删除内窥镜失败,{ result.Error }");
         }
 
         private void Modify_Click(object sender, RoutedEventArgs e)
         {
-            Endoscope endoscope = (sender as FrameworkElement).Tag as Endoscope;
-            AddEndoscope addEndoscope = new AddEndoscope(endoscope);
-            MsWindow.ShowDialog(addEndoscope);
-            LoadDatas();
+            if (sender is FrameworkElement element && element.DataContext is Endoscope endoscope)
+            {
+                AddEndoscope addEndoscope = new AddEndoscope(endoscope, this.loading);
+                if (child.ShowDialog("编辑内窥镜", addEndoscope))
+                    LoadEndoscopes();
+            }
         }
 
         #endregion
@@ -95,9 +88,7 @@ namespace MM.Medical.Client.Views
         private void All_Selected(object sender, RoutedEventArgs e)
         {
             foreach(var item in Endoscopes)
-            {
                 item.IsSelected = true;
-            }
         }
 
 
@@ -107,23 +98,23 @@ namespace MM.Medical.Client.Views
 
         private void CreateRFID_Click(object sender, RoutedEventArgs e)
         {
-            Endoscope endoscope = (sender as FrameworkElement).Tag as Endoscope;
-
-            RFIDProxy rfidProxy = new RFIDProxy();
-            try
+            if (sender is FrameworkElement element && element.DataContext is Endoscope endoscope)
             {
-                rfidProxy.OpenWait("COM3");
-                rfidProxy.WriteEPC(endoscope.EndoscopeID);
-                MsPrompt.ShowDialogResult("写卡成功");
-            }
-            catch(Exception ex)
-            {
-               MsPrompt.ShowDialogResult("写卡失败:"+ex.Message);
-                
-            }
-            finally
-            {
-                rfidProxy.Close();
+                RFIDProxy rfidProxy = new RFIDProxy();
+                try
+                {
+                    rfidProxy.OpenWait("COM3");
+                    rfidProxy.WriteEPC(endoscope.EndoscopeID);
+                    Alert.ShowMessage(true, AlertType.Success, "写卡成功");
+                }
+                catch (Exception ex)
+                {
+                    Alert.ShowMessage(true, AlertType.Error, "写卡失败:" + ex.Message);
+                }
+                finally
+                {
+                    rfidProxy.Close();
+                }
             }
         }
 
