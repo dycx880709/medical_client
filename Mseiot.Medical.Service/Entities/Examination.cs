@@ -306,6 +306,7 @@ namespace Mseiot.Medical.Service.Entities
         /// 关联预约ID
         /// </summary>
         public Appointment Appointment { get; set; }
-        public ObservableCollection<ExaminationMedia> ExaminationMedias { get; set; } = new ObservableCollection<ExaminationMedia>();
+        public ObservableCollection<ExaminationMedia> Images { get; set; }
+        public ObservableCollection<ExaminationMedia> Videos { get; set; }
     }
 }

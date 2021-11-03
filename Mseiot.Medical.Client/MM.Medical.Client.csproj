@@ -105,6 +105,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\AppointmentStatusToColorConverter.cs" />
     <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
+    <Compile Include="Converters\PathToWebUrlConverter.cs" />
     <Compile Include="Converters\PatientStatusToColorConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Core\Const.cs" />

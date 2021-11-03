@@ -20,6 +20,7 @@ using System.Windows.Data;
 using System.ComponentModel;
 using MM.Libs.RFID;
 using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace MM.Medical.Client.Views
 {
@@ -110,6 +111,8 @@ namespace MM.Medical.Client.Views
                     dg_appointments.SelectedValue = condition;
                     this.IsChecking = true;
                     loading.Stop();
+                    video.SetSource(CacheHelper.EndoscopeDeviceID, OpenCvSharp.VideoCaptureAPIs.DSHOW);
+                    video.Start();
                 });
             }
         }
@@ -249,11 +252,11 @@ namespace MM.Medical.Client.Views
                     {
                         loading.Start("读取内窥镜信息中,请稍后");
                         var rfidProxy = new RFIDProxy();
-                        rfidProxy.NotifyEPCReceived += (_, deviceId) =>
+                        rfidProxy.NotifyEPCReceived += (_, device) =>
                         {
                             var commit_ex = commit.Examination.Copy();
                             commit_ex.DoctorName = CacheHelper.CurrentUser.Name;
-                            commit_ex.EndoscopeID = deviceId;
+                            commit_ex.EndoscopeID = device.DeviceID;
                             commit_ex.AppointmentID = appointment.AppointmentID;
                             this.Dispatcher.Invoke(() =>
                             {
@@ -487,22 +490,105 @@ namespace MM.Medical.Client.Views
                         ExaminationID = examination.ExaminationID,
                         MediaType = MediaType.Image,
                     };
-                    examination.ExaminationMedias.Add(media);
+                    examination.Images.Add(media);
                     var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(image);
                     if (result.IsSuccess)
                     {
                         media.Path = result.Content;
                         var result2 = await SocketProxy.Instance.AddExaminationMedia(media);
                         if (result2.IsSuccess)
+                        { 
                             media.ExaminationMediaID = result2.Content;
+                            media.ErrorMsg = null;
+                        }
+                        else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传数据失败,{ result2.Error }");
                     }
+                    else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传图片失败,{ result.Error }");
                 }
             }
         }
 
-        private void Record_Click(object sender, RoutedEventArgs e)
+        private async void Record_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (sender is ToggleButton tb && dg_appointments.SelectedValue is Appointment appointment)
+            {
+                var examination = appointment.Examination;
+                if (tb.IsChecked.Value)
+                {
+                    var image = video.Shotcut();
+                    if (image != null && image.Length > 0)
+                    {
+                        var media = new ExaminationMedia
+                        {
+                            Buffer = image,
+                            ExaminationID = examination.ExaminationID,
+                            MediaType = MediaType.Video,
+                        };
+                        examination.Videos.Add(media);
+                        var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(image);
+                        if (result.IsSuccess)
+                        {
+                            media.Path = result.Content;
+                            var result2 = await SocketProxy.Instance.AddExaminationMedia(media);
+                            if (result2.IsSuccess)
+                            {
+                                media.ExaminationMediaID = result2.Content;
+                                media.ErrorMsg = null;
+                                var filePath = Path.Combine(CacheHelper.VideoPath, TimeHelper.ToUnixTime(DateTime.Now).ToString() + ".mp4");
+                                if (video.StartRecord(filePath))
+                                    media.LocalVideoPath = filePath;
+                                else
+                                {
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        Alert.ShowMessage(true, AlertType.Error, "开启录像失败");
+                                        tb.IsChecked = tb.IsChecked.Value;
+                                    });
+                                }
+                            }
+                            else this.Dispatcher.Invoke(() =>
+                            {
+                                media.ErrorMsg = $"上传视频数据失败,{ result2.Error }";
+                                tb.IsChecked = tb.IsChecked.Value;
+                            });
+                        }
+                        else
+                        {
+                            this.Dispatcher.Invoke(() => 
+                            {
+                                media.ErrorMsg = $"上传视频预览图片失败,{ result.Error }";
+                                tb.IsChecked = tb.IsChecked.Value;
+                            });
+                        }
+                    }
+                    else
+                    {
+                        Alert.ShowMessage(true, AlertType.Error, "预览图获取失败,录像已停止");
+                        tb.IsChecked = tb.IsChecked.Value;
+                    }
+                }
+                else
+                {
+                    if (video.StopRecord())
+                    {
+                        var media = examination.Videos.FirstOrDefault(t => !string.IsNullOrEmpty(t.LocalVideoPath));
+                        var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(media.LocalVideoPath);
+                        if (result.IsSuccess)
+                        {
+                            media.VideoPath = result.Content;
+                            var result2 = await SocketProxy.Instance.ModifyExaminationMedia(media);
+                            if (!result2.IsSuccess)
+                                this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result2.Error }");
+                        }
+                        else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result.Error }");
+                    }
+                    else
+                    {
+                        Alert.ShowMessage(true, AlertType.Error, "停止录像失败");
+                        tb.IsChecked = tb.IsChecked.Value;
+                    }
+                }
+            }
         }
 
         private void CaptureSetting_Click(object sender, RoutedEventArgs e)
@@ -531,6 +617,10 @@ namespace MM.Medical.Client.Views
                     else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
                 }
                 else appointment.Examination = new Examination();
+                if (appointment.Examination.Images == null)
+                    appointment.Examination.Images = new ObservableCollection<ExaminationMedia>();
+                if (appointment.Examination.Videos == null)
+                    appointment.Examination.Videos = new ObservableCollection<ExaminationMedia>();
             }
         }
 

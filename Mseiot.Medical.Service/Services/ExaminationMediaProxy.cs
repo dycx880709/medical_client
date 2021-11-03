@@ -12,12 +12,12 @@ namespace Mseiot.Medical.Service.Services
     {
         public async Task<MsResult<bool>> ModifyExaminationMedia(ExaminationMedia media)
         {
-            return await HttpProxy.PutMessage<bool>("/api/examinationmedia/modify", media);
+            return await HttpProxy.PutMessage<bool>("/api/examination/modifymedia", media);
         }
 
         public async Task<MsResult<int>> AddExaminationMedia(ExaminationMedia media)
         {
-            return await HttpProxy.PostMessage<int>("/api/examinationmedia/add", media);
+            return await HttpProxy.PostMessage<int>("/api/examination/addmedia", media);
         }
     }
 }

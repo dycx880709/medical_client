@@ -79,7 +79,7 @@ namespace MM.Medical.Client.Views
 
         public bool StartRecord(string videoFullPath)
         {
-            if (this.videoCapture == null || videoCapture.IsDisposed)
+            if (this.videoCapture == null || videoCapture.IsDisposed || playTask == null || playTask.IsCompleted)
                 return false;
             else this.StopRecord();
             this.videoWriter = new VideoWriter(videoFullPath, FourCC.MPG4, videoCapture.Fps, new OpenCvSharp.Size(videoCapture.FrameWidth, videoCapture.FrameHeight));

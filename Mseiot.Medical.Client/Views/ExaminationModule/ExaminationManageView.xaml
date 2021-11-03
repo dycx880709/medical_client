@@ -465,43 +465,48 @@
                                 </StackPanel>
                             </ControlTemplate>
                         </controls:CustomGroupBox.AttachContent>
-                        <Grid>
-                            <!--<Image Source="/MM.Medical.Share;component/Images/nosignal.jpg" Stretch="Uniform"/>-->
-                            <local:Video x:Name="video" ImageSource="/MM.Medical.Share;component/Images/nosignal.jpg"/>
-                        </Grid>
+                        <local:Video x:Name="video" ImageSource="/MM.Medical.Share;component/Images/nosignal.jpg"/>
                     </controls:CustomGroupBox>
                     <controls:CustomGroupBox Margin="5" Grid.Row="1" Header="录像 0段">
-                        <ListBox/>
+                        <ListBox ItemsSource="{Binding Examination.Videos}"/>
                     </controls:CustomGroupBox>
                     <controls:CustomGroupBox Margin="5" Grid.Column="1" Grid.RowSpan="2" Header="截图 0段">
-                        <ListBox ItemsSource="{Binding Examination.ExaminationMedias}">
+                        <ListBox ItemsSource="{Binding Examination.Images}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Height="120">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <Grid>
+                                            <CheckBox VerticalAlignment="Center" Margin="2" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Grid Grid.Column="1" Margin="2">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <Image x:Name="img" Grid.Column="1" Source="{Binding Path}" Stretch="Uniform"/>
-                                                <ComboBox Text="{Binding ExaminationPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Image x:Name="img" Source="{Binding Path, Converter={StaticResource PathToWebUrlConverter}}" Stretch="Uniform"/>
+                                                <ComboBox Grid.Row="1" IsTabStop="False" Height="25" Width="Auto" Margin="0,5,0,0" Text="{Binding ExaminationPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <TextBox Grid.Row="1" IsReadOnly="True" IsTabStop="False" Height="25" Width="Auto" Margin="0,5,0,0" Text="{Binding ExaminationPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                             </Grid>
                                         </Grid>
-                                        <Grid x:Name="loading">
+                                        <Grid x:Name="loading" Visibility="Hidden">
                                             <Border Opacity="0.6" Background="Black"/>
-                                            <TextBlock Text="图片上传中" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}"/>
+                                            <TextBlock x:Name="tb_msg" Text="图片上传中" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}"/>
+                                            <TextBlock x:Name="tb_err" TextWrapping="Wrap" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Danger}"/>
                                         </Grid>
                                     </Grid>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding Path}" Value="{x:Null}">
                                             <Setter Property="Source" TargetName="img" Value="{Binding Buffer}"/>
-                                            <Setter Property="Visibility" TargetName="loading" Value="Hidden"/>
+                                            <Setter Property="Visibility" TargetName="tb_msg" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Error}" Value="{x:Null}">
+                                            <Setter Property="Visibility" TargetName="tb_err" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExaminationMediaID}" Value="0">
+                                            <Setter Property="Visibility" TargetName="loading" Value="Visible"/>
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>
