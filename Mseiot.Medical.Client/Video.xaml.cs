@@ -86,6 +86,13 @@ namespace MM.Medical.Client.Views
             return true;
         }
 
+        public byte[] Shotcut()
+        {
+            if (this.ImageSource is byte[] datas)
+                return datas;
+            return null;
+        }
+
         public bool StopRecord()
         {
             if (this.videoWriter != null && !videoWriter.IsDisposed)

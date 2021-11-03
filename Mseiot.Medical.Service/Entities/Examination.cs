@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -301,20 +302,10 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("EndoscopeID");
             }
         }
-
         /// <summary>
         /// 关联预约ID
         /// </summary>
         public Appointment Appointment { get; set; }
-        /// <summary>
-        /// 检查录像
-        /// </summary>
-        [JsonIgnore]
-        public string VideoPaths { get; set; }
-        /// <summary>
-        /// 检查图片
-        /// </summary>
-        [JsonIgnore]
-        public string ImagePaths { get; set; }
+        public ObservableCollection<ExaminationMedia> ExaminationMedias { get; set; } = new ObservableCollection<ExaminationMedia>();
     }
 }

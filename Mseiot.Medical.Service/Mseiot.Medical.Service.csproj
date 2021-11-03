@@ -52,6 +52,7 @@
     <Compile Include="Entities\ConsultingRoom.cs" />
     <Compile Include="Entities\EnumItems.cs" />
     <Compile Include="Entities\Examination.cs" />
+    <Compile Include="Entities\ExaminationMedia.cs" />
     <Compile Include="Entities\ListResult.cs" />
     <Compile Include="Entities\MedicalTemplate.cs" />
     <Compile Include="Entities\MedicalWord.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Services\DecontaminateFlowProxy.cs" />
     <Compile Include="Services\EndoscopeProxy.cs" />
     <Compile Include="Services\ConsultingRoomProxy.cs" />
+    <Compile Include="Services\ExaminationMediaProxy.cs" />
     <Compile Include="Services\ExaminationProxy.cs" />
     <Compile Include="Services\MedicalTemplateProxy.cs" />
     <Compile Include="Services\MedicalWordProxy.cs" />

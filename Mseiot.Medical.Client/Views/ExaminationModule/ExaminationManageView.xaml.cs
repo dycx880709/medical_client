@@ -405,7 +405,7 @@ namespace MM.Medical.Client.Views
 
         private void MedicalWord_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2 && sender is FrameworkElement element && dg_appointments.SelectedValue is Appointment appointment && appointment.Examination != null)
+            if (e.ClickCount == 2 && sender is FrameworkElement element && dg_appointments.SelectedValue is Appointment appointment)
             {
                 if (element.DataContext is MedicalWord word && (word.MedicalWords == null || word.MedicalWords.Count == 0))
                 {
@@ -456,7 +456,7 @@ namespace MM.Medical.Client.Views
 
         private void MedicalTemplate_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2 && sender is FrameworkElement element && dg_appointments.SelectedValue is Appointment appointment && appointment.Examination != null)
+            if (e.ClickCount == 2 && sender is FrameworkElement element && dg_appointments.SelectedValue is Appointment appointment)
             {
                 if (element.DataContext is MedicalTemplate template && (!string.IsNullOrEmpty(template.Moddia) || !string.IsNullOrEmpty(template.Modsee)))
                 {
@@ -473,9 +473,31 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        private void Shotcut_Click(object sender, RoutedEventArgs e)
+        private async void Shotcut_Click(object sender, RoutedEventArgs e)
         {
-
+            if (dg_appointments.SelectedValue is Appointment appointment)
+            {
+                var image = video.Shotcut();
+                if (image != null && image.Length > 0)
+                {
+                    var examination = appointment.Examination;
+                    var media = new ExaminationMedia
+                    {
+                        Buffer = image,
+                        ExaminationID = examination.ExaminationID,
+                        MediaType = MediaType.Image,
+                    };
+                    examination.ExaminationMedias.Add(media);
+                    var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(image);
+                    if (result.IsSuccess)
+                    {
+                        media.Path = result.Content;
+                        var result2 = await SocketProxy.Instance.AddExaminationMedia(media);
+                        if (result2.IsSuccess)
+                            media.ExaminationMediaID = result2.Content;
+                    }
+                }
+            }
         }
 
         private void Record_Click(object sender, RoutedEventArgs e)
@@ -490,7 +512,7 @@ namespace MM.Medical.Client.Views
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ToggleButton tb && !tb.IsChecked.Value && dg_appointments.SelectedValue is Appointment appointment && appointment.Examination != null)
+            if (sender is ToggleButton tb && !tb.IsChecked.Value && dg_appointments.SelectedValue is Appointment appointment)
             {
                 var result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyExamination(appointment.Examination));
                 if (result.IsSuccess) Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");

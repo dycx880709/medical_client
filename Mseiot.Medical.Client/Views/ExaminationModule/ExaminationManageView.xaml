@@ -470,8 +470,44 @@
                             <local:Video x:Name="video" ImageSource="/MM.Medical.Share;component/Images/nosignal.jpg"/>
                         </Grid>
                     </controls:CustomGroupBox>
-                    <controls:CustomGroupBox Margin="5" Grid.Row="1" Header="录像 0段"/>
-                    <controls:CustomGroupBox Margin="5" Grid.Column="1" Grid.RowSpan="2" Header="截图 0段"/>
+                    <controls:CustomGroupBox Margin="5" Grid.Row="1" Header="录像 0段">
+                        <ListBox/>
+                    </controls:CustomGroupBox>
+                    <controls:CustomGroupBox Margin="5" Grid.Column="1" Grid.RowSpan="2" Header="截图 0段">
+                        <ListBox ItemsSource="{Binding Examination.ExaminationMedias}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Height="120">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Image x:Name="img" Grid.Column="1" Source="{Binding Path}" Stretch="Uniform"/>
+                                                <ComboBox Text="{Binding ExaminationPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid x:Name="loading">
+                                            <Border Opacity="0.6" Background="Black"/>
+                                            <TextBlock Text="图片上传中" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}"/>
+                                        </Grid>
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path}" Value="{x:Null}">
+                                            <Setter Property="Source" TargetName="img" Value="{Binding Buffer}"/>
+                                            <Setter Property="Visibility" TargetName="loading" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </controls:CustomGroupBox>
                 </Grid>
             </Grid>
         </controls:CustomGroupBox>
