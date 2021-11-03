@@ -19,7 +19,7 @@ namespace MM.Medical.Client
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            CacheHelper.LoadLocalSetting();
+            CacheHelper.LoadSetting();
             if (e.Args.Length > 0)
             {
                 if (CacheHelper.LocalSetting.AutoLogin)

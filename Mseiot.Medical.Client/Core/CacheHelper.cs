@@ -21,29 +21,43 @@ namespace MM.Medical.Client.Core
         public static LocalSetting LocalSetting { get; private set; }
         public static User CurrentUser { get; set; } = new User();
         public static string ConsultingRoomName { get; set; }
+        public static string RFIDCom { get; set; }
+        public static int EndoscopeDeviceID { get; set; }
+        public static string VideoPath { get; set; }
+        public static bool IsDebug { get; set; }
 
-        public static string GetConfig(string name)
+        public static T GetConfig<T>(string name)
         {
             if (ConfigurationManager.AppSettings.HasKeys())
             {
                 foreach (var key in ConfigurationManager.AppSettings.AllKeys)
                 {
                     if (key.ToUpper().Equals(name.ToUpper()))
-                        return ConfigurationManager.AppSettings[key];
+                    {
+                        var type = typeof(T);
+                        var value = ConfigurationManager.AppSettings[key];
+                        return (T)Convert.ChangeType(value, typeof(T));
+                    }
                 }
             }
-            return "";
+            return default;
         }
 
-        public static void LoadLocalSetting()
+        public static void LoadSetting()
         {
-            CacheHelper.ConsultingRoomName = CacheHelper.GetConfig("ConsultingRoom");
+            CacheHelper.RFIDCom = CacheHelper.GetConfig<string>("RFIDCom");
+            CacheHelper.ConsultingRoomName = CacheHelper.GetConfig<string>("ConsultingRoom");
+            CacheHelper.EndoscopeDeviceID = CacheHelper.GetConfig<int>("EndoscopeDeviceID");
+            CacheHelper.IsDebug = CacheHelper.GetConfig<bool>("IsDebug");
             if (File.Exists(SettingPath))
             {
                 var json = File.ReadAllText(SettingPath, Encoding.Unicode);
                 CacheHelper.LocalSetting = JsonConvert.DeserializeObject<LocalSetting>(json);
             }
             else CacheHelper.LocalSetting = new LocalSetting();
+            CacheHelper.VideoPath = Path.Combine(Directory.GetCurrentDirectory(), "videos");
+            if (!Directory.Exists(CacheHelper.VideoPath))
+                Directory.CreateDirectory(CacheHelper.VideoPath);
         }
 
         public static void SaveLocalSetting()

@@ -79,7 +79,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </controls:CustomGroupBox>
-        <controls:ChildWindow x:Name="child"/>
+        <controls:ChildWindow x:Name="child" Grid.ColumnSpan="3"/>
         <controls:Loading x:Name="loading" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>

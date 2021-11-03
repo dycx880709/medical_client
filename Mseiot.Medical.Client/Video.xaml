@@ -1,12 +1,12 @@
-﻿<Window x:Class="MM.Medical.Client.Video"
+﻿<UserControl x:Class="MM.Medical.Client.Views.Video"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MM.Medical.Client"
-        mc:Ignorable="d"
-        Title="Video" Height="450" Width="800">
-    <Grid>
-        <Image Source="{Binding ImageSource}"/>
+        d:DesignHeight="768" d:DesignWidth="1080"
+        mc:Ignorable="d">
+    <Grid Background="#F9F9F9">
+        <Image Source="{Binding ImageSource}" Stretch="Uniform" Margin="5"/>
     </Grid>
-</Window>
+</UserControl>
