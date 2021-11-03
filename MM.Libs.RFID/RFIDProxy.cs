@@ -113,13 +113,15 @@ namespace MM.Libs.RFID
                 if (datas[0] == 0x10 && datas[1] == 0x20)
                 {
                     int deviceID = datas[2];
-                    List<byte> data = new List<byte>();
-                    for(int i = 0; i < 8; i++)
+
+                    List<byte> buffer = new List<byte>();
+                    string ascii = Encoding.ASCII.GetString(datas.Skip(3).Take(8).ToArray()).ToUpper();
+                    for (int i = 0; i < ascii.Length/2; i++)
                     {
-                        data.Add((byte)(datas[i + 3] - 0x30));
+                        buffer.Add(Convert.ToByte(ascii.Substring(i * 2, 2), 16));
                     }
-                    int epc = BitConverter.ToInt32(data.ToArray(), 0);
-                    NotifyEPCReceived?.Invoke(this, new EPCInfo { DeviceID= deviceID, EPC = epc });
+                    int epc = BitConverter.ToInt32(buffer.ToArray(), 0);
+                    NotifyEPCReceived?.Invoke(this, new EPCInfo { DeviceID = deviceID, EPC = epc });
                 }
                 else
                 {
