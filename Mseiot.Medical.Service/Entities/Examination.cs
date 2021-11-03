@@ -31,6 +31,7 @@ namespace Mseiot.Medical.Service.Entities
         private int reportTime;
         private string doctorName;
         private int examinationID;
+        private int endoscopeID;
 
         /// <summary>
         /// 检查ID
@@ -291,7 +292,16 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 内镜ID
         /// </summary>
-        public int EndoscopeID { get; set; }
+        public int EndoscopeID
+        {
+            get { return endoscopeID; }
+            set
+            {
+                endoscopeID = value;
+                RaisePropertyChanged("EndoscopeID");
+            }
+        }
+
         /// <summary>
         /// 关联预约ID
         /// </summary>

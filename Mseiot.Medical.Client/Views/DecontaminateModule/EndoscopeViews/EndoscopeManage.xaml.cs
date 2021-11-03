@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MM.Libs.RFID;
+using MM.Medical.Client.Core;
 using Ms.Controls;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
@@ -103,7 +104,7 @@ namespace MM.Medical.Client.Views
                 RFIDProxy rfidProxy = new RFIDProxy();
                 try
                 {
-                    rfidProxy.OpenWait("COM3");
+                    rfidProxy.OpenWait(CacheHelper.RFIDCom);
                     rfidProxy.WriteEPC(endoscope.EndoscopeID);
                     Alert.ShowMessage(true, AlertType.Success, "写卡成功");
                 }

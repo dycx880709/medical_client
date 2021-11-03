@@ -33,11 +33,7 @@ namespace MM.Medical.Client.Core
                 foreach (var key in ConfigurationManager.AppSettings.AllKeys)
                 {
                     if (key.ToUpper().Equals(name.ToUpper()))
-                    {
-                        var type = typeof(T);
-                        var value = ConfigurationManager.AppSettings[key];
-                        return (T)Convert.ChangeType(value, typeof(T));
-                    }
+                        return (T)Convert.ChangeType(ConfigurationManager.AppSettings[key], typeof(T));
                 }
             }
             return default;
