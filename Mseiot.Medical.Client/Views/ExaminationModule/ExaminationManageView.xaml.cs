@@ -18,6 +18,8 @@ using System.Windows.Input;
 using Ms.Libs.Models;
 using System.Windows.Data;
 using System.ComponentModel;
+using MM.Libs.RFID;
+using System.Windows.Media.Imaging;
 
 namespace MM.Medical.Client.Views
 {
@@ -65,11 +67,21 @@ namespace MM.Medical.Client.Views
 
         private void ExaminationManageView_Loaded(object sender, RoutedEventArgs e)
         {
+            this.Loaded -= ExaminationManageView_Loaded;
             GetBaseWords();
             GetMedicalDatas();
             LoadConsultingRoom();
+            LoadRFIDProxy();
             ResetCheckingExamination();
             SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+        }
+
+        private void LoadRFIDProxy()
+        {
+            if (string.IsNullOrEmpty(CacheHelper.RFIDCom))
+            {
+                Alert.ShowMessage(false, AlertType.Error, "设备读卡器未配置");
+            }
         }
 
         private void GetMedicalDatas()
@@ -112,7 +124,7 @@ namespace MM.Medical.Client.Views
                     this.IsEnabled = true;
                     this.consultingRoomId = result.Content.ConsultingRoomID;
                     this.IsDoctorVisit = result.Content.IsUsed;
-                    LoadAppointmentInfos();
+                    LoadAppointments();
                 }
                 else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
             }
@@ -130,7 +142,7 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        private void LoadAppointmentInfos()
+        private void LoadAppointments()
         {
             if (this.IsLoaded)
             {
@@ -177,7 +189,8 @@ namespace MM.Medical.Client.Views
                 "检查体位",
                 "麻醉方法",
                 "检查部位",
-                "术前用药"
+                "术前用药",
+                "检查结果"
             ));
             cb_bodyLoc.ItemsSource = result.SplitContent("检查体位");
             cb_anesthesia.ItemsSource = result.SplitContent("麻醉方法");
@@ -189,44 +202,132 @@ namespace MM.Medical.Client.Views
             cb_hcv.ItemsSource = result.SplitContent("HCV");
             cb_hbasg.ItemsSource = result.SplitContent("HBasg");
             cb_body.ItemsSource = result.SplitContent("检查部位");
+            cb_result.ItemsSource = result.SplitContent("检查结果");
         }
 
         private void Check_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ToggleButton tb && dg_appointments.SelectedValue is Appointment info)
+            if (sender is ToggleButton tb && dg_appointments.SelectedValue is Appointment appointment)
             {
-                var oldAppointmentStatus = info.AppointmentStatus;
-                if (info.Examination == null) info.Examination = new Examination();
-                if (string.IsNullOrEmpty(info.Examination.DoctorName))
-                    info.Examination.DoctorName = CacheHelper.CurrentUser.Name;
+                var commit = appointment.Copy();
                 if (tb.IsChecked.Value)
                 {
-                    info.AppointmentStatus = AppointmentStatus.Checking;
-                    var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(info));
-                    if (!result.IsSuccess)
+                    if (CacheHelper.IsDebug)
                     {
-                        Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result.Error }");
-                        info.AppointmentStatus = oldAppointmentStatus;
+                        var commit_ex = commit.Examination.Copy();
+                        commit_ex.DoctorName = CacheHelper.CurrentUser.Name;
+                        commit_ex.EndoscopeID = 1;
+                        commit_ex.AppointmentID = appointment.AppointmentID;
+                        var result1 = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.AddExamination(commit_ex));
+                        if (result1.IsSuccess)
+                        {
+                            commit_ex.ExaminationID = result1.Content;
+                            commit_ex.CopyTo(commit.Examination);
+                            commit.AppointmentStatus = AppointmentStatus.Checking;
+                            var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(commit));
+                            if (!result.IsSuccess)
+                            {
+                                Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result.Error }");
+                                tb.IsChecked = !tb.IsChecked.Value;
+                            }
+                            else
+                            {
+                                Alert.ShowMessage(true, AlertType.Success, "检查已启动");
+                                commit.CopyTo(appointment);
+                                CollectionView.Refresh();
+                                video.SetSource(CacheHelper.EndoscopeDeviceID, OpenCvSharp.VideoCaptureAPIs.DSHOW);
+                                video.Start();
+                            }
+                        }
+                        else
+                        {
+                            Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result1.Error }");
+                            tb.IsChecked = !tb.IsChecked.Value;
+                        }
                     }
                     else
                     {
-                        Alert.ShowMessage(true, AlertType.Success, "检查已启动");
-                        CollectionView.Refresh();
+                        loading.Start("读取内窥镜信息中,请稍后");
+                        var rfidProxy = new RFIDProxy();
+                        rfidProxy.NotifyEPCReceived += (_, deviceId) =>
+                        {
+                            var commit_ex = commit.Examination.Copy();
+                            commit_ex.DoctorName = CacheHelper.CurrentUser.Name;
+                            commit_ex.EndoscopeID = deviceId;
+                            commit_ex.AppointmentID = appointment.AppointmentID;
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                loading.Stop();
+                                var result1 = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.AddExamination(commit_ex));
+                                if (result1.IsSuccess)
+                                {
+                                    commit_ex.EndoscopeID = result1.Content;
+                                    commit_ex.CopyTo(commit.Examination);
+                                    commit.AppointmentStatus = AppointmentStatus.Checking;
+                                    var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(commit));
+                                    if (!result.IsSuccess)
+                                    {
+                                        Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result.Error }");
+                                        tb.IsChecked = !tb.IsChecked.Value;
+                                    }
+                                    else
+                                    {
+                                        Alert.ShowMessage(true, AlertType.Success, "检查已启动");
+                                        commit.CopyTo(appointment);
+                                        CollectionView.Refresh();
+                                        video.SetSource(CacheHelper.EndoscopeDeviceID, OpenCvSharp.VideoCaptureAPIs.DSHOW);
+                                        video.Start();
+                                    }
+                                }
+                                else
+                                {
+                                    Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result1.Error }");
+                                    tb.IsChecked = !tb.IsChecked.Value;
+                                }
+                            });
+                            rfidProxy.Close();
+                        };
+                        rfidProxy.NotifyDeviceStatusChanged += (_, status) =>
+                        {
+                            if (!status)
+                            {
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    loading.Stop();
+                                    Alert.ShowMessage(true, AlertType.Error, "读取内窥镜失败,开启检查失败");
+                                    tb.IsChecked = !tb.IsChecked.Value;
+                                });
+                                rfidProxy.Close();
+                            }
+                        };
+                        rfidProxy.Open(CacheHelper.RFIDCom);
                     }
                 }
                 else
                 {
-                    info.AppointmentStatus = AppointmentStatus.Checked;
-                    var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(info));
-                    if (!result.IsSuccess)
+                    var result1 = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyExamination(commit.Examination));
+                    if (result1.IsSuccess)
                     {
-                        Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result.Error }");
-                        info.AppointmentStatus = oldAppointmentStatus;
+                        commit.AppointmentStatus = AppointmentStatus.Checked;
+                        var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(commit));
+                        if (!result.IsSuccess)
+                        {
+                            Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result.Error }");
+                            tb.IsChecked = !tb.IsChecked.Value;
+                        }
+                        else
+                        {
+                            Alert.ShowMessage(true, AlertType.Success, "检查已结束");
+                            commit.CopyTo(appointment);
+                            CollectionView.Refresh();
+                            video.Dispose();
+                            video.ImageSource = new BitmapImage(new Uri("/MM.Medical.Share;component/Images/nosignal.jpg", UriKind.Relative));
+                        }
                     }
                     else
                     {
-                        Alert.ShowMessage(true, AlertType.Success, "检查已结束");
-                        CollectionView.Refresh();
+                        Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result1.Error }");
+                        tb.IsChecked = !tb.IsChecked.Value;
                     }
                 }
             }
@@ -234,12 +335,12 @@ namespace MM.Medical.Client.Views
 
         private void AppointmentStatus_CheckChanged(object sender, RoutedEventArgs e)
         {
-            LoadAppointmentInfos();
+            LoadAppointments();
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            LoadAppointmentInfos();
+            LoadAppointments();
         }
 
         private void Remove_Click(object sender, RoutedEventArgs e)
@@ -313,22 +414,40 @@ namespace MM.Medical.Client.Views
                     switch (rootMedicalWord.Name)
                     {
                         case "临床诊断":
-                            examination.ClinicalDiagnosis = word.Name;
+                            if (string.IsNullOrEmpty(examination.ClinicalDiagnosis))
+                                examination.ClinicalDiagnosis = word.Name;
+                            else if (!examination.ClinicalDiagnosis.Contains(word.Name))
+                                examination.ClinicalDiagnosis += "\n" + word.Name;
                             break;
                         case "内镜所见":
-                            examination.EndoscopicFindings = word.Name;
+                            if (string.IsNullOrEmpty(examination.EndoscopicFindings))
+                                examination.EndoscopicFindings = word.Name;
+                            else if (!examination.EndoscopicFindings.Contains(word.Name))
+                                examination.EndoscopicFindings += "\n" + word.Name;
                             break;
                         case "镜下诊断":
-                            examination.MicroscopicDiagnosis = word.Name;
+                            if (string.IsNullOrEmpty(examination.MicroscopicDiagnosis))
+                                examination.MicroscopicDiagnosis = word.Name;
+                            else if (!examination.MicroscopicDiagnosis.Contains(word.Name))
+                                examination.MicroscopicDiagnosis += "\n" + word.Name;
                             break;
                         case "活检部位":
-                            examination.BiopsySite = word.Name;
+                            if (string.IsNullOrEmpty(examination.BiopsySite))
+                                examination.BiopsySite = word.Name;
+                            else if (!examination.BiopsySite.Contains(word.Name))
+                                examination.BiopsySite += "\n" + word.Name;
                             break;
                         case "病理诊断":
-                            examination.PathologicalDiagnosis = word.Name;
+                            if (string.IsNullOrEmpty(examination.PathologicalDiagnosis))
+                                examination.PathologicalDiagnosis = word.Name;
+                            else if (!examination.PathologicalDiagnosis.Contains(word.Name))
+                                examination.PathologicalDiagnosis += "\n" + word.Name;
                             break;
                         case "医生建议":
-                            examination.DoctorAdvice = word.Name;
+                            if (string.IsNullOrEmpty(examination.DoctorAdvice))
+                                examination.DoctorAdvice = word.Name;
+                            else if (!examination.DoctorAdvice.Contains(word.Name))
+                                examination.DoctorAdvice += "\n" + word.Name;
                             break;
                     }
                 }
@@ -348,7 +467,7 @@ namespace MM.Medical.Client.Views
                         examination.EndoscopicFindings += "\n" + template.Modsee;
                     if (string.IsNullOrEmpty(examination.MicroscopicDiagnosis))
                         examination.MicroscopicDiagnosis = template.Moddia;
-                    else if (examination.MicroscopicDiagnosis.Contains(template.Moddia))
+                    else if (!examination.MicroscopicDiagnosis.Contains(template.Moddia))
                         examination.MicroscopicDiagnosis += "\n" + template.Moddia;
                 }
             }
@@ -361,7 +480,7 @@ namespace MM.Medical.Client.Views
 
         private void Record_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void CaptureSetting_Click(object sender, RoutedEventArgs e)

@@ -30,11 +30,20 @@ namespace Mseiot.Medical.Service.Entities
         private string doctorAdvice;
         private int reportTime;
         private string doctorName;
+        private int examinationID;
 
         /// <summary>
         /// 检查ID
         /// </summary>
-        public int ExaminationID { get; set; }
+        public int ExaminationID
+        {
+            get { return examinationID; }
+            set
+            {
+                examinationID = value;
+                RaisePropertyChanged("ExaminationID");
+            }
+        }
         /// <summary>
         /// 关联预约ID
         /// </summary>
@@ -279,6 +288,13 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("DoctorName");
             }
         }
+        /// <summary>
+        /// 内镜ID
+        /// </summary>
+        public int EndoscopeID { get; set; }
+        /// <summary>
+        /// 关联预约ID
+        /// </summary>
         public Appointment Appointment { get; set; }
         /// <summary>
         /// 检查录像

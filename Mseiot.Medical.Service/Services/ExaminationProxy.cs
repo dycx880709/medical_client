@@ -38,5 +38,10 @@ namespace Mseiot.Medical.Service.Services
         {
             return await HttpProxy.PutMessage<bool>("/api/examination/modifyexamination", examination);
         }
+
+        public async Task<MsResult<int>> AddExamination(Examination examination)
+        {
+            return await HttpProxy.PostMessage<int>("/api/examination/addexamination", examination);
+        }
     }
 }
