@@ -8,7 +8,12 @@ using System.Threading.Tasks;
 
 namespace MM.Libs.RFID
 {
+    public class EPCInfo
+    {
+        public int DeviceID { get; set; }
 
+        public int EPC { get; set; }
+    }
  
 
     /// <summary>
@@ -17,7 +22,7 @@ namespace MM.Libs.RFID
     /// </summary>
     public class RFIDProxy
     {
-        public event EventHandler<int> NotifyEPCReceived;
+        public event EventHandler<EPCInfo> NotifyEPCReceived;
         public event EventHandler<bool> NotifyDeviceStatusChanged;
 
         #region 串口操作
@@ -105,15 +110,31 @@ namespace MM.Libs.RFID
             Console.WriteLine("收到数据", datas);
             if (datas.Length >= 5)
             {
-                byte cmd = datas[2];
-                if (cmd == waitReply)
+                if (datas[0] == 0x10 && datas[1] == 0x20)
                 {
-                    readDatas = datas;
+                    int deviceID = datas[2];
+
+                    List<byte> buffer = new List<byte>();
+                    string ascii = Encoding.ASCII.GetString(datas.Skip(3).Take(8).ToArray()).ToUpper();
+                    for (int i = 0; i < ascii.Length/2; i++)
+                    {
+                        buffer.Add(Convert.ToByte(ascii.Substring(i * 2, 2), 16));
+                    }
+                    int epc = BitConverter.ToInt32(buffer.ToArray(), 0);
+                    NotifyEPCReceived?.Invoke(this, new EPCInfo { DeviceID = deviceID, EPC = epc });
                 }
-                else if (cmd == 0xEE)
+                else
                 {
-                    int epc = BitConverter.ToInt32(datas, 4);
-                    NotifyEPCReceived?.Invoke(this, epc);
+                    byte cmd = datas[2];
+                    if (cmd == waitReply)
+                    {
+                        readDatas = datas;
+                    }
+                    else if (cmd == 0xEE)
+                    {
+                        int epc = BitConverter.ToInt32(datas, 4);
+                        NotifyEPCReceived?.Invoke(this, new EPCInfo { EPC = epc });
+                    }
                 }
             }
         }
