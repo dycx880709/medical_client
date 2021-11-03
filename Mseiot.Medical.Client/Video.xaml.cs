@@ -60,7 +60,7 @@ namespace MM.Medical.Client.Views
                             videoWriter.Write(mat);
                         byte[] buffer = mat.ToBytes(".jpg");
                         this.Dispatcher.Invoke(() => { ImageSource = buffer; });
-                        Console.WriteLine("{0} {1}", mat.Width, mat.Height);
+                        //Console.WriteLine("{0} {1}", mat.Width, mat.Height);
                         mat.Dispose();
                         resetEvent.Set();
                     }
