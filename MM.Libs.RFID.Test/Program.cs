@@ -23,9 +23,9 @@ namespace MM.Libs.RFID.Test
             Console.ReadKey();
         }
 
-        private static void RfidProxy_NotifyEPCReceived(object sender, int e)
+        private static void RfidProxy_NotifyEPCReceived(object sender, EPCInfo e)
         {
-            Console.WriteLine("读到数据:{0}", e);
+            Console.WriteLine("读到数据:{0} {1}", e.DeviceID,e.EPC);
         }
 
         private static void RfidProxy_NotifyDeviceStatusChanged(object sender, bool e)
