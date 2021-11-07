@@ -48,8 +48,11 @@ namespace MM.Medical.Client.Views
                 lb_rooms.ScrollIntoView(room);
                 lb_rooms.SelectedValue = room;
                 var lbv = lb_rooms.ItemContainerGenerator.ContainerFromIndex(lb_rooms.Items.Count - 1) as ListBoxItem;
-                var tb = ControlHelper.GetVisualChild<TextBox>(lbv);
-                tb.Focus();
+                if (lbv != null)
+                {
+                    var tb = ControlHelper.GetVisualChild<TextBox>(lbv);
+                    tb.Focus();
+                }
             }
         }
 
