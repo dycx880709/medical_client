@@ -110,7 +110,7 @@
                         </Style>
                     </Grid.Resources>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="检查日期"/>
+                        <TextBlock Text="预约日期"/>
                         <controls:DateTimeInterval x:Name="dtiTime"/>
                         <TextBlock Text="患者信息"/>
                         <controls:CustomTextBox Margin="5,0" Width="200" x:Name="tbSearchName" Watermark="身份证、社保号码、姓名"/>
@@ -174,7 +174,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
-                <controls:Pager x:Name="pager" Grid.Row="2"/>
+                <controls:Pager x:Name="pager" Grid.Row="2" PageChanged="Appointment_PageChanged"/>
             </Grid>
         </controls:CustomGroupBox>
         <controls:ChildWindow x:Name="child"/>

@@ -44,6 +44,7 @@ namespace MM.Medical.Client.Views
             dtiTime.StartTime = today.AddDays(-14);
             dtiTime.EndTime = today.AddDays(14);
             dg_appointment.ItemsSource = this.Appointments;
+            CollectionView.SortDescriptions.Add(new SortDescription("AppointmentTime", ListSortDirection.Descending));
             CollectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
             CollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
             LoadAppointments();
@@ -64,7 +65,7 @@ namespace MM.Medical.Client.Views
         {
             pager.SelectedCount = dg_appointment.GetFullCountWithoutScroll();
             var result = await SocketProxy.Instance.GetAppointments(
-                pager.PageIndex + 1,
+                pager.PageIndex,
                 pager.SelectedCount,
                 dtiTime.StartTime,
                 dtiTime.EndTime,
@@ -157,6 +158,11 @@ namespace MM.Medical.Client.Views
                 }
             }
             else Alert.ShowMessage(true, AlertType.Warning, $"请选择取消签到项");
+        }
+
+        private void Appointment_PageChanged(object sender, PageChangedEventArgs args)
+        {
+            LoadAppointments();
         }
     }
 }

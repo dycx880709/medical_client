@@ -36,7 +36,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="性别" Style="{StaticResource editorFormItemText}"/>
-                <ComboBox SelectedIndex="0" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding Appointment.Sex}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
+                <ComboBox SelectedIndex="0" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding Appointment.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="年龄" Style="{StaticResource editorFormItemText}"/>
@@ -44,7 +44,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="预约时间" Style="{StaticResource editorFormItemText}"/>
-                <controls:DateTimePicker SelectedDateTime="{Binding Appointment.AppointmentTime,Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+                <controls:DateTimePicker SelectedDateTime="{Binding Appointment.AppointmentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">

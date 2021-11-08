@@ -23,8 +23,8 @@ namespace Mseiot.Medical.Service.Services
         {
             return await HttpProxy.GetMessage<ListResult<Appointment>>("/api/Appointment/GetAppointments", new
             {
-                Index = index.ToString(),
-                Count = count.ToString(),
+                Index = index,
+                Count = count,
                 StartTime = startTime != null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
                 EndTime = endTime != null ? TimeHelper.ToUnixTime(endTime.Value) : long.MaxValue,
                 UserInfo = userInfo ?? "",

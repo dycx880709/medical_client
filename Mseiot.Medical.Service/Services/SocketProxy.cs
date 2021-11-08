@@ -38,7 +38,10 @@ namespace Mseiot.Medical.Service.Services
                 await TcpProxy.Stop();
             }
         }
-
+        public string GetFileRounter()
+        {
+            return HttpProxy.BaseUrl + "files/";
+        }
         /// <summary>
         /// 上传文件
         /// </summary>

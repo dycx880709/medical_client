@@ -10,6 +10,58 @@
              mc:Ignorable="d" x:Name="uc"
              d:DesignHeight="1080" d:DesignWidth="1920">
 
+    <UserControl.Resources>
+        <DataTemplate x:Key="ExaminationMediaDataTemplate" DataType="{x:Type entities:ExaminationMedia}">
+            <Grid Height="120" Width="160">
+                <Grid x:Name="content">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="cb" VerticalAlignment="Center" Margin="2" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Grid Grid.Column="1" Margin="2">
+                        <Grid>
+                            <Image x:Name="img" Source="{Binding Path, Converter={StaticResource PathToWebUrlConverter}}" Stretch="Fill"/>
+                            <controls:MediaButton x:Name="bt_play" FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Visible}" HoverSource="{StaticResource Img_Visible_Hover}" Click="PlayMedia_Click" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid x:Name="gd_tool" VerticalAlignment="Bottom">
+                            <ComboBox x:Name="cb_part" Visibility="Hidden" IsTabStop="False" BorderThickness="0" Height="25" Width="Auto" Margin="0,5,0,0" SelectedValue="{Binding BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectionChanged="BodyPart_SelectionChanged" ItemsSource="{Binding BodyParts, RelativeSource={RelativeSource AncestorLevel=1,AncestorType={x:Type local:ExaminationManageView},Mode=FindAncestor}}"/>
+                            <TextBlock x:Name="tb_part" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource Color_Font_Light}" Margin="2,5,0,0" Text="{Binding BodyPart}"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="loading" Visibility="Hidden">
+                    <Border Opacity="0.6" Background="Black"/>
+                    <TextBlock x:Name="tb_msg" Text="图片上传中" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}"/>
+                    <TextBlock x:Name="tb_err" TextWrapping="Wrap" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Danger}"/>
+                </Grid>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path}" Value="{x:Null}">
+                    <Setter Property="Source" TargetName="img" Value="{Binding Buffer}"/>
+                    <Setter Property="Visibility" TargetName="tb_msg" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="bt_play" Value="Hidden"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Error}" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="tb_err" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ExaminationMediaID}" Value="0">
+                    <Setter Property="Visibility" TargetName="loading" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding MediaType}" Value="{x:Static entities:MediaType.Video}">
+                    <Setter Property="Visibility" TargetName="cb" Value="Collapsed"/>
+                    <Setter Property="NormalSource" TargetName="bt_play" Value="{StaticResource Img_Play}"/>
+                    <Setter Property="HoverSource" TargetName="bt_play" Value="{StaticResource Img_Play_Hover}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
+                    <Setter Property="Visibility" TargetName="cb_part" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="tb_part" Value="Hidden"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -52,7 +104,7 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <Button Content="刷新" Width="60" Margin="5,0,0,0" Click="Refresh_Click" Visibility="Collapsed"/>
+                        <Button Content="刷新" Width="60" Margin="5,0,0,0" Click="Refresh_Click"/>
                         <Button Content="删除" Width="60" Margin="5,0,0,0" Click="Remove_Click" Visibility="Collapsed"/>
                     </StackPanel>
                 </ControlTemplate>
@@ -69,7 +121,8 @@
                     <RadioButton x:Name="rb_waiting" Click="AppointmentStatus_CheckChanged" Content="待检查" Margin="15,0"/>
                     <RadioButton x:Name="rb_checked" Click="AppointmentStatus_CheckChanged" Content="已检查"/>
                 </StackPanel>
-                <DataGrid x:Name="dg_appointments" Grid.Row="1" SelectionChanged="Appointments_SelectionChanged">
+                <DataGrid x:Name="dg_appointments" Grid.Row="1" SelectedValue="{Binding SelectedAppointment, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="Appointments_SelectionChanged">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="70" Visibility="Collapsed" Header="序号" Binding="{Binding Number}"/>
                         <DataGridTemplateColumn Width="*" Header="状态">
@@ -465,53 +518,29 @@
                                 </StackPanel>
                             </ControlTemplate>
                         </controls:CustomGroupBox.AttachContent>
-                        <local:Video x:Name="video" ImageSource="/MM.Medical.Share;component/Images/nosignal.jpg"/>
+                        <Grid>
+                            <local:Video x:Name="video" ImageSource="/MM.Medical.Share;component/Images/nosignal.jpg"/>
+                            <Grid>
+                                <Border x:Name="bd_media" Visibility="Hidden" Background="#10000000">
+                                    <Image x:Name="img_media"/>
+                                </Border>
+                                <Button x:Name="bt_close" Click="CloseMedia_Click" Visibility="Hidden" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,5,0" Style="{StaticResource Button_Close}"/>
+                            </Grid>
+                        </Grid>
                     </controls:CustomGroupBox>
                     <controls:CustomGroupBox Margin="5" Grid.Row="1" Header="录像 0段">
-                        <ListBox ItemsSource="{Binding Examination.Videos}"/>
+                        <ListBox SelectedValue="{Binding SelectedMedia, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ItemsSource="{Binding Examination.Videos}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
                     </controls:CustomGroupBox>
                     <controls:CustomGroupBox Margin="5" Grid.Column="1" Grid.RowSpan="2" Header="截图 0段">
-                        <ListBox ItemsSource="{Binding Examination.Images}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Height="120">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <CheckBox VerticalAlignment="Center" Margin="2" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <Grid Grid.Column="1" Margin="2">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <Image x:Name="img" Source="{Binding Path, Converter={StaticResource PathToWebUrlConverter}}" Stretch="Uniform"/>
-                                                <ComboBox Grid.Row="1" IsTabStop="False" Height="25" Width="Auto" Margin="0,5,0,0" Text="{Binding ExaminationPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                <TextBox Grid.Row="1" IsReadOnly="True" IsTabStop="False" Height="25" Width="Auto" Margin="0,5,0,0" Text="{Binding ExaminationPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid x:Name="loading" Visibility="Hidden">
-                                            <Border Opacity="0.6" Background="Black"/>
-                                            <TextBlock x:Name="tb_msg" Text="图片上传中" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}"/>
-                                            <TextBlock x:Name="tb_err" TextWrapping="Wrap" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Danger}"/>
-                                        </Grid>
-                                    </Grid>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding Path}" Value="{x:Null}">
-                                            <Setter Property="Source" TargetName="img" Value="{Binding Buffer}"/>
-                                            <Setter Property="Visibility" TargetName="tb_msg" Value="Visible"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Error}" Value="{x:Null}">
-                                            <Setter Property="Visibility" TargetName="tb_err" Value="Collapsed"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ExaminationMediaID}" Value="0">
-                                            <Setter Property="Visibility" TargetName="loading" Value="Visible"/>
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                        <ListBox SelectedValue="{Binding SelectedMedia, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 ItemsSource="{Binding Examination.Images}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}"/>
                     </controls:CustomGroupBox>
                 </Grid>
             </Grid>
