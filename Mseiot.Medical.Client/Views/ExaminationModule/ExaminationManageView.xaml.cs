@@ -572,15 +572,22 @@ namespace MM.Medical.Client.Views
                     if (video.StopRecord())
                     {
                         var media = examination.Videos.FirstOrDefault(t => !string.IsNullOrEmpty(t.LocalVideoPath));
-                        var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(media.LocalVideoPath);
-                        if (result.IsSuccess)
+                        if (File.Exists(media.LocalVideoPath))
                         {
-                            media.VideoPath = result.Content;
-                            var result2 = await SocketProxy.Instance.ModifyExaminationMedia(media);
-                            if (!result2.IsSuccess)
-                                this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result2.Error }");
+                            var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(media.LocalVideoPath);
+                            if (result.IsSuccess)
+                            {
+                                media.VideoPath = result.Content;
+                                var result2 = await SocketProxy.Instance.ModifyExaminationMedia(media);
+                                if (!result2.IsSuccess)
+                                    this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result2.Error }");
+                            }
+                            else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result.Error }");
                         }
-                        else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result.Error }");
+                        else
+                        {
+                            Alert.ShowMessage(true, AlertType.Error, "录像失败");
+                        }
                     }
                     else
                     {

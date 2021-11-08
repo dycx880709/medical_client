@@ -32,5 +32,9 @@ namespace MM.Medical.Client.Entities
             }
         }
 
+        public SystemSettingExtend(SystemSetting setting)
+        {
+            setting.CopyTo(this);
+        }
     }
 }
