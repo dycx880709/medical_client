@@ -172,6 +172,8 @@ namespace MM.Medical.Client.Views
                     appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Checking });
                 else
                     appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Checked, AppointmentStatus.Reported });
+                //var startTime = 0;
+                //var endTime = int.MaxValue;
                 var startTime = TimeHelper.ToUnixDate(DateTime.Now);
                 var endTime = startTime + 24 * 60 * 60 - 1;
                 //pager.SelectedCount = dg_appointments.GetFullCountWithoutScroll();
@@ -332,11 +334,10 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            Alert.ShowMessage(true, AlertType.Success, "检查已结束");
+                            Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
                             commit.CopyTo(appointment);
                             CollectionView.Refresh();
                             video.Dispose();
-                            video.ImageSource = new BitmapImage(new Uri("/MM.Medical.Share;component/Images/nosignal.jpg", UriKind.Relative));
                         }
                     }
                     else
@@ -367,12 +368,8 @@ namespace MM.Medical.Client.Views
         {
             if (dg_appointments.SelectedValue is Appointment info)
             {
-                if (info.Examination.ReportTime == 0)
-                {
-                    info.Examination.ReportTime = (int)TimeHelper.ToUnixTime(DateTime.Now);
-                    var result = loading.AsyncWait("生成报告中,请稍后", SocketProxy.Instance.ModifyAppointment(info));
-                    if (!result.IsSuccess) Alert.ShowMessage(true, AlertType.Error, $"生成报告失败,{ result.Error }");
-                }
+                var view = new ReportPreviewView(info.AppointmentID);
+                MsWindow.ShowDialog(view, "打印预览");
             }
         }
 
@@ -619,7 +616,11 @@ namespace MM.Medical.Client.Views
             if (sender is ToggleButton tb && !tb.IsChecked.Value && dg_appointments.SelectedValue is Appointment appointment)
             {
                 var result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyExamination(appointment.Examination));
-                if (result.IsSuccess) Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
+                if (result.IsSuccess)
+                {
+                    Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
+                    video.Dispose();
+                }
                 else Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败,{ result.Error }");
             }
         }
@@ -628,17 +629,19 @@ namespace MM.Medical.Client.Views
         {
             if (dg_appointments.SelectedValue is Appointment appointment)
             {
+                Examination examination = null;
                 if (appointment.AppointmentStatus != AppointmentStatus.Waiting)
                 {
                     var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetExaminationsByAppointmentID(appointment.AppointmentID));
-                    if (result.IsSuccess) appointment.Examination = result.Content;
+                    if (result.IsSuccess) examination = result.Content;
                     else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
                 }
-                else appointment.Examination = new Examination();
-                if (appointment.Examination.Images == null)
-                    appointment.Examination.Images = new ObservableCollection<ExaminationMedia>();
-                if (appointment.Examination.Videos == null)
-                    appointment.Examination.Videos = new ObservableCollection<ExaminationMedia>();
+                else examination = new Examination();
+                if (examination.Images == null)
+                    examination.Images = new ObservableCollection<ExaminationMedia>();
+                if (examination.Videos == null)
+                    examination.Videos = new ObservableCollection<ExaminationMedia>();
+                appointment.Examination = examination;
             }
         }
 
@@ -678,7 +681,9 @@ namespace MM.Medical.Client.Views
                 }
                 else if (media.MediaType == MediaType.Video)
                 {
-                    video.SetSource(CacheHelper.EndoscopeDeviceID, true);
+                    if (SelectedAppointment.AppointmentStatus == AppointmentStatus.Checking)
+                        video.SetSource(CacheHelper.EndoscopeDeviceID, true);
+                    else video.Dispose();
                 }
                 bt_close.Visibility = Visibility.Hidden;
             }

@@ -80,8 +80,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\nosignal.jpg" />
-    <Content Include="Images\test.jpg" />
+    <Resource Include="Images\no_signal.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\report_ico.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Medias\screenshot.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

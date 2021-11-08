@@ -227,10 +227,10 @@
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Checking}">
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Checked}">
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Waiting}">
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Reported}">
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -487,18 +487,7 @@
                                             </Style>
                                         </ToggleButton.Style>
                                     </ToggleButton>
-                                    <Button Content="画面采图" Margin="5,0" Click="Shotcut_Click">
-                                        <Button.Style>
-                                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Checking}">
-                                                        <Setter Property="IsEnabled" Value="True"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
-                                    </Button>
+                                    <Button Content="画面采图" Margin="5,0" Click="Shotcut_Click"/>
                                     <ToggleButton VerticalAlignment="Center" Margin="5,0,0,0" Click="Record_Click">
                                         <ToggleButton.Style>
                                             <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
@@ -519,7 +508,7 @@
                             </ControlTemplate>
                         </controls:CustomGroupBox.AttachContent>
                         <Grid>
-                            <local:Video x:Name="video" ImageSource="/MM.Medical.Share;component/Images/nosignal.jpg"/>
+                            <local:Video x:Name="video"/>
                             <Grid>
                                 <Border x:Name="bd_media" Visibility="Hidden" Background="#10000000">
                                     <Image x:Name="img_media"/>

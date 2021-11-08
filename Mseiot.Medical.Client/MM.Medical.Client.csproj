@@ -141,6 +141,9 @@
     <Compile Include="Views\Component\PatientManageView.xaml.cs">
       <DependentUpon>PatientManageView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Component\ReportPreviewView.xaml.cs">
+      <DependentUpon>ReportPreviewView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Component\ResetPwdView.xaml.cs">
       <DependentUpon>ResetPwdView.xaml</DependentUpon>
     </Compile>
@@ -254,6 +257,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Component\PatientManageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\ReportPreviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -32,7 +32,7 @@
                 <Setter Property="Orientation" Value="Horizontal"/>
             </Style>
 
-            <Style TargetType="TextBlock" x:Key="editorFormItemText" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Style TargetType="{x:Type TextBlock}" x:Key="editorFormItemText" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="Width" Value="80"/>
                 <Setter Property="TextAlignment" Value="Right"/>
                 <Setter Property="Margin" Value="0,0,10,0"/>

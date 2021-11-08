@@ -32,6 +32,7 @@ namespace MM.Medical.Client.Views
         public Video()
         {
             InitializeComponent();
+            this.ImageSource = new BitmapImage(new Uri("/MM.Medical.Share;component/Images/no_signal.jpg", UriKind.Relative));
             this.DataContext = this;
         }
 
@@ -51,7 +52,7 @@ namespace MM.Medical.Client.Views
                 var token = tokenSource.Token;
                 this.playTask = Task.Run(() =>
                 {
-                    var index = 0;
+                    //var index = 0;
                     while (true)
                     {
                         if (token.IsCancellationRequested)
@@ -65,7 +66,7 @@ namespace MM.Medical.Client.Views
                             if (this.videoWriter != null && !videoWriter.IsDisposed)
                                 videoWriter.Write(mat);
                         }
-                        if (index++ % 2 == 0)
+                        //if (index++ % 2 == 0)
                         {
                             byte[] buffer = mat.ToBytes(".jpg");
                             this.Dispatcher.Invoke(() => { ImageSource = buffer; });
@@ -151,6 +152,7 @@ namespace MM.Medical.Client.Views
         public async void Dispose()
         {
             await Stop();
+            this.Dispatcher.Invoke(() => this.ImageSource = new BitmapImage(new Uri("/MM.Medical.Share;component/Images/no_signal.jpg", UriKind.Relative)));
         }
     }
 }

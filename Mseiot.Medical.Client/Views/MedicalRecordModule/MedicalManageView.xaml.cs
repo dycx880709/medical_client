@@ -77,7 +77,7 @@ namespace MM.Medical.Client.Views
             pager.SelectedCount = dg_examinations.GetFullCountWithoutScroll();
             var result = loading.AsyncWait("获取预约信息中,请稍后", SocketProxy.Instance.GetExaminations
             (
-                pager.PageIndex + 1,
+                pager.PageIndex,
                 pager.SelectedCount
             ));
             if (result.IsSuccess)
@@ -97,6 +97,15 @@ namespace MM.Medical.Client.Views
         private void Get_Click(object sender, RoutedEventArgs e)
         {
             LoadExaminationInfos();
+        }
+
+        private void Report_Click(object sender, RoutedEventArgs e)
+        {
+            if (dg_examinations.SelectedValue is Examination examination && examination.Appointment != null)
+            {
+                var view = new ReportPreviewView(examination.Appointment.AppointmentID);
+                MsWindow.ShowDialog(view, "打印预览");
+            }
         }
     }
 }
