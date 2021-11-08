@@ -45,5 +45,15 @@ namespace MM.Medical.Client.Views
                 else MsWindow.ShowDialog($"更新系统设置失败,{ result.Error }", "软件提示");
             }
         }
+
+        private void UpdateIcon_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void UploadCutshotSound_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

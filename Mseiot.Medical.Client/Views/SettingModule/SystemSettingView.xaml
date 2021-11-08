@@ -55,7 +55,7 @@
                     <controls:CustomTextBox Text="{Binding ReportName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1"/>
                     <controls:CustomTextBox Text="{Binding ReportIconLocal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" IsReadOnly="True">
                         <controls:CustomTextBox.AttachContent>
-                            <Button Content="..." Width="{StaticResource ButtonHeight}"/>
+                            <Button Content="..." Width="{StaticResource ButtonHeight}" Click="UpdateIcon_Click" Background="Transparent" Foreground="{StaticResource Color_Font_Primary}" BorderThickness="0"/>
                         </controls:CustomTextBox.AttachContent>
                     </controls:CustomTextBox>
                     <controls:CustomTextBox Text="{Binding OrderPrefix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1"/>
@@ -85,7 +85,7 @@
 
                     <controls:CustomTextBox Text="{Binding CutshotSoundLocal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Grid.Row="0" Grid.Column="2">
                         <controls:CustomTextBox.AttachContent>
-                            <Button Content="..." Width="{StaticResource ButtonHeight}"/>
+                            <Button Content="..." Width="{StaticResource ButtonHeight}" Click="UploadCutshotSound_Click" Background="Transparent" Foreground="{StaticResource Color_Font_Primary}" BorderThickness="0"/>
                         </controls:CustomTextBox.AttachContent>
                     </controls:CustomTextBox>
                     <controls:CustomTextBox Text="{Binding PrintImageCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2"/>
