@@ -13,7 +13,7 @@ namespace Mseiot.Medical.Service.Entities
         private string path;
         private bool isSelected;
         private int examinationMediaID;
-        private string examinationPart;
+        private string bodyPart;
         private string errorMsg;
         private string videoPath;
 
@@ -38,13 +38,13 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("ErrorMsg");
             }
         }
-        public string ExaminationPart
+        public string BodyPart
         {
-            get { return examinationPart; }
+            get { return bodyPart; }
             set
             {
-                examinationPart = value;
-                RaisePropertyChanged("ExaminationPart");
+                bodyPart = value;
+                RaisePropertyChanged("BodyPart");
             }
         }
         public string Path

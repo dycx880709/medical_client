@@ -23,6 +23,7 @@ namespace MM.Medical.Client.Views
     public partial class Video : UserControl, IDisposable
     {
         private CancellationTokenSource tokenSource;
+        private object videoWriterLocker = new object();
         private ManualResetEvent resetEvent;
         private VideoCapture videoCapture;
         private VideoWriter videoWriter;
@@ -34,11 +35,11 @@ namespace MM.Medical.Client.Views
             this.DataContext = this;
         }
 
-        public async void SetSource(object videoSource, VideoCaptureAPIs captureAPIs = VideoCaptureAPIs.ANY)
+        public async void SetSource(object videoSource, bool autoPlay = false, VideoCaptureAPIs captureAPIs = VideoCaptureAPIs.ANY)
         {
             await this.Stop();
             this.tokenSource = new CancellationTokenSource();
-            this.resetEvent = new ManualResetEvent(false);
+            this.resetEvent = new ManualResetEvent(autoPlay);
             if (videoSource is int deviceId)
                 this.videoCapture = new VideoCapture(deviceId, captureAPIs);
             else
@@ -50,17 +51,25 @@ namespace MM.Medical.Client.Views
                 var token = tokenSource.Token;
                 this.playTask = Task.Run(() =>
                 {
+                    var index = 0;
                     while (true)
                     {
                         if (token.IsCancellationRequested)
                             return;
                         resetEvent.WaitOne();
                         var mat = videoCapture.RetrieveMat();
-                        if (this.videoWriter != null && !videoWriter.IsDisposed)
-                            videoWriter.Write(mat);
-                        byte[] buffer = mat.ToBytes(".jpg");
-                        this.Dispatcher.Invoke(() => { ImageSource = buffer; });
-                        //Console.WriteLine("{0} {1}", mat.Width, mat.Height);
+                        if (mat.Empty())
+                            break;
+                        lock (this.videoWriterLocker)
+                        {
+                            if (this.videoWriter != null && !videoWriter.IsDisposed)
+                                videoWriter.Write(mat);
+                        }
+                        if (index++ % 2 == 0)
+                        {
+                            byte[] buffer = mat.ToBytes(".jpg");
+                            this.Dispatcher.Invoke(() => { ImageSource = buffer; });
+                        }
                         mat.Dispose();
                         resetEvent.Set();
                     }
@@ -82,7 +91,11 @@ namespace MM.Medical.Client.Views
             if (this.videoCapture == null || videoCapture.IsDisposed || playTask == null || playTask.IsCompleted)
                 return false;
             else this.StopRecord();
-            this.videoWriter = new VideoWriter(videoFullPath, FourCC.MPG4, videoCapture.Fps, new OpenCvSharp.Size(videoCapture.FrameWidth, videoCapture.FrameHeight));
+            lock (this.videoWriterLocker)
+            {
+                var fps = videoCapture.Fps == 0 ? 20 : videoCapture.Fps;
+                this.videoWriter = new VideoWriter(videoFullPath, FourCC.MJPG, fps, new OpenCvSharp.Size(videoCapture.FrameWidth, videoCapture.FrameHeight));
+            }
             return true;
         }
 
@@ -95,10 +108,13 @@ namespace MM.Medical.Client.Views
 
         public bool StopRecord()
         {
-            if (this.videoWriter != null && !videoWriter.IsDisposed)
+            lock (this.videoWriterLocker)
             {
-                videoWriter.Dispose();
-                videoWriter = null;
+                if (this.videoWriter != null && !videoWriter.IsDisposed)
+                {
+                    videoWriter.Dispose();
+                    videoWriter = null;
+                }
             }
             return true;
         }

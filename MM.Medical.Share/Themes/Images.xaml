@@ -98,4 +98,44 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
+
+    <!--播放-->
+    <DrawingImage x:Key="Img_Play">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V1024 H1024 V0 H0 Z">
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{DynamicResource Color_Font_Primary}" Geometry="F1 M1024,1024z M0,0z M814.1,469.6L814.1,469.6 295.3,113.8 295.1,114C284.4,103.8 269.8,97.5 253.7,97.5 220.6,97.5 193.8,124 193.8,156.8 193.8,174.8 193,210 193.8,209.2L193.8,512.5 193.8,831.8C193.8,832.1 193.8,852.3 193.8,868.3 193.8,901 220.6,927.6 253.7,927.6 269.8,927.6 284.5,921.3 295.2,911L295.2,911 814,555.3 814,555.3C825.3,544.5 832.3,529.4 832.3,512.6 832.3,512.6 832.3,512.5 832.3,512.5 832.3,512.5 832.3,512.4 832.3,512.4 832.4,495.5 825.4,480.3 814.1,469.6z" />
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Img_Play_Hover">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V1024 H1024 V0 H0 Z">
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{DynamicResource Color_Font_Primary}" Geometry="F1 M1024,1024z M0,0z M814.1,469.6L814.1,469.6 295.3,113.8 295.1,114C284.4,103.8 269.8,97.5 253.7,97.5 220.6,97.5 193.8,124 193.8,156.8 193.8,174.8 193,210 193.8,209.2L193.8,512.5 193.8,831.8C193.8,832.1 193.8,852.3 193.8,868.3 193.8,901 220.6,927.6 253.7,927.6 269.8,927.6 284.5,921.3 295.2,911L295.2,911 814,555.3 814,555.3C825.3,544.5 832.3,529.4 832.3,512.6 832.3,512.6 832.3,512.5 832.3,512.5 832.3,512.5 832.3,512.4 832.3,512.4 832.4,495.5 825.4,480.3 814.1,469.6z" />
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!--查看/可见-->
+    <DrawingImage x:Key="Img_Visible">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V1024 H1024 V0 H0 Z">
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{DynamicResource Color_Font_Primary}" Geometry="F1 M1024,1024z M0,0z M926.7,372.7C825.8,235.9 677.6,149.3 512.2,149.3 346.8,149.3 199.2,235.9 97.7,372.7 52.9,433 52.9,522.6 97.7,582.9 199.2,719.7 347.4,806.3 512.2,806.3 677.7,806.3 825.2,719.7 926.7,582.9 971.5,522.6 971.5,433 926.7,372.7z M512.8,686.8C397.5,686.8 303.7,593 303.7,477.7 303.7,362.4 397.5,268.6 512.8,268.6 628.1,268.6 721.9,362.4 721.9,477.7 721.9,593 628,686.8 512.8,686.8z M512.8,328.5C430.4,328.5 363.5,395.4 363.5,477.8 363.5,560.2 430.4,627.1 512.8,627.1 595.2,627.1 662.1,560.2 662.1,477.8 662.1,395.4 595.2,328.5 512.8,328.5z" />
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="Img_Visible_Hover">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V1024 H1024 V0 H0 Z">
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{DynamicResource Color_Font_Primary}" Geometry="F1 M1024,1024z M0,0z M926.7,372.7C825.8,235.9 677.6,149.3 512.2,149.3 346.8,149.3 199.2,235.9 97.7,372.7 52.9,433 52.9,522.6 97.7,582.9 199.2,719.7 347.4,806.3 512.2,806.3 677.7,806.3 825.2,719.7 926.7,582.9 971.5,522.6 971.5,433 926.7,372.7z M512.8,686.8C397.5,686.8 303.7,593 303.7,477.7 303.7,362.4 397.5,268.6 512.8,268.6 628.1,268.6 721.9,362.4 721.9,477.7 721.9,593 628,686.8 512.8,686.8z M512.8,328.5C430.4,328.5 363.5,395.4 363.5,477.8 363.5,560.2 430.4,627.1 512.8,627.1 595.2,627.1 662.1,560.2 662.1,477.8 662.1,395.4 595.2,328.5 512.8,328.5z" />
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
 </ResourceDictionary>

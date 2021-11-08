@@ -29,6 +29,16 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class ExaminationManageView : UserControl
     {
+        public Appointment SelectedAppointment
+        {
+            get { return (Appointment)GetValue(SelectedAppointmentProperty); }
+            set { SetValue(SelectedAppointmentProperty, value); }
+        }
+        public ExaminationMedia SelectedMedia
+        {
+            get { return (ExaminationMedia)GetValue(SelectedMediaProperty); }
+            set { SetValue(SelectedMediaProperty, value); }
+        }
         public bool IsChecking
         {
             get { return (bool)GetValue(IsCheckingProperty); }
@@ -44,14 +54,19 @@ namespace MM.Medical.Client.Views
             get { return (bool)GetValue(IsFullScreenProperty); }
             set { SetValue(IsFullScreenProperty, value); }
         }
+
+        public static readonly DependencyProperty SelectedAppointmentProperty = DependencyProperty.Register("SelectedAppointment", typeof(Appointment), typeof(ExaminationManageView), new PropertyMetadata(null));
+        public static readonly DependencyProperty SelectedMediaProperty = DependencyProperty.Register("SelectedMedia", typeof(ExaminationMedia), typeof(ExaminationManageView), new PropertyMetadata(null));
         public static readonly DependencyProperty IsCheckingProperty = DependencyProperty.Register("IsChecking", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
         public static readonly DependencyProperty IsFullScreenProperty = DependencyProperty.Register("IsFullScreen", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
         public static readonly DependencyProperty IsDoctorVisitProperty = DependencyProperty.Register("IsDoctorVisit", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+       
         public ObservableCollection<Appointment> Appointments { get; set; } = new ObservableCollection<Appointment>();
         private ICollectionView CollectionView { get { return CollectionViewSource.GetDefaultView(Appointments); }}
         public IEnumerable<MedicalTemplate> MedicalTemplates { get; set; }
         public IEnumerable<MedicalWord> OriginMedicalWords { get; set; }
         public IEnumerable<MedicalWord> MedicalWords { get; set; }
+        public List<string> BodyParts { get; set; }
 
         private int consultingRoomId;
 
@@ -111,8 +126,7 @@ namespace MM.Medical.Client.Views
                     dg_appointments.SelectedValue = condition;
                     this.IsChecking = true;
                     loading.Stop();
-                    video.SetSource(CacheHelper.EndoscopeDeviceID, OpenCvSharp.VideoCaptureAPIs.DSHOW);
-                    video.Start();
+                    video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
                 });
             }
         }
@@ -204,7 +218,7 @@ namespace MM.Medical.Client.Views
             cb_hiv.ItemsSource = result.SplitContent("HIV");
             cb_hcv.ItemsSource = result.SplitContent("HCV");
             cb_hbasg.ItemsSource = result.SplitContent("HBasg");
-            cb_body.ItemsSource = result.SplitContent("检查部位");
+            cb_body.ItemsSource = BodyParts = result.SplitContent("检查部位");
             cb_result.ItemsSource = result.SplitContent("检查结果");
         }
 
@@ -238,8 +252,7 @@ namespace MM.Medical.Client.Views
                                 Alert.ShowMessage(true, AlertType.Success, "检查已启动");
                                 commit.CopyTo(appointment);
                                 CollectionView.Refresh();
-                                video.SetSource(CacheHelper.EndoscopeDeviceID, OpenCvSharp.VideoCaptureAPIs.DSHOW);
-                                video.Start();
+                                video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
                             }
                         }
                         else
@@ -278,8 +291,7 @@ namespace MM.Medical.Client.Views
                                         Alert.ShowMessage(true, AlertType.Success, "检查已启动");
                                         commit.CopyTo(appointment);
                                         CollectionView.Refresh();
-                                        video.SetSource(CacheHelper.EndoscopeDeviceID, OpenCvSharp.VideoCaptureAPIs.DSHOW);
-                                        video.Start();
+                                        video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
                                     }
                                 }
                                 else
@@ -499,6 +511,7 @@ namespace MM.Medical.Client.Views
                         if (result2.IsSuccess)
                         { 
                             media.ExaminationMediaID = result2.Content;
+                            media.Buffer = null;
                             media.ErrorMsg = null;
                         }
                         else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传数据失败,{ result2.Error }");
@@ -534,7 +547,7 @@ namespace MM.Medical.Client.Views
                             {
                                 media.ExaminationMediaID = result2.Content;
                                 media.ErrorMsg = null;
-                                var filePath = Path.Combine(CacheHelper.VideoPath, TimeHelper.ToUnixTime(DateTime.Now).ToString() + ".mp4");
+                                var filePath = Path.Combine(CacheHelper.VideoPath, TimeHelper.ToUnixTime(DateTime.Now).ToString() + ".avi");
                                 if (video.StartRecord(filePath))
                                     media.LocalVideoPath = filePath;
                                 else
@@ -572,22 +585,20 @@ namespace MM.Medical.Client.Views
                     if (video.StopRecord())
                     {
                         var media = examination.Videos.FirstOrDefault(t => !string.IsNullOrEmpty(t.LocalVideoPath));
-                        if (File.Exists(media.LocalVideoPath))
+                        var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(media.LocalVideoPath);
+                        if (result.IsSuccess)
                         {
-                            var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(media.LocalVideoPath);
-                            if (result.IsSuccess)
+                            media.VideoPath = result.Content;
+                            var result2 = await SocketProxy.Instance.ModifyExaminationMedia(media);
+                            if (!result2.IsSuccess)
+                                this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result2.Error }");
+                            else
                             {
-                                media.VideoPath = result.Content;
-                                var result2 = await SocketProxy.Instance.ModifyExaminationMedia(media);
-                                if (!result2.IsSuccess)
-                                    this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result2.Error }");
+                                File.Delete(media.LocalVideoPath);
+                                media.LocalVideoPath = null;
                             }
-                            else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result.Error }");
                         }
-                        else
-                        {
-                            Alert.ShowMessage(true, AlertType.Error, "录像失败");
-                        }
+                        else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result.Error }");
                     }
                     else
                     {
@@ -634,6 +645,59 @@ namespace MM.Medical.Client.Views
         private void Call_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void PlayMedia_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is ExaminationMedia media)
+            {
+                if (media.MediaType == MediaType.Image)
+                {
+                    var remoteAddress = SocketProxy.Instance.GetFileRounter() + media.Path;
+                    bd_media.Visibility = Visibility.Visible;
+                    img_media.Source = new BitmapImage(new Uri(remoteAddress, UriKind.Absolute));
+                }
+                else
+                {
+                    var remoteAddress = SocketProxy.Instance.GetFileRounter() + media.VideoPath;
+                    video.SetSource(remoteAddress, true);
+                }
+                bt_close.Visibility = Visibility.Visible;
+                bt_close.Tag = media;
+            }
+        }
+
+        private void CloseMedia_Click(object sender, RoutedEventArgs e)
+        {
+            if (bt_close.Tag is ExaminationMedia media)
+            {
+                if (media.MediaType == MediaType.Image)
+                {
+                    bd_media.Visibility = Visibility.Hidden;
+                    img_media.Source = null;
+                }
+                else if (media.MediaType == MediaType.Video)
+                {
+                    video.SetSource(CacheHelper.EndoscopeDeviceID, true);
+                }
+                bt_close.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private async void BodyPart_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.IsLoaded && element.DataContext is ExaminationMedia media)
+            {
+                var result = await SocketProxy.Instance.ModifyExaminationMedia(media);
+                if (!result.IsSuccess)
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        Alert.ShowMessage(true, AlertType.Error, $"检查部位设置失败,{ result.Error }");
+                        media.BodyPart = null;
+                    });
+                }
+            }
         }
     }
 }

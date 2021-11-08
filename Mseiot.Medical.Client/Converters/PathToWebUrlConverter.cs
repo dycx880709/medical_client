@@ -14,13 +14,8 @@ namespace MM.Medical.Client.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
-            {
-                var serverSetting = CacheHelper.LocalSetting.ServerSetting;
-                var url = $"http://{ serverSetting.Address }:{ serverSetting.HttpPort }";
-                var filePath = url + "/files/" + value.ToString();
-                return filePath;
-            }
+            if (value != null && value is string strValue)
+                return SocketProxy.Instance.GetFileRounter() + strValue;
             return "";
         }
 

@@ -52,8 +52,9 @@ namespace MM.Medical.Client.Core
             }
             else CacheHelper.LocalSetting = new LocalSetting();
             CacheHelper.VideoPath = Path.Combine(Directory.GetCurrentDirectory(), "videos");
-            if (!Directory.Exists(CacheHelper.VideoPath))
-                Directory.CreateDirectory(CacheHelper.VideoPath);
+            if (Directory.Exists(CacheHelper.VideoPath))
+                Directory.Delete(CacheHelper.VideoPath, true);
+            Directory.CreateDirectory(CacheHelper.VideoPath);
         }
 
         public static void SaveLocalSetting()
