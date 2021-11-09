@@ -112,7 +112,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                 RFIDProxy rfidProxy = new RFIDProxy();
                 try
                 {
-                    rfidProxy.OpenWait(CacheHelper.RFIDCom);
+                    rfidProxy.OpenWait(CacheHelper.LocalSetting.RFIDCom);
                     await rfidProxy.WriteEPC(endoscope.EndoscopeID);
                     Alert.ShowMessage(true, AlertType.Success, "写卡成功");
                 }

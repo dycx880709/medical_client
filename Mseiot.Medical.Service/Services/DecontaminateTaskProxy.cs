@@ -14,7 +14,7 @@ namespace Mseiot.Medical.Service.Services
         {
             return await HttpProxy.GetMessage<List<DecontaminateTask>>("/api/DecontaminateTask/get", new
             {
-                decontaminateTaskStatuses = decontaminateTaskStatuses
+                decontaminateTaskStatuses = decontaminateTaskStatuses != null ? string.Join(",", decontaminateTaskStatuses.Select(t => (int)t)) : null
             });
         }
 

@@ -52,7 +52,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 任务步骤
         /// </summary>
-        public List<DecontaminateStep> DecontaminateSteps { get; set; } = new List<DecontaminateStep>();
+        public List<DecontaminateTaskStep> DecontaminateTaskSteps { get; set; } = new List<DecontaminateTaskStep>();
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ namespace Mseiot.Medical.Service.Entities
         Complete
     }
 
-    public class DecontaminateStep
+    public class DecontaminateTaskStep
     {
 
         public int Index { get; set; }
