@@ -26,14 +26,14 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class MedicalManageView : UserControl
     {
-        public Appointment Condition { get; private set; }
+        public Examination Condition { get; private set; }
 
         public MedicalManageView()
         {
             InitializeComponent();
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                this.Condition = new Appointment { AppointmentTime = TimeHelper.ToUnixTime(DateTime.Now) };
+                this.Condition = new Examination { ExaminationTime = TimeHelper.ToUnixTime(DateTime.Now) };
                 this.Loaded += PatientManageView_Loaded;
             }
         }
@@ -50,21 +50,15 @@ namespace MM.Medical.Client.Views
         private void GetConditions()
         {
             var result = loading.AsyncWait("数据加载中,请稍后", SocketProxy.Instance.GetBaseWords(
-                "收费类型",
                 "送检医生",
-                "送检科室",
                 "检查部位",
-                "检查类型",
-                "性别"
+                "检查结果"
             ));
             if (result.IsSuccess)
             {
-                cb_chargeType.ItemsSource = result.SplitContent("收费类型");
-                cb_checkBody.ItemsSource = result.SplitContent("检查部位");
-                cb_checkType.ItemsSource = result.SplitContent("检查类型");
+                cb_bodyPart.ItemsSource = result.SplitContent("检查部位");
+                cb_result.ItemsSource = result.SplitContent("检查结果");
                 cb_doctorName.ItemsSource = result.SplitContent("送检医生");
-                cb_className.ItemsSource = result.SplitContent("送检科室");
-                cb_sex.ItemsSource = result.SplitContent("性别");
             }
         }
 
@@ -91,8 +85,8 @@ namespace MM.Medical.Client.Views
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            new Appointment().CopyTo(this.Condition);
-            Condition.AppointmentTime = TimeHelper.ToUnixDate(DateTime.Now);
+            Condition.Reset();
+            Condition.ExaminationTime = TimeHelper.ToUnixTime(DateTime.Now);
         }
 
         private void Get_Click(object sender, RoutedEventArgs e)

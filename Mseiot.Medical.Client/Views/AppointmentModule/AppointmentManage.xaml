@@ -79,9 +79,9 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <Button Content="刷新" Margin="5,0" Click="Refresh_Click"/>
-                        <Button Content="设置" Margin="5,0" IsEnabled="False"/>
-                        <Button Content="打印" Margin="5,0,0,0" IsEnabled="False"/>
+                        <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
+                        <Button Content="设置" Margin="5,0,0,0" IsEnabled="False" Visibility="Collapsed"/>
+                        <Button Content="打印" Margin="5,0,0,0" IsEnabled="False" Visibility="Collapsed"/>
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>

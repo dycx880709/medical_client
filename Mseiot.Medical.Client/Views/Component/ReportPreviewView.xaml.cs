@@ -1,4 +1,5 @@
-﻿using Ms.Controls;
+﻿using MM.Medical.Client.Core;
+using Ms.Controls;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
@@ -80,15 +81,11 @@ namespace MM.Medical.Client.Views
 
         private void Print_Click(object sender, RoutedEventArgs e)
         {
+            sp_tool.Visibility = Visibility.Collapsed;
             System.Windows.Controls.PrintDialog printDialog = new System.Windows.Controls.PrintDialog();
             if (printDialog.ShowDialog().Value)
-            {
-                DrawingVisual vis = new DrawingVisual();
-                DrawingContext dc = vis.RenderOpen();
-                dc.DrawRectangle(new VisualBrush(gb_print), new Pen(), new Rect { Height = gb_print.Height, Width = gb_print.Width, X=0, Y=0 });
-                dc.Close();
-                printDialog.PrintVisual(vis, "检查报告单");
-            }
+                printDialog.PrintVisual(this.gb_print, "检查单报告");
+            sp_tool.Visibility = Visibility.Visible;
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)

@@ -55,7 +55,7 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="3*"/>
                             </Grid.ColumnDefinitions>
                             <Border Grid.ColumnSpan="8" BorderThickness="0,0,0,3" BorderBrush="{StaticResource Color_Border_Primary}"/>
                             <TextBlock Style="{StaticResource editorFormItemText}" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="检查号:" Grid.Column="0" Grid.Row="0"/>
@@ -74,10 +74,10 @@
                             <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding Appointment.Birthday}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding BodyPart}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="7" Text="无" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="7" Text="{Binding PatientTask}" VerticalAlignment="Center"/>
                         </Grid>
                         <StackPanel x:Name="sp_standard" Grid.Row="1">
-                            <ListBox IsHitTestVisible="False" Width="{Binding ActualWidth, ElementName=sp_standard}" ItemsSource="{Binding Images}">
+                            <ListBox IsHitTestVisible="False" HorizontalAlignment="Center" Width="{Binding ActualWidth, ElementName=sp_standard}" ItemsSource="{Binding Images}">
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="{x:Type ListBoxItem}">
                                         <Setter Property="Template">
@@ -110,29 +110,30 @@
                                 </ListBox.ItemTemplate>
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <WrapPanel IsItemsHost="True" HorizontalAlignment="Center" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type ScrollViewer},Mode=FindAncestor}}"/>
+                                        <UniformGrid Columns="2" IsItemsHost="True" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type ScrollViewer},Mode=FindAncestor}}"/>
+                                        <!--<WrapPanel Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type ScrollViewer},Mode=FindAncestor}}"/>-->
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                             </ListBox>
-                            <StackPanel Margin="0,20">
+                            <StackPanel Margin="20,10">
                                 <TextBlock Text="内镜所见:" HorizontalAlignment="Left" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding EndoscopicFindings}" TextWrapping="Wrap"/>
                             </StackPanel>
-                            <StackPanel>
+                            <StackPanel Margin="20,0">
                                 <TextBlock Text="诊断结果:" HorizontalAlignment="Left" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding MicroscopicDiagnosis}" TextWrapping="Wrap"/>
                             </StackPanel>
                         </StackPanel>
-                        <Grid Grid.Row="2" Margin="0,0,0,10">
+                        <Grid Grid.Row="2" Margin="10,0,10,10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="1">
                                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                    <TextBlock Text="温馨提示:" FontSize="{StaticResource LargeFontSize}"/>
+                                    <TextBlock Text="温馨提示:"/>
                                     <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}">
-                                        <TextBlock Margin="5,0" FontSize="{StaticResource LargeFontSize}" Text="返首诊医师就诊。检查后1小时内禁饮禁食,1小时后饮水五呛咳后方可进食。"/>
+                                        <TextBlock Margin="5,0" Text="返首诊医师就诊。检查后1小时内禁饮禁食,1小时后饮水五呛咳后方可进食。"/>
                                     </Border>
                                 </StackPanel>
                                 <Border BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0,0,0,1">
@@ -156,7 +157,7 @@
                     </Grid>
                     <controls:Loading x:Name="loading" Grid.RowSpan="2"/>
                 </Grid>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,5,0">
+                <StackPanel x:Name="sp_tool" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,5,0">
                     <Button Content="另存为" Click="SaveAs_Click" Margin="5,0"/>
                     <Button Content="打印" Click="Print_Click"/>
                 </StackPanel>
