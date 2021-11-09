@@ -54,8 +54,8 @@
                                                 <Border Padding="10,0" VerticalAlignment="Top" Height="30"  x:Name="border" BorderThickness="0,0,0,0" BorderBrush="{StaticResource Color_Border_Primary}">
                                                     <TextBlock  HorizontalAlignment="Center" x:Name="tb" Text="{Binding Name}" FontSize="16" FontWeight="Bold"/>
                                                 </Border>
-                                                <Canvas Height="300">
-                                                    <Border x:Name="border_children" Visibility="Collapsed" Margin="0,30,0,0" Background="{StaticResource Color_Input_Background}">
+                                                <Popup x:Name="popup" Width="100" Height="240" PopupAnimation="Fade" VerticalOffset="0" Placement="Bottom"  PlacementTarget="{Binding ElementName=border}">
+                                                    <Border x:Name="border_children" Margin="0,0,0,0" Background="{StaticResource Color_Input_Background}">
                                                         <Border.Effect>
                                                             <DropShadowEffect ShadowDepth="0" Opacity="0.1"/>
                                                         </Border.Effect>
@@ -83,7 +83,7 @@
                                                             </ListView.ItemContainerStyle>
                                                         </ListView>
                                                     </Border>
-                                                </Canvas>
+                                                </Popup>
                                             </Grid>
                                         </Border>
                                         <ControlTemplate.Triggers>
@@ -93,11 +93,14 @@
                                                     <Condition Binding="{Binding HasChildren}" Value="True"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <MultiDataTrigger.Setters>
-                                                    <Setter Property="Visibility" TargetName="border_children" Value="Visible"/>
+                                                    <Setter Property="IsOpen" TargetName="popup" Value="true"/>
                                                 </MultiDataTrigger.Setters>
                                             </MultiDataTrigger>
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter Property="BorderThickness" TargetName="border" Value="0,0,0,2"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True" SourceName="popup">
+                                                <Setter Property="IsOpen" TargetName="popup" Value="true"/>
                                             </Trigger>
                                             <DataTrigger Binding="{Binding IsSelected,RelativeSource={RelativeSource Mode=Self}}" Value="True">
                                                 <Setter Property="BorderThickness" TargetName="border" Value="0,0,0,2"/>

@@ -50,15 +50,12 @@
                 </ListView.ItemContainerStyle>
             </ListView>
 
-            <StackPanel Margin="0,15,0,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="0,0,120,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <StackPanel  Orientation="Horizontal">
                     <TextBlock x:Name="tb_time" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}"/>
                 </StackPanel>
-                <ToggleButton x:Name="tg_User" Width="160" Margin="10,0" Background="Transparent" BorderThickness="0">
+                <ToggleButton x:Name="tg_User" Margin="5,0" Background="Transparent" BorderThickness="0">
                     <StackPanel Orientation="Horizontal">
-                        <Border Height="25" Width="25" CornerRadius="25" BorderThickness="2" BorderBrush="{StaticResource Color_Border_Primary}">
-                            <Image Source="{StaticResource Img_User}" Height="{StaticResource LargeFontSize}"/>
-                        </Border>
                         <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static core:CacheHelper.UserName}" FontSize="{StaticResource LargeFontSize}"/>
                     </StackPanel>
                 </ToggleButton>
