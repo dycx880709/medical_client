@@ -17,7 +17,7 @@ namespace MM.Medical.Client.Views
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : MsWindow
+    public partial class MainWindow : BaseWindow
     {
         private readonly Dictionary<string, UserControl> navigateItems 
             = new Dictionary<string, UserControl>();
@@ -31,6 +31,7 @@ namespace MM.Medical.Client.Views
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= MainWindow_Loaded;
+            LoadMenus();
             UpdateTime();
             await ConnectServer();
         }
@@ -136,31 +137,118 @@ namespace MM.Medical.Client.Views
             App.Current.Shutdown();
         }
 
-        private void MenuItem_Checked(object sender, RoutedEventArgs e)
+        #region 菜单
+
+        public List<Entities.Menu> Menus { get; set; } = new List<Entities.Menu>();
+
+        public void LoadMenus()
         {
-            if (sender is FrameworkElement element &&  element.Tag is string viewName)
+
+            Menus.Add(new Entities.Menu
             {
-                if (!string.IsNullOrEmpty(viewName) && !navigateItems.ContainsKey(viewName))
+                Name = "预约登记",
+                Identify = "MM.Medical.Client.Views.AppointmentManage",
+            });
+
+            Menus.Add(new Entities.Menu
+            {
+                Name = "检查中心",
+                Identify = "MM.Medical.Client.Views.ExaminationManageView",
+            });
+
+            Menus.Add(new Entities.Menu
+            {
+                Name = "病历中心",
+                Identify = "MM.Medical.Client.Views.MedicalManageView",
+            });
+
+            Menus.Add(new Entities.Menu
+            {
+                Name = "主任管理",
+                Identify = "",
+                Children = new List<Entities.Menu>
                 {
-                    var type = Type.GetType(viewName);
-                    var uc = Activator.CreateInstance(type) as UserControl;
-                    navigateItems.Add(viewName, uc);
+                    new Entities.Menu{
+                        Name = "条件统计",
+                        Identify = "MM.Medical.Client.Views.ConditionStatisticsView",
+                        },
+                     new Entities.Menu{
+                        Name = "专项统计",
+                        Identify = "MM.Medical.Client.Views.SpecialStatisticsView",
+                        },
                 }
-                border.Child = navigateItems[viewName];
-            }
-        }
+            });
 
-        private void Min_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
 
-        private void MemuItems_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is RadioButton radioButton && radioButton.IsChecked.Value)
+            Menus.Add(new Entities.Menu
             {
-                radioButton.IsChecked = false;
-                radioButton.IsChecked = true;
+                Name = "系统管理",
+                Identify = "",
+                Children = new List<Entities.Menu>
+                {
+                    new Entities.Menu{
+                        Name = "用户管理",
+                        Identify = "MM.Medical.Client.Views.UserManageView",
+                        },
+                     new Entities.Menu{
+                        Name = "角色管理",
+                        Identify = "MM.Medical.Client.Views.RoleManageView",
+                        },
+                      new Entities.Menu{
+                        Name = "系统设置",
+                        Identify = "MM.Medical.Client.Views.SystemSettingView",
+                        },
+                       new Entities.Menu{
+                        Name = "基础词库",
+                        Identify = "MM.Medical.Client.Views.BaseWordView",
+                        },
+                        new Entities.Menu{
+                        Name = "诊断模板",
+                        Identify = "MM.Medical.Client.Views.DiagnosticTemplateView",
+                        },
+                        new Entities.Menu{
+                        Name = "医学词库",
+                        Identify = "MM.Medical.Client.Views.MedicalWordView",
+                        },
+                        new Entities.Menu{
+                        Name = "诊室管理",
+                        Identify = "MM.Medical.Client.Views.ConsultingManageView",
+                        },
+                        new Entities.Menu{
+                        Name = "数据备份",
+                        Identify = "MM.Medical.Client.Views.DataBackingView",
+                        },
+                }
+            });
+
+
+            
+            lvMenus.ItemsSource = Menus;
+            lvMenus.SelectedIndex = 0;
+        }
+
+        #endregion
+
+        private void Menu_Selected(object sender, SelectionChangedEventArgs e)
+        {
+            Entities.Menu menu = (sender as ListView).SelectedItem as Entities.Menu;
+            if (menu != null)
+            {
+                if (sender != lvMenus)
+                {
+                    lvMenus.SelectedIndex = -1;
+                }
+                if (!string.IsNullOrEmpty(menu.Identify) && !navigateItems.ContainsKey(menu.Identify))
+                {
+                    var type = Type.GetType(menu.Identify);
+                    var uc = Activator.CreateInstance(type) as UserControl;
+                    navigateItems.Add(menu.Identify, uc);
+                }
+                if (!string.IsNullOrEmpty(menu.Identify))
+                {
+                    border.Child = navigateItems[menu.Identify];
+                }
+             
             }
         }
     }

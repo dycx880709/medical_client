@@ -36,7 +36,6 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             GetColumnCount();
             DrawGrid();
-            Test();
         }
 
         private void DecontaminateTask_Loaded(object sender, RoutedEventArgs e)
@@ -49,51 +48,6 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         #region 数据
 
-        private void Test()
-        {
-              int iSeed = 10;
-            Random ro = new Random(10);
-            long tick = DateTime.Now.Ticks;
-            Random ran = new Random((int)(tick & 0xffffffffL) | (int)(tick >> 32));
-            for (int i = 0; i < 50; i++)
-            {
-                DecontaminateTask decontaminateTask = new DecontaminateTask();
-                decontaminateTask.DecontaminateSteps =new List<DecontaminateStep>();
-
-              
-
-                int iResult;
-                int iUp = 7;
-                iResult = ro.Next(1,iUp);
-
-                for (int j = 0; j < iResult; j++)
-                {
-                    var decontaminateStep = new DecontaminateStep
-                    {
-                      Index=j+1
-                    };
-
-                    iResult = ro.Next(1,iUp);
-                    if (iResult <= 1)
-                    {
-                        decontaminateStep.DecontaminateStepStatus = DecontaminateStepStatus.Wait;
-                        decontaminateStep.Name = "初洗";
-                    }
-                    else if (iResult <= 4)
-                    {
-                        decontaminateStep.DecontaminateStepStatus = DecontaminateStepStatus.Normal;
-                        decontaminateStep.Name = "酶洗";
-                    }
-                    else 
-                    {
-                        decontaminateStep.DecontaminateStepStatus = DecontaminateStepStatus.Complete;
-                        decontaminateStep.Name = "烘干";
-                    }
-                    decontaminateTask.DecontaminateSteps.Add(decontaminateStep);
-                }
-                DecontaminateTasks.Add(decontaminateTask);
-            }
-        }
 
         Timer timer;
 

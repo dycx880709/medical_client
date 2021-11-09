@@ -68,16 +68,14 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void RemoveFlow_Click(object sender, RoutedEventArgs e)
         {
-            if (lvDecontaminateFlows.SelectedItem == null)
-            {
-                return;
-            }
             if (ConfirmWindow.Show("是否继续?"))
             {
-                int id = ((DecontaminateFlow)lvDecontaminateFlows.SelectedItem).DecontaminateFlowID;
-                var result = loading.AsyncWait("删除流程列表中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlows(new List<int> { id }));
-                if (result.IsSuccess) LoadDecontaminateFlows();
-                else Alert.ShowMessage(true, AlertType.Error, $"删除失败,{ result.Error }");
+                if (sender is FrameworkElement element && element.DataContext is DecontaminateFlow decontaminateFlow)
+                {
+                    var result = loading.AsyncWait("删除流程列表中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlows(new List<int> { decontaminateFlow.DecontaminateFlowID }));
+                    if (result.IsSuccess) LoadDecontaminateFlows();
+                    else Alert.ShowMessage(true, AlertType.Error, $"删除失败,{ result.Error }");
+                }
             }
         }
 
@@ -150,14 +148,12 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void RemoveFlowStep_Click(object sender, RoutedEventArgs e)
         {
-            if (lvFlowSteps.SelectedItem == null)
+            if (sender is FrameworkElement element && element.DataContext is DecontaminateFlowStep decontaminateFlowStep)
             {
-                return;
+                var result = loading.AsyncWait("删除流程步骤中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlowSteps(new List<int> { decontaminateFlowStep.DecontaminateFlowID }));
+                if (result.IsSuccess) LoadDecontaminateSteps();
+                else Alert.ShowMessage(true, AlertType.Error, $"流程步骤删除失败,{ result.Error }");
             }
-            int id = ((DecontaminateFlowStep)lvFlowSteps.SelectedItem).DecontaminateFlowID;
-            var result = loading.AsyncWait("删除流程步骤中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlowSteps(new List<int> { id }));
-            if (result.IsSuccess) LoadDecontaminateSteps();
-            else Alert.ShowMessage(true, AlertType.Error, $"流程步骤删除失败,{ result.Error }");
         }
 
         private void ModifyFlowStep_Click(object sender, RoutedEventArgs e)

@@ -16,7 +16,7 @@ namespace MM.Medical.Client.Views
     /// <summary>
     /// LoginView.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginView : MsWindow
+    public partial class LoginView : BaseWindow
     {
         private LocalSetting LocalSetting { get { return CacheHelper.LocalSetting; } }
         public LoginView()
@@ -127,35 +127,18 @@ namespace MM.Medical.Client.Views
                 }
                 this.Close();
             }
-            else tbTips.Text = result.Error;
+            else if (result.IsConnectError)
+            {
+                tbTips.Text = result.Error;
+            }
+            else
+            {
+                tbTips.Text = "用户名或密码错误";
+            }
             btLogin.IsEnabled = true;
         }
 
         #endregion
-
-        #region 窗口事件
-
-        //关闭窗体
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        #endregion
-
-        private async void SystemSetting_Click(object sender, RoutedEventArgs e)
-        {
-            var view = new SeverSetting();
-            var result = cw.ShowDialog("服务配置", view);
-            if (result)
-            {
-                var serverSetting = LocalSetting.ServerSetting;
-                SocketProxy.Instance.Load(serverSetting.Address, serverSetting.HttpPort, serverSetting.TcpPort);
-                btLogin.IsEnabled = true;
-                tbTips.Text = "";
-                await Updater();
-            }
-        }
 
         private void tbName_Selected(object sender, CustomEventArgs e)
         {

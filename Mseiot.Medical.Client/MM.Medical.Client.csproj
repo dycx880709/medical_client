@@ -196,9 +196,6 @@
     <Compile Include="Views\ExaminationModule\ExaminationManageView.xaml.cs">
       <DependentUpon>ExaminationManageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginModule\SeverSetting.xaml.cs">
-      <DependentUpon>SeverSetting.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MedicalRecordModule\MedicalManageView.xaml.cs">
       <DependentUpon>MedicalManageView.xaml</DependentUpon>
     </Compile>
@@ -354,10 +351,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\LoginModule\SeverSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MedicalRecordModule\MedicalManageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

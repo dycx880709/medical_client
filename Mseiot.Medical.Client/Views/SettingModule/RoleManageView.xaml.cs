@@ -66,8 +66,11 @@ namespace MM.Medical.Client.Views
                 lb_role.ScrollIntoView(role);
                 lb_role.SelectedValue = role;
                 var lbv = lb_role.ItemContainerGenerator.ContainerFromIndex(lb_role.Items.Count - 1) as ListBoxItem;
-                var tb = ControlHelper.GetVisualChild<TextBox>(lbv);
-                tb.Focus();
+                if (lbv != null)
+                {
+                    var tb = ControlHelper.GetVisualChild<TextBox>(lbv);
+                    tb.Focus();
+                }
             }
         }
         private void Save_Click(object sender, RoutedEventArgs e)

@@ -34,7 +34,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Button ToolTip="修改" Style="{StaticResource Button_Primary_Circle}" Margin="0,0,5,0" Content="/Images/icon/editor.png" Tag="{Binding}" Click="Modify_Click"/>
-                                    <Button ToolTip="删除" Style="{StaticResource Button_Danger_Circle}" Content="/Images/icon/delete.png" Click="Remove_Click" HorizontalAlignment="Right"/>
+                                    <Button ToolTip="删除" Style="{StaticResource Button_Danger_Circle}" Content="/Images/icon/delete.png" Click="Remove_Click" Tag="{Binding}" HorizontalAlignment="Right"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

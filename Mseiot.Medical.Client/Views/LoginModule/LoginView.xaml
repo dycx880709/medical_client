@@ -1,14 +1,13 @@
-﻿<controls:MsWindow x:Class="MM.Medical.Client.Views.LoginView"
+﻿<controls:BaseWindow x:Class="MM.Medical.Client.Views.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
         xmlns:core="clr-namespace:MM.Medical.Client.Core"
-        mc:Ignorable="d" Height="500" Width="1000" BorderThickness="0"
-        OpacityMask="White" WindowStartupLocation="CenterScreen" 
-        Title="{x:Static core:CacheHelper.ProductName}"
-        WindowStyle="None" AllowsTransparency="True">
+        mc:Ignorable="d" Height="500" Width="1000" BorderThickness="0" VisibilityMax="Collapsed" VisibilityMin="Collapsed"
+        OpacityMask="White" WindowStartupLocation="CenterScreen" HeaderBackground="Transparent"
+        Title="{x:Static core:CacheHelper.ProductName}">
 
     <Border>
         <Border.Effect>
@@ -31,10 +30,6 @@
                         <Run Text="网络版 版本号:" />
                         <Run Text="{x:Static core:CacheHelper.ClientVersion}" x:Name="tb_version"/>
                 </TextBlock>
-                <StackPanel Margin="0,0,10,0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                    <controls:MediaButton FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Setting}" HoverSource="{StaticResource Img_Setting_Hover}" Click="SystemSetting_Click" Margin="15,0,0,0"/>
-                    <controls:MediaButton FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Close}" HoverSource="{StaticResource Img_Close_Hover}" Click="Close_Click" Margin="5,0,0,0"/>
-                </StackPanel>
             </Grid>
             <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid>
@@ -72,4 +67,4 @@
             <controls:Loading x:Name="loading"/>
         </Grid>
     </Border>
-</controls:MsWindow>
+</controls:BaseWindow>

@@ -20,6 +20,10 @@ namespace Mseiot.Medical.Service.Services
             return await HttpProxy.PostMessage<int>("/api/rfiddevice/add", rfidDevice);
         }
 
+        public async Task<MsResult<bool>> ModifyRFIDDevice(RFIDDevice rfidDevice)
+        {
+            return await HttpProxy.PostMessage<bool>("/api/rfiddevice/modify", rfidDevice);
+        }
         public async Task<MsResult<bool>> RemoveRFIDDevices(List<int> ids)
         {
             return await HttpProxy.DeleteMessage<bool>("/api/rfiddevice/remove", new

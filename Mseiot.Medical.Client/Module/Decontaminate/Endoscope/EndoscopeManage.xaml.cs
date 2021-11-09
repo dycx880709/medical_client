@@ -70,10 +70,13 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             if (ConfirmWindow.Show("是否继续?"))
             {
-                var result = loading.AsyncWait("删除内窥镜中,请稍后", SocketProxy.Instance.RemoveEndoscopes(Endoscopes.Where(f => f.IsSelected).Select(f => f.EndoscopeID).ToList()));
-                if (result.IsSuccess)
-                    LoadEndoscopes();
-                else Alert.ShowMessage(true, AlertType.Error, $"删除内窥镜失败,{ result.Error }");
+                if (sender is FrameworkElement element && element.DataContext is Endoscope endoscope)
+                {
+                    var result = loading.AsyncWait("删除内窥镜中,请稍后", SocketProxy.Instance.RemoveEndoscopes(new List<int> { endoscope.EndoscopeID }));
+                    if (result.IsSuccess)
+                        LoadEndoscopes();
+                    else Alert.ShowMessage(true, AlertType.Error, $"删除内窥镜失败,{ result.Error }");
+                }
             }
         }
 
@@ -102,7 +105,7 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         #region RFID
 
-        private void CreateRFID_Click(object sender, RoutedEventArgs e)
+        private async void CreateRFID_Click(object sender, RoutedEventArgs e)
         {
             if (sender is FrameworkElement element && element.DataContext is Endoscope endoscope)
             {
@@ -110,7 +113,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                 try
                 {
                     rfidProxy.OpenWait(CacheHelper.RFIDCom);
-                    rfidProxy.WriteEPC(endoscope.EndoscopeID);
+                    await rfidProxy.WriteEPC(endoscope.EndoscopeID);
                     Alert.ShowMessage(true, AlertType.Success, "写卡成功");
                 }
                 catch (Exception ex)

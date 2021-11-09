@@ -39,14 +39,28 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            var result = loading.AsyncWait("添加采集设备中,请稍后", SocketProxy.Instance.AddRFIDDevice(rfidDevice));
-            if (result.IsSuccess)
+            if (rfidDevice.RFIDDeviceID == 0)
             {
-                rfidDevice.RFIDDeviceID = result.Content;
-                rfidDevice.CopyTo(rfidDevice_origin);
-                this.Close(true);
+                var result = loading.AsyncWait("添加采集设备中,请稍后", SocketProxy.Instance.AddRFIDDevice(rfidDevice));
+                if (result.IsSuccess)
+                {
+                    rfidDevice.RFIDDeviceID = result.Content;
+                    rfidDevice.CopyTo(rfidDevice_origin);
+                    this.Close(true);
+                }
+                else Alert.ShowMessage(true, AlertType.Error, $"添加采集设备失败,{ result.Error }");
             }
-            else Alert.ShowMessage(true, AlertType.Error, $"添加采集设备失败,{ result.Error }");
+            else
+            {
+                var result = loading.AsyncWait("修改采集设备中,请稍后", SocketProxy.Instance.ModifyRFIDDevice(rfidDevice));
+                if (result.IsSuccess)
+                {
+                    rfidDevice.CopyTo(rfidDevice_origin);
+                    this.Close(true);
+                }
+                else Alert.ShowMessage(true, AlertType.Error, $"修改采集设备失败,{ result.Error }");
+            }
+      
         }
     }
 }

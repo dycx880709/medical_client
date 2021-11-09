@@ -153,12 +153,18 @@ namespace MM.Libs.RFID
             datas.Add(crc[0]);
             serialPort.Write(datas.ToArray(), 0, datas.Count);
             readDatas = null;
+            int index = 0;
             while (true)
             {
                 if (readDatas != null)
                 {
                     return readDatas;
                 }
+                if (index == 1000 / 5)
+                {
+                    throw new Exception("与设备通信超时");
+                }
+                index++;
                 Thread.Sleep(5);
             }
         }
@@ -214,20 +220,23 @@ namespace MM.Libs.RFID
         /// 写EPC数据
         /// </summary>
         /// <param name="epc"></param>
-        public void WriteEPC(int epc)
+        public Task WriteEPC(int epc)
         {
-            byte cmd = 0x04;
-            byte[] epcBuffer = BitConverter.GetBytes((Int32)epc);
-            List<byte> datas = new List<byte> { 0xFF, cmd, 0x02, 0x00, 0x00, 0x00, 0x00 };
-            datas.AddRange(epcBuffer);
-            byte[] result = WriteMessage(datas);
-            switch (result[3])
-            {
-                case 0x00:
-                    break;
-                default:
-                    throw new Exception(GetError(result[3]));
-            }
+            return Task.Run((() =>
+             {
+                     byte cmd = 0x04;
+                     byte[] epcBuffer = BitConverter.GetBytes((Int32)epc);
+                     List<byte> datas = new List<byte> { 0xFF, cmd, 0x02, 0x00, 0x00, 0x00, 0x00 };
+                     datas.AddRange(epcBuffer);
+                     byte[] result = WriteMessage(datas);
+                     switch (result[3])
+                     {
+                         case 0x00:
+                             break;
+                         default:
+                             throw new Exception(GetError(result[3]));
+                     }
+             }));
         }
 
         #endregion

@@ -11,5 +11,21 @@ namespace MM.Medical.Client.Entities
         public string Name { get; set; }
 
         public string Identify { get; set; }
+
+        public List<Menu> Children { get; set; } = new List<Menu>();
+
+        public bool HasChildren 
+        {
+            get
+            {
+                if (Children == null || Children.Count == 0)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
+  
     }
 }
