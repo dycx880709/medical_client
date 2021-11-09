@@ -55,7 +55,7 @@ namespace MM.Medical.Client.Views
         private void LoadExaminationInfos()
         {
             pager.SelectedCount = dg_examinations.GetFullCountWithoutScroll();
-            var result = loading.AsyncWait("获取预约信息中,请稍后", SocketProxy.Instance.GetExaminations
+            var result = loading.AsyncWait("获取病历信息中,请稍后", SocketProxy.Instance.GetExaminations
             (
                 pager.PageIndex,
                 pager.SelectedCount,
@@ -68,7 +68,7 @@ namespace MM.Medical.Client.Views
                 pager.TotalCount = result.Content.Total;
                 dg_examinations.ItemsSource = result.Content.Results;
             }
-            else Alert.ShowMessage(true, AlertType.Error, $"获取预约信息失败,{ result.Error }");
+            else Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
         }
 
         private void Get_Click(object sender, RoutedEventArgs e)

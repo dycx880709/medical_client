@@ -51,7 +51,7 @@
             </ListBox>
         </controls:CustomGroupBox>
         <controls:CustomGroupBox Header="权限分类" Grid.Column="2">
-            <ListBox x:Name="lb_level" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ListBox x:Name="lb_level" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,15,0,0">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource DefaultListBoxItemStyle}">
                         <Setter Property="Template">

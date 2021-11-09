@@ -199,7 +199,7 @@
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="内镜编号"/>
-                    <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.EndoscopeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.EndoscopeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IntToFormatStringConverter}, ConverterParameter=6}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="主诉"/>

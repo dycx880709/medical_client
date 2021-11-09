@@ -56,7 +56,6 @@ namespace MM.Medical.Client.Views
         }
 
         public static readonly DependencyProperty SelectedExaminationProperty = DependencyProperty.Register("SelectedExamination", typeof(Examination), typeof(ExaminationPartView), new PropertyMetadata(null, SelectedExaminationPropertyChanged));
-
         public static readonly DependencyProperty LoadingProperty = DependencyProperty.Register("Loading", typeof(Loading), typeof(ExaminationPartView), new PropertyMetadata(null));
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(ExaminationPartView), new PropertyMetadata(false));
         public static readonly DependencyProperty SelectedMediaProperty = DependencyProperty.Register("SelectedMedia", typeof(ExaminationMedia), typeof(ExaminationPartView), new PropertyMetadata(null));
@@ -155,14 +154,11 @@ namespace MM.Medical.Client.Views
                 var expander = ControlHelper.GetParentObject<Expander>(element);
                 var title = expander.Header.ToString();
                 var medicalWord = MedicalWords.FirstOrDefault(t => t.Name.Equals(title));
+                if (medicalWord == null) tv_medicalWord.ItemsSource = null;
+                else tv_medicalWord.ItemsSource = medicalWord.MedicalWords;
                 if (title.Equals("内镜所见") || title.Equals("镜下诊断"))
                     ti_template.IsSelected = true;
-                else
-                {
-                    if (medicalWord == null) tv_medicalWord.ItemsSource = null;
-                    else tv_medicalWord.ItemsSource = medicalWord.MedicalWords;
-                    ti_word.IsSelected = true;
-                }
+                else ti_word.IsSelected = true;
             }
         }
 

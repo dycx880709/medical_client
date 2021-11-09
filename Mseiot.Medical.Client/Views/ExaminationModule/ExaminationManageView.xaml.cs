@@ -143,7 +143,7 @@ namespace MM.Medical.Client.Views
                                 Appointments.Add(appointment);
                                 CollectionView.Refresh();
                             }
-                            else appointment.CopyTo(condition);
+                            else condition.AppointmentStatus = appointment.AppointmentStatus;
                         });
                     }
                 }
