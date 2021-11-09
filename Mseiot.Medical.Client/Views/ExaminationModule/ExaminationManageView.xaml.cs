@@ -215,14 +215,14 @@ namespace MM.Medical.Client.Views
                         }
                     }
                     if (CacheHelper.IsDebug)
-                        CommitExamination(1);
+                        CommitExamination(0);
                     else
                     {
                         loading.Start("读取内窥镜信息中,请稍后");
                         var rfidProxy = new RFIDProxy();
                         rfidProxy.NotifyEPCReceived += (_, device) =>
                         {
-                            CommitExamination(device.DeviceID);
+                            this.Dispatcher.Invoke(() => CommitExamination(device.DeviceID));
                             rfidProxy.Close();
                         };
                         rfidProxy.NotifyDeviceStatusChanged += (_, status) =>
@@ -258,7 +258,18 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
+                            if (commit_ex.EndoscopeID != 0)
+                            {
+                                var decontaminateTask = new DecontaminateTask
+                                {
+                                    UserID = CacheHelper.CurrentUser.UserID,
+                                    EndoscopeID = commit_ex.EndoscopeID,
+                                };
+                                var result2 = loading.AsyncWait("创建清洗任务中,请稍后", SocketProxy.Instance.AddDecontaminateTask(decontaminateTask));
+                                if (result2.IsSuccess)
+                                    Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存并生成清洗任务");
+                            }
+                            else Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
                             commit.CopyTo(appointment);
                             CollectionView.Refresh();
                             epv.video.Dispose();

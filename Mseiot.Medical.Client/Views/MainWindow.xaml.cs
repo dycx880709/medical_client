@@ -30,6 +30,7 @@ namespace MM.Medical.Client.Views
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            this.Loaded -= MainWindow_Loaded;
             UpdateTime();
             await ConnectServer();
         }

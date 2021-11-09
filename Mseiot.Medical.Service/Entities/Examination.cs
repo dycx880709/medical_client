@@ -34,6 +34,7 @@ namespace Mseiot.Medical.Service.Entities
         private int examinationID;
         private int endoscopeID;
         private Appointment appointment;
+        private string patientTask;
 
         /// <summary>
         /// 检查ID
@@ -301,6 +302,18 @@ namespace Mseiot.Medical.Service.Entities
             {
                 endoscopeID = value;
                 RaisePropertyChanged("EndoscopeID");
+            }
+        }
+        /// <summary>
+        /// 主诉
+        /// </summary>
+        public string PatientTask
+        {
+            get { return patientTask; }
+            set
+            {
+                patientTask = value;
+                RaisePropertyChanged("PatientTask");
             }
         }
         /// <summary>

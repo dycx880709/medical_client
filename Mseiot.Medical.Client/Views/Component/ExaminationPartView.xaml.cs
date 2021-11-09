@@ -55,7 +55,8 @@ namespace MM.Medical.Client.Views
             set { SetValue(LoadingProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedExaminationProperty = DependencyProperty.Register("SelectedExamination", typeof(Examination), typeof(ExaminationPartView), new PropertyMetadata(null));
+        public static readonly DependencyProperty SelectedExaminationProperty = DependencyProperty.Register("SelectedExamination", typeof(Examination), typeof(ExaminationPartView), new PropertyMetadata(null, SelectedExaminationPropertyChanged));
+
         public static readonly DependencyProperty LoadingProperty = DependencyProperty.Register("Loading", typeof(Loading), typeof(ExaminationPartView), new PropertyMetadata(null));
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(ExaminationPartView), new PropertyMetadata(false));
         public static readonly DependencyProperty SelectedMediaProperty = DependencyProperty.Register("SelectedMedia", typeof(ExaminationMedia), typeof(ExaminationPartView), new PropertyMetadata(null));
@@ -64,6 +65,17 @@ namespace MM.Medical.Client.Views
         public IEnumerable<MedicalWord> OriginMedicalWords { get; set; }
         public IEnumerable<MedicalWord> MedicalWords { get; set; }
         public List<string> BodyParts { get; set; }
+
+        private static void SelectedExaminationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ExaminationPartView epv)
+            {
+                epv.video.Dispose();
+                epv.bd_media.Visibility = Visibility.Hidden;
+                epv.img_media.Source = null;
+                epv.bt_close.Visibility = Visibility.Hidden;
+            }
+        }
 
         public ExaminationPartView()
         {

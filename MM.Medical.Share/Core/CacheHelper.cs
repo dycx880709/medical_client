@@ -17,8 +17,8 @@ namespace MM.Medical.Share.Core
         public static string ClientVersion { get; private set; }
         public static string ProductName { get; set; }
         public static string ProcessName { get; set; }
+        public static string TempPath { get { return Path.Combine(ApplicationPath, "Temp"); } }
         protected static string SettingPath { get { return Path.Combine(CacheHelper.ApplicationPath, "config.data"); } }
-        protected static string TempPath { get { return Path.Combine(ApplicationPath, "Temp"); } }
         protected static string LogPath { get { return Path.Combine(ApplicationPath, "Log"); } }
         static CacheHelper()
         {

@@ -108,20 +108,22 @@ namespace MM.Medical.Client.Views
                 if (LocalSetting.IsRemember) record.LoginPwd = loginPwd;
                 record.LoginTime = TimeHelper.ToUnixTime(DateTime.Now);
                 var condition = LocalSetting.UserRecords.FirstOrDefault(t => t.LoginName.Equals(loginName));
-                if (condition == null) LocalSetting.UserRecords.Add(record.Copy()); else record.CopyTo(condition);
+                if (condition == null) LocalSetting.UserRecords.Add(record.Copy()); 
+                else record.CopyTo(condition);
                 CacheHelper.CurrentUser = result.Content;
                 CacheHelper.SaveLocalSetting();
-
-                Module.Decontaminate.MainWindow dmw = new Module.Decontaminate.MainWindow();
-                Application.Current.MainWindow = dmw;
-                dmw.Show();
-          
-
-                //MainWindow mw = new MainWindow();
-                //Application.Current.MainWindow = mw;
-                //mw.Show();
-
-
+                var authorities = CacheHelper.CurrentUser.Authority;
+                if (authorities != null && authorities.Split(';').Any(t => t.Equals("2")))
+                {
+                    Module.Decontaminate.MainWindow dmw = new Module.Decontaminate.MainWindow();
+                    dmw.Show();
+                }
+                else
+                {
+                    MainWindow mw = new MainWindow();
+                    Application.Current.MainWindow = mw;
+                    mw.Show();
+                }
                 this.Close();
             }
             else tbTips.Text = result.Error;

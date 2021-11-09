@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" 
@@ -22,100 +23,52 @@
         <Border>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <!--<WrapPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="检查日期" Style="{StaticResource editorFormItemText}"/>
-                        <DatePicker SelectedDate="{Binding AppointmentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
-                    </StackPanel>
-                    <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="检查部位" Style="{StaticResource editorFormItemText}"/>
-                        <ComboBox x:Name="cb_bodyPart" Text="{Binding Examination.BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
-                    <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="检查体位" Style="{StaticResource editorFormItemText}"/>
-                        <ComboBox x:Name="cb_bodyPose" Text="{Binding Examination.BodyPose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
-                    <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="送检医生" Style="{StaticResource editorFormItemText}"/>
-                        <ComboBox x:Name="cb_doctorName" Text="{Binding Examination.DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
-                    <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="送检医生" Style="{StaticResource editorFormItemText}"/>
-                        <ComboBox x:Name="cb_doctorName" Text="{Binding Examination.DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
-                </WrapPanel>-->
-                <Grid Grid.Row="0" DataContext="{Binding Condition}">
-                    <Grid.Resources>
-                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
-                            <Setter Property="HorizontalAlignment" Value="Right"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Margin" Value="5"/>
-                        </Style>
-                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                        </Style>
-                        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                        </Style>
-                        <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource {x:Type DatePicker}}">
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="Width" Value="{StaticResource InputElementWidth}"/>
-                        </Style>
-                    </Grid.Resources>
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="登记日期" Grid.Row="0" Grid.Column="0"/>
-                    <TextBlock Text="检查日期" Grid.Row="0" Grid.Column="2"/>
-                    <TextBlock Text="检查部位" Grid.Row="0" Grid.Column="4"/>
-                    <TextBlock Text="检查类型" Grid.Row="0" Grid.Column="6"/>
-                    <TextBlock Text="送检科室" Grid.Row="0" Grid.Column="8"/>
-                    <TextBlock Text="送检医生" Grid.Row="0" Grid.Column="10"/>
-                    <TextBlock Text="患者姓名" Grid.Row="1" Grid.Column="0"/>
-                    <TextBlock Text="性别 " Grid.Row="1" Grid.Column="2"/>
-                    <TextBlock Text="证件号码" Grid.Row="1" Grid.Column="4"/>
-                    <TextBlock Text="电话号码" Grid.Row="1" Grid.Column="6"/>
-                    <TextBlock Text="复/初诊" Grid.Row="1" Grid.Column="8"/>
-                    <TextBlock Text="收费类型" Grid.Row="1" Grid.Column="10"/>
-
-                    <DatePicker Grid.Row="0" Grid.Column="1" SelectedDate="{Binding CreateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
-                    <DatePicker Grid.Row="0" Grid.Column="3" SelectedDate="{Binding AppointmentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
-                    <ComboBox x:Name="cb_checkBody" Grid.Row="0" Grid.Column="5" Text="{Binding CheckInfo.CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <ComboBox x:Name="cb_checkType" Grid.Row="0" Grid.Column="7" Text="{Binding CheckType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <ComboBox x:Name="cb_className" Grid.Row="0" Grid.Column="9" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <ComboBox x:Name="cb_doctorName" Grid.Row="0" Grid.Column="11" Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <ComboBox x:Name="cb_sex" Grid.Row="1" Grid.Column="3" Text="{Binding Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding IdCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBox Grid.Row="1" Grid.Column="7" Text="{Binding TelphoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <ComboBox Grid.Row="1" Grid.Column="9" ItemsSource="{x:Static entities:EnumItems.DiagnoseType}" Text="{Binding DiagnoseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <ComboBox x:Name="cb_chargeType" Grid.Row="1" Grid.Column="11" Text="{Binding ChargeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="12" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                    <WrapPanel DataContext="{Binding Condition}" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <WrapPanel.Resources>
+                            <sys:Double x:Key="InputElementWidth">100</sys:Double>
+                            <sys:Double x:Key="InputElementHeight">30</sys:Double>
+                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource editorFormItemText}">
+                                <Setter Property="Width" Value="80"/>
+                                <Setter Property="Margin" Value="0,0,5,0"/>
+                                <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
+                            </Style>
+                            <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource editorFormItem}">
+                                <Setter Property="Margin" Value="2,4"/>
+                            </Style>
+                        </WrapPanel.Resources>
+                        <StackPanel>
+                            <TextBlock Text="检查日期"/>
+                            <DatePicker SelectedDate="{Binding ExaminationTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource editorFormItem}">
+                            <TextBlock Text="检查部位"/>
+                            <ComboBox x:Name="cb_bodyPart" Text="{Binding Examination.BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource editorFormItem}">
+                            <TextBlock Text="检查结果"/>
+                            <ComboBox x:Name="cb_result" Text="{Binding Examination.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource editorFormItem}">
+                            <TextBlock Text="送检医生"/>
+                            <ComboBox x:Name="cb_doctorName" Text="{Binding Examination.DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource editorFormItem}">
+                            <TextBlock Text="身份信息"/>
+                            <controls:CustomTextBox Watermark="可输入病人姓名、身份证、社保号" Width="250" Text="{Binding Examination.UserInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </WrapPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1">
                         <Button Content="查询" Click="Get_Click" IsDefault="True"/>
-                        <Button Content="重置" Click="Reset_Click" Margin="15,0,0,0"/>
+                        <Button Content="重置" Click="Reset_Click" Margin="10,0"/>
                     </StackPanel>
                 </Grid>
                 <Border Grid.Row="1">
@@ -133,18 +86,18 @@
                             <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Appointment.Birthday}"/>
                             <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
                             <DataGridTextColumn Width="*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
-                            <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}"/>
-                            <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}"/>
-                            <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}"/>
-                            <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding AppointmentTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
-                            <DataGridTextColumn Width="*" Header="检查部位" Binding="{Binding BodyPart}"/>
-                            <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding CheckType}"/>
-                            <DataGridTextColumn Width="*" Header="送检科室" Binding="{Binding ClassName}"/>
+                            <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                            <DataGridTextColumn Width="2*" Header="检查部位" Binding="{Binding BodyPart}"/>
+                            <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding CheckType}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*" Header="送检科室" Binding="{Binding ClassName}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="送检医生" Binding="{Binding DoctorName}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
-                <controls:Pager x:Name="pager" Grid.Row="2"/>
+                <controls:Pager x:Name="pager" Grid.Row="2" PageChanged="Examination_PageChanged"/>
                 <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
             </Grid>
         </Border>

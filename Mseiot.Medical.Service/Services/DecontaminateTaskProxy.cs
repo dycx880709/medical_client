@@ -18,9 +18,9 @@ namespace Mseiot.Medical.Service.Services
             });
         }
 
-        public async Task<MsResult<int>> AddDecontaminateTask(DecontaminateTaskStatus decontaminateTaskStatus)
+        public async Task<MsResult<int>> AddDecontaminateTask(DecontaminateTask decontaminateTask)
         {
-            return await HttpProxy.PostMessage<int>("/api/DecontaminateTask/add", decontaminateTaskStatus);
+            return await HttpProxy.PostMessage<int>("/api/DecontaminateTask/add", decontaminateTask);
         }
     }
 }

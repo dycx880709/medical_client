@@ -27,7 +27,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 用户ID
         /// </summary>
-        public int UserID { get; set; }
+        public string UserID { get; set; }
 
         /// <summary>
         /// 内窥镜ID

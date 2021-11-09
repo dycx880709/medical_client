@@ -35,6 +35,10 @@ namespace Mseiot.Medical.Service.Entities
         /// </summary>
         public string RoleName { get; set; }
         /// <summary>
+        /// 权限
+        /// </summary>
+        public string Authority { get; set; }
+        /// <summary>
         /// 角色ID
         /// </summary>
         public int RoleID { get; set; }

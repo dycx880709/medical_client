@@ -82,27 +82,28 @@
                     <sys:Double x:Key="InputElementWidth">100</sys:Double>
                     <sys:Double x:Key="InputElementHeight">30</sys:Double>
                     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource editorFormItemText}">
-                        <Setter Property="Width" Value="50"/>
+                        <Setter Property="Width" Value="80"/>
                         <Setter Property="Margin" Value="0,0,5,0"/>
+                        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
                     </Style>
                     <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource editorFormItem}">
-                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="Margin" Value="2,4"/>
                     </Style>
                 </WrapPanel.Resources>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="姓名" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="姓名"/>
                     <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.Appointment.Name}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="性别" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="性别"/>
                     <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.Appointment.Sex, Converter={StaticResource SexConverter}}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="年龄" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="年龄"/>
                     <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.Appointment.Birthday}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="检查时间" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="检查时间"/>
                     <TextBox IsReadOnly="True">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
@@ -116,8 +117,8 @@
                         </TextBox.Style>
                     </TextBox>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="报告日期" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="报告日期"/>
                     <TextBox IsReadOnly="True">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
@@ -131,8 +132,8 @@
                         </TextBox.Style>
                     </TextBox>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="检查医生" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="检查医生"/>
                     <TextBox IsReadOnly="True">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
@@ -149,8 +150,8 @@
                         </TextBox.Style>
                     </TextBox>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="检查部位" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="检查部位"/>
                     <ComboBox x:Name="cb_body" IsReadOnly="{Binding IsReadOnly}" Template="{StaticResource MultipleComboBoxTemplate}" Text="{Binding SelectedExamination.BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -159,49 +160,53 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="检查体位" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="检查体位"/>
                     <ComboBox x:Name="cb_bodyLoc" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.BodyPose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="麻醉方法" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="麻醉方法"/>
                     <ComboBox x:Name="cb_anesthesia" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="检查结果" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="检查结果"/>
                     <ComboBox x:Name="cb_result" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="术前用药" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="术前用药"/>
                     <ComboBox x:Name="cb_preoperative" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Preoperative, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="插入途径" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="插入途径"/>
                     <ComboBox x:Name="cb_insert" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.InsertType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="组织采取" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="组织采取"/>
                     <ComboBox x:Name="cb_org" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.CollectOrg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="细胞采取" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="细胞采取"/>
                     <ComboBox x:Name="cb_cell" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.CollectCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="HIV" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="HIV"/>
                     <ComboBox x:Name="cb_hiv" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.HIV, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="HCV" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="HCV"/>
                     <ComboBox x:Name="cb_hcv" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.HCV, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="HBasg" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="HBasg"/>
                     <ComboBox x:Name="cb_hbasg" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.HBasg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="内镜编号" Style="{StaticResource editorFormItemText}"/>
+                <StackPanel>
+                    <TextBlock Text="内镜编号"/>
                     <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.EndoscopeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="主诉"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Width="290" Text="{Binding SelectedExamination.PatientTask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
             </WrapPanel>
             <ScrollViewer Grid.Row="1" Grid.Column="0">
