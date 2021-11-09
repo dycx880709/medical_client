@@ -1,9 +1,12 @@
-﻿using Mseiot.Medical.Service.Entities;
+﻿using MM.Medical.Client.Core;
+using Mseiot.Medical.Service.Entities;
+using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,42 +35,41 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             this.Loaded -= DecontaminateTask_Loaded;
             lvTasks.ItemsSource = DecontaminateTasks;
-            CreateTestDatas();
+            timer = new Timer(GetDatas, null, 0, 3000);
         }
 
         #region 数据
 
+        Timer timer;
+
         public ObservableCollection<DecontaminateTask> DecontaminateTasks { get; set; } = new ObservableCollection<DecontaminateTask>();
 
-        public void CreateTestDatas()
+        public async void GetDatas(object obj)
         {
-            for(int i = 0; i < 10; i++)
+            timer.Change(Timeout.Infinite, Timeout.Infinite);
+            List<DecontaminateTaskStatus> decontaminateTaskStatuss = new List<DecontaminateTaskStatus> {
+                DecontaminateTaskStatus.Complete,
+                DecontaminateTaskStatus.Wait
+            };
+            var result = await SocketProxy.Instance.GetDecontaminateTasks(decontaminateTaskStatuss);
+     
+            if (result.IsSuccess && result.Content != null)
             {
-                DecontaminateTask decontaminateTask = new DecontaminateTask
+                for (int j = 0; j < result.Content.Count; j++)
                 {
-                    DecontaminateTaskID = i,
-                    EndoscopeID = i,
-                    EndTime = 0,
-                    StartTime = 0,
-                    UserID = i.ToString()
-                };
-                for(int j = 0; j < 5; j++)
-                {
-                    decontaminateTask.DecontaminateSteps.Add(new DecontaminateStep
+                    if (DecontaminateTasks.Count(f => f.DecontaminateTaskID == result.Content[j].DecontaminateTaskID) == 0)
                     {
-                        DecontaminateStepID = j,
-                        Name = "步骤" + j.ToString(),
-                        DecontaminateStepStatus=(DecontaminateStepStatus)j
-                    });
+                        DecontaminateTasks.Insert(0, result.Content[j]);
+                    }
                 }
-                DecontaminateTasks.Add(decontaminateTask);
             }
+          
+            timer.Change(3000, 3000);
         }
 
         #endregion
 
         #region 列数
-
 
         public int ColumnCount
         {
@@ -79,13 +81,11 @@ namespace MM.Medical.Client.Module.Decontaminate
         public static readonly DependencyProperty ColumnCountProperty =
             DependencyProperty.Register("ColumnCount", typeof(int), typeof(DecontaminateTaskView), new PropertyMetadata(0));
 
-
         private void Tasks_Loaded(object sender, RoutedEventArgs e)
         {
             ColumnCount = (int)(Math.Floor(lvTasks.ActualWidth / 120));
-
         }
 
-        #endregion+
+        #endregion
     }
 }

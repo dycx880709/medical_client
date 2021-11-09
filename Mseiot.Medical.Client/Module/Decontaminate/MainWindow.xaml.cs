@@ -12,6 +12,7 @@ using Mseiot.Medical.Service.Services;
 using Ms.Libs.TcpLib;
 using System.Net.Sockets;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace MM.Medical.Client.Module.Decontaminate
 {
@@ -88,11 +89,6 @@ namespace MM.Medical.Client.Module.Decontaminate
                 Name = "流程管理",
                 Identify = "DecontaminateFlowManage"
             });
-            Menus.Add(new Entities.Menu
-            {
-                Name = "系统设置",
-                Identify = "SystemSetting"
-            });
             lvMenus.ItemsSource = Menus;
             lvMenus.SelectedIndex = 0;
         }
@@ -112,9 +108,6 @@ namespace MM.Medical.Client.Module.Decontaminate
                     break;
                 case "DecontaminateCenter":
                     container.Child = decontaminateTaskView;
-                    break;
-                case "SystemSetting":
-                    container.Child = new DecontaminateSetting();
                     break;
                 case "DecontaminateFlowManage":
                     container.Child = new DecontaminateFlowView();
