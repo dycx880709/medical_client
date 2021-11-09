@@ -116,6 +116,7 @@ namespace MM.Medical.Client.Views
                 if (authorities != null && authorities.Split(';').Any(t => t.Equals("2")))
                 {
                     Module.Decontaminate.MainWindow dmw = new Module.Decontaminate.MainWindow();
+                    Application.Current.MainWindow = dmw;
                     dmw.Show();
                 }
                 else
