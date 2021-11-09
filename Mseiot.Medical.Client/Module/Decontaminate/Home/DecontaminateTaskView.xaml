@@ -9,52 +9,83 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView x:Name="lvTasks" BorderThickness="0" Padding="0" Loaded="Tasks_Loaded">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="{Binding ColumnCount,ElementName=self}"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
+        
+        <Border>
+            <ListView x:Name="lvDrawGrid" BorderThickness="0" Padding="0">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Border Height="{Binding RowHeight,ElementName=self}" BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0,0,0,1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--信息-->
+                                            <Border Grid.Column="0" Background="#A0000000">
+                                               
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </Border>
+        
+        <ListView x:Name="lvTasks">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate>
-                                <Border BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0,0,1,0" Padding="0">
+                                <Border Height="{Binding RowHeight,ElementName=self}" BorderThickness="0,0,0,1" Padding="0">
                                     <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="60"/>
-                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
                                         
                                         <!--步骤-->
-                                        <Border Grid.Row="0">
+                                        <Border Grid.Column="1">
                                             <ListView ItemsSource="{Binding DecontaminateSteps}" Margin="0" Padding="0">
-                                             
+                                                <ListView.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal"></StackPanel>
+                                                    </ItemsPanelTemplate>
+                                                </ListView.ItemsPanel>
                                                 <ListView.ItemContainerStyle>
                                                     <Style TargetType="ListViewItem">
-                                                        <Setter Property="Width" Value="auto"/>
-                                                        <Setter Property="Margin" Value="10"/>
-                                                        <Setter Property="Padding" Value="0"/>
                                                         <Setter Property="Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate>
-                                                                    <Border Background="#80000000" x:Name="bg" BorderThickness="0,0,0,2" Height="150" CornerRadius="5" Padding="5">
-                                                                        <Border.Effect>
-                                                                            <DropShadowEffect BlurRadius="12" ShadowDepth="1" Opacity="0.05" Color="White"></DropShadowEffect>
-                                                                        </Border.Effect>
-                                                                        <Grid>
-                                                                            <StackPanel>
-                                                                                <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Text="{Binding Name}"></TextBlock>
-                                                                            </StackPanel>
-                                                                        </Grid>
+                                                                    <Border Padding="4" Width="{Binding ColumnWidth,ElementName=self}">
+                                                                        <Border Background="#80000000" Height="60" x:Name="bg" BorderThickness="0,0,0,0" CornerRadius="5">
+                                                                            <Border.Effect>
+                                                                                <DropShadowEffect x:Name="dse" BlurRadius="4" ShadowDepth="1" Opacity="1" Color="#80000000"></DropShadowEffect>
+                                                                            </Border.Effect>
+                                                                            <Grid>
+                                                                                <TextBlock Margin="10,0,0,0" FontSize="26" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Light}"
+                                                                                           FontWeight="Bold" Text="{Binding Index}"></TextBlock>
+                                                                                <Path Margin="20,0,0,0" StrokeThickness="3" Data="M10,0 30,30 10,60" Stroke="White"/>
+                                                                                <TextBlock FontWeight="Bold" FontSize="20" Margin="60,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Light}" Text="{Binding Name}"/>
+                                                                            </Grid>
+                                                                        </Border>
                                                                     </Border>
                                                                     <ControlTemplate.Triggers>
                                                                         <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Wait">
-                                                                            <Setter Property="Background" TargetName="bg" Value="Gray"></Setter>
+                                                                            <Setter Property="Background" TargetName="bg" Value="#919394"></Setter>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Normal">
+                                                                            <Setter Property="Background" TargetName="bg" Value="#FEC92B"></Setter>
                                                                         </DataTrigger>
                                                                         <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Complete">
-                                                                            <Setter Property="Background" TargetName="bg" Value="#198754"></Setter>
+                                                                            <Setter Property="Background" TargetName="bg" Value="#ADD94C"></Setter>
                                                                         </DataTrigger>
                                                                     </ControlTemplate.Triggers>
                                                                 </ControlTemplate>
@@ -66,8 +97,8 @@
                                         </Border>
                                         
                                         <!--信息-->
-                                        <Border Grid.Row="1" Background="#A0000000" Padding="10">
-                                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                                        <Border Grid.Column="0" Background="#A0000000" Padding="10">
+                                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center">
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" TextAlignment="Right" Text="清洗员" Width="80" Margin="0,0,10,0"/>
                                                     <TextBlock Text="{Binding UserID}"/>

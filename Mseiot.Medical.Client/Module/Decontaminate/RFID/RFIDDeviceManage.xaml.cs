@@ -41,12 +41,14 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         #region 数据
 
-        private void LoadRFIDDevices()
+        private async void LoadRFIDDevices()
         {
             RFIDDevices.Clear();
-            var result = loading.AsyncWait("获取采集设备中,请稍后", SocketProxy.Instance.GetRFIDDevices());
+            loading.Start("获取采集设备中,请稍后");
+            var result = await SocketProxy.Instance.GetRFIDDevices();
             if (result.IsSuccess) RFIDDevices.AddRange(result.Content);
             else Alert.ShowMessage(true, AlertType.Error, $"获取采集设备失败,{ result.Error }");
+            loading.Stop();
         }
 
         #endregion

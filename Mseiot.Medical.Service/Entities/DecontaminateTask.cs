@@ -74,6 +74,9 @@ namespace Mseiot.Medical.Service.Entities
 
     public class DecontaminateStep
     {
+
+        public int Index { get; set; }
+
         /// <summary>
         /// 步骤ID
         /// </summary>

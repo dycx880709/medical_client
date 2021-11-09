@@ -10,12 +10,12 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="生产厂家" Style="{StaticResource editorFormItemText}"/>
-                <TextBox Text="{Binding Factory}" Style="{StaticResource editorFormItemInput}"/>
+                <TextBox Text="{Binding Factory,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"/>
 
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="设备型号" Style="{StaticResource editorFormItemText}"/>
-                <TextBox Text="{Binding Model}" Style="{StaticResource editorFormItemInput}"/>
+                <TextBox Text="{Binding Model,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"/>
             </StackPanel>
 
             <Button Click="Save_Click" Content="保存" IsDefault="True"/>
