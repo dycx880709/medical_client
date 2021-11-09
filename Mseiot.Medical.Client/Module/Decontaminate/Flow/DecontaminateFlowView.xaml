@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="MM.Medical.Client.Views.DecontaminateFlowView"
+﻿<UserControl x:Class="MM.Medical.Client.Module.Decontaminate.DecontaminateFlowView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -17,28 +17,21 @@
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Click="AddFlow_Click" Content="添加" Margin="5,0"/>
-                        <Button Style="{StaticResource Button_Danger}" Click="RemoveFlow_Click" Content="删除" />
+                   
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
             <DataGrid x:Name="lvDecontaminateFlows" Grid.Row="1" SelectionChanged="DecontaminateFlows_SelectionChanged">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="100">
-                        <DataGridTemplateColumn.Header>
-                            <CheckBox Click="AllDecontaminateFlow_Selected"/>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
                     <DataGridTextColumn Width="*" Header="生产厂家" Binding="{Binding Factory}"/>
                     <DataGridTextColumn Width="*" Header="设备型号" Binding="{Binding Model}"/>
-                    <DataGridTemplateColumn Width="200">
+                    <DataGridTemplateColumn Width="200" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="修改" Click="ModifyFlow_Click"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button ToolTip="修改" Style="{StaticResource Button_Primary_Circle}" Margin="0,0,5,0" Content="/Images/icon/editor.png" Tag="{Binding}" Click="ModifyFlow_Click"/>
+                                    <Button Tag="{Binding}" ToolTip="删除" Style="{StaticResource Button_Danger_Circle}" Content="/Images/icon/delete.png" Click="RemoveFlow_Click"/>
+                                </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -50,29 +43,21 @@
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button  Click="AddFlowStep_Click" Content="添加" Margin="0,0,5,0"/>
-                        <Button Style="{StaticResource Button_Danger}" Click="RemoveFlowStep_Click" Content="删除" />
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
             <DataGrid x:Name="lvFlowSteps" Grid.Row="1">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="100">
-                        <DataGridTemplateColumn.Header>
-                            <CheckBox Click="AllDecontaminateFlowStep_Selected"/>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
                     <DataGridTextColumn Width="*" Header="步骤名称" Binding="{Binding Name}"/>
                     <DataGridTextColumn Width="*" Header="超时时间（秒）" Binding="{Binding Timeout}"/>
                     <DataGridTextColumn Width="*" Header="采集设备" Binding="{Binding RFIDDeviceName}"/>
-                    <DataGridTemplateColumn Width="200">
+                    <DataGridTemplateColumn Width="200" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="修改" Tag="{Binding}" Click="ModifyFlowStep_Click"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button ToolTip="修改" Style="{StaticResource Button_Primary_Circle}" Margin="0,0,5,0" Content="/Images/icon/editor.png" Tag="{Binding}" Click="ModifyFlowStep_Click"/>
+                                    <Button Tag="{Binding}" ToolTip="删除" Style="{StaticResource Button_Danger_Circle}" Content="/Images/icon/delete.png" Click="RemoveFlowStep_Click" />
+                                </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

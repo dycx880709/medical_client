@@ -19,7 +19,7 @@ using Ms.Controls;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 
-namespace MM.Medical.Client.Views
+namespace MM.Medical.Client.Module.Decontaminate
 {
     /// <summary>
     /// EndoscopeManage.xaml 的交互逻辑
@@ -66,10 +66,13 @@ namespace MM.Medical.Client.Views
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            var result = loading.AsyncWait("删除内窥镜中,请稍后", SocketProxy.Instance.RemoveEndoscopes(Endoscopes.Where(f => f.IsSelected).Select(f => f.EndoscopeID).ToList()));
-            if (result.IsSuccess)
-                LoadEndoscopes();
-            else Alert.ShowMessage(true, AlertType.Error, $"删除内窥镜失败,{ result.Error }");
+            if (ConfirmWindow.Show("是否继续?"))
+            {
+                var result = loading.AsyncWait("删除内窥镜中,请稍后", SocketProxy.Instance.RemoveEndoscopes(Endoscopes.Where(f => f.IsSelected).Select(f => f.EndoscopeID).ToList()));
+                if (result.IsSuccess)
+                    LoadEndoscopes();
+                else Alert.ShowMessage(true, AlertType.Error, $"删除内窥镜失败,{ result.Error }");
+            }
         }
 
         private void Modify_Click(object sender, RoutedEventArgs e)

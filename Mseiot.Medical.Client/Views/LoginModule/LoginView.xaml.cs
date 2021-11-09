@@ -111,9 +111,13 @@ namespace MM.Medical.Client.Views
                 if (condition == null) LocalSetting.UserRecords.Add(record.Copy()); else record.CopyTo(condition);
                 CacheHelper.CurrentUser = result.Content;
                 CacheHelper.SaveLocalSetting();
-                MainWindow mw = new MainWindow();
-                Application.Current.MainWindow = mw;
-                mw.Show();
+
+                Module.Decontaminate.MainWindow dmw = new Module.Decontaminate.MainWindow();
+                dmw.Show();
+
+                //MainWindow mw = new MainWindow();
+                //Application.Current.MainWindow = mw;
+                //mw.Show();
                 this.Close();
             }
             else tbTips.Text = result.Error;

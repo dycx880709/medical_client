@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MM.Medical.Client.Views
+namespace MM.Medical.Client.Module.Decontaminate
 {
     /// <summary>
     /// RFIDDeviceManage.xaml 的交互逻辑
@@ -63,19 +63,21 @@ namespace MM.Medical.Client.Views
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            var result = loading.AsyncWait("删除采集设备中,请稍后", SocketProxy.Instance.RemoveRFIDDevices(RFIDDevices.Where(f => f.IsSelected).Select(f => f.RFIDDeviceID).ToList()));
-            if (result.IsSuccess) LoadRFIDDevices();
-            else Alert.ShowMessage(true, AlertType.Error, $"删除采集设备失败,{ result.Error }");
+            if (ConfirmWindow.Show("是否继续?"))
+            {
+                var rfidDevice = (sender as FrameworkElement).Tag as RFIDDevice;
+                var result = loading.AsyncWait("删除采集设备中,请稍后", SocketProxy.Instance.RemoveRFIDDevices(new List<int> { rfidDevice.RFIDDeviceID }));
+                if (result.IsSuccess) LoadRFIDDevices();
+                else Alert.ShowMessage(true, AlertType.Error, $"删除采集设备失败,{ result.Error }");
+            }
         }
 
-        #endregion
-
-        #region 选择
-
-        private void AllDevice_Selected(object sender, RoutedEventArgs e)
+        private void Modify_Click(object sender, RoutedEventArgs e)
         {
-            foreach(var item in RFIDDevices)
-                item.IsSelected = (bool)(sender as CheckBox).IsChecked;
+            var rfidDevice = (sender as FrameworkElement).Tag as RFIDDevice;
+            var addRFIDDevice = new AddRFIDDevice(rfidDevice, this.loading);
+            if (child.ShowDialog("修改采集设备", addRFIDDevice))
+                LoadRFIDDevices();
         }
 
         #endregion

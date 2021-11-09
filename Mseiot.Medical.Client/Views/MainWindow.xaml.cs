@@ -10,6 +10,7 @@ using Ms.Controls.Core;
 using System.Windows.Controls.Primitives;
 using Mseiot.Medical.Service.Services;
 using Ms.Libs.TcpLib;
+using System.Net.Sockets;
 
 namespace MM.Medical.Client.Views
 {

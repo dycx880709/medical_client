@@ -112,6 +112,7 @@
     <Compile Include="Core\Extension.cs" />
     <Compile Include="Core\KeyHookHelper.cs" />
     <Compile Include="Entities\BaseWordExtend.cs" />
+    <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\SystemSettingExtend.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
     <Compile Include="Entities\AppLevel.cs" />
@@ -150,31 +151,34 @@
     <Compile Include="Views\Component\SetConsultingView.xaml.cs">
       <DependentUpon>SetConsultingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecontaminateModule\AddDecontaminateFlow.xaml.cs">
+    <Compile Include="Module\Decontaminate\Flow\AddDecontaminateFlow.xaml.cs">
       <DependentUpon>AddDecontaminateFlow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecontaminateModule\AddDecontaminateFlowStep.xaml.cs">
+    <Compile Include="Module\Decontaminate\Flow\AddDecontaminateFlowStep.xaml.cs">
       <DependentUpon>AddDecontaminateFlowStep.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecontaminateModule\DecontaminateFlowView.xaml.cs">
+    <Compile Include="Module\Decontaminate\Flow\DecontaminateFlowView.xaml.cs">
       <DependentUpon>DecontaminateFlowView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecontaminateModule\DecontaminateTaskView.xaml.cs">
+    <Compile Include="Module\Decontaminate\DecontaminateTaskView.xaml.cs">
       <DependentUpon>DecontaminateTaskView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecontaminateModule\EndoscopeViews\AddEndoscope.xaml.cs">
+    <Compile Include="Module\Decontaminate\Endoscope\AddEndoscope.xaml.cs">
       <DependentUpon>AddEndoscope.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecontaminateModule\EndoscopeViews\EndoscopeManage.xaml.cs">
+    <Compile Include="Module\Decontaminate\Endoscope\EndoscopeManage.xaml.cs">
       <DependentUpon>EndoscopeManage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecontaminateModule\RFID\AddRFIDDevice.xaml.cs">
+    <Compile Include="Module\Decontaminate\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module\Decontaminate\RFID\AddRFIDDevice.xaml.cs">
       <DependentUpon>AddRFIDDevice.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecontaminateModule\RFID\RFIDDeviceManage.xaml.cs">
+    <Compile Include="Module\Decontaminate\RFID\RFIDDeviceManage.xaml.cs">
       <DependentUpon>RFIDDeviceManage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecontaminateModule\SystemViews\DecontaminateSetting.xaml.cs">
+    <Compile Include="Module\Decontaminate\System\DecontaminateSetting.xaml.cs">
       <DependentUpon>DecontaminateSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatisticsModule\ConditionStatisticsView.xaml.cs">
@@ -272,39 +276,43 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DecontaminateModule\AddDecontaminateFlow.xaml">
+    <Page Include="Module\Decontaminate\Flow\AddDecontaminateFlow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecontaminateModule\AddDecontaminateFlowStep.xaml">
+    <Page Include="Module\Decontaminate\Flow\AddDecontaminateFlowStep.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecontaminateModule\DecontaminateFlowView.xaml">
+    <Page Include="Module\Decontaminate\Flow\DecontaminateFlowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecontaminateModule\DecontaminateTaskView.xaml">
+    <Page Include="Module\Decontaminate\DecontaminateTaskView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecontaminateModule\EndoscopeViews\AddEndoscope.xaml">
+    <Page Include="Module\Decontaminate\Endoscope\AddEndoscope.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecontaminateModule\EndoscopeViews\EndoscopeManage.xaml">
+    <Page Include="Module\Decontaminate\Endoscope\EndoscopeManage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecontaminateModule\RFID\AddRFIDDevice.xaml">
+    <Page Include="Module\Decontaminate\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecontaminateModule\RFID\RFIDDeviceManage.xaml">
+    <Page Include="Module\Decontaminate\RFID\AddRFIDDevice.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DecontaminateModule\SystemViews\DecontaminateSetting.xaml">
+    <Page Include="Module\Decontaminate\RFID\RFIDDeviceManage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Module\Decontaminate\System\DecontaminateSetting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -442,6 +450,11 @@
       <Name>Mseiot.Medical.Service</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\bg.jpg" />
+    <Resource Include="Images\Icon\delete.png" />
+    <Resource Include="Images\Icon\editor.png" />
+    <Resource Include="Images\Icon\show.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

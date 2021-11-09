@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="MM.Medical.Client.Views.EndoscopeManage"
+﻿<UserControl x:Class="MM.Medical.Client.Module.Decontaminate.EndoscopeManage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,22 +13,12 @@
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Click="Add_Click" Content="添加" Margin="0,0,10,0" HorizontalAlignment="Right"/>
-                        <Button Style="{StaticResource Button_Danger}" Click="Remove_Click" Content="删除"  HorizontalAlignment="Right"/>
+                
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
             <DataGrid x:Name="lvDatas">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="100">
-                        <DataGridTemplateColumn.Header>
-                            <CheckBox Click="All_Selected"/>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
                     <DataGridTextColumn Width="*" Header="设备编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
                     <DataGridTextColumn Width="*" Header="生产厂家" Binding="{Binding Factory}"/>
                     <DataGridTextColumn Width="*" Header="设备型号" Binding="{Binding Model}"/>
@@ -39,10 +29,13 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="200">
+                    <DataGridTemplateColumn Width="200" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="修改" Tag="{Binding}" Click="Modify_Click"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button ToolTip="修改" Style="{StaticResource Button_Primary_Circle}" Margin="0,0,5,0" Content="/Images/icon/editor.png" Tag="{Binding}" Click="Modify_Click"/>
+                                    <Button ToolTip="删除" Style="{StaticResource Button_Danger_Circle}" Content="/Images/icon/delete.png" Click="Remove_Click" HorizontalAlignment="Right"/>
+                                </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
