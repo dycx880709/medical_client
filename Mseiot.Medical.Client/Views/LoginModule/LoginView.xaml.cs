@@ -113,11 +113,15 @@ namespace MM.Medical.Client.Views
                 CacheHelper.SaveLocalSetting();
 
                 Module.Decontaminate.MainWindow dmw = new Module.Decontaminate.MainWindow();
+                Application.Current.MainWindow = dmw;
                 dmw.Show();
+          
 
                 //MainWindow mw = new MainWindow();
                 //Application.Current.MainWindow = mw;
                 //mw.Show();
+
+
                 this.Close();
             }
             else tbTips.Text = result.Error;

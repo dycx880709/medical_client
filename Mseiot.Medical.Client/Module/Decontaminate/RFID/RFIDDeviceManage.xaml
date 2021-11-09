@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <controls:CustomGroupBox Header="RFID设备列表">
+        <controls:CustomGroupBox Header="设备列表">
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

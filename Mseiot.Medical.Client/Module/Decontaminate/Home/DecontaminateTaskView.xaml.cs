@@ -29,16 +29,71 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             InitializeComponent();
             this.Loaded += DecontaminateTask_Loaded;
+            this.SizeChanged += DecontaminateTaskView_SizeChanged;
+        }
+
+        private void DecontaminateTaskView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            GetColumnCount();
+            DrawGrid();
+            Test();
         }
 
         private void DecontaminateTask_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= DecontaminateTask_Loaded;
+           
             lvTasks.ItemsSource = DecontaminateTasks;
             timer = new Timer(GetDatas, null, 0, 3000);
         }
 
         #region 数据
+
+        private void Test()
+        {
+              int iSeed = 10;
+            Random ro = new Random(10);
+            long tick = DateTime.Now.Ticks;
+            Random ran = new Random((int)(tick & 0xffffffffL) | (int)(tick >> 32));
+            for (int i = 0; i < 50; i++)
+            {
+                DecontaminateTask decontaminateTask = new DecontaminateTask();
+                decontaminateTask.DecontaminateSteps =new List<DecontaminateStep>();
+
+              
+
+                int iResult;
+                int iUp = 7;
+                iResult = ro.Next(1,iUp);
+
+                for (int j = 0; j < iResult; j++)
+                {
+                    var decontaminateStep = new DecontaminateStep
+                    {
+                      Index=j+1
+                    };
+
+                    iResult = ro.Next(1,iUp);
+                    if (iResult <= 1)
+                    {
+                        decontaminateStep.DecontaminateStepStatus = DecontaminateStepStatus.Wait;
+                        decontaminateStep.Name = "初洗";
+                    }
+                    else if (iResult <= 4)
+                    {
+                        decontaminateStep.DecontaminateStepStatus = DecontaminateStepStatus.Normal;
+                        decontaminateStep.Name = "酶洗";
+                    }
+                    else 
+                    {
+                        decontaminateStep.DecontaminateStepStatus = DecontaminateStepStatus.Complete;
+                        decontaminateStep.Name = "烘干";
+                    }
+                    decontaminateTask.DecontaminateSteps.Add(decontaminateStep);
+                }
+                DecontaminateTasks.Add(decontaminateTask);
+            }
+        }
 
         Timer timer;
 
@@ -52,7 +107,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                 DecontaminateTaskStatus.Wait
             };
             var result = await SocketProxy.Instance.GetDecontaminateTasks(decontaminateTaskStatuss);
-     
+
             if (result.IsSuccess && result.Content != null)
             {
                 for (int j = 0; j < result.Content.Count; j++)
@@ -63,7 +118,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                     }
                 }
             }
-          
+
             timer.Change(3000, 3000);
         }
 
@@ -71,19 +126,50 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         #region 列数
 
-        public int ColumnCount
+        public double ColumnWidth
         {
-            get { return (int)GetValue(ColumnCountProperty); }
-            set { SetValue(ColumnCountProperty, value); }
+            get { return (double)GetValue(ColumnWidthProperty); }
+            set { SetValue(ColumnWidthProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ColumnCount.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ColumnCountProperty =
-            DependencyProperty.Register("ColumnCount", typeof(int), typeof(DecontaminateTaskView), new PropertyMetadata(0));
+        public static readonly DependencyProperty ColumnWidthProperty =
+            DependencyProperty.Register("ColumnWidth", typeof(double), typeof(DecontaminateTaskView), new PropertyMetadata(0.0));
 
-        private void Tasks_Loaded(object sender, RoutedEventArgs e)
+        public double RowHeight
         {
-            ColumnCount = (int)(Math.Floor(lvTasks.ActualWidth / 120));
+            get { return (double)GetValue(RowHeightProperty); }
+            set { SetValue(RowHeightProperty, value); }
+        }
+
+        public static readonly DependencyProperty RowHeightProperty =
+            DependencyProperty.Register("RowHeight", typeof(double), typeof(DecontaminateTaskView), new PropertyMetadata(0.0));
+
+
+        private int rowCount;
+        
+
+        private void GetColumnCount()
+        {
+            ColumnWidth = (lvDrawGrid.ActualWidth-5-150) / (double)7.0;
+
+            rowCount = (int)(Math.Floor(lvDrawGrid.ActualHeight / 120));
+            RowHeight =  lvDrawGrid.ActualHeight / (double)rowCount;
+        }
+
+        #endregion
+
+        #region GRID
+
+
+        private void DrawGrid()
+        {
+            List<int> drawGrids = new List<int>();
+            for (int i = 0; i < rowCount; i++)
+            {
+                drawGrids.Add(i);
+            }
+            lvDrawGrid.ItemsSource = drawGrids;
         }
 
         #endregion

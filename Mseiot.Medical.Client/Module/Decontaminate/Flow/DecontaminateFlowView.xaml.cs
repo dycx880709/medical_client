@@ -44,12 +44,14 @@ namespace MM.Medical.Client.Module.Decontaminate
         #region 数据
         public ObservableCollection<DecontaminateFlow> DecontaminateFlows { get; set; } = new ObservableCollection<DecontaminateFlow>();
 
-        private void LoadDecontaminateFlows()
+        private async void LoadDecontaminateFlows()
         {
             DecontaminateFlows.Clear();
-            var result = loading.AsyncWait("获取流程列表中,请稍后", SocketProxy.Instance.GetDecontaminateFlows());
+            loading.Start("获取流程列表中,请稍后");
+            var result = await SocketProxy.Instance.GetDecontaminateFlows();
             if (result.IsSuccess) DecontaminateFlows.AddRange(result.Content);
             else Alert.ShowMessage(true, AlertType.Error, $"获取流程列表失败,{ result.Error }");
+            loading.Stop();
         }
 
         #endregion
@@ -115,15 +117,17 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         public ObservableCollection<DecontaminateFlowStep> DecontaminateFlowSteps { get; set; } = new ObservableCollection<DecontaminateFlowStep>();
 
-        private void LoadDecontaminateSteps()
+        private async void LoadDecontaminateSteps()
         {
             DecontaminateFlowSteps.Clear();
             if (lvDecontaminateFlows.SelectedItem != null)
             {
+                loading.Start("获取流程步骤中,请稍后");
                 var decontaminateFlow = lvDecontaminateFlows.SelectedItem as DecontaminateFlow;
-                var result = loading.AsyncWait("获取流程步骤中,请稍后", SocketProxy.Instance.GetDecontaminateFlowSteps(decontaminateFlow.DecontaminateFlowID));
+                var result = await SocketProxy.Instance.GetDecontaminateFlowSteps(decontaminateFlow.DecontaminateFlowID);
                 if (result.IsSuccess) DecontaminateFlowSteps.AddRange(result.Content);
                 else Alert.ShowMessage(true, AlertType.Error, $"获取流程步骤失败,{ result.Error }");
+                loading.Stop();
             }
         }
 
