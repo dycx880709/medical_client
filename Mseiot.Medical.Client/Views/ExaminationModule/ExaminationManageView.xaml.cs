@@ -29,20 +29,15 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class ExaminationManageView : UserControl
     {
-        public Appointment SelectedAppointment
-        {
-            get { return (Appointment)GetValue(SelectedAppointmentProperty); }
-            set { SetValue(SelectedAppointmentProperty, value); }
-        }
         public ExaminationMedia SelectedMedia
         {
             get { return (ExaminationMedia)GetValue(SelectedMediaProperty); }
             set { SetValue(SelectedMediaProperty, value); }
         }
-        public bool IsChecking
+        public bool IsEditable
         {
-            get { return (bool)GetValue(IsCheckingProperty); }
-            set { SetValue(IsCheckingProperty, value); }
+            get { return (bool)GetValue(IsEditableProperty); }
+            set { SetValue(IsEditableProperty, value); }
         }
         public bool IsDoctorVisit
         {
@@ -55,9 +50,8 @@ namespace MM.Medical.Client.Views
             set { SetValue(IsFullScreenProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedAppointmentProperty = DependencyProperty.Register("SelectedAppointment", typeof(Appointment), typeof(ExaminationManageView), new PropertyMetadata(null));
         public static readonly DependencyProperty SelectedMediaProperty = DependencyProperty.Register("SelectedMedia", typeof(ExaminationMedia), typeof(ExaminationManageView), new PropertyMetadata(null));
-        public static readonly DependencyProperty IsCheckingProperty = DependencyProperty.Register("IsChecking", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsEditableProperty = DependencyProperty.Register("IsEditable", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
         public static readonly DependencyProperty IsFullScreenProperty = DependencyProperty.Register("IsFullScreen", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
         public static readonly DependencyProperty IsDoctorVisitProperty = DependencyProperty.Register("IsDoctorVisit", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
        
@@ -84,8 +78,6 @@ namespace MM.Medical.Client.Views
         private void ExaminationManageView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= ExaminationManageView_Loaded;
-            GetBaseWords();
-            GetMedicalDatas();
             LoadConsultingRoom();
             LoadRFIDProxy();
             ResetCheckingExamination();
@@ -100,35 +92,22 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        private void GetMedicalDatas()
-        {
-            var result1 = loading.AsyncWait("获取诊断模板中,请稍后", SocketProxy.Instance.GetMedicalTemplates());
-            if (result1.IsSuccess) tv_template.ItemsSource = CacheHelper.SortMedicalTemplates(result1.Content, 0);
-            else Alert.ShowMessage(false, AlertType.Error, $"获取诊断模板失败,{ result1.Error }");
-            var result2 = loading.AsyncWait("获取医学词库中,请稍后", SocketProxy.Instance.GetMedicalWords());
-            if (result2.IsSuccess)
-            { 
-                this.OriginMedicalWords = result2.Content;
-                this.MedicalWords = CacheHelper.SortMedicalWords(this.OriginMedicalWords, 0);
-            }
-            else Alert.ShowMessage(false, AlertType.Error, $"获取医学词库失败,{ result2.Error }");
-        }
-
         private async void ResetCheckingExamination()
         {
             var condition = Appointments.FirstOrDefault(t => t.AppointmentStatus == AppointmentStatus.Checking);
             if (condition != null)
             {
                 loading.Start("检查恢复中,请稍后");
-                await Task.Delay(2000);
+                await Task.Delay(1000);
                 this.Dispatcher.Invoke(() =>
                 {
                     dg_appointments.SelectedValue = condition;
-                    this.IsChecking = true;
+                    this.IsEditable = true;
                     loading.Stop();
-                    video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
+                    epv.video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
                 });
             }
+            this.IsEnabled = true;
         }
 
         private void LoadConsultingRoom()
@@ -138,7 +117,6 @@ namespace MM.Medical.Client.Views
                 var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.LoginConsultingRoom(CacheHelper.ConsultingRoomName));
                 if (result.IsSuccess)
                 {
-                    this.IsEnabled = true;
                     this.consultingRoomId = result.Content.ConsultingRoomID;
                     this.IsDoctorVisit = result.Content.IsUsed;
                     LoadAppointments();
@@ -196,52 +174,25 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        private void GetBaseWords()
-        {
-            var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetBaseWords(
-                "HIV",
-                "HCV",
-                "HBasg",
-                "组织采取",
-                "细胞采取",
-                "插入途径",
-                "检查体位",
-                "麻醉方法",
-                "检查部位",
-                "术前用药",
-                "检查结果"
-            ));
-            cb_bodyLoc.ItemsSource = result.SplitContent("检查体位");
-            cb_anesthesia.ItemsSource = result.SplitContent("麻醉方法");
-            cb_preoperative.ItemsSource = result.SplitContent("术前用药");
-            cb_insert.ItemsSource = result.SplitContent("插入途径");
-            cb_org.ItemsSource = result.SplitContent("组织采取");
-            cb_cell.ItemsSource = result.SplitContent("细胞采取");
-            cb_hiv.ItemsSource = result.SplitContent("HIV");
-            cb_hcv.ItemsSource = result.SplitContent("HCV");
-            cb_hbasg.ItemsSource = result.SplitContent("HBasg");
-            cb_body.ItemsSource = BodyParts = result.SplitContent("检查部位");
-            cb_result.ItemsSource = result.SplitContent("检查结果");
-        }
-
         private void Check_Click(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton tb && dg_appointments.SelectedValue is Appointment appointment)
             {
                 var commit = appointment.Copy();
+                var commit_ex = appointment.Examination.Copy();
                 if (tb.IsChecked.Value)
                 {
-                    if (CacheHelper.IsDebug)
+                    void CommitExamination(int endoscopeID)
                     {
-                        var commit_ex = commit.Examination.Copy();
                         commit_ex.DoctorName = CacheHelper.CurrentUser.Name;
-                        commit_ex.EndoscopeID = 1;
+                        commit_ex.EndoscopeID = endoscopeID;
                         commit_ex.AppointmentID = appointment.AppointmentID;
+                        commit_ex.ExaminationTime = TimeHelper.ToUnixTime(DateTime.Now);
                         var result1 = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.AddExamination(commit_ex));
                         if (result1.IsSuccess)
                         {
                             commit_ex.ExaminationID = result1.Content;
-                            commit_ex.CopyTo(commit.Examination);
+                            commit_ex.CopyTo(appointment.Examination);
                             commit.AppointmentStatus = AppointmentStatus.Checking;
                             var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(commit));
                             if (!result.IsSuccess)
@@ -254,7 +205,7 @@ namespace MM.Medical.Client.Views
                                 Alert.ShowMessage(true, AlertType.Success, "检查已启动");
                                 commit.CopyTo(appointment);
                                 CollectionView.Refresh();
-                                video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
+                                epv.video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
                             }
                         }
                         else
@@ -263,45 +214,15 @@ namespace MM.Medical.Client.Views
                             tb.IsChecked = !tb.IsChecked.Value;
                         }
                     }
+                    if (CacheHelper.IsDebug)
+                        CommitExamination(1);
                     else
                     {
                         loading.Start("读取内窥镜信息中,请稍后");
                         var rfidProxy = new RFIDProxy();
                         rfidProxy.NotifyEPCReceived += (_, device) =>
                         {
-                            var commit_ex = commit.Examination.Copy();
-                            commit_ex.DoctorName = CacheHelper.CurrentUser.Name;
-                            commit_ex.EndoscopeID = device.DeviceID;
-                            commit_ex.AppointmentID = appointment.AppointmentID;
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                loading.Stop();
-                                var result1 = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.AddExamination(commit_ex));
-                                if (result1.IsSuccess)
-                                {
-                                    commit_ex.EndoscopeID = result1.Content;
-                                    commit_ex.CopyTo(commit.Examination);
-                                    commit.AppointmentStatus = AppointmentStatus.Checking;
-                                    var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(commit));
-                                    if (!result.IsSuccess)
-                                    {
-                                        Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result.Error }");
-                                        tb.IsChecked = !tb.IsChecked.Value;
-                                    }
-                                    else
-                                    {
-                                        Alert.ShowMessage(true, AlertType.Success, "检查已启动");
-                                        commit.CopyTo(appointment);
-                                        CollectionView.Refresh();
-                                        video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
-                                    }
-                                }
-                                else
-                                {
-                                    Alert.ShowMessage(true, AlertType.Error, $"启动检查失败,{ result1.Error }");
-                                    tb.IsChecked = !tb.IsChecked.Value;
-                                }
-                            });
+                            CommitExamination(device.DeviceID);
                             rfidProxy.Close();
                         };
                         rfidProxy.NotifyDeviceStatusChanged += (_, status) =>
@@ -322,10 +243,13 @@ namespace MM.Medical.Client.Views
                 }
                 else
                 {
-                    var result1 = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyExamination(commit.Examination));
+                    commit_ex.ReportTime = TimeHelper.ToUnixTime(DateTime.Now);
+                    var result1 = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyExamination(commit_ex));
                     if (result1.IsSuccess)
                     {
+                        commit_ex.CopyTo(appointment.Examination);
                         commit.AppointmentStatus = AppointmentStatus.Checked;
+                        appointment.Examination.Appointment = appointment;
                         var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(commit));
                         if (!result.IsSuccess)
                         {
@@ -337,7 +261,7 @@ namespace MM.Medical.Client.Views
                             Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
                             commit.CopyTo(appointment);
                             CollectionView.Refresh();
-                            video.Dispose();
+                            epv.video.Dispose();
                         }
                     }
                     else
@@ -359,11 +283,6 @@ namespace MM.Medical.Client.Views
             LoadAppointments();
         }
 
-        private void Remove_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             if (dg_appointments.SelectedValue is Appointment info)
@@ -371,20 +290,6 @@ namespace MM.Medical.Client.Views
                 var view = new ReportPreviewView(info.AppointmentID);
                 MsWindow.ShowDialog(view, "打印预览");
             }
-        }
-
-        private void SelectedBody_Click(object sender, RoutedEventArgs e)
-        {
-            cb_body.Text = string.Empty;
-            for (int i = 0; i < cb_body.Items.Count; i++)
-            {
-                var cbi = cb_body.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
-                var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
-                if (cb.IsChecked.Value)
-                    cb_body.Text += cb.Content.ToString() + ",";
-            }
-            if (!string.IsNullOrEmpty(cb_body.Text))
-                cb_body.Text = cb_body.Text.Substring(0, cb_body.Text.Length - 1);
         }
 
         private void StartCheck_Click(object sender, RoutedEventArgs e)
@@ -397,231 +302,20 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        private void ExaminationText_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (sender is FrameworkElement element)
-            {
-                var expander = ControlHelper.GetParentObject<Expander>(element);
-                var title = expander.Header.ToString();
-                var medicalWord = MedicalWords.FirstOrDefault(t => t.Name.Equals(title));
-                if (title.Equals("内镜所见") || title.Equals("镜下诊断"))
-                    ti_template.IsSelected = true;
-                else
-                {
-                    if (medicalWord == null) tv_medicalWord.ItemsSource = null;
-                    else tv_medicalWord.ItemsSource = medicalWord.MedicalWords;
-                    ti_word.IsSelected = true;
-                }
-            }
-        }
-
-        private void MedicalWord_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2 && sender is FrameworkElement element && dg_appointments.SelectedValue is Appointment appointment)
-            {
-                if (element.DataContext is MedicalWord word && (word.MedicalWords == null || word.MedicalWords.Count == 0))
-                {
-                    var rootMedicalWord = CacheHelper.GetMedicalWordParent(this.OriginMedicalWords, word.MedicalWordID, 0);
-                    var examination = appointment.Examination;
-                    switch (rootMedicalWord.Name)
-                    {
-                        case "临床诊断":
-                            if (string.IsNullOrEmpty(examination.ClinicalDiagnosis))
-                                examination.ClinicalDiagnosis = word.Name;
-                            else if (!examination.ClinicalDiagnosis.Contains(word.Name))
-                                examination.ClinicalDiagnosis += "\n" + word.Name;
-                            break;
-                        case "内镜所见":
-                            if (string.IsNullOrEmpty(examination.EndoscopicFindings))
-                                examination.EndoscopicFindings = word.Name;
-                            else if (!examination.EndoscopicFindings.Contains(word.Name))
-                                examination.EndoscopicFindings += "\n" + word.Name;
-                            break;
-                        case "镜下诊断":
-                            if (string.IsNullOrEmpty(examination.MicroscopicDiagnosis))
-                                examination.MicroscopicDiagnosis = word.Name;
-                            else if (!examination.MicroscopicDiagnosis.Contains(word.Name))
-                                examination.MicroscopicDiagnosis += "\n" + word.Name;
-                            break;
-                        case "活检部位":
-                            if (string.IsNullOrEmpty(examination.BiopsySite))
-                                examination.BiopsySite = word.Name;
-                            else if (!examination.BiopsySite.Contains(word.Name))
-                                examination.BiopsySite += "\n" + word.Name;
-                            break;
-                        case "病理诊断":
-                            if (string.IsNullOrEmpty(examination.PathologicalDiagnosis))
-                                examination.PathologicalDiagnosis = word.Name;
-                            else if (!examination.PathologicalDiagnosis.Contains(word.Name))
-                                examination.PathologicalDiagnosis += "\n" + word.Name;
-                            break;
-                        case "医生建议":
-                            if (string.IsNullOrEmpty(examination.DoctorAdvice))
-                                examination.DoctorAdvice = word.Name;
-                            else if (!examination.DoctorAdvice.Contains(word.Name))
-                                examination.DoctorAdvice += "\n" + word.Name;
-                            break;
-                    }
-                }
-            }
-        }
-
-        private void MedicalTemplate_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2 && sender is FrameworkElement element && dg_appointments.SelectedValue is Appointment appointment)
-            {
-                if (element.DataContext is MedicalTemplate template && (!string.IsNullOrEmpty(template.Moddia) || !string.IsNullOrEmpty(template.Modsee)))
-                {
-                    var examination = appointment.Examination;
-                    if (string.IsNullOrEmpty(examination.EndoscopicFindings))
-                        examination.EndoscopicFindings = template.Modsee;
-                    else if (!examination.EndoscopicFindings.Contains(template.Modsee))
-                        examination.EndoscopicFindings += "\n" + template.Modsee;
-                    if (string.IsNullOrEmpty(examination.MicroscopicDiagnosis))
-                        examination.MicroscopicDiagnosis = template.Moddia;
-                    else if (!examination.MicroscopicDiagnosis.Contains(template.Moddia))
-                        examination.MicroscopicDiagnosis += "\n" + template.Moddia;
-                }
-            }
-        }
-
-        private async void Shotcut_Click(object sender, RoutedEventArgs e)
-        {
-            if (dg_appointments.SelectedValue is Appointment appointment)
-            {
-                var image = video.Shotcut();
-                if (image != null && image.Length > 0)
-                {
-                    var examination = appointment.Examination;
-                    var media = new ExaminationMedia
-                    {
-                        Buffer = image,
-                        ExaminationID = examination.ExaminationID,
-                        MediaType = MediaType.Image,
-                    };
-                    examination.Images.Add(media);
-                    var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(image);
-                    if (result.IsSuccess)
-                    {
-                        media.Path = result.Content;
-                        var result2 = await SocketProxy.Instance.AddExaminationMedia(media);
-                        if (result2.IsSuccess)
-                        { 
-                            media.ExaminationMediaID = result2.Content;
-                            media.Buffer = null;
-                            media.ErrorMsg = null;
-                        }
-                        else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传数据失败,{ result2.Error }");
-                    }
-                    else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传图片失败,{ result.Error }");
-                }
-            }
-        }
-
-        private async void Record_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is ToggleButton tb && dg_appointments.SelectedValue is Appointment appointment)
-            {
-                var examination = appointment.Examination;
-                if (tb.IsChecked.Value)
-                {
-                    var image = video.Shotcut();
-                    if (image != null && image.Length > 0)
-                    {
-                        var media = new ExaminationMedia
-                        {
-                            Buffer = image,
-                            ExaminationID = examination.ExaminationID,
-                            MediaType = MediaType.Video,
-                        };
-                        examination.Videos.Add(media);
-                        var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(image);
-                        if (result.IsSuccess)
-                        {
-                            media.Path = result.Content;
-                            var result2 = await SocketProxy.Instance.AddExaminationMedia(media);
-                            if (result2.IsSuccess)
-                            {
-                                media.ExaminationMediaID = result2.Content;
-                                media.ErrorMsg = null;
-                                var filePath = Path.Combine(CacheHelper.VideoPath, TimeHelper.ToUnixTime(DateTime.Now).ToString() + ".avi");
-                                if (video.StartRecord(filePath))
-                                    media.LocalVideoPath = filePath;
-                                else
-                                {
-                                    this.Dispatcher.Invoke(() =>
-                                    {
-                                        Alert.ShowMessage(true, AlertType.Error, "开启录像失败");
-                                        tb.IsChecked = tb.IsChecked.Value;
-                                    });
-                                }
-                            }
-                            else this.Dispatcher.Invoke(() =>
-                            {
-                                media.ErrorMsg = $"上传视频数据失败,{ result2.Error }";
-                                tb.IsChecked = tb.IsChecked.Value;
-                            });
-                        }
-                        else
-                        {
-                            this.Dispatcher.Invoke(() => 
-                            {
-                                media.ErrorMsg = $"上传视频预览图片失败,{ result.Error }";
-                                tb.IsChecked = tb.IsChecked.Value;
-                            });
-                        }
-                    }
-                    else
-                    {
-                        Alert.ShowMessage(true, AlertType.Error, "预览图获取失败,录像已停止");
-                        tb.IsChecked = tb.IsChecked.Value;
-                    }
-                }
-                else
-                {
-                    if (video.StopRecord())
-                    {
-                        var media = examination.Videos.FirstOrDefault(t => !string.IsNullOrEmpty(t.LocalVideoPath));
-                        var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(media.LocalVideoPath);
-                        if (result.IsSuccess)
-                        {
-                            media.VideoPath = result.Content;
-                            var result2 = await SocketProxy.Instance.ModifyExaminationMedia(media);
-                            if (!result2.IsSuccess)
-                                this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result2.Error }");
-                            else
-                            {
-                                File.Delete(media.LocalVideoPath);
-                                media.LocalVideoPath = null;
-                            }
-                        }
-                        else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result.Error }");
-                    }
-                    else
-                    {
-                        Alert.ShowMessage(true, AlertType.Error, "停止录像失败");
-                        tb.IsChecked = tb.IsChecked.Value;
-                    }
-                }
-            }
-        }
-
-        private void CaptureSetting_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ToggleButton tb && !tb.IsChecked.Value && dg_appointments.SelectedValue is Appointment appointment)
+            if (sender is ToggleButton tb)
             {
-                var result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyExamination(appointment.Examination));
-                if (result.IsSuccess)
+                if (!tb.IsChecked.Value && epv.SelectedExamination != null)
                 {
-                    Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
-                    video.Dispose();
+                    var result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyExamination(epv.SelectedExamination));
+                    if (result.IsSuccess)
+                    {
+                        Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
+                        epv.video.Dispose();
+                    }
+                    else Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败,{ result.Error }");
                 }
-                else Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败,{ result.Error }");
             }
         }
 
@@ -642,6 +336,9 @@ namespace MM.Medical.Client.Views
                 if (examination.Videos == null)
                     examination.Videos = new ObservableCollection<ExaminationMedia>();
                 appointment.Examination = examination;
+                appointment.Examination.Appointment = appointment;
+                
+                epv.IsReadOnly = false;
             }
         }
 
@@ -649,60 +346,10 @@ namespace MM.Medical.Client.Views
         {
 
         }
-
-        private void PlayMedia_Click(object sender, RoutedEventArgs e)
+        private void CaptureSetting_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.DataContext is ExaminationMedia media)
-            {
-                if (media.MediaType == MediaType.Image)
-                {
-                    var remoteAddress = SocketProxy.Instance.GetFileRounter() + media.Path;
-                    bd_media.Visibility = Visibility.Visible;
-                    img_media.Source = new BitmapImage(new Uri(remoteAddress, UriKind.Absolute));
-                }
-                else
-                {
-                    var remoteAddress = SocketProxy.Instance.GetFileRounter() + media.VideoPath;
-                    video.SetSource(remoteAddress, true);
-                }
-                bt_close.Visibility = Visibility.Visible;
-                bt_close.Tag = media;
-            }
+
         }
 
-        private void CloseMedia_Click(object sender, RoutedEventArgs e)
-        {
-            if (bt_close.Tag is ExaminationMedia media)
-            {
-                if (media.MediaType == MediaType.Image)
-                {
-                    bd_media.Visibility = Visibility.Hidden;
-                    img_media.Source = null;
-                }
-                else if (media.MediaType == MediaType.Video)
-                {
-                    if (SelectedAppointment.AppointmentStatus == AppointmentStatus.Checking)
-                        video.SetSource(CacheHelper.EndoscopeDeviceID, true);
-                    else video.Dispose();
-                }
-                bt_close.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private async void BodyPart_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is FrameworkElement element && element.IsLoaded && element.DataContext is ExaminationMedia media)
-            {
-                var result = await SocketProxy.Instance.ModifyExaminationMedia(media);
-                if (!result.IsSuccess)
-                {
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        Alert.ShowMessage(true, AlertType.Error, $"检查部位设置失败,{ result.Error }");
-                        media.BodyPart = null;
-                    });
-                }
-            }
-        }
     }
 }

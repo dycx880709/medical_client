@@ -23,13 +23,10 @@
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <controls:CustomGroupBox Margin="20" Grid.Column="0" Header="基础信息">
+            <controls:CustomGroupBox Margin="20" Grid.Row="0" Header="基础信息">
                 <WrapPanel Margin="20">
                     <StackPanel Style="{StaticResource editorFormItem}">
                         <TextBlock Text="医院名称" Style="{StaticResource editorFormItemText}"/>
@@ -50,18 +47,27 @@
                     <Image Stretch="Uniform" Height="100" Width="100">
                         <Image.Style>
                             <Style TargetType="{x:Type Image}">
-                                <Setter Property="Source" Value="{Binding ReportIcon, Converter={StaticResource PathToWebUrlConverter}}"/>
+                                <Setter Property="Source" Value="{Binding ReportIconLocal}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ReportIcon}" Value="{x:Null}">
-                                        <Setter Property="Source" Value="/MM.Medical.Share;component/Images/report_ico.jpg"/>
+                                    <DataTrigger Binding="{Binding ReportIconLocal}" Value="{x:Null}">
+                                        <Setter Property="Source" Value="{Binding ReportIcon, Converter={StaticResource PathToWebUrlConverter}}"/>
                                     </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ReportIconLocal}" Value="{x:Null}"/>
+                                            <Condition Binding="{Binding ReportIcon}" Value=""/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Source" Value="/MM.Medical.Share;component/Images/report_ico.jpg"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Image.Style>
                     </Image>
                 </WrapPanel>
             </controls:CustomGroupBox>
-            <controls:CustomGroupBox Margin="20" Grid.Column="1" Header="运行配置">
+            <controls:CustomGroupBox Margin="20" Grid.Row="1" Header="运行配置">
                 <WrapPanel Margin="20">
                     <StackPanel Style="{StaticResource editorFormItem}">
                         <TextBlock Text="采图声效" Style="{StaticResource editorFormItemText}"/>
@@ -72,15 +78,15 @@
                         </controls:CustomTextBox>
                     </StackPanel>
                     <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="打印图片上限" Style="{StaticResource editorFormItemText}"/>
+                        <TextBlock Text="打印图片上限" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                         <controls:CustomTextBox Text="{Binding PrintImageCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="采图数量上限" Style="{StaticResource editorFormItemText}"/>
+                        <TextBlock Text="采图数量上限" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                         <controls:CustomTextBox Text="{Binding CutshotImageCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="录像数量上限" Style="{StaticResource editorFormItemText}"/>
+                        <TextBlock Text="录像数量上限" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                         <controls:CustomTextBox Text="{Binding MediaCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <StackPanel Style="{StaticResource editorFormItem}">
@@ -89,7 +95,7 @@
                     </StackPanel>
                 </WrapPanel>
             </controls:CustomGroupBox>
-            <Button Click="Save_Click" Grid.Row="1" Margin="0,20" Grid.ColumnSpan="3" Content="保存"/>
+            <Button Click="Save_Click" Grid.Row="2" Margin="0,20" Grid.ColumnSpan="3" Content="保存"/>
         </Grid>
         <controls:Loading x:Name="loading"/>
     </Grid>

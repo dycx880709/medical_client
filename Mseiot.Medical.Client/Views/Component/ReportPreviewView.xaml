@@ -17,15 +17,12 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <StackPanel x:Name="sp_title" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,20">
-                        <Image Stretch="Uniform" Height="50" Width="50">
+                    <StackPanel x:Name="sp_title" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,15">
+                        <Image Stretch="Uniform" Height="35" Width="35">
                             <Image.Style>
                                 <Style TargetType="{x:Type Image}">
                                     <Setter Property="Source" Value="{Binding ReportIcon, Converter={StaticResource PathToWebUrlConverter}}"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ReportIcon}" Value="{x:Null}">
-                                            <Setter Property="Source" Value="/MM.Medical.Share;component/Images/report_ico.jpg"/>
-                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding ReportIcon}" Value="">
                                             <Setter Property="Source" Value="/MM.Medical.Share;component/Images/report_ico.jpg"/>
                                         </DataTrigger>
@@ -33,12 +30,12 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
                             <TextBlock Text="{Binding HospitalName}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
                             <TextBlock Text="{Binding ReportName}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
                         </StackPanel>
                     </StackPanel>
-                    <Grid x:Name="gd_content" Grid.Row="1" Margin="20,0">
+                    <Grid x:Name="gd_content" Grid.Row="1" Margin="10,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
@@ -80,7 +77,20 @@
                             <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="7" Text="无" VerticalAlignment="Center"/>
                         </Grid>
                         <StackPanel x:Name="sp_standard" Grid.Row="1">
-                            <ListBox Width="{Binding ActualWidth, ElementName=sp_standard}" ItemsSource="{Binding Images}">
+                            <ListBox IsHitTestVisible="False" Width="{Binding ActualWidth, ElementName=sp_standard}" ItemsSource="{Binding Images}">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                    <Border Margin="5">
+                                                        <ContentPresenter />
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Width="300">
@@ -92,8 +102,8 @@
                                             </StackPanel>
                                         </StackPanel>
                                         <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding BodyPart}" Value="{x:Null}">
-                                                <Setter Property="Text" TargetName="tb" Value="彩图"/>
+                                            <DataTrigger Binding="{Binding BodyPart}" Value="">
+                                                <Setter Property="Text" TargetName="tb" Value="采图"/>
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
@@ -105,11 +115,11 @@
                                 </ListBox.ItemsPanel>
                             </ListBox>
                             <StackPanel Margin="0,20">
-                                <TextBlock Text="内镜所见: " FontWeight="Bold"/>
+                                <TextBlock Text="内镜所见:" HorizontalAlignment="Left" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding EndoscopicFindings}" TextWrapping="Wrap"/>
                             </StackPanel>
                             <StackPanel>
-                                <TextBlock Text="诊断结果: " FontWeight="Bold"/>
+                                <TextBlock Text="诊断结果:" HorizontalAlignment="Left" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding MicroscopicDiagnosis}" TextWrapping="Wrap"/>
                             </StackPanel>
                         </StackPanel>
@@ -119,7 +129,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="1">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                     <TextBlock Text="温馨提示:" FontSize="{StaticResource LargeFontSize}"/>
                                     <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}">
                                         <TextBlock Margin="5,0" FontSize="{StaticResource LargeFontSize}" Text="返首诊医师就诊。检查后1小时内禁饮禁食,1小时后饮水五呛咳后方可进食。"/>

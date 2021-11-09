@@ -139,6 +139,9 @@
     <Compile Include="Views\Component\AddWordItemView.xaml.cs">
       <DependentUpon>AddWordItemView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Component\ExaminationPartView.xaml.cs">
+      <DependentUpon>ExaminationPartView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Component\PatientManageView.xaml.cs">
       <DependentUpon>PatientManageView.xaml</DependentUpon>
     </Compile>
@@ -257,6 +260,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Component\AddWordItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\ExaminationPartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

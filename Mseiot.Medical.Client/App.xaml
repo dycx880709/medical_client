@@ -22,6 +22,7 @@
             <converters:TimeStampToDateTimeConverter x:Key="TimeStampToDateTimeConverter"/>
             <converters:TimeStampToStringFormatConverter x:Key="TimeStampToStringFormatConverter"/>
             <converters:IntToFormatString x:Key="IntToFormatStringConverter"/>
+            <converters:TrueToFalseConverter x:Key="TrueToFalseConverter"/>
             <lc:PathToWebUrlConverter x:Key="PathToWebUrlConverter"/>
             <converters:YNToCNConvert x:Key="YNToCNConvert"/>
             <converters:SexConverter x:Key="SexConverter"/>

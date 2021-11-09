@@ -40,20 +40,35 @@ namespace MM.Medical.Client.Views
 
         private void AddWord_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.DataContext is MedicalWord word)
+            if (sender is FrameworkElement element)
             {
                 ResetMedicalWord();
-                var cgb = ControlHelper.GetParentObject<CustomGroupBox>(element);
-                var lb = ControlHelper.GetVisualChild<ListBox>(cgb);
-                if (lb.ItemsSource is ObservableCollection<MedicalWord> medicalWords)
+                ListBox lb = null;
+                int mediacalWordID = -1;
+                if (element.DataContext == null)
                 {
-                    var medicalWord = new MedicalWord() { ParentID = word.MedicalWordID, IsSelected = true };
+                    lb = lt_diagnosis;
+                    mediacalWordID = 0;
+                }
+                else if (element.DataContext is MedicalWord && element.DataContext is MedicalWord medicalWord)
+                {
+                    var cgb = ControlHelper.GetParentObject<CustomGroupBox>(element);
+                    lb = ControlHelper.GetVisualChild<ListBox>(cgb);
+                    mediacalWordID = medicalWord.MedicalWordID;
+                }
+                if (lb != null && mediacalWordID >= 0 && lb.ItemsSource is ObservableCollection<MedicalWord> medicalWords)
+                {
+                    var medicalWord = new MedicalWord() { ParentID = mediacalWordID, IsSelected = true };
                     medicalWords.Add(medicalWord);
                     lb.ScrollIntoView(medicalWord);
                     lb.SelectedValue = medicalWord;
+                    lb.UpdateLayout();
                     var lbv = lb.ItemContainerGenerator.ContainerFromIndex(lb.Items.Count - 1) as ListBoxItem;
-                    var tb = ControlHelper.GetVisualChild<TextBox>(lbv);
-                    tb.Focus();
+                    if (lbv != null)
+                    {
+                        var tb = ControlHelper.GetVisualChild<TextBox>(lbv);
+                        tb.Focus();
+                    }
                 }
             }
         }

@@ -70,7 +70,6 @@ namespace Mseiot.Medical.Service.Entities
         [JsonIgnore]
         public byte[] Buffer { get; set; }
         public MediaType MediaType { get; set; }
-        [JsonIgnore]
         public bool IsSelected
         {
             get { return isSelected; }

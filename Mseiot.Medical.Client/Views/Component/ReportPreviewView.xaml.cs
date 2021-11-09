@@ -3,6 +3,7 @@ using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,7 @@ namespace MM.Medical.Client.Views
         {
             InitializeComponent();
             this.appointmentID = appointmentID;
+            this.MaxHeight = 1123;
             this.Height = SystemParameters.PrimaryScreenHeight * 0.92;
             this.Width = this.Height / 1123 * 794;
             this.Loaded += ReportPreviewView_Loaded;
@@ -49,7 +51,13 @@ namespace MM.Medical.Client.Views
             if (this.appointmentID != 0)
             {
                 var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetExaminationsByAppointmentID(this.appointmentID));
-                if (result.IsSuccess) gd_content.DataContext = result.Content;
+                if (result.IsSuccess)
+                {
+                    var examination = result.Content;
+                    var CollectionView = CollectionViewSource.GetDefaultView(examination.Images);
+                    CollectionView.Filter = t => t is ExaminationMedia media && media.IsSelected;
+                    gd_content.DataContext = result.Content;
+                }
                 else
                 {
                     Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
@@ -91,14 +99,13 @@ namespace MM.Medical.Client.Views
                     context.DrawRectangle(brush, null, new Rect(0, 0, gb_print.ActualWidth, gb_print.ActualHeight));
                     context.Close();
                 }
-
                 RenderTargetBitmap bitmap = new RenderTargetBitmap((int)gb_print.ActualWidth, (int)gb_print.ActualHeight, 96, 96, PixelFormats.Default);
                 bitmap.Render(visual);
-
                 JpegBitmapEncoder encode = new JpegBitmapEncoder();
                 encode.Frames.Add(BitmapFrame.Create(bitmap));
                 using (FileStream file = new FileStream(filePath, FileMode.Create))
                     encode.Save(file);
+                Alert.ShowMessage(true, AlertType.Success, "检查单另存为成功");
             }
         }
     }

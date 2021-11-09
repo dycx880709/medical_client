@@ -1,4 +1,5 @@
 ﻿using Ms.Libs.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -128,6 +129,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 检查信息
         /// </summary>
+        [JsonIgnore]
         public Examination Examination
         {
             get { return examination; }

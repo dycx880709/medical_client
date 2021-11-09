@@ -11,7 +11,18 @@ namespace Mseiot.Medical.Service.Entities
     public class MedicalWord : NotifyPropertyBase
     {
         private string name;
-        public int MedicalWordID { get; set; }
+        private int medicalWordID;
+        private bool isSelected;
+
+        public int MedicalWordID
+        {
+            get { return medicalWordID; }
+            set
+            {
+                medicalWordID = value;
+                RaisePropertyChanged("MedicalWordID");
+            }
+        }
         public int ParentID { get; set; }
         public string Name
         {
@@ -22,8 +33,6 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("Name");
             }
         }
-        private bool isSelected;
-
         public bool IsSelected
         {
             get { return isSelected; }

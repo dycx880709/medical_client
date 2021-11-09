@@ -21,7 +21,7 @@ namespace Mseiot.Medical.Service.Entities
         private string preoperative;
         private string result;
         private string bodyPose;
-        private int examinationTime;
+        private long examinationTime;
         private string bodyPart;
         private string clinicalDiagnosis;
         private string endoscopicFindings;
@@ -29,10 +29,11 @@ namespace Mseiot.Medical.Service.Entities
         private string biopsySite;
         private string pathologicalDiagnosis;
         private string doctorAdvice;
-        private int reportTime;
+        private long reportTime;
         private string doctorName;
         private int examinationID;
         private int endoscopeID;
+        private Appointment appointment;
 
         /// <summary>
         /// 检查ID
@@ -125,7 +126,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 检查时间
         /// </summary>
-        public int ExaminationTime
+        public long ExaminationTime
         {
             get { return examinationTime; }
             set
@@ -137,7 +138,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 报告日期
         /// </summary>
-        public int ReportTime
+        public long ReportTime
         {
             get { return reportTime; }
             set
@@ -305,7 +306,16 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 关联预约ID
         /// </summary>
-        public Appointment Appointment { get; set; }
+        public Appointment Appointment
+        {
+            get { return appointment; }
+            set 
+            {
+                appointment = value;
+                RaisePropertyChanged("Appointment");
+            }
+        }
+
         public ObservableCollection<ExaminationMedia> Images { get; set; }
         public ObservableCollection<ExaminationMedia> Videos { get; set; }
     }
