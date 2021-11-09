@@ -47,6 +47,7 @@ namespace MM.Medical.Client.Views
                 rooms.Add(room);
                 lb_rooms.ScrollIntoView(room);
                 lb_rooms.SelectedValue = room;
+                lb_rooms.UpdateLayout();
                 var lbv = lb_rooms.ItemContainerGenerator.ContainerFromIndex(lb_rooms.Items.Count - 1) as ListBoxItem;
                 if (lbv != null)
                 {

@@ -62,7 +62,7 @@
             </controls:CustomGroupBox.AttachContent>
             <ListBox x:Name="lt_diagnosis" ItemTemplate="{StaticResource MedicalWordDataTemplate}" Grid.Column="0"/>
         </controls:CustomGroupBox>
-        <controls:CustomGroupBox Grid.Column="1" Header="列表二" Margin="5,0">
+        <controls:CustomGroupBox Grid.Column="1" Header="列表二" Margin="5,0" DataContext="{Binding SelectedValue,ElementName=lt_diagnosis}">
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
@@ -80,9 +80,9 @@
                     </Style.Triggers>
                 </Style>
             </controls:CustomGroupBox.Style>
-            <ListBox x:Name="lt_body" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding SelectedValue.MedicalWords, ElementName=lt_diagnosis}"/>
+            <ListBox x:Name="lt_body" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding MedicalWords}"/>
         </controls:CustomGroupBox>
-        <controls:CustomGroupBox Grid.Column="2" Header="列表三" Margin="5,0">
+        <controls:CustomGroupBox Grid.Column="2" Header="列表三" Margin="5,0" DataContext="{Binding SelectedValue, ElementName=lt_body}">
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
@@ -100,9 +100,9 @@
                     </Style.Triggers>
                 </Style>
             </controls:CustomGroupBox.Style>
-            <ListBox x:Name="lt_describe" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding SelectedValue.MedicalWords, ElementName=lt_body}"/>
+            <ListBox x:Name="lt_describe" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding MedicalWords}"/>
         </controls:CustomGroupBox>
-        <controls:CustomGroupBox Grid.Column="3" Header="列表四" Margin="5,0">
+        <controls:CustomGroupBox Grid.Column="3" Header="列表四" Margin="5,0" DataContext="{Binding SelectedValue, ElementName=lt_describe}">
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
@@ -120,7 +120,7 @@
                     </Style.Triggers>
                 </Style>
             </controls:CustomGroupBox.Style>
-            <ListBox x:Name="lt_symptom" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding SelectedValue.MedicalWords, ElementName=lt_describe}"/>
+            <ListBox x:Name="lt_symptom" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding MedicalWords}"/>
         </controls:CustomGroupBox>
         <controls:Loading x:Name="loading" Grid.ColumnSpan="4"/>
     </Grid>

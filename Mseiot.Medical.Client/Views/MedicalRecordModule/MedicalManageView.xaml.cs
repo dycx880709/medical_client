@@ -34,7 +34,6 @@ namespace MM.Medical.Client.Views
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 this.Condition = new Appointment { AppointmentTime = TimeHelper.ToUnixTime(DateTime.Now) };
-                this.DataContext = this;
                 this.Loaded += PatientManageView_Loaded;
             }
         }
@@ -44,6 +43,7 @@ namespace MM.Medical.Client.Views
             dg_examinations.LoadingRow += (o, ex) => ex.Row.Header = ex.Row.GetIndex() + 1;
             GetConditions();
             LoadExaminationInfos();
+            this.DataContext = this;
         }
 
         private void GetConditions()
@@ -105,6 +105,32 @@ namespace MM.Medical.Client.Views
             {
                 var view = new ReportPreviewView(examination.Appointment.AppointmentID);
                 MsWindow.ShowDialog(view, "打印预览");
+            }
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            LoadExaminationInfos();
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            if (dg_examinations.SelectedValue is Examination examination)
+            {
+                var result = loading.AsyncWait("获取病历信息中,请稍后", SocketProxy.Instance.GetExaminationsByAppointmentID(examination.AppointmentID));
+                if (result.IsSuccess)
+                {
+                    var view = new ExaminationPartView
+                    {
+                        IsReadOnly = true,
+                        Loading = this.loading,
+                        SelectedExamination = result.Content,
+                        Height = SystemParameters.PrimaryScreenHeight * 0.93,
+                        Width = SystemParameters.PrimaryScreenWidth * 0.95
+                    };
+                    MsWindow.ShowDialog(view, "病历记录");
+                }
+                else Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
             }
         }
     }
