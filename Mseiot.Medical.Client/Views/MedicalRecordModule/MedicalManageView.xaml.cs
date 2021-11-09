@@ -50,7 +50,6 @@ namespace MM.Medical.Client.Views
         private void GetConditions()
         {
             var result = loading.AsyncWait("数据加载中,请稍后", SocketProxy.Instance.GetBaseWords(
-                "送检医生",
                 "检查部位",
                 "检查结果"
             ));
@@ -58,7 +57,6 @@ namespace MM.Medical.Client.Views
             {
                 cb_bodyPart.ItemsSource = result.SplitContent("检查部位");
                 cb_result.ItemsSource = result.SplitContent("检查结果");
-                cb_doctorName.ItemsSource = result.SplitContent("送检医生");
             }
         }
 

@@ -124,8 +124,8 @@
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                                 <Setter Property="Text" Value="--"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reported}">
-                                        <Setter Property="Text" Value="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
+                                    <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
+                                        <Setter Property="Text" Value="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -140,9 +140,6 @@
                                 <Setter Property="Text" Value="{Binding SelectedExamination.DoctorName}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SelectedExamination.DoctorName}" Value="">
-                                        <Setter Property="Text" Value="--"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding SelectedExamination.DoctorName}" Value="{x:Null}">
                                         <Setter Property="Text" Value="--"/>
                                     </DataTrigger>
                                 </Style.Triggers>

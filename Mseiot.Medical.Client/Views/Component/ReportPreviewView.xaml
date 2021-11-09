@@ -69,7 +69,7 @@
                             <TextBlock Style="{StaticResource editorFormItemText}" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="主   诉:" Grid.Column="0" Grid.Row="2"/>
 
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Appointment.Number}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="0" Grid.Column="7" Text="{Binding Appointment.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy-MM-dd HH:mm:ss}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="7" Text="{Binding ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy-MM-dd HH:mm:ss}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Appointment.Name}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding Appointment.Birthday}" VerticalAlignment="Center"/>
