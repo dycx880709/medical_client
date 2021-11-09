@@ -25,7 +25,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="tb_time" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}"/>
                 </StackPanel>
-                <ToggleButton x:Name="tg_User" Width="160" Margin="10,0" Background="Transparent" BorderThickness="0">
+                <ToggleButton x:Name="tg_User" Width="Auto" Padding="2" Margin="10,0" Background="Transparent" BorderThickness="0">
                     <StackPanel Orientation="Horizontal">
                         <Border Height="25" Width="25" CornerRadius="25" BorderThickness="2" BorderBrush="{StaticResource Color_Border_Primary}">
                             <Image Source="{StaticResource Img_User}" Height="{StaticResource LargeFontSize}"/>

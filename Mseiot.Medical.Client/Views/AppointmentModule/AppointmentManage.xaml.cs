@@ -41,8 +41,8 @@ namespace MM.Medical.Client.Views
             this.Loaded -= AppointmentManage_Loaded;
             var startTime = TimeHelper.ToUnixDate(DateTime.Now);
             var today = TimeHelper.FromUnixTime(startTime);
-            dtiTime.StartTime = today.AddDays(-14);
-            dtiTime.EndTime = today.AddDays(14);
+            dtiTime.StartTime = today.AddDays(-7);
+            dtiTime.EndTime = today.AddDays(7);
             dg_appointment.ItemsSource = this.Appointments;
             CollectionView.SortDescriptions.Add(new SortDescription("AppointmentTime", ListSortDirection.Descending));
             CollectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
@@ -55,7 +55,17 @@ namespace MM.Medical.Client.Views
         {
             if (e.Module == Command.Module_Appointment && e.Method == Command.ChangeStatus_Appointment)
             {
-
+                var appointment = Newtonsoft.Json.JsonConvert.DeserializeObject<Appointment>(System.Text.Encoding.UTF8.GetString(e.Content));
+                this.Dispatcher.Invoke(() =>
+                {
+                    var condition = Appointments.FirstOrDefault(t => t.AppointmentID.Equals(appointment.AppointmentID));
+                    if (condition == null)
+                    {
+                        Appointments.Add(appointment);
+                        CollectionView.Refresh();
+                    }
+                    else appointment.CopyTo(condition);
+                });
             }
         }
 

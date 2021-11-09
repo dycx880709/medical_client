@@ -132,7 +132,20 @@ namespace MM.Medical.Client.Views
             {
                 if (e.Method == Command.ChangeStatus_Appointment)
                 {
-
+                    var appointment = Newtonsoft.Json.JsonConvert.DeserializeObject<Appointment>(System.Text.Encoding.UTF8.GetString(e.Content));
+                    if (appointment.ConsultingRoomName.Equals(CacheHelper.ConsultingRoomName))
+                    {
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            var condition = Appointments.FirstOrDefault(t => t.AppointmentID.Equals(appointment.AppointmentID));
+                            if (condition == null)
+                            {
+                                Appointments.Add(appointment);
+                                CollectionView.Refresh();
+                            }
+                            else appointment.CopyTo(condition);
+                        });
+                    }
                 }
             }
         }
@@ -348,8 +361,6 @@ namespace MM.Medical.Client.Views
                     examination.Videos = new ObservableCollection<ExaminationMedia>();
                 appointment.Examination = examination;
                 appointment.Examination.Appointment = appointment;
-                
-                epv.IsReadOnly = false;
             }
         }
 
