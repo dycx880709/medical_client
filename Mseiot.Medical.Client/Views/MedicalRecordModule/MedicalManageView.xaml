@@ -144,7 +144,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
-                <controls:Pager x:Name="pager" Grid.Row="2"/>
+                <controls:Pager x:Name="pager" Grid.Row="2" PageChanged="Examination_PageChanged"/>
                 <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
             </Grid>
         </Border>

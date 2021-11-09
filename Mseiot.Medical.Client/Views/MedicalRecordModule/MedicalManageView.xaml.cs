@@ -40,6 +40,7 @@ namespace MM.Medical.Client.Views
 
         private void PatientManageView_Loaded(object sender, RoutedEventArgs e)
         {
+            this.Loaded -= PatientManageView_Loaded;
             dg_examinations.LoadingRow += (o, ex) => ex.Row.Header = ex.Row.GetIndex() + 1;
             GetConditions();
             LoadExaminationInfos();
@@ -132,6 +133,11 @@ namespace MM.Medical.Client.Views
                 }
                 else Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
             }
+        }
+
+        private void Examination_PageChanged(object sender, PageChangedEventArgs args)
+        {
+            LoadExaminationInfos();
         }
     }
 }

@@ -49,7 +49,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                     EndoscopeID = i,
                     EndTime = 0,
                     StartTime = 0,
-                    UserID = i
+                    UserID = i.ToString()
                 };
                 for(int j = 0; j < 5; j++)
                 {

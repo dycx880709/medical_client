@@ -3,6 +3,7 @@ using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace MM.Medical.Client.Views
                 if (result.IsSuccess)
                 {
                     var examination = result.Content;
-                    var CollectionView = CollectionViewSource.GetDefaultView(examination.Images);
+                    var CollectionView = CollectionViewSource.GetDefaultView(examination.Images ?? new ObservableCollection<ExaminationMedia>());
                     CollectionView.Filter = t => t is ExaminationMedia media && media.IsSelected;
                     gd_content.DataContext = result.Content;
                 }
@@ -79,9 +80,15 @@ namespace MM.Medical.Client.Views
 
         private void Print_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Controls.PrintDialog printDialog = new System.Windows.Controls.PrintDialog(); 
-            if (printDialog.ShowDialog().Value) 
-                printDialog.PrintVisual(this.gb_print, "检查报告单");
+            System.Windows.Controls.PrintDialog printDialog = new System.Windows.Controls.PrintDialog();
+            if (printDialog.ShowDialog().Value)
+            {
+                DrawingVisual vis = new DrawingVisual();
+                DrawingContext dc = vis.RenderOpen();
+                dc.DrawRectangle(new VisualBrush(gb_print), new Pen(), new Rect { Height = gb_print.Height, Width = gb_print.Width, X=0, Y=0 });
+                dc.Close();
+                printDialog.PrintVisual(vis, "检查报告单");
+            }
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
