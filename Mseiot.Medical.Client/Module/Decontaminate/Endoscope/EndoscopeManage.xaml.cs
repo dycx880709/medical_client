@@ -44,12 +44,14 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         public ObservableCollection<Endoscope> Endoscopes { get; set; } = new ObservableCollection<Endoscope>();
 
-        private void LoadEndoscopes()
+        private async void LoadEndoscopes()
         {
             Endoscopes.Clear();
-            var result = loading.AsyncWait("获取内窥镜列表中,请稍后", SocketProxy.Instance.GetEndoscopes());
+            loading.Start("获取内窥镜列表中,请稍后");
+            var result = await SocketProxy.Instance.GetEndoscopes();
             if (result.IsSuccess)
                 Endoscopes.AddRange(result.Content);
+            loading.Stop();
         }
 
         #endregion

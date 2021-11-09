@@ -69,6 +69,7 @@
                 </Grid>
             </Grid>
             <controls:ChildWindow x:Name="cw" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+            <controls:Loading x:Name="loading"/>
         </Grid>
     </Border>
 </controls:MsWindow>

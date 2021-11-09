@@ -163,7 +163,7 @@
     <Compile Include="Module\Decontaminate\Flow\DecontaminateFlowView.xaml.cs">
       <DependentUpon>DecontaminateFlowView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Module\Decontaminate\DecontaminateTaskView.xaml.cs">
+    <Compile Include="Module\Decontaminate\Home\DecontaminateTaskView.xaml.cs">
       <DependentUpon>DecontaminateTaskView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Module\Decontaminate\Endoscope\AddEndoscope.xaml.cs">
@@ -295,7 +295,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Module\Decontaminate\DecontaminateTaskView.xaml">
+    <Page Include="Module\Decontaminate\Home\DecontaminateTaskView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
