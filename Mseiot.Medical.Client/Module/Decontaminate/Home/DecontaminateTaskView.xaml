@@ -53,7 +53,7 @@
                                         
                                         <!--步骤-->
                                         <Border Grid.Column="1">
-                                            <ListView ItemsSource="{Binding DecontaminateSteps}" Margin="0" Padding="0">
+                                            <ListView ItemsSource="{Binding DecontaminateTaskSteps}" Margin="0" Padding="0">
                                                 <ListView.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <StackPanel Orientation="Horizontal"></StackPanel>
@@ -100,12 +100,12 @@
                                         <Border Grid.Column="0" Background="#A0000000" Padding="10">
                                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" TextAlignment="Right" Text="清洗员" Width="80" Margin="0,0,10,0"/>
+                                                    <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" TextAlignment="Right" Text="清洗员" Width="60" Margin="0,0,10,0"/>
                                                     <TextBlock Text="{Binding UserID}"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" TextAlignment="Right" Text="设备编号" Width="80" Margin="0,0,10,0"/>
-                                                    <TextBlock Text="{Binding EndoscopeID}"/>
+                                                    <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" TextAlignment="Right" Text="设备编号" Width="60" Margin="0,0,10,0"/>
+                                                    <TextBlock Text="{Binding EndoscopeID,StringFormat=d6}"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </Border>

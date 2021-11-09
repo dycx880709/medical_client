@@ -68,7 +68,10 @@ namespace MM.Medical.Client.Module.Decontaminate
                 {
                     if (DecontaminateTasks.Count(f => f.DecontaminateTaskID == result.Content[j].DecontaminateTaskID) == 0)
                     {
-                        DecontaminateTasks.Insert(0, result.Content[j]);
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            DecontaminateTasks.Insert(0, result.Content[j]);
+                        });
                     }
                 }
             }

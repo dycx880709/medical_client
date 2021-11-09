@@ -235,7 +235,7 @@ namespace MM.Medical.Client.Views
                         var rfidProxy = new RFIDProxy();
                         rfidProxy.NotifyEPCReceived += (_, device) =>
                         {
-                            this.Dispatcher.Invoke(() => CommitExamination(device.DeviceID));
+                            this.Dispatcher.Invoke(() => CommitExamination(device.EPC));
                             rfidProxy.Close();
                         };
                         rfidProxy.NotifyDeviceStatusChanged += (_, status) =>
