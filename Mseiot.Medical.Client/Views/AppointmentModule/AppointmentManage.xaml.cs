@@ -41,8 +41,8 @@ namespace MM.Medical.Client.Views
             this.Loaded -= AppointmentManage_Loaded;
             var startTime = TimeHelper.ToUnixDate(DateTime.Now);
             var today = TimeHelper.FromUnixTime(startTime);
-            dtiTime.StartTime = today.AddDays(-14);
-            dtiTime.EndTime = today.AddDays(14);
+            dtiTime.StartTime = today.AddDays(-7);
+            dtiTime.EndTime = today.AddDays(7);
             dg_appointment.ItemsSource = this.Appointments;
             CollectionView.SortDescriptions.Add(new SortDescription("AppointmentTime", ListSortDirection.Descending));
             CollectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));

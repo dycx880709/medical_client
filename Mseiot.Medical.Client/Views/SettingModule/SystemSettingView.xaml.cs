@@ -59,8 +59,8 @@ namespace MM.Medical.Client.Views
                     }
                     return await SocketProxy.Instance.UpdateSystemSetting(setting);
                 }));
-                if (result.IsSuccess) this.DataContext = result.Content;
-                else MsWindow.ShowDialog($"更新系统设置失败,{ result.Error }", "软件提示");
+                if (!result.IsSuccess)
+                    MsWindow.ShowDialog($"更新系统设置失败,{ result.Error }", "软件提示");
             }
         }
 

@@ -32,7 +32,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <WrapPanel DataContext="{Binding Condition}" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Left">
                         <WrapPanel.Resources>
                             <sys:Double x:Key="InputElementWidth">100</sys:Double>
                             <sys:Double x:Key="InputElementHeight">30</sys:Double>
@@ -47,32 +47,17 @@
                         </WrapPanel.Resources>
                         <StackPanel>
                             <TextBlock Text="检查日期"/>
-                            <DatePicker Width="130" FontWeight="Normal" SelectedDate="{Binding ExaminationTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
-                        </StackPanel>
-                        <StackPanel Style="{StaticResource editorFormItem}">
-                            <TextBlock Text="检查部位"/>
-                            <ComboBox x:Name="cb_bodyPart" Text="{Binding BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </StackPanel>
-                        <StackPanel Style="{StaticResource editorFormItem}">
-                            <TextBlock Text="检查结果"/>
-                            <ComboBox x:Name="cb_result" Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </StackPanel>
-                        <StackPanel Style="{StaticResource editorFormItem}">
-                            <TextBlock Text="检查医生"/>
-                            <TextBox Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <controls:DateTimeInterval x:Name="dti_examination" FontWeight="Normal"/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource editorFormItem}">
                             <TextBlock Text="身份信息"/>
-                            <controls:CustomTextBox Watermark="可输入病人姓名、身份证、社保号" Width="250" Text="{Binding Appointment.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <controls:CustomTextBox x:Name="tb_user" Watermark="可输入病人姓名、身份证、社保号" Width="250" Text="{Binding Appointment.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                     </WrapPanel>
-                    <StackPanel Orientation="Horizontal" Grid.Column="1">
-                        <Button Content="查询" Click="Get_Click" IsDefault="True"/>
-                        <Button Content="重置" Click="Reset_Click" Margin="10,0"/>
-                    </StackPanel>
+                    <Button Content="查询" Click="Get_Click" Grid.Column="1" IsDefault="True" Margin="0,0,10,0"/>
                 </Grid>
                 <Border Grid.Row="1">
-                    <DataGrid x:Name="dg_examinations">
+                    <DataGrid x:Name="dg_examinations" SelectionChanged="Examination_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn  Width="55" Header="序号">
                                 <DataGridTemplateColumn.CellTemplate>

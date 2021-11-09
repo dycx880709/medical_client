@@ -81,11 +81,9 @@ namespace MM.Medical.Client.Views
 
         private void Print_Click(object sender, RoutedEventArgs e)
         {
-            sp_tool.Visibility = Visibility.Collapsed;
             System.Windows.Controls.PrintDialog printDialog = new System.Windows.Controls.PrintDialog();
             if (printDialog.ShowDialog().Value)
                 printDialog.PrintVisual(this.gb_print, "检查单报告");
-            sp_tool.Visibility = Visibility.Visible;
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
