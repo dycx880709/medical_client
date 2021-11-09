@@ -8,7 +8,7 @@
         xmlns:converter="clr-namespace:MM.Medical.Client.Converters"
         xmlns:core="clr-namespace:MM.Medical.Client.Core"
         WindowState="Maximized" mc:Ignorable="d"
-        HeaderHeight="60" VisibilitySetting="Visible" NotifySetting="ShowSetting"
+        HeaderHeight="60" VisibilitySetting="Visible" NotifySetting="ShowSetting" HeaderBackground="#00000000"
         Title="{x:Static core:CacheHelper.ProductName}">
 
     <controls:BaseWindow.Header>
@@ -32,7 +32,7 @@
                                 <ControlTemplate>
                                     <Border Padding="10,5,10,5" Background="#00000000" 
                                                     Cursor="Hand" BorderBrush="White">
-                                        <TextBlock Foreground="{StaticResource Color_Nav_Font}" x:Name="tb" Text="{Binding Name}" 
+                                        <TextBlock  x:Name="tb" Text="{Binding Name}" 
                                                            FontSize="16" FontWeight="Bold"/>
                                     </Border>
                                     <ControlTemplate.Triggers>
