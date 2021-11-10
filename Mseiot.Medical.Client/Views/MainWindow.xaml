@@ -54,7 +54,7 @@
                                                 <Border Padding="10,0" VerticalAlignment="Top" Height="30"  x:Name="border" BorderThickness="0,0,0,0" BorderBrush="{StaticResource Color_Border_Primary}">
                                                     <TextBlock  HorizontalAlignment="Center" x:Name="tb" Text="{Binding Name}" FontSize="16" FontWeight="Bold"/>
                                                 </Border>
-                                                <Popup x:Name="popup" AllowsTransparency="True" IsOpen="true" Width="{Binding ActualWidth,ElementName=border}" Height="240" PopupAnimation="Fade" VerticalOffset="0" Placement="Bottom"  PlacementTarget="{Binding ElementName=border}">
+                                                <Popup x:Name="popup" AllowsTransparency="True" Width="{Binding ActualWidth,ElementName=border}" Height="240" PopupAnimation="Fade" VerticalOffset="0" Placement="Bottom"  PlacementTarget="{Binding ElementName=border}">
                                                     <Border x:Name="border_children" Margin="0,0,0,0"  VerticalAlignment="Top">
                                                         <Border Margin="3" Background="{StaticResource Color_Input_Background}">
                                                             <Border.Effect>
