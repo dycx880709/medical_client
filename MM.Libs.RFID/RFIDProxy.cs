@@ -36,6 +36,10 @@ namespace MM.Libs.RFID
         /// <param name="com"></param>
         public void Open(string com)
         {
+            if (string.IsNullOrWhiteSpace(com))
+            {
+                return;
+            }
             serialPort = new SerialPort
             {
                 BaudRate = 57600,
@@ -68,6 +72,10 @@ namespace MM.Libs.RFID
 
         public void OpenWait(string com)
         {
+            if (string.IsNullOrWhiteSpace(com))
+            {
+                return;
+            }
             serialPort = new SerialPort
             {
                 BaudRate = 57600,
