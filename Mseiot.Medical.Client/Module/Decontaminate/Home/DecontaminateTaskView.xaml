@@ -81,7 +81,7 @@
                                                                         <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Wait">
                                                                             <Setter Property="Background" TargetName="bg" Value="#919394"></Setter>
                                                                         </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Normal">
+                                                                        <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Run">
                                                                             <Setter Property="Background" TargetName="bg" Value="#FEC92B"></Setter>
                                                                         </DataTrigger>
                                                                         <DataTrigger Binding="{Binding DecontaminateStepStatus}" Value="Complete">

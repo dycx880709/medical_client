@@ -26,27 +26,34 @@ namespace MM.Medical.Client.Module.Decontaminate
     public partial class AddRFIDDevice : UserControl
     {
         private readonly RFIDDevice rfidDevice;
-        private readonly RFIDDevice rfidDevice_origin;
         private readonly Loading loading;
 
         public AddRFIDDevice(RFIDDevice rfidDevice, Loading loading)
         {
             InitializeComponent();
+        
             this.rfidDevice = rfidDevice.Copy();
-            this.rfidDevice_origin = rfidDevice;
-            this.DataContext = this.rfidDevice;
+   
             this.loading = loading;
+            this.Loaded += AddRFIDDevice_Loaded;
+        }
+
+        private void AddRFIDDevice_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Loaded -= AddRFIDDevice_Loaded;
+            LoadSerialPorts();
+            this.DataContext = this.rfidDevice;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            rfidDevice.Com = cbSerialPorts.SelectedItem as string;
             if (rfidDevice.RFIDDeviceID == 0)
             {
                 var result = loading.AsyncWait("添加采集设备中,请稍后", SocketProxy.Instance.AddRFIDDevice(rfidDevice));
                 if (result.IsSuccess)
                 {
                     rfidDevice.RFIDDeviceID = result.Content;
-                    rfidDevice.CopyTo(rfidDevice_origin);
                     this.Close(true);
                 }
                 else Alert.ShowMessage(true, AlertType.Error, $"添加采集设备失败,{ result.Error }");
@@ -56,12 +63,10 @@ namespace MM.Medical.Client.Module.Decontaminate
                 var result = loading.AsyncWait("修改采集设备中,请稍后", SocketProxy.Instance.ModifyRFIDDevice(rfidDevice));
                 if (result.IsSuccess)
                 {
-                    rfidDevice.CopyTo(rfidDevice_origin);
                     this.Close(true);
                 }
                 else Alert.ShowMessage(true, AlertType.Error, $"修改采集设备失败,{ result.Error }");
             }
-      
         }
 
         #region 串口
@@ -70,12 +75,11 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             string[] serialPorts = SerialPort.GetPortNames();
             cbSerialPorts.ItemsSource = serialPorts;
-            cbSerialPorts.SelectedItem = CacheHelper.LocalSetting.RFIDCom;
+            cbSerialPorts.SelectedItem = rfidDevice.Com;
         }
 
         private void SerialPorts_DropDownOpened(object sender, EventArgs e)
         {
-
             LoadSerialPorts();
         }
 

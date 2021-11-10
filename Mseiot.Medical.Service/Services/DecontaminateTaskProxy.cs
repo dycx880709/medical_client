@@ -22,5 +22,10 @@ namespace Mseiot.Medical.Service.Services
         {
             return await HttpProxy.PostMessage<int>("/api/DecontaminateTask/add", decontaminateTask);
         }
+
+        public async Task<MsResult<bool>> ChangeDecontaminateTaskStatus(DecontaminateTask decontaminateTask)
+        {
+            return await HttpProxy.PostMessage<bool>("/api/DecontaminateTask/ChangeDecontaminateTaskStatus", decontaminateTask);
+        }
     }
 }

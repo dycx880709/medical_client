@@ -63,16 +63,12 @@ namespace Mseiot.Medical.Service.Entities
         [Description("等待")]
         Wait,
         [Description("清洗中")]
-        Normal,
-        [Description("即将超时")]
-        Warning,
-        [Description("超时")]
-        Timeout,
+        Run,
         [Description("完成")]
         Complete
     }
 
-    public class DecontaminateTaskStep
+    public class DecontaminateTaskStep:BaseModel
     {
 
         public int Index { get; set; }
@@ -86,6 +82,7 @@ namespace Mseiot.Medical.Service.Entities
         /// 步骤名称
         /// </summary>
         public string Name { get; set; }
+
 
         /// <summary>
         /// 开始时间
@@ -102,10 +99,38 @@ namespace Mseiot.Medical.Service.Entities
         /// </summary>
         public long Timeout { get; set; }
 
+
+        /// <summary>
+        /// RFID设备编号
+        /// </summary>
+        public int RFIDDeviceID { get; set; }
+
+
+        /// <summary>
+        /// RFID编号
+        /// </summary>
+        public int RFIDDeviceSN { get; set; }
+
+
+        private DecontaminateStepStatus decontaminateStepStatus;
         /// <summary>
         /// 状态
         /// </summary>
-        public DecontaminateStepStatus DecontaminateStepStatus { get; set; }
+        public DecontaminateStepStatus DecontaminateStepStatus
+        {
+            get
+            {
+                return decontaminateStepStatus;
+            }
+            set
+            {
+                if (decontaminateStepStatus != value)
+                {
+                    decontaminateStepStatus = value;
+                    NotifyPropertyChanged("DecontaminateStepStatus");
+                }
+            }
+        }
     }
 
     public class RFIDDevice: BaseModel
@@ -129,6 +154,11 @@ namespace Mseiot.Medical.Service.Entities
         /// 是否在使用
         /// </summary>
         public bool Used { get; set; }
+
+        /// <summary>
+        /// 通信端口
+        /// </summary>
+        public string Com { get; set; }
     }
 
     public class Endoscope : BaseModel

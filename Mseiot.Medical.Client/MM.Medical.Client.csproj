@@ -464,6 +464,7 @@
     <Resource Include="Images\Icon\show.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="RFID配置.txt" />
     <None Include="screenshot.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
