@@ -1,5 +1,7 @@
 ﻿using MM.Libs.RFID;
 using MM.Medical.Client.Core;
+using Ms.Controls;
+using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
@@ -56,16 +58,63 @@ namespace MM.Medical.Client.Module.Decontaminate
             {
                 if (result.Content != null)
                 {
-                    RFIDProxy rfidProxy = new RFIDProxy();
-                        rfidProxy.Open(CacheHelper.LocalSetting.RFIDCom);
-                    rfidProxy.NotifyEPCReceived += RfidProxy_NotifyEPCReceived;
+                    foreach(var item in result.Content)
+                    {
+                        RFIDProxy rfidProxy = new RFIDProxy();
+                        rfidProxy.Open(item.Com);
+                        rfidProxy.NotifyEPCReceived += RfidProxy_NotifyEPCReceived;
+                    }
                 }
             }
         }
 
-        private void RfidProxy_NotifyEPCReceived(object sender, EPCInfo e)
+        private async void RfidProxy_NotifyEPCReceived(object sender, EPCInfo e)
         {
-            Console.WriteLine("收到 {0} {1}", e.DeviceID, e.EPC);
+            for (int i = 0; i < DecontaminateTasks.Count; i++)
+            {
+                var item = DecontaminateTasks[i];
+                if (item.EndoscopeID == e.EPC && item.DecontaminateTaskSteps != null)
+                {
+                    if (item.StartTime == 0)
+                    {
+                        item.StartTime = TimeHelper.ToUnixTime(DateTime.Now);
+                    }
+                    DecontaminateTaskStep decontaminateTaskStep = item.DecontaminateTaskSteps.FirstOrDefault(f => f.RFIDDeviceSN == e.DeviceID && f.DecontaminateStepStatus != DecontaminateStepStatus.Complete);
+                    if (decontaminateTaskStep != null)
+                    {
+                        if (decontaminateTaskStep.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
+                        {
+                            decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Run;
+                        }
+                        else
+                        {
+                            decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Complete;
+                        }
+                    }
+                    if (item.DecontaminateTaskSteps.Count(f => f.DecontaminateStepStatus == DecontaminateStepStatus.Wait || f.DecontaminateStepStatus == DecontaminateStepStatus.Run) == 0)
+                    {
+                        item.DecontaminateTaskStatus = DecontaminateTaskStatus.Complete;
+                        item.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
+                        var result = await SocketProxy.Instance.ChangeDecontaminateTaskStatus(item);
+                        if (result.IsSuccess)
+                        {
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                DecontaminateTasks.Remove(item);
+                            });
+                        }
+                        else
+                        {
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                Alert.ShowMessage(true, AlertType.Error, result.Error);
+                            });
+                        }
+                     
+                    }
+                    break;
+                }
+            }
         }
 
 
@@ -81,8 +130,8 @@ namespace MM.Medical.Client.Module.Decontaminate
         public async void GetDatas(object obj)
         {
             timer.Change(Timeout.Infinite, Timeout.Infinite);
-            List<DecontaminateTaskStatus> decontaminateTaskStatuss = new List<DecontaminateTaskStatus> {
-                DecontaminateTaskStatus.Complete,
+            List<DecontaminateTaskStatus> decontaminateTaskStatuss = new List<DecontaminateTaskStatus> 
+            {
                 DecontaminateTaskStatus.Wait
             };
             var result = await SocketProxy.Instance.GetDecontaminateTasks(decontaminateTaskStatuss);

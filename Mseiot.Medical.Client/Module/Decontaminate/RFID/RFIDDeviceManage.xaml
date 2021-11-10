@@ -22,6 +22,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*" Header="设备编号" Binding="{Binding SN}"/>
                     <DataGridTextColumn Width="*" Header="设备名称" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Width="*" Header="设备名称" Binding="{Binding Com}"/>
                     <DataGridTextColumn Width="*" Header="是否使用" Binding="{Binding Used,Converter={StaticResource YNToCNConvert}}"/>
                     <DataGridTemplateColumn Width="200" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>

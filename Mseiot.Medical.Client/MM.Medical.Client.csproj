@@ -463,5 +463,8 @@
     <Resource Include="Images\Icon\editor.png" />
     <Resource Include="Images\Icon\show.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RFID配置.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
