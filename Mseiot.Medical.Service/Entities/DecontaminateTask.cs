@@ -17,7 +17,7 @@ namespace Mseiot.Medical.Service.Entities
     }
 
 
-    public class DecontaminateTask
+    public class DecontaminateTask:BaseModel
     {
         /// <summary>
         /// 消洗任务ID
@@ -74,6 +74,10 @@ namespace Mseiot.Medical.Service.Entities
         /// </summary>
         public long EndTime { get; set; }
 
+
+      
+
+
         /// <summary>
         /// 任务状态
         /// </summary>
@@ -106,13 +110,22 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 步骤ID
         /// </summary>
-        public int DecontaminateStepID { get; set; }
+        public int DecontaminateTaskStepID { get; set; }
+
+        public int DecontaminateTaskID { get; set; }
 
         /// <summary>
         /// 步骤名称
         /// </summary>
         public string Name { get; set; }
 
+        public int UseTime
+        {
+            get
+            {
+                return (int)(EndTime - StartTime);
+            }
+        }
 
         /// <summary>
         /// 开始时间

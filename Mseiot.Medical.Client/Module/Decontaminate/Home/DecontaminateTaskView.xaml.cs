@@ -60,22 +60,26 @@ namespace MM.Medical.Client.Module.Decontaminate
             areDecontaminateTasks.WaitOne();
             foreach (var decontaminateTask in DecontaminateTasks)
             {
-                foreach(var decontaminateTaskStep in decontaminateTask.DecontaminateTaskSteps)
+                if (decontaminateTask.DecontaminateTaskSteps != null)
                 {
-                    if(decontaminateTaskStep.DecontaminateStepStatus== DecontaminateStepStatus.Run)
+                    foreach (var decontaminateTaskStep in decontaminateTask.DecontaminateTaskSteps)
                     {
-                        var timeout = (int)(decontaminateTaskStep.Timeout - (TimeHelper.ToUnixTime(DateTime.Now) - decontaminateTaskStep.StartTime));
-                        if (timeout < 0)
+                        if (decontaminateTaskStep.DecontaminateStepStatus == DecontaminateStepStatus.Run)
                         {
-                            timeout = 0;
+                            var timeout = (int)(decontaminateTaskStep.Timeout - (TimeHelper.ToUnixTime(DateTime.Now) - decontaminateTaskStep.StartTime));
+                            if (timeout < 0)
+                            {
+                                timeout = 0;
+                            }
+                            decontaminateTaskStep.ResidueTime = timeout;
                         }
-                        decontaminateTaskStep.ResidueTime = timeout;
-                    }
-                    else if (decontaminateTaskStep.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
-                    {
-                        decontaminateTaskStep.ResidueTime = decontaminateTaskStep.Timeout;
+                        else if (decontaminateTaskStep.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
+                        {
+                            decontaminateTaskStep.ResidueTime = decontaminateTaskStep.Timeout;
+                        }
                     }
                 }
+              
             }
             areDecontaminateTasks.Set();
             timerCheck.Change(1000, 1000);
