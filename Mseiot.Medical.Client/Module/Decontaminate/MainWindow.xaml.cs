@@ -89,6 +89,11 @@ namespace MM.Medical.Client.Module.Decontaminate
                 Name = "流程管理",
                 Identify = "DecontaminateFlowManage"
             });
+            Menus.Add(new Entities.Menu
+            {
+                Name = "清洗记录",
+                Identify = "DecontaminateTaskManage"
+            });
             lvMenus.ItemsSource = Menus;
             lvMenus.SelectedIndex = 0;
         }
@@ -111,6 +116,9 @@ namespace MM.Medical.Client.Module.Decontaminate
                     break;
                 case "DecontaminateFlowManage":
                     container.Child = new DecontaminateFlowView();
+                    break;
+                case "DecontaminateTaskManage":
+                    container.Child = new DecontaminateTaskManage();
                     break;
             }
         }

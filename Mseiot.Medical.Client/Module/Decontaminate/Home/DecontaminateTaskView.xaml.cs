@@ -47,9 +47,39 @@ namespace MM.Medical.Client.Module.Decontaminate
             LoadRFID();
             lvTasks.ItemsSource = DecontaminateTasks;
             timer = new Timer(GetDatas, null, 0, 3000);
+            timerCheck = new Timer(CheckStatus, null, 1000, 1000);
         }
 
         #region RFID
+
+        AutoResetEvent areDecontaminateTasks = new AutoResetEvent(true);
+
+        private void CheckStatus(object obj)
+        {
+            timerCheck.Change(Timeout.Infinite, Timeout.Infinite);
+            areDecontaminateTasks.WaitOne();
+            foreach (var decontaminateTask in DecontaminateTasks)
+            {
+                foreach(var decontaminateTaskStep in decontaminateTask.DecontaminateTaskSteps)
+                {
+                    if(decontaminateTaskStep.DecontaminateStepStatus== DecontaminateStepStatus.Run)
+                    {
+                        var timeout = (int)(decontaminateTaskStep.Timeout - (TimeHelper.ToUnixTime(DateTime.Now) - decontaminateTaskStep.StartTime));
+                        if (timeout < 0)
+                        {
+                            timeout = 0;
+                        }
+                        decontaminateTaskStep.ResidueTime = timeout;
+                    }
+                    else if (decontaminateTaskStep.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
+                    {
+                        decontaminateTaskStep.ResidueTime = decontaminateTaskStep.Timeout;
+                    }
+                }
+            }
+            areDecontaminateTasks.Set();
+            timerCheck.Change(1000, 1000);
+        }
 
         private async void LoadRFID()
         {
@@ -70,11 +100,13 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private async void RfidProxy_NotifyEPCReceived(object sender, EPCInfo e)
         {
+            areDecontaminateTasks.WaitOne();
             for (int i = 0; i < DecontaminateTasks.Count; i++)
             {
                 var item = DecontaminateTasks[i];
                 if (item.EndoscopeID == e.EPC && item.DecontaminateTaskSteps != null)
                 {
+                    item.CleanUserID = CacheHelper.CurrentUser.UserID;
                     if (item.StartTime == 0)
                     {
                         item.StartTime = TimeHelper.ToUnixTime(DateTime.Now);
@@ -84,10 +116,12 @@ namespace MM.Medical.Client.Module.Decontaminate
                     {
                         if (decontaminateTaskStep.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
                         {
+                            decontaminateTaskStep.StartTime= TimeHelper.ToUnixTime(DateTime.Now);
                             decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Run;
                         }
                         else
                         {
+                            decontaminateTaskStep.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
                             decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Complete;
                         }
                     }
@@ -98,10 +132,12 @@ namespace MM.Medical.Client.Module.Decontaminate
                         var result = await SocketProxy.Instance.ChangeDecontaminateTaskStatus(item);
                         if (result.IsSuccess)
                         {
+                            
                             this.Dispatcher.Invoke(() =>
                             {
                                 DecontaminateTasks.Remove(item);
                             });
+                        
                         }
                         else
                         {
@@ -115,6 +151,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                     break;
                 }
             }
+            areDecontaminateTasks.Set();
         }
 
 
@@ -124,6 +161,7 @@ namespace MM.Medical.Client.Module.Decontaminate
 
 
         Timer timer;
+        Timer timerCheck;
 
         public ObservableCollection<DecontaminateTask> DecontaminateTasks { get; set; } = new ObservableCollection<DecontaminateTask>();
 
@@ -144,6 +182,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                     {
                         this.Dispatcher.Invoke(() =>
                         {
+                            result.Content[j].CleanName = CacheHelper.UserName;
                             if (result.Content[j].DecontaminateTaskSteps != null)
                             {
                                 for (int i = 0; i < result.Content[j].DecontaminateTaskSteps.Count; i++)

@@ -74,6 +74,8 @@
                                                                                            FontWeight="Bold" Text="{Binding Index}"></TextBlock>
                                                                                 <Path Margin="20,0,0,0" StrokeThickness="3" Data="M10,0 30,30 10,60" Stroke="White"/>
                                                                                 <TextBlock FontWeight="Bold" FontSize="20" Margin="60,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Light}" Text="{Binding Name}"/>
+                                                                                <TextBlock Text="{Binding ResidueTime}" FontSize="30" VerticalAlignment="Center" Margin="0,0,20,0"
+                                                                                           HorizontalAlignment="Right" FontWeight="Bold" Foreground="{StaticResource Color_Font_Light}"/>
                                                                             </Grid>
                                                                         </Border>
                                                                     </Border>
@@ -101,7 +103,7 @@
                                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center">
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" TextAlignment="Right" Text="清洗员" Width="60" Margin="0,0,10,0"/>
-                                                    <TextBlock Text="{Binding UserID}"/>
+                                                    <TextBlock Text="{Binding CleanName}"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" TextAlignment="Right" Text="设备编号" Width="60" Margin="0,0,10,0"/>

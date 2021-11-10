@@ -121,6 +121,9 @@
     <Compile Include="Entities\AppLevel.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\UserRecord.cs" />
+    <Compile Include="Module\Decontaminate\Record\DecontaminateTaskManage.xaml.cs">
+      <DependentUpon>DecontaminateTaskManage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Video.xaml.cs">
       <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
@@ -236,6 +239,10 @@
       <DependentUpon>UpdateMain.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\MenuModule.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Module\Decontaminate\Record\DecontaminateTaskManage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

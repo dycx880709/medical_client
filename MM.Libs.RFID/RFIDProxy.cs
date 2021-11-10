@@ -235,6 +235,7 @@ namespace MM.Libs.RFID
                              break;
                          default:
                              throw new Exception(GetError(result[3]));
+
                      }
              }));
         }

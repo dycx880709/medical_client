@@ -25,9 +25,39 @@ namespace Mseiot.Medical.Service.Entities
         public int DecontaminateTaskID{ get; set; }
 
         /// <summary>
-        /// 用户ID
+        /// 清洗员ID
         /// </summary>
-        public string UserID { get; set; }
+        public string CleanUserID { get; set; }
+
+        /// <summary>
+        /// 清洗员
+        /// </summary>
+        public string CleanName { get; set; }
+
+        /// <summary>
+        /// 医生ID
+        /// </summary>
+        public string DoctorUserID { get; set; }
+
+        /// <summary>
+        /// 医生
+        /// </summary>
+        public string DoctorName { get; set; }
+
+        /// <summary>
+        /// 患者姓名
+        /// </summary>
+        public string PatientName { get; set; }
+
+        /// <summary>
+        /// 患者身份证号
+        /// </summary>
+        public string PatientID { get; set; }
+
+        /// <summary>
+        /// 患者社保号
+        /// </summary>
+        public string PatientSI { get; set; }
 
         /// <summary>
         /// 内窥镜ID
@@ -97,7 +127,27 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 超时时间
         /// </summary>
-        public long Timeout { get; set; }
+        public int Timeout { get; set; }
+
+        private int residueTime = 0;
+        /// <summary>
+        /// 剩余时间
+        /// </summary>
+        public int ResidueTime 
+        {
+            get
+            {
+                return residueTime;
+            }
+            set
+            {
+                if (residueTime != value)
+                {
+                    residueTime = value;
+                    NotifyPropertyChanged("ResidueTime");
+                }
+            }
+        }
 
 
         /// <summary>
