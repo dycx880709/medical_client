@@ -4,6 +4,7 @@ using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,5 +63,22 @@ namespace MM.Medical.Client.Module.Decontaminate
             }
       
         }
+
+        #region 串口
+
+        private void LoadSerialPorts()
+        {
+            string[] serialPorts = SerialPort.GetPortNames();
+            cbSerialPorts.ItemsSource = serialPorts;
+            cbSerialPorts.SelectedItem = CacheHelper.LocalSetting.RFIDCom;
+        }
+
+        private void SerialPorts_DropDownOpened(object sender, EventArgs e)
+        {
+
+            LoadSerialPorts();
+        }
+
+        #endregion
     }
 }

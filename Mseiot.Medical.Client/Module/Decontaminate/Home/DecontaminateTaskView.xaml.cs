@@ -1,4 +1,5 @@
-﻿using MM.Medical.Client.Core;
+﻿using MM.Libs.RFID;
+using MM.Medical.Client.Core;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
@@ -41,10 +42,34 @@ namespace MM.Medical.Client.Module.Decontaminate
         private void DecontaminateTask_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= DecontaminateTask_Loaded;
-           
+            LoadRFID();
             lvTasks.ItemsSource = DecontaminateTasks;
             timer = new Timer(GetDatas, null, 0, 3000);
         }
+
+        #region RFID
+
+        private async void LoadRFID()
+        {
+            var result = await SocketProxy.Instance.GetRFIDDevices();
+            if (result.IsSuccess)
+            {
+                if (result.Content != null)
+                {
+                    RFIDProxy rfidProxy = new RFIDProxy();
+                        rfidProxy.Open(CacheHelper.LocalSetting.RFIDCom);
+                    rfidProxy.NotifyEPCReceived += RfidProxy_NotifyEPCReceived;
+                }
+            }
+        }
+
+        private void RfidProxy_NotifyEPCReceived(object sender, EPCInfo e)
+        {
+            Console.WriteLine("收到 {0} {1}", e.DeviceID, e.EPC);
+        }
+
+
+        #endregion
 
         #region 数据
 
@@ -70,6 +95,14 @@ namespace MM.Medical.Client.Module.Decontaminate
                     {
                         this.Dispatcher.Invoke(() =>
                         {
+                            if (result.Content[j].DecontaminateTaskSteps != null)
+                            {
+                                for (int i = 0; i < result.Content[j].DecontaminateTaskSteps.Count; i++)
+                                {
+                                    result.Content[j].DecontaminateTaskSteps[i].Index = i + 1;
+                                }
+                            }
+                          
                             DecontaminateTasks.Insert(0, result.Content[j]);
                         });
                     }
