@@ -157,11 +157,9 @@ namespace MM.Medical.Client.Views
                 if (this.consultingRoomId == 0)
                     return;
                 var appointmentStatuses = new List<AppointmentStatus>();
-                if (rb_all.IsChecked.Value)
-                    appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Reported, AppointmentStatus.Checking, AppointmentStatus.Checked });
-                else if (rb_waiting.IsChecked.Value)
+                if (rb_waiting.IsChecked.Value)
                     appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Checking });
-                else
+                if (rb_checked.IsChecked.Value)
                     appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Checked, AppointmentStatus.Reported });
                 //var startTime = 0;
                 //var endTime = int.MaxValue;
@@ -175,7 +173,7 @@ namespace MM.Medical.Client.Views
                     TimeHelper.FromUnixTime(endTime),
                     userInfo: "",
                     consultingRoomID: consultingRoomId,
-                    appointmentStatuses: new AppointmentStatus[] { AppointmentStatus.Checking, AppointmentStatus.Checked, AppointmentStatus.Waiting, AppointmentStatus.Reported }));
+                    appointmentStatuses: appointmentStatuses.ToArray()));
                 if (result.IsSuccess)
                 {
                     Appointments.Clear();

@@ -230,39 +230,41 @@
                     </Expander>
                 </StackPanel>
             </ScrollViewer>
-            <TabControl Grid.Row="1" Grid.Column="1" Width="280" Margin="10" BorderBrush="{StaticResource Color_Border_Primary}">
-                <TabControl.Style>
-                    <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
+            <controls:CustomGroupBox Grid.Row="1" Grid.Column="1" Margin="10">
+                <controls:CustomGroupBox.Style>
+                    <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </TabControl.Style>
-                <TabItem x:Name="ti_word" Width="140" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True">
-                    <TreeView x:Name="tv_medicalWord">
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
-                                <StackPanel x:Name="sp" Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalWord_MouseLeftButtonDown">
-                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
-                </TabItem>
-                <TabItem x:Name="ti_template" Width="140" Style="{StaticResource CustomHeaderTabItemStyle}" Header="诊断模板" Foreground="{StaticResource Color_Font_Primary}">
-                    <TreeView x:Name="tv_template">
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type entities:MedicalTemplate}" ItemsSource="{Binding MedicalTemplates}">
-                                <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalTemplate_MouseLeftButtonDown">
-                                    <TextBlock Text="{Binding Name}"/>
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
-                </TabItem>
-            </TabControl>
+                </controls:CustomGroupBox.Style>
+                <TabControl Grid.Row="1" Grid.Column="1" Width="300" BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0">
+                    <TabItem x:Name="ti_word" Width="150" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True">
+                        <TreeView x:Name="tv_medicalWord">
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
+                                    <StackPanel x:Name="sp" Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalWord_MouseLeftButtonDown">
+                                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </TabItem>
+                    <TabItem x:Name="ti_template" Width="150" Style="{StaticResource CustomHeaderTabItemStyle}" Header="诊断模板" Foreground="{StaticResource Color_Font_Primary}">
+                        <TreeView x:Name="tv_template">
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type entities:MedicalTemplate}" ItemsSource="{Binding MedicalTemplates}">
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalTemplate_MouseLeftButtonDown">
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </TabItem>
+                </TabControl>
+            </controls:CustomGroupBox>
             <Grid Margin="5">
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
