@@ -463,5 +463,10 @@
     <Resource Include="Images\Icon\editor.png" />
     <Resource Include="Images\Icon\show.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="screenshot.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

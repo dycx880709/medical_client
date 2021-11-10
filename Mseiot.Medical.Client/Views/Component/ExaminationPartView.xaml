@@ -59,9 +59,6 @@
                     <Setter Property="Visibility" TargetName="cb_part" Value="Visible"/>
                     <Setter Property="Visibility" TargetName="tb_part" Value="Hidden"/>
                 </DataTrigger>
-                <!--<DataTrigger Binding="{Binding IsReadOnly, RelativeSource={RelativeSource AncestorLevel=1,AncestorType={x:Type local:ExaminationPartView},Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Visibility" TargetName="cb" Value="Collapsed"/>
-                </DataTrigger>-->
             </DataTemplate.Triggers>
         </DataTemplate>
     </UserControl.Resources>
@@ -243,7 +240,7 @@
                         </Style.Triggers>
                     </Style>
                 </TabControl.Style>
-                <TabItem x:Name="ti_word" Header="医学词库" Width="125" IsSelected="True" Foreground="{StaticResource Color_Font_Primary}">
+                <TabItem x:Name="ti_word" Width="140" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True">
                     <TreeView x:Name="tv_medicalWord">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
@@ -254,7 +251,7 @@
                         </TreeView.ItemTemplate>
                     </TreeView>
                 </TabItem>
-                <TabItem x:Name="ti_template" Header="诊断模板" Width="125" Foreground="{StaticResource Color_Font_Primary}">
+                <TabItem x:Name="ti_template" Width="140" Style="{StaticResource CustomHeaderTabItemStyle}" Header="诊断模板" Foreground="{StaticResource Color_Font_Primary}">
                     <TreeView x:Name="tv_template">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type entities:MedicalTemplate}" ItemsSource="{Binding MedicalTemplates}">

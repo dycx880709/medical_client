@@ -53,11 +53,16 @@
                             <TextBlock Text="身份信息"/>
                             <controls:CustomTextBox x:Name="tb_user" Watermark="可输入病人姓名、身份证、社保号" Width="250" Text="{Binding Appointment.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
+                        <Button Content="查询" Click="Get_Click" Grid.Column="1" IsDefault="True"/>
                     </WrapPanel>
-                    <Button Content="查询" Click="Get_Click" Grid.Column="1" IsDefault="True" Margin="0,0,10,0"/>
                 </Grid>
                 <Border Grid.Row="1">
-                    <DataGrid x:Name="dg_examinations" SelectionChanged="Examination_SelectionChanged">
+                    <DataGrid x:Name="dg_examinations">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                <EventSetter Event="MouseLeftButtonDown" Handler="DataGridRow_MouseLeftButtonDown"/>
+                            </Style>
+                        </DataGrid.Resources>
                         <DataGrid.Columns>
                             <DataGridTemplateColumn  Width="55" Header="序号">
                                 <DataGridTemplateColumn.CellTemplate>

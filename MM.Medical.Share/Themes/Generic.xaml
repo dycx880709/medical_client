@@ -16,5 +16,5 @@
     <sys:Double x:Key="DataGrdiColumnHeight">40</sys:Double>
     <sys:Double x:Key="DataGrdiRowHeight">33</sys:Double>
 
-    <CornerRadius x:Key="ControlCornerRadius">3</CornerRadius>
+    <CornerRadius x:Key="ControlCornerRadius">5</CornerRadius>
 </ResourceDictionary>
