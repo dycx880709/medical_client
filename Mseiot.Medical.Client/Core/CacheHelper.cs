@@ -18,6 +18,7 @@ namespace MM.Medical.Client.Core
     public class CacheHelper : Share.Core.CacheHelper
     {
         public static string UserName { get { return CurrentUser.Name; } }
+        public static string RoleName { get { return CurrentUser.RoleName; } }
         public static LocalSetting LocalSetting { get; private set; }
         public static User CurrentUser { get; set; } = new User();
         public static string ConsultingRoomName { get; set; }

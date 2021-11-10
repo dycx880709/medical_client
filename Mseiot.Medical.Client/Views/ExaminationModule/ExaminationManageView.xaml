@@ -64,9 +64,8 @@
                 </Grid.RowDefinitions>
                 <StackPanel Margin="20,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="今日患者"/>
-                    <RadioButton x:Name="rb_all" Click="AppointmentStatus_CheckChanged" Content="全部" IsChecked="True"/>
-                    <RadioButton x:Name="rb_waiting" Click="AppointmentStatus_CheckChanged" Content="待检查" Margin="15,0"/>
-                    <RadioButton x:Name="rb_checked" Click="AppointmentStatus_CheckChanged" Content="已检查"/>
+                    <CheckBox x:Name="rb_waiting" Click="AppointmentStatus_CheckChanged" Content="候诊中" IsChecked="True" Margin="15,0"/>
+                    <CheckBox x:Name="rb_checked" Click="AppointmentStatus_CheckChanged" Content="已检查" IsChecked="True"/>
                 </StackPanel>
                 <DataGrid x:Name="dg_appointments" Grid.Row="1" SelectionChanged="Appointments_SelectionChanged">
                     <DataGrid.Columns>
