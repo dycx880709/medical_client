@@ -16,6 +16,10 @@
                 <TextBlock Text="设备名称" Style="{StaticResource editorFormItemText}"></TextBlock>
                 <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"></TextBox>
             </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock Text="通信端口" Style="{StaticResource editorFormItemText}"></TextBlock>
+                <ComboBox x:Name="cbSerialPorts" DropDownOpened="SerialPorts_DropDownOpened"></ComboBox>
+            </StackPanel>
             <Button Click="Save_Click" Content="保存" IsEnabled="True" />
         </StackPanel>
     </Grid>
