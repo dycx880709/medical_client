@@ -123,5 +123,10 @@ namespace MM.Medical.Client.Views
             else Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
         }
 
+        private void DataGridRow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2 && sender is FrameworkElement element && element.DataContext is Examination examination)
+                ShowExaminationPartView(examination);
+        }
     }
 }

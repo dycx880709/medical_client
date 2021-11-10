@@ -54,7 +54,7 @@ namespace MM.Medical.Client.Views
                     if (!string.IsNullOrEmpty(setting.CutshotSoundLocal))
                     {
                         var res2 = await SocketProxy.Instance.UploadFile(setting.CutshotSoundLocal);
-                        if (res2.IsSuccess) setting.ReportIcon = res2.Content;
+                        if (res2.IsSuccess) setting.CutshotSound = res2.Content;
                         else new MsResult<bool>() { IsSuccess = false, Error = res2.Error };
                     }
                     return await SocketProxy.Instance.UpdateSystemSetting(setting);
@@ -81,7 +81,7 @@ namespace MM.Medical.Client.Views
             if (this.DataContext is SystemSettingExtend setting)
             {
                 var dialog = new OpenFileDialog();
-                dialog.Filter = ".jpg|*.jpg|.png|*.png|.jpeg|*.jpeg";
+                dialog.Filter = ".mp3|*.mp3|.wav|*.wav";
                 if (dialog.ShowDialog().Value)
                     setting.CutshotSoundLocal = dialog.FileName;
             }

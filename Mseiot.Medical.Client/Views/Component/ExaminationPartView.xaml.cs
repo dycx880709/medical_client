@@ -64,6 +64,7 @@ namespace MM.Medical.Client.Views
         public IEnumerable<MedicalWord> OriginMedicalWords { get; set; }
         public IEnumerable<MedicalWord> MedicalWords { get; set; }
         public List<string> BodyParts { get; set; }
+        private MediaPlayer player;
 
         private static void SelectedExaminationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -86,9 +87,22 @@ namespace MM.Medical.Client.Views
         {
             this.Loaded -= ExaminationPartView_Loaded;
             this.Loading = this.Loading ?? this.cl;
+            GetSystemSetting();
             GetBaseWords();
             GetMedicalDatas();
             this.DataContext = this;
+        }
+
+        private void GetSystemSetting()
+        {
+            this.player = new MediaPlayer();
+            var result = Loading.AsyncWait("获取系统设置中,请稍后", SocketProxy.Instance.GetSystemSetting());
+            if (result.IsSuccess && !string.IsNullOrEmpty(result.Content.CutshotSound))
+            {
+                var soundPath = SocketProxy.Instance.GetFileRounter() + result.Content.CutshotSound;
+                player.Open(new Uri(soundPath, UriKind.Absolute));
+            }
+            else player.Open(new Uri("screenshot.mp3", UriKind.Relative));
         }
 
         private void GetMedicalDatas()
@@ -235,6 +249,7 @@ namespace MM.Medical.Client.Views
             var image = video.Shotcut();
             if (image != null && image.Length > 0)
             {
+                player.Play();
                 var media = new ExaminationMedia
                 {
                     Buffer = image,
@@ -256,6 +271,7 @@ namespace MM.Medical.Client.Views
                     else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传数据失败,{ result2.Error }");
                 }
                 else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传图片失败,{ result.Error }");
+                player.Position = TimeSpan.Zero;
             }
         }
 

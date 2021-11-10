@@ -33,11 +33,11 @@
                         <controls:CustomTextBox Text="{Binding HospitalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="报告单名称" Style="{StaticResource editorFormItemText}"/>
+                        <TextBlock Text="报告单名称" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                         <controls:CustomTextBox Text="{Binding ReportName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="报告单图标" Style="{StaticResource editorFormItemText}"/>
+                        <TextBlock Text="报告单图标" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                         <controls:CustomTextBox Text="{Binding ReportIconLocal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
                             <controls:CustomTextBox.AttachContent>
                                 <Button Content="..." Width="{StaticResource ButtonHeight}" Click="UpdateReportIcon_Click" Background="Transparent" Foreground="{StaticResource Color_Font_Primary}" BorderThickness="0"/>
