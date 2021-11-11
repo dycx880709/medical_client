@@ -168,17 +168,16 @@ namespace MM.Medical.Client.Views
                 Identify = "",
                 Children = new List<Entities.Menu>
                 {
-                    new Entities.Menu{
-                        Name = "条件统计",
+                    new Entities.Menu {
+                        Name = "工作量统计",
                         Identify = "MM.Medical.Client.Views.ConditionStatisticsView",
-                        },
-                     new Entities.Menu{
+                    },
+                    new Entities.Menu {
                         Name = "专项统计",
                         Identify = "MM.Medical.Client.Views.SpecialStatisticsView",
-                        },
+                    },
                 }
             });
-
 
             Menus.Add(new Entities.Menu
             {

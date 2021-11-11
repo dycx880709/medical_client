@@ -14,6 +14,17 @@ namespace Mseiot.Medical.Service.Entities
         private string userName;
         private int consultingRoomID;
         private bool isSelected;
+        private string checkType;
+
+        public string CheckType
+        {
+            get { return checkType; }
+            set
+            {
+                checkType = value;
+                RaisePropertyChanged("CheckType");
+            }
+        }
 
         public bool IsSelected
         {

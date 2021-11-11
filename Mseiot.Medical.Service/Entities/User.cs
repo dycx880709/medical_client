@@ -13,6 +13,8 @@ namespace Mseiot.Medical.Service.Entities
         private string loginName;
         private string loginPwd;
         private bool isOnline;
+        private string roleName;
+        private int roleID;
 
         /// <summary>
         /// 用户ID
@@ -33,7 +35,15 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 角色名称
         /// </summary>
-        public string RoleName { get; set; }
+        public string RoleName
+        {
+            get { return roleName; }
+            set 
+            { 
+                roleName = value;
+                RaisePropertyChanged("RoleName");
+            }
+        }
         /// <summary>
         /// 权限
         /// </summary>
@@ -41,7 +51,15 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 角色ID
         /// </summary>
-        public int RoleID { get; set; }
+        public int RoleID
+        {
+            get { return roleID; }
+            set 
+            { 
+                roleID = value;
+                RaisePropertyChanged("RoleID");
+            }
+        }
         /// <summary>
         /// 登录名称
         /// </summary>

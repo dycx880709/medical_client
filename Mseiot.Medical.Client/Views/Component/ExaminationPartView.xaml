@@ -164,7 +164,7 @@
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查结果"/>
-                    <ComboBox x:Name="cb_result" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="术前用药"/>
@@ -240,9 +240,10 @@
                         </Style.Triggers>
                     </Style>
                 </controls:CustomGroupBox.Style>
-                <TabControl Grid.Row="1" Grid.Column="1" Width="300" BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0">
+                <TabControl Grid.Row="1" Grid.Column="1" Width="300" HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
+                            BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0">
                     <TabItem x:Name="ti_word" Width="150" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True">
-                        <TreeView x:Name="tv_medicalWord">
+                        <TreeView x:Name="tv_medicalWord" Background="Red" VirtualizingPanel.IsVirtualizing="False">
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
                                     <StackPanel x:Name="sp" Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalWord_MouseLeftButtonDown">

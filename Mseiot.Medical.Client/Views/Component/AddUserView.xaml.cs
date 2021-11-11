@@ -48,7 +48,9 @@ namespace MM.Medical.Client.Views
             if (result.IsSuccess)
             {
                 cb_roles.ItemsSource = result.Content;
-                cb_roles.SelectedValue = result.Content.FirstOrDefault(t => t.RoleID.Equals(user.RoleID));
+                var condition = result.Content.FirstOrDefault(t => t.RoleID.Equals(user.RoleID));
+                if (condition != null)
+                    cb_roles.SelectedValue = result.Content.FirstOrDefault(t => t.RoleID.Equals(user.RoleID)).RoleID;
             }
             else
             {

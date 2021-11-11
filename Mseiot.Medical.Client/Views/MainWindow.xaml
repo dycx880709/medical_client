@@ -39,7 +39,7 @@
                 </ToggleButton>
             </StackPanel>
 
-            <Canvas x:Name="menuContainer" HorizontalAlignment="Center" Width="600">
+            <Grid x:Name="menuContainer" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <ListView Canvas.Top="30" Width="{Binding Width,ElementName=menuContainer}" x:Name="lvMenus" SelectionChanged="Menu_Selected">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -100,6 +100,7 @@
                                             </DataTrigger>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsSelected,RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
                                                     <Condition Binding="{Binding IsMouseOver,RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
                                                     <Condition Binding="{Binding HasChildren}" Value="True"/>
                                                 </MultiDataTrigger.Conditions>
@@ -127,7 +128,7 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
-            </Canvas>
+            </Grid>
 
             <Popup PopupAnimation="Fade" VerticalOffset="0" Placement="Bottom" AllowsTransparency="True"
                    IsOpen="{Binding IsChecked, ElementName=tg_User}" StaysOpen="{Binding IsMouseOver, ElementName=tg_User}"

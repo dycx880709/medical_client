@@ -131,8 +131,7 @@ namespace MM.Medical.Client.Views
                 "检查体位",
                 "麻醉方法",
                 "检查部位",
-                "术前用药",
-                "检查结果"
+                "术前用药"
             ));
             cb_bodyLoc.ItemsSource = result.SplitContent("检查体位");
             cb_anesthesia.ItemsSource = result.SplitContent("麻醉方法");
@@ -144,7 +143,6 @@ namespace MM.Medical.Client.Views
             cb_hcv.ItemsSource = result.SplitContent("HCV");
             cb_hbasg.ItemsSource = result.SplitContent("HBasg");
             cb_body.ItemsSource = BodyParts = result.SplitContent("检查部位");
-            cb_result.ItemsSource = result.SplitContent("检查结果");
         }
 
         private void SelectedBody_Click(object sender, RoutedEventArgs e)
