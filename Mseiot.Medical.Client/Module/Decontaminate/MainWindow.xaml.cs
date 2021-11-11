@@ -94,6 +94,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                 Name = "清洗记录",
                 Identify = "DecontaminateTaskManage"
             });
+            Menus.Add(new Entities.Menu { Name = "清洗酶", Identify = "EnzymeManage" });
             lvMenus.ItemsSource = Menus;
             lvMenus.SelectedIndex = 0;
         }
@@ -119,6 +120,9 @@ namespace MM.Medical.Client.Module.Decontaminate
                     break;
                 case "DecontaminateTaskManage":
                     container.Child = new DecontaminateTaskManage();
+                    break;
+                case "EnzymeManage":
+                    container.Child = new EnzymeManage();
                     break;
             }
         }
