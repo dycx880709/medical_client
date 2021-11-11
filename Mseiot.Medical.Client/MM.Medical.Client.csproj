@@ -121,6 +121,12 @@
     <Compile Include="Entities\AppLevel.cs" />
     <Compile Include="Entities\ServerSetting.cs" />
     <Compile Include="Entities\UserRecord.cs" />
+    <Compile Include="Module\Decontaminate\Enzyme\AddEnzyme.xaml.cs">
+      <DependentUpon>AddEnzyme.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module\Decontaminate\Enzyme\EnzymeManage.xaml.cs">
+      <DependentUpon>EnzymeManage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Module\Decontaminate\Record\DecontaminateTaskManage.xaml.cs">
       <DependentUpon>DecontaminateTaskManage.xaml</DependentUpon>
     </Compile>
@@ -239,6 +245,14 @@
       <DependentUpon>UpdateMain.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\MenuModule.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Module\Decontaminate\Enzyme\AddEnzyme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Module\Decontaminate\Enzyme\EnzymeManage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -476,5 +490,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

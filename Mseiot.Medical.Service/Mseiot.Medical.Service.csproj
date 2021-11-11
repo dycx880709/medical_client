@@ -51,6 +51,7 @@
     <Compile Include="Entities\CheckInfo.cs" />
     <Compile Include="Entities\ConsultingRoom.cs" />
     <Compile Include="Entities\EnumItems.cs" />
+    <Compile Include="Entities\Enzyme.cs" />
     <Compile Include="Entities\Examination.cs" />
     <Compile Include="Entities\ExaminationMedia.cs" />
     <Compile Include="Entities\ListResult.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AppointmentProxy.cs" />
     <Compile Include="Services\DecontaminateFlowProxy.cs" />
+    <Compile Include="Services\EnaymeProxy.cs" />
     <Compile Include="Services\EndoscopeProxy.cs" />
     <Compile Include="Services\ConsultingRoomProxy.cs" />
     <Compile Include="Services\ExaminationMediaProxy.cs" />

@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="MM.Medical.Client.Module.Decontaminate.EnzymeManage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+        <controls:CustomGroupBox Header="内镜管理">
+            <controls:CustomGroupBox.AttachContent>
+                <ControlTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Click="Add_Click" Content="添加" Margin="0,0,10,0" HorizontalAlignment="Right"/>
+                
+                    </StackPanel>
+                </ControlTemplate>
+            </controls:CustomGroupBox.AttachContent>
+            <DataGrid x:Name="lvDatas">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="200" Header="是否启用">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <RadioButton IsChecked="{Binding Enabled}" Tag="{Binding}" Click="Select_Click"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="*" Header="名称" Binding="{Binding Name}"/>
+
+                    <DataGridTemplateColumn Width="200" Header="操作">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button ToolTip="修改" Style="{StaticResource Button_Primary_Circle}" Margin="0,0,5,0" Content="/Images/icon/editor.png" Tag="{Binding}" Click="Modify_Click"/>
+                                    <Button ToolTip="删除" Style="{StaticResource Button_Danger_Circle}" Content="/Images/icon/delete.png" Click="Remove_Click" Tag="{Binding}" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </controls:CustomGroupBox>
+        <controls:ChildWindow x:Name="child"/>
+        <controls:Loading x:Name="loading"/>
+    </Grid>
+</UserControl>
