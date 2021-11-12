@@ -15,8 +15,8 @@
         <controls:CustomGroupBox Header="清洗列表">
             <DataGrid x:Name="lvDatas">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="80" Header="内镜编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
-                    <DataGridTextColumn Width="80" Header="患者姓名" Binding="{Binding PatientName}"/>
+                    <DataGridTextColumn Width="100" Header="内镜编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
+                    <DataGridTextColumn Width="100" Header="患者姓名" Binding="{Binding PatientName}"/>
                     <DataGridTextColumn Width="*" Header="患者身份证" Binding="{Binding PatientID}"/>
                     <DataGridTextColumn Width="*" Header="患者医保号" Binding="{Binding PatientSI}"/>
                     <DataGridTextColumn Width="*" Header="检查医生" Binding="{Binding DoctorName}"/>
