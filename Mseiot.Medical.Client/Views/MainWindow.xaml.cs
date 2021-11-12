@@ -11,6 +11,8 @@ using System.Windows.Controls.Primitives;
 using Mseiot.Medical.Service.Services;
 using Ms.Libs.TcpLib;
 using System.Net.Sockets;
+using MM.Medical.Client.Entities;
+using System.Linq;
 
 namespace MM.Medical.Client.Views
 {
@@ -143,87 +145,36 @@ namespace MM.Medical.Client.Views
 
         public void LoadMenus()
         {
-
-            Menus.Add(new Entities.Menu
-            {
-                Name = "预约登记",
-                Identify = "MM.Medical.Client.Views.AppointmentManage",
-            });
-
-            Menus.Add(new Entities.Menu
-            {
-                Name = "检查中心",
-                Identify = "MM.Medical.Client.Views.ExaminationManageView",
-            });
-
-            Menus.Add(new Entities.Menu
-            {
-                Name = "病历中心",
-                Identify = "MM.Medical.Client.Views.MedicalManageView",
-            });
-
-            Menus.Add(new Entities.Menu
-            {
-                Name = "主任管理",
-                Identify = "",
-                Children = new List<Entities.Menu>
-                {
-                    new Entities.Menu {
-                        Name = "工作量统计",
-                        Identify = "MM.Medical.Client.Views.ConditionStatisticsView",
-                    },
-                    new Entities.Menu {
-                        Name = "专项统计",
-                        Identify = "MM.Medical.Client.Views.SpecialStatisticsView",
-                    },
-                }
-            });
-
-            Menus.Add(new Entities.Menu
-            {
-                Name = "系统管理",
-                Identify = "",
-                Children = new List<Entities.Menu>
-                {
-                    new Entities.Menu{
-                        Name = "用户管理",
-                        Identify = "MM.Medical.Client.Views.UserManageView",
-                        },
-                     new Entities.Menu{
-                        Name = "角色管理",
-                        Identify = "MM.Medical.Client.Views.RoleManageView",
-                        },
-                      new Entities.Menu{
-                        Name = "系统设置",
-                        Identify = "MM.Medical.Client.Views.SystemSettingView",
-                        },
-                       new Entities.Menu{
-                        Name = "基础词库",
-                        Identify = "MM.Medical.Client.Views.BaseWordView",
-                        },
-                        new Entities.Menu{
-                        Name = "诊断模板",
-                        Identify = "MM.Medical.Client.Views.DiagnosticTemplateView",
-                        },
-                        new Entities.Menu{
-                        Name = "医学词库",
-                        Identify = "MM.Medical.Client.Views.MedicalWordView",
-                        },
-                        new Entities.Menu{
-                        Name = "诊室管理",
-                        Identify = "MM.Medical.Client.Views.ConsultingManageView",
-                        },
-                        new Entities.Menu{
-                        Name = "数据备份",
-                        Identify = "MM.Medical.Client.Views.DataBackingView",
-                        },
-                }
-            });
-
-
-            
+            Menus.Clear();
+            var levels = CacheHelper.CurrentUser.Authority.Split(',');
+            var appLevels = AppLevel.Levels.Copy();
+            foreach (var appLevel in appLevels)
+                Menus.AddRange(LoadMenus(appLevel.Children, levels, CacheHelper.CurrentUser.LoginName.Equals("admin")));
             lvMenus.ItemsSource = Menus;
             lvMenus.SelectedIndex = 0;
+        }
+
+        public List<Entities.Menu> LoadMenus(List<AppLevel> appLevels, string[] levels, bool isAdmin = false)
+        {
+            List<Entities.Menu> menus = new List<Entities.Menu>();
+            if (appLevels != null && appLevels.Count > 0)
+            {
+                foreach (var appLevel in appLevels)
+                {
+                    if (isAdmin || levels.Any(t => t.Equals(appLevel.Level)))
+                    {
+                        var menu = new Entities.Menu
+                        {
+                            Name = appLevel.Name,
+                            Identify = appLevel.Identify
+                        };
+                        menus.Add(menu);
+                        if (appLevel.Children != null && appLevel.Children.Count > 0)
+                            menu.Children = LoadMenus(appLevel.Children, levels, isAdmin);
+                    }
+                }
+            }
+            return menus;
         }
 
         #endregion
@@ -247,7 +198,6 @@ namespace MM.Medical.Client.Views
                 {
                     border.Child = navigateItems[menu.Identify];
                 }
-             
             }
         }
     }

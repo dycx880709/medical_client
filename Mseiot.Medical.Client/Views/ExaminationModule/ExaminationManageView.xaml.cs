@@ -196,6 +196,7 @@ namespace MM.Medical.Client.Views
                     void CommitExamination(int endoscopeID)
                     {
                         commit_ex.DoctorName = CacheHelper.CurrentUser.Name;
+                        commit_ex.DoctorID = CacheHelper.CurrentUser.UserID;
                         commit_ex.EndoscopeID = endoscopeID;
                         commit_ex.AppointmentID = appointment.AppointmentID;
                         commit_ex.ExaminationTime = TimeHelper.ToUnixTime(DateTime.Now);

@@ -163,10 +163,6 @@
                     <ComboBox x:Name="cb_anesthesia" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel>
-                    <TextBlock Text="检查结果"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-                <StackPanel>
                     <TextBlock Text="术前用药"/>
                     <ComboBox x:Name="cb_preoperative" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Preoperative, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
@@ -197,6 +193,10 @@
                 <StackPanel>
                     <TextBlock Text="内镜编号"/>
                     <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.EndoscopeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IntToFormatStringConverter}, ConverterParameter=6}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="检查结果"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Width="290" Text="{Binding SelectedExamination.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="主诉"/>
@@ -240,10 +240,9 @@
                         </Style.Triggers>
                     </Style>
                 </controls:CustomGroupBox.Style>
-                <TabControl Grid.Row="1" Grid.Column="1" Width="300" HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
-                            BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0">
+                <TabControl Grid.Row="1" Grid.Column="1" Width="300" BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0">
                     <TabItem x:Name="ti_word" Width="150" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True">
-                        <TreeView x:Name="tv_medicalWord" Background="Red" VirtualizingPanel.IsVirtualizing="False">
+                        <TreeView x:Name="tv_medicalWord">
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
                                     <StackPanel x:Name="sp" Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalWord_MouseLeftButtonDown">
@@ -346,7 +345,25 @@
                         </Grid>
                     </Grid>
                 </controls:CustomGroupBox>
-                <controls:CustomGroupBox Margin="5" Grid.Row="1" Header="录像 0段">
+                <controls:CustomGroupBox Margin="5" Grid.Row="1">
+                    <controls:CustomGroupBox.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="录像"/>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                        <Setter Property="Text" Value="{Binding SelectedExamination.Videos.Count}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedExamination}" Value="{x:Null}">
+                                                <Setter Property="Text" Value="0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock Text="段"/>
+                        </StackPanel>
+                    </controls:CustomGroupBox.Header>
                     <ListBox SelectedValue="{Binding SelectedMedia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ItemsSource="{Binding SelectedExamination.Videos}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}">
                         <ListBox.ItemsPanel>
@@ -356,7 +373,25 @@
                         </ListBox.ItemsPanel>
                     </ListBox>
                 </controls:CustomGroupBox>
-                <controls:CustomGroupBox Margin="5" Grid.Column="1" Grid.RowSpan="2" Header="截图 0段">
+                <controls:CustomGroupBox Margin="5" Grid.Column="1" Grid.RowSpan="2">
+                    <controls:CustomGroupBox.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="截图"/>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                        <Setter Property="Text" Value="{Binding SelectedExamination.Images.Count}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedExamination}" Value="{x:Null}">
+                                                <Setter Property="Text" Value="0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock Text="段"/>
+                        </StackPanel>
+                    </controls:CustomGroupBox.Header>
                     <ListBox SelectedValue="{Binding SelectedMedia, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  ItemsSource="{Binding SelectedExamination.Images}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}"/>
                 </controls:CustomGroupBox>

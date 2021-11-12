@@ -27,19 +27,12 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class RoleManageView : UserControl
     {
-        public List<AppLevel> AppLevels { get; set; }
-
+        private List<AppLevel> levels;
         public RoleManageView()
         {
             InitializeComponent();
-            this.AppLevels = new List<AppLevel>()
-            {
-                new AppLevel { Name = "内镜综合管理系统", Level = "0" },
-                new AppLevel { Name = "内镜预约登记系统", Level = "1" },
-                new AppLevel { Name = "内镜消洗追溯系统", Level = "2" },
-                new AppLevel { Name = "内镜数据分析系统", Level = "3" },
-            };
-            lb_level.ItemsSource = this.AppLevels;
+            this.levels = AppLevel.Levels.Copy();
+            lb_level.ItemsSource = this.levels;
             this.Loaded += RoleManageView_Loaded;
         }
 
@@ -160,23 +153,59 @@ namespace MM.Medical.Client.Views
 
         private void ModifyLevel_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.DataContext is AppLevel appLevel)
+            if (sender is CheckBox checkBox && checkBox.DataContext is AppLevel appLevel && lb_role.SelectedValue is Role role)
             {
-                if (lb_role.SelectedValue is Role role)
-                {
-                    role.Authority = appLevel.Level;
-                    var result = loading.AsyncWait("编辑角色权限中,请稍后", SocketProxy.Instance.ModifyRole(role));
-                    if (!result.IsSuccess) MsWindow.ShowDialog($"编辑角色权限失败,{ result.Error }", "软件提示");
-                    AppLevels.ForEach(t => t.IsSelected = t.Level == role.Authority);
+                var levels = role.Authority.Split(',').ToList();
+                if (levels.Count == 1 && string.IsNullOrEmpty(levels[0]))
+                    levels.Clear();
+                var parent = GetParentLevel(this.levels, appLevel.Level);
+                if (parent != null && !parent.Children.Any(t => t.IsSelected))
+                { 
+                    if (levels.Contains(parent.Level))
+                        levels.Remove(parent.Level);
+                    parent.IsSelected = false;
                 }
-                else appLevel.IsSelected = false;
+
+                if (checkBox.IsChecked.Value)
+                {
+                    var children = LevelAllSelected(appLevel, true);
+                    foreach (var changeLevel in children)
+                    {
+                        if (!levels.Contains(changeLevel))
+                            levels.Add(changeLevel);
+                    }
+                    if (!levels.Contains(appLevel.Level))
+                        levels.Add(appLevel.Level);
+                }
+                else
+                {
+                    var children = LevelAllSelected(appLevel, false);
+                    foreach (var changeLevel in children)
+                    {
+                        if (levels.Contains(changeLevel))
+                            levels.Remove(changeLevel);
+                    }
+                    if (levels.Contains(appLevel.Level))
+                        levels.Remove(appLevel.Level);
+                }
+                var orgin = role.Authority;
+                role.Authority = String.Join(",", levels);
+                var result = loading.AsyncWait("编辑角色权限中,请稍后", SocketProxy.Instance.ModifyRole(role));
+                if (!result.IsSuccess)
+                { 
+                    MsWindow.ShowDialog($"编辑角色权限失败,{ result.Error }", "软件提示");
+                    role.Authority = orgin;
+                }
             }
         }
 
         private void Role_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lb_role.SelectedValue is Role role)
-                AppLevels.ForEach(t => t.IsSelected = t.Level.Equals(role.Authority));
+            {
+                if (role.Authority == null) role.Authority = string.Empty;
+                SetSelectedLevels(levels, role.Authority.Split(','));
+            }
         }
 
         private void ResetRole()
@@ -195,6 +224,53 @@ namespace MM.Medical.Client.Views
                     role.IsSelected = false;
                 }
             }
+        }
+
+        private void SetSelectedLevels(List<AppLevel> applevels, string[] levels)
+        {
+            foreach (var appLevel in applevels)
+            {
+                appLevel.IsSelected = levels.Any(t => t.Equals(appLevel.Level));
+                if (appLevel.Children != null && appLevel.Children.Count > 0)
+                    SetSelectedLevels(appLevel.Children, levels);
+            }
+        }
+
+        private AppLevel GetParentLevel(List<AppLevel> applevels, string level)
+        {
+            foreach (var applevel in applevels)
+            {
+                if (applevel.Children != null && applevel.Children.Count > 0)
+                {
+                    foreach (var item in applevel.Children)
+                    {
+                        if (item.Level.Equals(level))
+                            return applevel;
+                        else
+                        {
+                            var result = GetParentLevel(applevel.Children, level);
+                            if (result != null)
+                                return result;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private string[] LevelAllSelected(AppLevel appLevel, bool isSelected)
+        {
+            List<string> changeLevel = new List<string>();
+            if (appLevel.Children != null && appLevel.Children.Count > 0)
+            {
+                foreach (var child in appLevel.Children)
+                {
+                    child.IsSelected = isSelected;
+                    changeLevel.Add(child.Level);
+                    changeLevel.AddRange(LevelAllSelected(child, isSelected));
+                }
+            }
+            return changeLevel.ToArray();
         }
     }
 }

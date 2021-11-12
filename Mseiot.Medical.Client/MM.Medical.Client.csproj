@@ -47,6 +47,10 @@
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts.Geared, Version=1.2.8.2, Culture=neutral, PublicKeyToken=7292f245d14ab8bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\other\FactoryTestSystem\FactoryTestSystem\DLL\LiveCharts.Geared.dll</HintPath>
+    </Reference>
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
@@ -130,7 +134,7 @@
     <Compile Include="Module\Decontaminate\Record\DecontaminateTaskManage.xaml.cs">
       <DependentUpon>DecontaminateTaskManage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Video.xaml.cs">
+    <Compile Include="Controls\Video.xaml.cs">
       <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AppointmentModule\AddAppointment.xaml.cs">
@@ -199,6 +203,9 @@
     <Compile Include="Views\StatisticsModule\ConditionStatisticsView.xaml.cs">
       <DependentUpon>ConditionStatisticsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StatisticsModule\SelfWorkStatisticsView.xaml.cs">
+      <DependentUpon>SelfWorkStatisticsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StatisticsModule\SpecialStatisticsView.xaml.cs">
       <DependentUpon>SpecialStatisticsView.xaml</DependentUpon>
     </Compile>
@@ -260,7 +267,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Video.xaml">
+    <Page Include="Controls\Video.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -349,6 +356,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\StatisticsModule\ConditionStatisticsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StatisticsModule\SelfWorkStatisticsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -490,6 +501,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="DLL\LiveCharts.Geared.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

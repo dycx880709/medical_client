@@ -101,6 +101,19 @@ namespace MM.Medical.Client.Views
             {
                 var soundPath = SocketProxy.Instance.GetFileRounter() + result.Content.CutshotSound;
                 player.Open(new Uri(soundPath, UriKind.Absolute));
+                var shotcutKey = result.Content.CutshotKeyboard;
+                Console.WriteLine($"按键{ shotcutKey }为截图按键");
+                Application.Current.MainWindow.KeyDown += (_, e) =>
+                {
+                    //Console.WriteLine($"按键{ e.Key }已被按下,{ DateTime.Now.ToString("HH:mm:ss") }");
+                    if (this.SelectedExamination != null && SelectedExamination.Appointment != null && SelectedExamination.Appointment.AppointmentStatus == AppointmentStatus.Checking)
+                    {
+                        if (e.Key.ToString().Equals(shotcutKey))
+                            Shotcut();
+                        else if (e.Key.ToString().Equals("System"))
+                            KeyHookHelper.ResetSystem();
+                    }
+                };
             }
             else player.Open(new Uri("screenshot.mp3", UriKind.Relative));
         }
@@ -242,35 +255,9 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        private async void Shotcut_Click(object sender, RoutedEventArgs e)
+        private void Shotcut_Click(object sender, RoutedEventArgs e)
         {
-            var image = video.Shotcut();
-            if (image != null && image.Length > 0)
-            {
-                player.Play();
-                var media = new ExaminationMedia
-                {
-                    Buffer = image,
-                    ExaminationID = SelectedExamination.ExaminationID,
-                    MediaType = MediaType.Image,
-                };
-                SelectedExamination.Images.Add(media);
-                var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(image);
-                if (result.IsSuccess)
-                {
-                    media.Path = result.Content;
-                    var result2 = await SocketProxy.Instance.AddExaminationMedia(media);
-                    if (result2.IsSuccess)
-                    {
-                        media.ExaminationMediaID = result2.Content;
-                        media.Buffer = null;
-                        media.ErrorMsg = null;
-                    }
-                    else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传数据失败,{ result2.Error }");
-                }
-                else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传图片失败,{ result.Error }");
-                player.Position = TimeSpan.Zero;
-            }
+            Shotcut();
         }
 
         private async void Record_Click(object sender, RoutedEventArgs e)
@@ -423,5 +410,37 @@ namespace MM.Medical.Client.Views
                     this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, $"检查部位设置失败,{ result.Error }"));
             }
         }
+
+        private async void Shotcut()
+        {
+            var image = video.Shotcut();
+            if (image != null && image.Length > 0)
+            {
+                player.Play();
+                var media = new ExaminationMedia
+                {
+                    Buffer = image,
+                    ExaminationID = SelectedExamination.ExaminationID,
+                    MediaType = MediaType.Image,
+                };
+                SelectedExamination.Images.Add(media);
+                var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(image);
+                if (result.IsSuccess)
+                {
+                    media.Path = result.Content;
+                    var result2 = await SocketProxy.Instance.AddExaminationMedia(media);
+                    if (result2.IsSuccess)
+                    {
+                        media.ExaminationMediaID = result2.Content;
+                        media.Buffer = null;
+                        media.ErrorMsg = null;
+                    }
+                    else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传数据失败,{ result2.Error }");
+                }
+                else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传图片失败,{ result.Error }");
+                player.Position = TimeSpan.Zero;
+            }
+        }
+
     }
 }

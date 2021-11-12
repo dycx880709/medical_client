@@ -16,16 +16,39 @@ namespace Mseiot.Medical.Service.Services
             int count,
             DateTime? startTime = null,
             DateTime? endTime = null,
-            string userInfo = ""
+            string userInfo = "",
+            string doctorID = ""
         )
         {
-            return await HttpProxy.GetMessage<ListResult<Examination>>("/api/Examination/GetExaminations", new
+            return await HttpProxy.GetMessage<ListResult<Examination>>("/api/examination/getexaminations", new
             {
                 Index = index.ToString(),
                 Count = count.ToString(),
                 StartTime = startTime != null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
                 EndTime = endTime != null ? TimeHelper.ToUnixTime(endTime.Value) : long.MaxValue,
                 UserInfo = userInfo ?? "",
+                DoctorID = doctorID
+            });
+        }
+
+        public async Task<MsResult<TimeResultCollection>> GetExaminationCountByTime(int index,
+            int count,
+            DateTime? startTime = null,
+            DateTime? endTime = null,
+            int timeType = 0,
+            string userInfo = "",
+            string doctorID = ""
+        )
+        {
+            return await HttpProxy.GetMessage<TimeResultCollection>("/api/examination/getexaminationcountbytime", new
+            {
+                Index = index,
+                Count = count,
+                StartTime = startTime != null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
+                EndTime = endTime != null ? TimeHelper.ToUnixTime(endTime.Value) : long.MaxValue,
+                TimeType = timeType,
+                UserInfo = userInfo ?? "",
+                DoctorID = doctorID
             });
         }
 

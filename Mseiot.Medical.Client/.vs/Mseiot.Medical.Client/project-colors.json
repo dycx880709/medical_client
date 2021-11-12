@@ -6,16 +6,21 @@
       "DisplayName": "MM.Medical.Client",
       "ColorIndex": 0
     },
-    "bd38a2a3-7b32-4127-8c45-06f23fea4041": {
-      "ProjectGuid": "bd38a2a3-7b32-4127-8c45-06f23fea4041",
-      "DisplayName": "Mseiot.Medical.Service",
+    "66d5b357-f9c7-4325-93f2-f768f974f496": {
+      "ProjectGuid": "66d5b357-f9c7-4325-93f2-f768f974f496",
+      "DisplayName": "MM.Medical.Share",
       "ColorIndex": 1
     },
     "658d1289-6eaf-40e9-9b98-fd78ffb4a5ea": {
       "ProjectGuid": "658d1289-6eaf-40e9-9b98-fd78ffb4a5ea",
       "DisplayName": "Ms.Controls",
       "ColorIndex": 2
+    },
+    "bd38a2a3-7b32-4127-8c45-06f23fea4041": {
+      "ProjectGuid": "bd38a2a3-7b32-4127-8c45-06f23fea4041",
+      "DisplayName": "Mseiot.Medical.Service",
+      "ColorIndex": 3
     }
   },
-  "NextColorIndex": 3
+  "NextColorIndex": 4
 }

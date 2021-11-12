@@ -1,6 +1,9 @@
-﻿using MM.Medical.Client.Core;
+﻿using LiveCharts;
+using LiveCharts.Configurations;
+using MM.Medical.Client.Core;
 using MM.Medical.Client.Views;
 using Ms.Libs.SysLib;
+using Mseiot.Medical.Service.Entities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,9 +23,7 @@ namespace MM.Medical.Client
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-
             ThreadPool.SetMaxThreads(100, 100);
-
             CacheHelper.LoadSetting();
             if (e.Args.Length > 0)
             {
@@ -33,6 +34,11 @@ namespace MM.Medical.Client
                 }
             }
             CacheHelper.InitialLogSetting();
+
+            #region LiveChart
+            Charting.For<TimeResult>(Mappers.Xy<TimeResult>().X(model => model.TimeStamp).Y(model => model.Count));
+            #endregion
+
             #region 异常处理注册
             //UI线程未捕获异常处理事件
             this.DispatcherUnhandledException += (o,ex) => LogHelper.Instance.Error("捕获主线程未处理异常:", ex.Exception);

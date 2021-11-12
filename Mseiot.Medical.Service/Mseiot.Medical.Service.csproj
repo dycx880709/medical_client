@@ -62,6 +62,7 @@
     <Compile Include="Entities\SystemSetting.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\DecontaminateTask.cs" />
+    <Compile Include="Entities\TimeResult.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Version.cs" />
     <Compile Include="Models\Command.cs" />
