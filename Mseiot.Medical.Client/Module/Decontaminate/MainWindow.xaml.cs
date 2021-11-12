@@ -81,7 +81,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             });
             Menus.Add(new Entities.Menu
             {
-                Name = "读卡器",
+                Name = "采集设备",
                 Identify = "RFIDManage"
             });
             Menus.Add(new Entities.Menu
