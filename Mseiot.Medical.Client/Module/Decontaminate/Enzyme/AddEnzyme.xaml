@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="清洗梅名称" Style="{StaticResource editorFormItemText}"/>
+                <TextBlock Text="清洗酶名称" Style="{StaticResource editorFormItemText}"/>
                 <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"/>
 
             </StackPanel>
