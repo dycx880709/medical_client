@@ -201,6 +201,9 @@
     <Compile Include="Module\Decontaminate\System\DecontaminateSetting.xaml.cs">
       <DependentUpon>DecontaminateSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingModule\BackupDBManage.xaml.cs">
+      <DependentUpon>BackupDBManage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StatisticsModule\ConditionStatisticsView.xaml.cs">
       <DependentUpon>ConditionStatisticsView.xaml</DependentUpon>
     </Compile>
@@ -353,6 +356,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Module\Decontaminate\System\DecontaminateSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SettingModule\BackupDBManage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

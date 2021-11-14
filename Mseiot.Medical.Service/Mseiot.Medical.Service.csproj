@@ -59,6 +59,7 @@
     <Compile Include="Entities\MedicalWord.cs" />
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\PatientInfo.cs" />
+    <Compile Include="Entities\SQLInfo.cs" />
     <Compile Include="Entities\StatisticsType.cs" />
     <Compile Include="Entities\SystemSetting.cs" />
     <Compile Include="Entities\Role.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AppointmentProxy.cs" />
     <Compile Include="Services\DecontaminateFlowProxy.cs" />
+    <Compile Include="Services\BackupProxy.cs" />
     <Compile Include="Services\EnaymeProxy.cs" />
     <Compile Include="Services\EndoscopeProxy.cs" />
     <Compile Include="Services\ConsultingRoomProxy.cs" />
