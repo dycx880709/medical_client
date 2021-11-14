@@ -511,6 +511,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DLL\LiveCharts.Geared.dll" />
+    <Resource Include="Images\Icon\download.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

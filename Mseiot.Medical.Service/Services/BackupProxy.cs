@@ -21,7 +21,10 @@ namespace Mseiot.Medical.Service.Services
             return await HttpProxy.DeleteMessage<bool>("/api/backup/RemoveDBRecords", new { paths = string.Join(",", paths) });
         }
 
+        public async Task<MsResult<bool>> DownloadDBRecord(string path,string localFilePath)
+        {
+            return await HttpProxy.DownloadFile("/backupdb/" + path, localFilePath);
+        }
 
-        
     }
 }
