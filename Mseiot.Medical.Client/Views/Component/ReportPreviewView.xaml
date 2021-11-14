@@ -66,7 +66,7 @@
                             <TextBlock Style="{StaticResource editorFormItemText}" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="年   龄:" Grid.Column="4" Grid.Row="1"/>
                             <TextBlock Style="{StaticResource editorFormItemText}" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="部   位:" Grid.Column="6" Grid.Row="1"/>
                             <Border Grid.Row="2" Grid.ColumnSpan="8" BorderThickness="0,0,0,3" BorderBrush="{StaticResource Color_Border_Primary}"/>
-                            <TextBlock Style="{StaticResource editorFormItemText}" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="内镜型号：" Grid.Row="2"/>
+                            <TextBlock Style="{StaticResource editorFormItemText}" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="内镜型号:" Grid.Row="2"/>
                             <TextBlock Style="{StaticResource editorFormItemText}" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="主   诉:" Grid.Column="2" Grid.Row="2"/>
 
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Appointment.Number}" VerticalAlignment="Center"/>
@@ -75,7 +75,7 @@
                             <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding Appointment.Birthday}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding BodyPart}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Appointment.Number}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Endoscope.Model}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="7" Text="{Binding PatientTask}" VerticalAlignment="Center"/>
                         </Grid>
                         <StackPanel x:Name="sp_standard" Grid.Row="1">
