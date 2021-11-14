@@ -134,7 +134,7 @@ namespace MM.Medical.Client.Module.Decontaminate
         private void ShowSetting(object sender, EventArgs e)
         {
             DecontaminateSetting decontaminateSetting = new DecontaminateSetting();
-            ContentWindow.Show(decontaminateSetting);
+            ContentWindow.Show(decontaminateSetting,"设置");
         }
 
         #endregion
