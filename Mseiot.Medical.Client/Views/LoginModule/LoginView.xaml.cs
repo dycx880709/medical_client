@@ -37,14 +37,6 @@ namespace MM.Medical.Client.Views
                 if (LocalSetting.AutoLogin)
                     Login();
             }
-
-
-            //sk.Keys.AddRange(new List<string> { "+", "-", "×", "÷", "/", "±", "＝", "≠", "≈", "＜", "＞", "≤", "≥" });
-           // sk.Keys.AddRange(new List<string> { "cm", "mm", "m/s", "cm/s", "m²", "cm²", "nm²" });
-            //sk.Keys.AddRange(new List<string> { "%", "‰" });
-            //sk.Keys.AddRange(new List<string> { "℃", "°" });
-            //sk.Keys.AddRange(new List<string> { "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ" });
-            //sk.Keys.AddRange(new List<string> { "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ" , "ω" });
         }
 
         private async Task Updater()

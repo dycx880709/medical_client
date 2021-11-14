@@ -86,11 +86,23 @@ namespace MM.Medical.Client.Views
         private void ExaminationPartView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= ExaminationPartView_Loaded;
+            AddSoftKeyboard();
             this.Loading = this.Loading ?? this.cl;
             GetSystemSetting();
             GetBaseWords();
             GetMedicalDatas();
             this.DataContext = this;
+        }
+
+        private void AddSoftKeyboard()
+        {
+            sk.Keys.AddRange(new List<string> { "+", "-", "×", "÷", "/", "±", "＝", "≠", "≈", "＜", "＞", "≤", "≥" });
+            sk.Keys.AddRange(new List<string> { "cm", "mm", "m/s", "cm/s", "m²", "cm²", "nm²" });
+            sk.Keys.AddRange(new List<string> { "%", "‰" });
+            sk.Keys.AddRange(new List<string> { "℃", "°" });
+            sk.Keys.AddRange(new List<string> { "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ" });
+            sk.Keys.AddRange(new List<string> { "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω" });
+            sk.NotifyKey += Sk_NotifyKey;
         }
 
         private void GetSystemSetting()
@@ -187,7 +199,19 @@ namespace MM.Medical.Client.Views
                 if (title.Equals("内镜所见") || title.Equals("镜下诊断"))
                     ti_template.IsSelected = true;
                 else ti_word.IsSelected = true;
+                cgb_word.Visibility = Visibility.Visible;
             }
+        }
+
+        private void Sk_NotifyKey(object sender, string e)
+        {
+            if (Keyboard.FocusedElement is TextBox tb)
+                tb.Text += e;
+        }
+
+        private void CloseWord_Click(object sender, RoutedEventArgs e)
+        {
+            cgb_word.Visibility = Visibility.Collapsed;
         }
 
         private void MedicalWord_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -444,6 +468,5 @@ namespace MM.Medical.Client.Views
                 player.Position = TimeSpan.Zero;
             }
         }
-
     }
 }
