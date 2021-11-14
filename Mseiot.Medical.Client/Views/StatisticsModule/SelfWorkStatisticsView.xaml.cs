@@ -60,7 +60,12 @@ namespace MM.Medical.Client.Views
             this.Loaded += SelfWorkStatisticsView_Loaded;
             this.DataContext = this;
         }
-        public Func<double, string> Formatter { get; set; } = t => TimeHelper.FromUnixTime(Convert.ToInt64(t)).ToShortDateString();
+        public Func<double, string> Formatter { get; set; } = t =>
+        {
+            var dateTime = TimeHelper.FromUnixTime(Convert.ToInt64(t));
+            var format = dateTime.ToShortDateString();
+            return format;
+        };
         private void SelfWorkStatisticsView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= SelfWorkStatisticsView_Loaded;
@@ -69,7 +74,7 @@ namespace MM.Medical.Client.Views
 
         private void ChartType_Click(object sender, RoutedEventArgs e)
         {
-            if (chart.Series.Count > 0 && chart.Series[0] is Series series && series.Values is ChartValues<TimeResult> datas)
+            if (chart.Series.Count > 0 && chart.Series[0] is Series series && series.Values is IList<TimeResult> datas)
                 ReloadChart(datas);
         }
 
@@ -85,29 +90,34 @@ namespace MM.Medical.Client.Views
                 doctorID: CacheHelper.CurrentUser.UserID,
                 consultingName: CacheHelper.ConsultingRoomName));
             if (result.IsSuccess) 
-                ReloadChart(new ChartValues<TimeResult>(result.Content));
+                ReloadChart(result.Content);
             else 
                 Alert.ShowMessage(true, AlertType.Error, $"获取数据失败,{ result.Error }");
         }
 
-        private void ReloadChart(ChartValues<TimeResult> datas)
+        private void ReloadChart(IList<TimeResult> datas)
         {
+            var xValues = new ChartValues<string>(datas.Select(t => t.TimeStamp.ToString()));
+            var yValues = new ChartValues<double>(datas.Select(t => (double)t.Count));
             chart.Series.Clear();
-            LoadChartSeries(datas);
-        }
-
-        private void LoadChartSeries(ChartValues<TimeResult> datas)
-        {
+            axisX.MaxValue = datas.Max(t => t.TimeStamp);
+            axisX.MinValue = datas.Min(t => t.TimeStamp);
+            axisX.Labels = xValues;
+            axisY.MaxValue = datas.Max(t => t.Count);
+            axisY.MinValue = datas.Min(t => t.Count);
+            var yStep = (int)((axisY.MaxValue - axisY.MinValue) / yValues.Count);
+            if (yStep == 0) yStep = 1;
+            axisY.Separator = new LiveCharts.Wpf.Separator { Step = yStep };
             switch (this.ChartType)
             {
                 case ChartType.LineSeries:
-                    chart.Series.Add(new LineSeries { Values = datas });
+                    chart.Series.Add(new LineSeries { Values = yValues });
                     break;
                 case ChartType.Bar:
-                    chart.Series.Add(new ColumnSeries { Values = datas });
+                    chart.Series.Add(new ColumnSeries { Values = yValues });
                     break;
                 case ChartType.Pie:
-                    chart.Series.Add(new PieSeries { Values = datas });
+                    chart.Series.Add(new PieSeries { Values = yValues });
                     break;
             }
         }
@@ -130,7 +140,6 @@ namespace MM.Medical.Client.Views
                         while (startDate.Value.DayOfWeek != DayOfWeek.Monday)
                             startDate = startDate.Value.AddDays(-1);
                     }
-                  
                     break;
                 case StatisticsType.CurrentMonth:
                     startDate = new DateTime(endDate.Year, endDate.Month, 1);

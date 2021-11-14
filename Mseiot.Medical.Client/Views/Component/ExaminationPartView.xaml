@@ -8,7 +8,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1080" d:DesignWidth="1920">
 
     <UserControl.Resources>
         <DataTemplate x:Key="ExaminationMediaDataTemplate" DataType="{x:Type entities:ExaminationMedia}">
@@ -398,6 +398,14 @@
                     </controls:CustomGroupBox.Header>
                     <ListBox SelectedValue="{Binding SelectedMedia, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  ItemsSource="{Binding SelectedExamination.Images}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}"/>
+                </controls:CustomGroupBox>
+                <controls:CustomGroupBox x:Name="cgb_word" Visibility="Collapsed" Grid.Row="1" Margin="5,0" Header="特殊字符">
+                    <controls:CustomGroupBox.AttachContent>
+                        <ControlTemplate>
+                            <Button Style="{StaticResource Button_Close}" Foreground="{StaticResource Color_Font_Primary}" Click="CloseWord_Click"/>
+                        </ControlTemplate>
+                    </controls:CustomGroupBox.AttachContent>
+                    <controls:SoftKeyboard x:Name="sk" Margin="5,10"/>
                 </controls:CustomGroupBox>
             </Grid>
         </Grid>

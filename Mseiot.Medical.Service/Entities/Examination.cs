@@ -328,7 +328,9 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("Appointment");
             }
         }
+
         public string DoctorID { get; set; }
+        public Endoscope Endoscope { get; set; }
 
         public ObservableCollection<ExaminationMedia> Images { get; set; }
         public ObservableCollection<ExaminationMedia> Videos { get; set; }

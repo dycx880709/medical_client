@@ -66,10 +66,10 @@
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}">
                 <lvc:CartesianChart x:Name="chart" Grid.Row="0" Background="White" Margin="5,0">
                     <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="检查时间" LabelsRotation="0" LabelFormatter="{Binding Formatter}"/>
+                        <lvc:Axis x:Name="axisX" Title="检查时间" FontSize="{StaticResource NormalFontSize}" LabelsRotation="0" LabelFormatter="{Binding Formatter}"/>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="检查总数" MinValue="0"/>
+                        <lvc:Axis x:Name="axisY" Title="检查总数" FontSize="{StaticResource NormalFontSize}" MinValue="0"/>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
             </Border>
