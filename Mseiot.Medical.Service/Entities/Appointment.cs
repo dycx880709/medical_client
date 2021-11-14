@@ -20,9 +20,8 @@ namespace Mseiot.Medical.Service.Entities
         private AppointmentStatus appointmentStatus;
         private Examination examination;
         private int endoscopeID;
-
-        /// <summary>
-        /// 预约ID
+        private string appointmentType;
+       
         /// </summary>
         public int AppointmentID { get; set; }
         /// <summary>
@@ -124,6 +123,18 @@ namespace Mseiot.Medical.Service.Entities
             {
                 appointmentStatus = value;
                 RaisePropertyChanged("AppointmentStatus");
+            }
+        }
+        /// <summary>
+        /// 检查类型
+        /// </summary>
+        public string AppointmentType
+        {
+            get { return appointmentType; }
+            set
+            {
+                appointmentType = value;
+                RaisePropertyChanged("AppointmentType");
             }
         }
         /// <summary>

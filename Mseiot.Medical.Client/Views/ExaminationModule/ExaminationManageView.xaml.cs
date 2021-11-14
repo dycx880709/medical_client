@@ -177,7 +177,7 @@ namespace MM.Medical.Client.Views
                     TimeHelper.FromUnixTime(startTime),
                     TimeHelper.FromUnixTime(endTime),
                     userInfo: "",
-                    consultingRoomID: consultingRoomId,
+                    consultingRoomName: CacheHelper.ConsultingRoomName,
                     appointmentStatuses: appointmentStatuses.ToArray()));
                 if (result.IsSuccess)
                 {

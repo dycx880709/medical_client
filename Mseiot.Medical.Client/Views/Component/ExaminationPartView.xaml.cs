@@ -144,8 +144,7 @@ namespace MM.Medical.Client.Views
                 "检查体位",
                 "麻醉方法",
                 "检查部位",
-                "术前用药",
-                "检查类型"
+                "术前用药"
             ));
             if (result.IsSuccess)
             {
@@ -158,7 +157,6 @@ namespace MM.Medical.Client.Views
                 cb_hiv.ItemsSource = result.SplitContent("HIV");
                 cb_hcv.ItemsSource = result.SplitContent("HCV");
                 cb_hbasg.ItemsSource = result.SplitContent("HBasg");
-                cb_type.ItemsSource = result.SplitContent("检查类型");
                 cb_body.ItemsSource = BodyParts = result.SplitContent("检查部位");
             }
         }

@@ -17,7 +17,7 @@ namespace Mseiot.Medical.Service.Services
             DateTime? startTime = null, 
             DateTime? endTime = null, 
             string userInfo = "",
-            int consultingRoomID = 0,
+            string consultingRoomName = "",
             AppointmentStatus[] appointmentStatuses = null
         )
         {
@@ -28,7 +28,7 @@ namespace Mseiot.Medical.Service.Services
                 StartTime = startTime != null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
                 EndTime = endTime != null ? TimeHelper.ToUnixTime(endTime.Value) : long.MaxValue,
                 UserInfo = userInfo ?? "",
-                ConsultingRoomID = consultingRoomID,
+                ConsultingRoomName = consultingRoomName,
                 Statuses = appointmentStatuses != null ? string.Join(",", appointmentStatuses.Select(t => (int)t)) : null
             });
         }

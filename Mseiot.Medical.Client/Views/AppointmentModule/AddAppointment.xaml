@@ -43,8 +43,16 @@
                 <TextBox x:Name="dpAppointmentTime" Text="{Binding Appointment.Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock Text="检查类型" Style="{StaticResource editorFormItemText}"/>
+                <ComboBox x:Name="cb_type" Text="{Binding Appointment.AppointmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="预约时间" Style="{StaticResource editorFormItemText}"/>
                 <controls:DateTimePicker SelectedDateTime="{Binding Appointment.AppointmentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock Text="指定诊室" Style="{StaticResource editorFormItemText}"/>
+                <controls:DateTimePicker SelectedDateTime="{Binding Appointment.ConsultingRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">

@@ -55,7 +55,7 @@ namespace MM.Medical.Client.Views
         {
             if (e.Module == Command.Module_Appointment && e.Method == Command.ChangeStatus_Appointment)
             {
-                var appointment = Newtonsoft.Json.JsonConvert.DeserializeObject<Appointment>(System.Text.Encoding.UTF8.GetString(e.Content));
+                var appointment = Newtonsoft.Json.JsonConvert.DeserializeObject<Appointment>(Encoding.UTF8.GetString(e.Content));
                 this.Dispatcher.Invoke(() =>
                 {
                     var condition = Appointments.FirstOrDefault(t => t.AppointmentID.Equals(appointment.AppointmentID));

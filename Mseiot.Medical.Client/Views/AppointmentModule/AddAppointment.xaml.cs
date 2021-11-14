@@ -29,6 +29,20 @@ namespace MM.Medical.Client.Views
             if (rawAppointment.AppointmentID == 0)
                 Appointment.AppointmentTime = TimeHelper.ToUnixTime(DateTime.Now);
             DataContext = this;
+            this.Loaded += AddAppointment_Loaded;
+        }
+
+        private void AddAppointment_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Loaded -= AddAppointment_Loaded;
+            GetAppointTypes();
+        }
+
+        private void GetAppointTypes()
+        {
+            var result = loading.AsyncWait("获取预约类型中,请稍后", SocketProxy.Instance.GetBaseWords("检查类型"));
+            if (result.IsSuccess)
+                cb_type.ItemsSource = result.SplitContent("检查类型");
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

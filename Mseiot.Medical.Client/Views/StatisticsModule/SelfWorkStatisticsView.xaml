@@ -18,11 +18,11 @@
             <StackPanel>
                 <controls:CustomGroupBox Header="统计方式"/>
                     <WrapPanel>
-                        <RadioButton Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentDay}}"/>
-                        <RadioButton Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrenWeek}}" Margin="0,5"/>
-                        <RadioButton Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentMonth}}"/>
-                        <RadioButton Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentYear}}" Margin="0,5" Cursor="Hand"/>
-                        <RadioButton Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}}"/>
+                    <RadioButton Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentDay}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <RadioButton Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrenWeek}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
+                    <RadioButton Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentMonth}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <RadioButton Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentYear}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" Cursor="Hand"/>
+                    <RadioButton Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </WrapPanel>
                 <StackPanel>
                     <StackPanel.Style>

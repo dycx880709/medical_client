@@ -53,7 +53,7 @@ namespace MM.Medical.Client.Core
                 CacheHelper.LocalSetting = JsonConvert.DeserializeObject<LocalSetting>(json);
             }
             else CacheHelper.LocalSetting = new LocalSetting();
-            CacheHelper.VideoPath = Path.Combine(Directory.GetCurrentDirectory(), "videos");
+            CacheHelper.VideoPath = CacheHelper.TempPath;
             if (Directory.Exists(CacheHelper.VideoPath))
                 Directory.Delete(CacheHelper.VideoPath, true);
             Directory.CreateDirectory(CacheHelper.VideoPath);
