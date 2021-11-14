@@ -65,6 +65,8 @@
             </Grid>
             <controls:ChildWindow x:Name="cw" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
             <controls:Loading x:Name="loading"/>
+
+            <controls:SoftKeyboard x:Name="sk" Grid.RowSpan="3" Grid.ColumnSpan="3"/>
         </Grid>
     </Border>
 </controls:BaseWindow>
