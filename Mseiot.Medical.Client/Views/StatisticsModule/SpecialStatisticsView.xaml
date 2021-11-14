@@ -18,7 +18,7 @@
                 <Setter Property="Margin" Value="5"/>
             </Style>
         </Grid.Resources>
-        <controls:CustomGroupBox Header="主任管理/专项统计">
+        <controls:CustomGroupBox Header="主任管理">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>

@@ -35,14 +35,22 @@ namespace MM.Medical.Client.Views
         private void AddAppointment_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= AddAppointment_Loaded;
-            GetAppointTypes();
+            GetAppointInfos();
         }
 
-        private void GetAppointTypes()
+        private void GetAppointInfos()
         {
             var result = loading.AsyncWait("获取预约类型中,请稍后", SocketProxy.Instance.GetBaseWords("检查类型"));
             if (result.IsSuccess)
-                cb_type.ItemsSource = result.SplitContent("检查类型");
+            { 
+                var checkTypes = result.SplitContent("检查类型");
+                cb_type.ItemsSource = checkTypes;
+                if (!string.IsNullOrEmpty(cb_type.Text))
+                    cb_type.SelectedIndex = checkTypes.IndexOf(cb_type.Text);
+            }
+            var result2 = loading.AsyncWait("获取预约诊室中,请稍后", SocketProxy.Instance.GetConsultingRooms());
+            if (result2.IsSuccess)
+                cb_room.ItemsSource = result2.Content;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

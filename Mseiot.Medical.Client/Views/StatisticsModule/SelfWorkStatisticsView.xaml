@@ -17,13 +17,13 @@
         <controls:CustomGroupBox Header="统计条件">
             <StackPanel>
                 <controls:CustomGroupBox Header="统计方式"/>
-                    <WrapPanel>
+                    <StackPanel>
                     <RadioButton Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentDay}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <RadioButton Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrenWeek}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
                     <RadioButton Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentMonth}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <RadioButton Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentYear}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" Cursor="Hand"/>
                     <RadioButton Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </WrapPanel>
+                    </StackPanel>
                 <StackPanel>
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
@@ -50,8 +50,8 @@
                 </StackPanel>
                 <controls:CustomGroupBox Header="图表类型">
                     <WrapPanel>
-                        <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.LineSeries}}" GroupName="ChartType" Content="曲线图"/>
                         <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.Bar}}" GroupName="ChartType" Content="柱形图" Margin="0,5"/>
+                        <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.LineSeries}}" GroupName="ChartType" Content="曲线图"/>
                         <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.Pie}}" GroupName="ChartType" Content="饼状图"/>
                     </WrapPanel>
                 </controls:CustomGroupBox>
@@ -64,7 +64,14 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}">
-                <lvc:CartesianChart x:Name="chart" Grid.Row="0"/>
+                <lvc:CartesianChart x:Name="chart" Grid.Row="0" Background="White" Margin="5,0">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="检查时间" LabelsRotation="0" LabelFormatter="{Binding Formatter}"/>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="检查总数" MinValue="0"/>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
             </Border>
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>

@@ -39,7 +39,7 @@ namespace Mseiot.Medical.Service.Services
             string doctorID = "",
             string doctorName = "",
             string examinationResult = "",
-            string cosultingName = ""
+            string consultingName = ""
         )
         {
             return await HttpProxy.GetMessage<TimeResultCollection>("/api/examination/getexaminationcountbytime", new
@@ -51,7 +51,7 @@ namespace Mseiot.Medical.Service.Services
                 DoctorID = doctorID,
                 DoctorName = doctorName,
                 ExaminationResult = examinationResult,
-                CosultingName = cosultingName
+                ConsultingName = consultingName
         });
         }
             

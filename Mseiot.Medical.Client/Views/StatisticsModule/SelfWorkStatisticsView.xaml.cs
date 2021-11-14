@@ -1,7 +1,9 @@
-﻿using LiveCharts.Geared;
+﻿using LiveCharts;
+using LiveCharts.Geared;
 using LiveCharts.Wpf;
 using MM.Medical.Client.Core;
 using Ms.Controls;
+using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
@@ -24,10 +26,10 @@ namespace MM.Medical.Client.Views
 {
     public enum ChartType
     {
-        [Description("曲线图")]
-        LineSeries,
         [Description("柱形图")]
         Bar,
+        [Description("曲线图")]
+        LineSeries,
         [Description("饼状图")]
         Pie
     }
@@ -49,7 +51,7 @@ namespace MM.Medical.Client.Views
             get { return (ChartType)GetValue(ChartTypeProperty); }
             set { SetValue(ChartTypeProperty, value); }
         }
-        public static readonly DependencyProperty ChartTypeProperty = DependencyProperty.Register("ChartType", typeof(ChartType), typeof(SelfWorkStatisticsView), new PropertyMetadata(ChartType.LineSeries));
+        public static readonly DependencyProperty ChartTypeProperty = DependencyProperty.Register("ChartType", typeof(ChartType), typeof(SelfWorkStatisticsView), new PropertyMetadata(ChartType.Bar));
 
 
         public SelfWorkStatisticsView()
@@ -58,7 +60,7 @@ namespace MM.Medical.Client.Views
             this.Loaded += SelfWorkStatisticsView_Loaded;
             this.DataContext = this;
         }
-
+        public Func<double, string> Formatter { get; set; } = t => TimeHelper.FromUnixTime(Convert.ToInt64(t)).ToShortDateString();
         private void SelfWorkStatisticsView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= SelfWorkStatisticsView_Loaded;
@@ -67,11 +69,8 @@ namespace MM.Medical.Client.Views
 
         private void ChartType_Click(object sender, RoutedEventArgs e)
         {
-            if (chart.Series[0] is Series series && series.Values is GearedValues<TimeResult> datas)
-            {
-                chart.Series.Clear();
-                LoadChartSeries(datas);
-            }
+            if (chart.Series.Count > 0 && chart.Series[0] is Series series && series.Values is ChartValues<TimeResult> datas)
+                ReloadChart(datas);
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
@@ -82,32 +81,56 @@ namespace MM.Medical.Client.Views
                 timeInterval.Item1,
                 timeInterval.Item2,
                 this.StatisticsType,
-                "",
-                CacheHelper.CurrentUser.UserID));
-            if (result.IsSuccess) LoadExaminationDatas(result.Content);
-            else Alert.ShowMessage(true, AlertType.Error, $"获取数据失败,{ result.Error }");
+                userInfo: "",
+                doctorID: CacheHelper.CurrentUser.UserID,
+                consultingName: CacheHelper.ConsultingRoomName));
+            if (result.IsSuccess) 
+                ReloadChart(new ChartValues<TimeResult>(result.Content));
+            else 
+                Alert.ShowMessage(true, AlertType.Error, $"获取数据失败,{ result.Error }");
         }
 
-        private void LoadExaminationDatas(TimeResultCollection content)
+        private void ReloadChart(ChartValues<TimeResult> datas)
         {
             chart.Series.Clear();
-            var datas = new GearedValues<TimeResult>(content);
             LoadChartSeries(datas);
+        }
+
+        private void LoadChartSeries(ChartValues<TimeResult> datas)
+        {
+            switch (this.ChartType)
+            {
+                case ChartType.LineSeries:
+                    chart.Series.Add(new LineSeries { Values = datas });
+                    break;
+                case ChartType.Bar:
+                    chart.Series.Add(new ColumnSeries { Values = datas });
+                    break;
+                case ChartType.Pie:
+                    chart.Series.Add(new PieSeries { Values = datas });
+                    break;
+            }
         }
 
         private (DateTime?, DateTime?) GetStartEndTime()
         {
-            var endDate = DateTime.Now.Date;
+            var endDate = DateTime.Now.Date.AddDays(1);
             DateTime? startDate = null;
             switch (this.StatisticsType)
             {
                 case StatisticsType.CurrentDay:
-                    startDate = endDate.AddDays(-1);
+                    startDate = endDate;
                     break;
                 case StatisticsType.CurrenWeek:
-                    startDate = endDate;
-                    while (startDate.Value.DayOfWeek != DayOfWeek.Monday)
-                        startDate = startDate.Value.AddDays(-1);
+                    if (endDate.DayOfWeek == DayOfWeek.Monday)
+                        startDate = endDate.AddDays(-7);
+                    else
+                    {
+                        startDate = endDate;
+                        while (startDate.Value.DayOfWeek != DayOfWeek.Monday)
+                            startDate = startDate.Value.AddDays(-1);
+                    }
+                  
                     break;
                 case StatisticsType.CurrentMonth:
                     startDate = new DateTime(endDate.Year, endDate.Month, 1);
@@ -134,22 +157,6 @@ namespace MM.Medical.Client.Views
                     break;
             }
             return (startDate, endDate);
-        }
-
-        private void LoadChartSeries(GearedValues<TimeResult> datas)
-        {
-            switch (this.ChartType)
-            {
-                case ChartType.LineSeries:
-                    chart.Series.Add(new GLineSeries { Values = datas });
-                    break;
-                case ChartType.Bar:
-                    chart.Series.Add(new GColumnSeries { Values = datas });
-                    break;
-                case ChartType.Pie:
-                    chart.Series.Add(new GCandleSeries { Values = datas });
-                    break;
-            }
         }
 
         private void GetDateDatas()

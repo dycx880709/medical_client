@@ -21,7 +21,8 @@ namespace Mseiot.Medical.Service.Entities
         private Examination examination;
         private int endoscopeID;
         private string appointmentType;
-       
+        private string consultingRoomName;
+
         /// </summary>
         public int AppointmentID { get; set; }
         /// <summary>
@@ -150,7 +151,18 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("Examination");
             }
         }
-        public string ConsultingRoomName { get; set; }
+        /// <summary>
+        /// 预约诊室
+        /// </summary>
+        public string ConsultingRoomName
+        {
+            get { return consultingRoomName; }
+            set
+            { 
+                consultingRoomName = value;
+                RaisePropertyChanged("ConsultingRoomName");
+            }
+        }
     }
 
     public enum AppointmentStatus

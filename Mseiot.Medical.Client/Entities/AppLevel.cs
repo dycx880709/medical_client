@@ -42,7 +42,7 @@ namespace MM.Medical.Client.Entities
                         new AppLevel { Name="检查中心", Level = "31", Identify="MM.Medical.Client.Views.ExaminationManageView", Reusability=true },
                         new AppLevel { Name="病历中心", Level = "32", Identify="MM.Medical.Client.Views.MedicalManageView" },
                         new AppLevel { Name="我的工作台", Level="33", Identify="MM.Medical.Client.Views.SelfWorkStatisticsView" },
-                        new AppLevel { Name="专项统计", Level="34", Identify="MM.Medical.Client.Views.SpecialStatisticsView" },
+                        new AppLevel { Name="主任管理", Level="34", Identify="MM.Medical.Client.Views.SpecialStatisticsView" },
                         new AppLevel 
                         {
                             Name = "系统管理", Level = "35",

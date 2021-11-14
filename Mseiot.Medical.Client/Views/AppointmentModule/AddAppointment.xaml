@@ -52,7 +52,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="指定诊室" Style="{StaticResource editorFormItemText}"/>
-                <controls:DateTimePicker SelectedDateTime="{Binding Appointment.ConsultingRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+                <ComboBox x:Name="cb_room" DisplayMemberPath="Name" SelectedValuePath="Name" SelectedValue="{Binding Appointment.ConsultingRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
