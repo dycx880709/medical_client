@@ -112,19 +112,9 @@ namespace MM.Medical.Client.Views
                 else record.CopyTo(condition);
                 CacheHelper.CurrentUser = result.Content;
                 CacheHelper.SaveLocalSetting();
-                var authorities = CacheHelper.CurrentUser.Authority;
-                if (authorities != null && authorities.Split(';').Any(t => t.Equals("2")))
-                {
-                    Module.Decontaminate.MainWindow dmw = new Module.Decontaminate.MainWindow();
-                    Application.Current.MainWindow = dmw;
-                    dmw.Show();
-                }
-                else
-                {
-                    MainWindow mw = new MainWindow();
-                    Application.Current.MainWindow = mw;
-                    mw.Show();
-                }
+                MainWindow mw = new MainWindow();
+                Application.Current.MainWindow = mw;
+                mw.Show();
                 this.Close();
             }
             else if (result.IsConnectError)

@@ -7,12 +7,9 @@
         xmlns:local="clr-namespace:MM.Medical.Client"
         xmlns:converter="clr-namespace:MM.Medical.Client.Converters"
         xmlns:core="clr-namespace:MM.Medical.Client.Core"
-        WindowState="Maximized" mc:Ignorable="d" HeaderBackground="Transparent" HeaderHeight="80"
+        WindowState="Maximized" mc:Ignorable="d" 
+        HeaderBackground="Transparent" HeaderHeight="80"
         Title="{x:Static core:CacheHelper.ProductName}">
-
-    <controls:BaseWindow.Resources>
-        <converter:ItemIndexToBooleanConverter x:Key="ItemIndexToBooleanConverter"/>
-    </controls:BaseWindow.Resources>
 
     <controls:BaseWindow.Header>
         <Grid Grid.Row="0">

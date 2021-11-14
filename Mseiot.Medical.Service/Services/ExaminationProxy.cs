@@ -31,8 +31,7 @@ namespace Mseiot.Medical.Service.Services
             });
         }
 
-        public async Task<MsResult<TimeResultCollection>> GetExaminationCountByTime(int index,
-            int count,
+        public async Task<MsResult<TimeResultCollection>> GetExaminationCountByTime(
             DateTime? startTime = null,
             DateTime? endTime = null,
             int timeType = 0,
@@ -42,8 +41,6 @@ namespace Mseiot.Medical.Service.Services
         {
             return await HttpProxy.GetMessage<TimeResultCollection>("/api/examination/getexaminationcountbytime", new
             {
-                Index = index,
-                Count = count,
                 StartTime = startTime != null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
                 EndTime = endTime != null ? TimeHelper.ToUnixTime(endTime.Value) : long.MaxValue,
                 TimeType = timeType,

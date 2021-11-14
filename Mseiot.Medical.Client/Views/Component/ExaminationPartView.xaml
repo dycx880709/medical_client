@@ -389,7 +389,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <TextBlock Text="段"/>
+                            <TextBlock Text="张"/>
                         </StackPanel>
                     </controls:CustomGroupBox.Header>
                     <ListBox SelectedValue="{Binding SelectedMedia, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 

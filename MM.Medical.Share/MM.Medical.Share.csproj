@@ -45,13 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\EnumDescriptionConvert.cs" />
+    <Compile Include="Converters\ObjectEqualParamConverter.cs" />
     <Compile Include="Converters\SexConverter.cs" />
     <Compile Include="Converters\EnumToIntConverter.cs" />
     <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\IntToFormatString.cs" />
     <Compile Include="Converters\TimeStampToDateTimeConverter.cs" />
     <Compile Include="Converters\TimeStampToStringFormatConverter.cs" />
-    <Compile Include="Converters\TrueToFalseConverter.cs" />
+    <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\YNToCNConvert.cs" />
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

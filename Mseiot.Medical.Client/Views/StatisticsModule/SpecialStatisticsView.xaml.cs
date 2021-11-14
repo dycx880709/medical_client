@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ms.Libs.SysLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,30 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class SpecialStatisticsView : UserControl
     {
+        public StatisticsType StatisticsType
+        {
+            get { return (StatisticsType)GetValue(StatisticsTypeProperty); }
+            set { SetValue(StatisticsTypeProperty, value); }
+        }
+        public static readonly DependencyProperty StatisticsTypeProperty = DependencyProperty.Register("StatisticsType", typeof(StatisticsType), typeof(SpecialStatisticsView), new PropertyMetadata(StatisticsType.CurrentDay));
+
+        public ChartType ChartType
+        {
+            get { return (ChartType)GetValue(ChartTypeProperty); }
+            set { SetValue(ChartTypeProperty, value); }
+        }
+        public static readonly DependencyProperty ChartTypeProperty = DependencyProperty.Register("ChartType", typeof(ChartType), typeof(SpecialStatisticsView), new PropertyMetadata(ChartType.LineSeries));
+
+
         public SpecialStatisticsView()
         {
             InitializeComponent();
+            this.DataContext = this;
+        }
+
+        private void ChartType_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
