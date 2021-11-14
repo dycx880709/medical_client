@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+            xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" 
@@ -17,18 +18,18 @@
             <StackPanel>
                 <controls:CustomGroupBox Header="统计方式"/>
                     <WrapPanel>
-                        <RadioButton Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrentDay}}"/>
-                        <RadioButton Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrenWeek}}" Margin="0,5"/>
-                        <RadioButton Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrentMonth}}"/>
-                        <RadioButton Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrentYear}}" Margin="0,5"/>
-                        <RadioButton Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.Definition}}"/>
+                        <RadioButton Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentDay}}"/>
+                        <RadioButton Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrenWeek}}" Margin="0,5"/>
+                        <RadioButton Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentMonth}}"/>
+                        <RadioButton Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentYear}}" Margin="0,5" Cursor="Hand"/>
+                        <RadioButton Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}}"/>
                     </WrapPanel>
                 <StackPanel>
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.Definition}}" Value="True">
+                                <DataTrigger Binding="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}}" Value="True">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>

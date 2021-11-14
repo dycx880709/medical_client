@@ -22,20 +22,6 @@ using System.Windows.Shapes;
 
 namespace MM.Medical.Client.Views
 {
-    public enum StatisticsType
-    {
-        [Description("本日")]
-        CurrentDay,
-        [Description("本周")]
-        CurrenWeek,
-        [Description("本月")]
-        CurrentMonth,
-        [Description("本年")]
-        CurrentYear,
-        [Description("自定义")]
-        Definition
-    }
-
     public enum ChartType
     {
         [Description("曲线图")]
@@ -93,9 +79,9 @@ namespace MM.Medical.Client.Views
             var count = dg_examinations.GetFullCountWithoutScroll();
             var timeInterval = GetStartEndTime();
             var result = loading.AsyncWait("获取数据中,请稍后", SocketProxy.Instance.GetExaminationCountByTime(
+                timeInterval.Item1,
                 timeInterval.Item2,
-                timeInterval.Item3,
-                (int)this.StatisticsType,
+                this.StatisticsType,
                 "",
                 CacheHelper.CurrentUser.UserID));
             if (result.IsSuccess) LoadExaminationDatas(result.Content);
@@ -109,53 +95,45 @@ namespace MM.Medical.Client.Views
             LoadChartSeries(datas);
         }
 
-        private (int, DateTime?, DateTime?) GetStartEndTime()
+        private (DateTime?, DateTime?) GetStartEndTime()
         {
             var endDate = DateTime.Now.Date;
             DateTime? startDate = null;
-            int timeType = 0;
             switch (this.StatisticsType)
             {
                 case StatisticsType.CurrentDay:
                     startDate = endDate.AddDays(-1);
-                    timeType = -1;
                     break;
                 case StatisticsType.CurrenWeek:
                     startDate = endDate;
-                    while (endDate.DayOfWeek != DayOfWeek.Monday)
-                        endDate.AddDays(-1);
-                    timeType = 0;
+                    while (startDate.Value.DayOfWeek != DayOfWeek.Monday)
+                        startDate = startDate.Value.AddDays(-1);
                     break;
                 case StatisticsType.CurrentMonth:
                     startDate = new DateTime(endDate.Year, endDate.Month, 1);
-                    timeType = 0;
                     break;
                 case StatisticsType.CurrentYear:
                     startDate = new DateTime(endDate.Year, 1, 1);
-                    timeType = 1;
                     break;
                 case StatisticsType.Definition:
                     if (cb_day.SelectedIndex != 0)
                     {
                         startDate = new DateTime((int)cb_year.SelectedValue, cb_month.SelectedIndex, cb_day.SelectedIndex);
                         endDate = startDate.Value.AddDays(1);
-                        timeType = 0;
                     }
                     else if (cb_month.SelectedIndex != 0)
                     {
                         startDate = new DateTime((int)cb_year.SelectedValue, cb_month.SelectedIndex, 1);
                         endDate = startDate.Value.AddMonths(1);
-                        timeType = 0;
                     }
                     else
                     {
                         startDate = new DateTime((int)cb_year.SelectedValue, 1, 1);
                         endDate = startDate.Value.AddYears(1);
-                        timeType = 1;
                     }
                     break;
             }
-            return (timeType, startDate, endDate);
+            return (startDate, endDate);
         }
 
         private void LoadChartSeries(GearedValues<TimeResult> datas)
@@ -193,7 +171,7 @@ namespace MM.Medical.Client.Views
                     var lastMonth = currentMonth.AddMonths(1);
                     var totalDays = (lastMonth - currentMonth).TotalDays;
                     var days = new List<string>() { "全部" };
-                    for (int i = 1; i < totalDays; i++)
+                    for (int i = 1; i <= totalDays; i++)
                         days.Add(i.ToString());
                     cb_day.ItemsSource = days;
                     cb_day.SelectedIndex = 0;

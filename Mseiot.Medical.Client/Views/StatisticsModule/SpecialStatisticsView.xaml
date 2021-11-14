@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
+             xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
@@ -24,21 +25,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
-                    <!--<StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="统计项目" Style="{StaticResource editorFormItemText}"/>
-                        <ComboBox>
-                            <ComboBoxItem>诊断医生工作量统计</ComboBoxItem>
-                            <ComboBoxItem>送检医生工作量统计</ComboBoxItem>
-                            <ComboBoxItem>检查医生检查项目分类统计</ComboBoxItem>
-                            <ComboBoxItem>患者性别统计</ComboBoxItem>
-                            <ComboBoxItem>患者年龄统计</ComboBoxItem>
-                            <ComboBoxItem>患者初复诊统计</ComboBoxItem>
-                            <ComboBoxItem>病区工作量统计</ComboBoxItem>
-                            <ComboBoxItem>设备工作量统计</ComboBoxItem>
-                            <ComboBoxItem>可是工作量统计</ComboBoxItem>
-                        </ComboBox>
-                    </StackPanel>-->
-                    <controls:CustomGroupBox Header="统计项目">
+                    <!--<controls:CustomGroupBox Header="统计项目">
                         <StackPanel Orientation="Vertical" Style="{StaticResource editorFormItem}">
                             <RadioButton GroupName="StatisticsType" Content="诊断医生工作量统计"/>
                             <RadioButton GroupName="StatisticsType" Content="送检医生工作量统计"/>
@@ -50,32 +37,22 @@
                             <RadioButton GroupName="StatisticsType" Content="设备工作量统计"/>
                             <RadioButton GroupName="StatisticsType" Content="可视工作量统计"/>
                         </StackPanel>
-                    </controls:CustomGroupBox>
+                    </controls:CustomGroupBox>-->
                     <controls:CustomGroupBox Header="统计方式">
                         <StackPanel>
                             <WrapPanel>
-                                <RadioButton GroupName="TimeType" Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrentDay}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <RadioButton GroupName="TimeType" Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrenWeek}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" Cursor="Hand"/>
-                                <RadioButton GroupName="TimeType" Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrentMonth}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <RadioButton GroupName="TimeType" Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrentYear}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
-                                <RadioButton GroupName="TimeType" Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.Definition}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <RadioButton GroupName="TimeType" Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentDay}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Cursor="Hand"/>
+                                <RadioButton GroupName="TimeType" Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrenWeek}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
+                                <RadioButton GroupName="TimeType" Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentMonth}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <RadioButton GroupName="TimeType" Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentYear}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
+                                <RadioButton GroupName="TimeType" Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </WrapPanel>
-                            <!--<StackPanel Style="{StaticResource editorFormItem}">
-                                <TextBlock Text="统计方式" Style="{StaticResource editorFormItemText}"/>
-                                <ComboBox x:Name="cb_time">
-                                    <ComboBoxItem>本日</ComboBoxItem>
-                                    <ComboBoxItem>本周</ComboBoxItem>
-                                    <ComboBoxItem>本月</ComboBoxItem>
-                                    <ComboBoxItem>本年</ComboBoxItem>
-                                    <ComboBoxItem>自定义</ComboBoxItem>
-                                </ComboBox>
-                            </StackPanel>-->
                             <StackPanel>
                                 <StackPanel.Style>
                                     <Style TargetType="{x:Type StackPanel}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.Definition}}" Value="True">
+                                            <DataTrigger Binding="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}}" Value="True">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -101,7 +78,7 @@
                             <Style TargetType="{x:Type StackPanel}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.Definition}}" Value="True">
+                                    <DataTrigger Binding="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}}" Value="True">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -127,15 +104,36 @@
                             <RadioButton Click="ChartType_Click" GroupName="ChartType" Content="饼状图" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.Pie}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </WrapPanel>
                     </controls:CustomGroupBox>
-                    <Button Content="开始统计" Margin="0,20" IsDefault="True"/>
+                    <controls:CustomGroupBox Header="筛选条件">
+                        <controls:CustomGroupBox.AttachContent>
+                            <ControlTemplate>
+                                <Button Content="重置" Click="Reset_Click"/>
+                            </ControlTemplate>
+                        </controls:CustomGroupBox.AttachContent>
+                        <StackPanel>
+                            <StackPanel Style="{StaticResource editorFormItem}">
+                                <TextBlock Text="检查结果" Style="{StaticResource editorFormItemText}"/>
+                                <TextBox Text="{Binding ExaminationResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource editorFormItem}">
+                                <TextBlock Text="检查医生" Style="{StaticResource editorFormItemText}"/>
+                                <TextBox Text="{Binding DoctorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource editorFormItem}">
+                                <TextBlock Text="检查诊室" Style="{StaticResource editorFormItemText}"/>
+                                <TextBox Text="{Binding CosultingName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </controls:CustomGroupBox>
+                    <Button Content="开始统计" Margin="0,20" IsDefault="True" Click="Start_Click"/>
                 </StackPanel>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <lvc:CartesianChart Grid.Row="0" Margin="5"/>
-                    <DataGrid Grid.Row="1" Margin="5">
+                    <lvc:CartesianChart x:Name="chart" Grid.Row="0" Margin="5"/>
+                    <DataGrid x:Name="dg_examinations" Grid.Row="1" Margin="5">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*" Header="科室名称"/>
                             <DataGridTextColumn Width="*" Header="检查总人数"/>
@@ -145,5 +143,6 @@
                 </Grid>
             </Grid>
         </controls:CustomGroupBox>
+        <controls:Loading x:Name="loading"/>
     </Grid>
 </UserControl>

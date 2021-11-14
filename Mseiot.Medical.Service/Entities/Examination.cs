@@ -34,7 +34,8 @@ namespace Mseiot.Medical.Service.Entities
         private int examinationID;
         private int endoscopeID;
         private Appointment appointment;
-        private string patientTask;
+        private string patientTalk;
+        private string examinationType;
 
         /// <summary>
         /// 检查ID
@@ -307,13 +308,25 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 主诉
         /// </summary>
-        public string PatientTask
+        public string PatientTalk
         {
-            get { return patientTask; }
+            get { return patientTalk; }
             set
             {
-                patientTask = value;
-                RaisePropertyChanged("PatientTask");
+                patientTalk = value;
+                RaisePropertyChanged("PatientTalk");
+            }
+        }
+        /// <summary>
+        /// 检查类型
+        /// </summary>
+        public string ExaminationType
+        {
+            get { return examinationType; }
+            set
+            {
+                examinationType = value;
+                RaisePropertyChanged("ExaminationType");
             }
         }
         /// <summary>
@@ -329,6 +342,10 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
         public string DoctorID { get; set; }
+        /// <summary>
+        /// 检查诊室
+        /// </summary>
+        public string ConsultingName { get; set; }
 
         public ObservableCollection<ExaminationMedia> Images { get; set; }
         public ObservableCollection<ExaminationMedia> Videos { get; set; }

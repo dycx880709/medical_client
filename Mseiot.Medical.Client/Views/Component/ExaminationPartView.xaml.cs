@@ -144,18 +144,23 @@ namespace MM.Medical.Client.Views
                 "检查体位",
                 "麻醉方法",
                 "检查部位",
-                "术前用药"
+                "术前用药",
+                "检查类型"
             ));
-            cb_bodyLoc.ItemsSource = result.SplitContent("检查体位");
-            cb_anesthesia.ItemsSource = result.SplitContent("麻醉方法");
-            cb_preoperative.ItemsSource = result.SplitContent("术前用药");
-            cb_insert.ItemsSource = result.SplitContent("插入途径");
-            cb_org.ItemsSource = result.SplitContent("组织采取");
-            cb_cell.ItemsSource = result.SplitContent("细胞采取");
-            cb_hiv.ItemsSource = result.SplitContent("HIV");
-            cb_hcv.ItemsSource = result.SplitContent("HCV");
-            cb_hbasg.ItemsSource = result.SplitContent("HBasg");
-            cb_body.ItemsSource = BodyParts = result.SplitContent("检查部位");
+            if (result.IsSuccess)
+            {
+                cb_bodyLoc.ItemsSource = result.SplitContent("检查体位");
+                cb_anesthesia.ItemsSource = result.SplitContent("麻醉方法");
+                cb_preoperative.ItemsSource = result.SplitContent("术前用药");
+                cb_insert.ItemsSource = result.SplitContent("插入途径");
+                cb_org.ItemsSource = result.SplitContent("组织采取");
+                cb_cell.ItemsSource = result.SplitContent("细胞采取");
+                cb_hiv.ItemsSource = result.SplitContent("HIV");
+                cb_hcv.ItemsSource = result.SplitContent("HCV");
+                cb_hbasg.ItemsSource = result.SplitContent("HBasg");
+                cb_type.ItemsSource = result.SplitContent("检查类型");
+                cb_body.ItemsSource = BodyParts = result.SplitContent("检查部位");
+            }
         }
 
         private void SelectedBody_Click(object sender, RoutedEventArgs e)

@@ -34,21 +34,27 @@ namespace Mseiot.Medical.Service.Services
         public async Task<MsResult<TimeResultCollection>> GetExaminationCountByTime(
             DateTime? startTime = null,
             DateTime? endTime = null,
-            int timeType = 0,
+            StatisticsType timeType = 0,
             string userInfo = "",
-            string doctorID = ""
+            string doctorID = "",
+            string doctorName = "",
+            string examinationResult = "",
+            string cosultingName = ""
         )
         {
             return await HttpProxy.GetMessage<TimeResultCollection>("/api/examination/getexaminationcountbytime", new
             {
                 StartTime = startTime != null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
                 EndTime = endTime != null ? TimeHelper.ToUnixTime(endTime.Value) : long.MaxValue,
-                TimeType = timeType,
+                TimeType = (int)timeType,
                 UserInfo = userInfo ?? "",
-                DoctorID = doctorID
-            });
+                DoctorID = doctorID,
+                DoctorName = doctorName,
+                ExaminationResult = examinationResult,
+                CosultingName = cosultingName
+        });
         }
-
+            
         public async Task<MsResult<Examination>> GetExaminationsByAppointmentID(int appointmentID)
         {
             return await HttpProxy.GetMessage<Examination>("/api/examination/getexaminationbyappointmentid", new KeyValuePair<string, string>("appointmentID", appointmentID.ToString()));

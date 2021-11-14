@@ -23,10 +23,21 @@
                         <DataTemplate>
                             <Grid>
                                 <TextBox x:Name="tb_name" IsReadOnly="True" IsHitTestVisible="False" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
+                                <Grid HorizontalAlignment="Center">
+                                <TextBlock x:Name="tb_type" Text="{Binding ExaminationTypes}" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="cb_type" Template="{StaticResource MultipleComboBoxTemplate}" ItemsSource="{Binding ExaminationTypes, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type local:ConsultingManageView}, Mode=FindAncestor}}" 
+                                                 Visibility="Collapsed" Text="{Binding ExaminationTypes, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Background="Transparent">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding}" Click="SelectedType_Click" VerticalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </Grid>
                                 <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Click="Save_Click" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0"/>
-                                    <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" Click="Edit_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="10,0"/>
-                                    <controls:MediaButton x:Name="bt_remove" ToolTip="删除" Click="Remove_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
+                                        <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Click="Save_Click" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0"/>
+                                        <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" Click="Edit_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="10,0"/>
+                                        <controls:MediaButton x:Name="bt_remove" ToolTip="删除" Click="Remove_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
                                 </StackPanel>
                             </Grid>
                             <DataTemplate.Triggers>
@@ -35,7 +46,9 @@
                                     <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
                                     <Setter Property="IsReadOnly" TargetName="tb_name" Value="False"/>
                                     <Setter Property="IsHitTestVisible" TargetName="tb_name" Value="True"/>
-                                </DataTrigger>
+                                    <Setter Property="Visibility" TargetName="cb_type" Value="Visible"/>
+                                    <Setter Property="Visibility" TargetName="tb_type" Value="Collapsed"/>
+                            </DataTrigger>
                                 <DataTrigger Binding="{Binding ConsultingRoomID}" Value="0">
                                     <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
                                     <Setter Property="Visibility" TargetName="bt_remove" Value="Collapsed"/>

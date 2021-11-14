@@ -17,7 +17,7 @@ namespace MM.Medical.Share.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value.Equals(parameter) ? parameter : Binding.DoNothing;
+            return value.Equals(true) ? parameter : Binding.DoNothing;
         }
     }
 }

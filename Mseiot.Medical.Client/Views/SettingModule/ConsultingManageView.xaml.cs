@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using Ms.Controls.Core;
+using MM.Medical.Client.Core;
 
 namespace MM.Medical.Client.Views
 {
@@ -26,6 +27,7 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class ConsultingManageView : UserControl
     {
+        public List<string> ExaminationTypes { get; set; }
         public ConsultingManageView()
         {
             InitializeComponent();
@@ -34,6 +36,8 @@ namespace MM.Medical.Client.Views
 
         private void ConsultingManageView_Loaded(object sender, RoutedEventArgs e)
         {
+            this.Loaded -= ConsultingManageView_Loaded;
+            GetExaminationTypes();
             GetConsultingRooms();
             this.MouseLeftButtonDown += (o, ex) => ResetConsultingRoom();
         }
@@ -63,6 +67,7 @@ namespace MM.Medical.Client.Views
             {
                 var parent = ControlHelper.GetParentObject<Grid>(element);
                 var tb = ControlHelper.GetVisualChild<TextBox>(parent);
+                var cb = ControlHelper.GetVisualChild<ComboBox>(parent);
                 if (room.ConsultingRoomID == 0)
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
@@ -70,10 +75,11 @@ namespace MM.Medical.Client.Views
                         MsWindow.ShowDialog($"新建诊室名称不能为空", "软件提示");
                         return;
                     }
-                    var add = new ConsultingRoom { Name = tb.Text };
+                    var add = new ConsultingRoom { Name = tb.Text, ExaminationTypes = cb.Text };
                     var result = loading.AsyncWait("新建诊室中,请稍后", SocketProxy.Instance.AddConsultingRoom(add));
                     if (result.IsSuccess)
                     {
+                        cb.GetBindingExpression(ComboBox.TextProperty).UpdateSource();
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateSource();
                         room.ConsultingRoomID = result.Content;
                         room.IsSelected = false;
@@ -85,21 +91,25 @@ namespace MM.Medical.Client.Views
                     {
                         MsWindow.ShowDialog($"编辑诊室名称不能为空", "软件提示");
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                        tb.GetBindingExpression(ComboBox.TextProperty).UpdateTarget();
                         return;
                     }
-                    if (!tb.Text.Equals(room.Name))
+                    if (!tb.Text.Equals(room.Name) || !cb.Text.Equals(room.ExaminationTypes))
                     {
                         var update = room.Copy();
                         update.Name = tb.Text;
+                        update.ExaminationTypes = cb.Text;
                         var result = loading.AsyncWait("更新诊室中,请稍后", SocketProxy.Instance.ModifyConsultingRoom(update));
                         if (result.IsSuccess)
                         {
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                            cb.GetBindingExpression(ComboBox.TextProperty).UpdateSource();
                             room.IsSelected = false;
                         }
                         else
                         {
                             MsWindow.ShowDialog($"更新诊室失败,{ result.Error }", "软件提示");
+                            cb.GetBindingExpression(ComboBox.TextProperty).UpdateTarget();
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         }
                     }
@@ -151,6 +161,14 @@ namespace MM.Medical.Client.Views
             else MsWindow.ShowDialog($"获取诊所信息失败,{ result.Error }", "软件提示");
         }
 
+        private void GetExaminationTypes()
+        {
+            var result = loading.AsyncWait("获取检查类型信息中,请稍后", SocketProxy.Instance.GetBaseWords("检查类型"));
+            if (result.IsSuccess)
+                this.ExaminationTypes = result.SplitContent("检查类型");
+            else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
+        }
+
         private void ResetConsultingRoom()
         {
             var room = lb_rooms.Items.OfType<ConsultingRoom>().FirstOrDefault(p => p.IsSelected);
@@ -166,6 +184,25 @@ namespace MM.Medical.Client.Views
                     tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                     room.IsSelected = false;
                 }
+            }
+        }
+
+        private void SelectedType_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element)
+            {
+                var item = ControlHelper.GetParentObject<ComboBoxItem>(element);
+                var cb_type = ItemsControl.ItemsControlFromItemContainer(item) as ComboBox;
+                cb_type.Text = string.Empty;
+                for (int i = 0; i < cb_type.Items.Count; i++)
+                {
+                    var cbi = cb_type.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
+                    var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
+                    if (cb.IsChecked.Value)
+                        cb_type.Text += cb.Content.ToString() + ",";
+                }
+                if (!string.IsNullOrEmpty(cb_type.Text))
+                    cb_type.Text = cb_type.Text.Substring(0, cb_type.Text.Length - 1);
             }
         }
     }

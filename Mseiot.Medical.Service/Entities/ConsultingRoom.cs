@@ -14,15 +14,18 @@ namespace Mseiot.Medical.Service.Entities
         private string userName;
         private int consultingRoomID;
         private bool isSelected;
-        private string checkType;
+        private string examinationTypes;
 
-        public string CheckType
+        /// <summary>
+        /// 检查类型
+        /// </summary>
+        public string ExaminationTypes
         {
-            get { return checkType; }
-            set
-            {
-                checkType = value;
-                RaisePropertyChanged("CheckType");
+            get { return examinationTypes; }
+            set 
+            { 
+                examinationTypes = value;
+                RaisePropertyChanged("ExaminationTypes");
             }
         }
 

@@ -191,6 +191,10 @@
                     <ComboBox x:Name="cb_hbasg" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.HBasg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel>
+                    <TextBlock Text="检查类型"/>
+                    <ComboBox x:Name="cb_type" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.ExaminationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <StackPanel>
                     <TextBlock Text="内镜编号"/>
                     <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.EndoscopeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IntToFormatStringConverter}, ConverterParameter=6}"/>
                 </StackPanel>
