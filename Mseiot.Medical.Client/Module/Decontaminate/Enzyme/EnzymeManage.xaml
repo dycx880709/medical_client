@@ -27,6 +27,8 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTextColumn Width="*" Header="名称" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Width="*" Header="清洗时长（秒）" Binding="{Binding Timeout}"/>
+                    
 
                     <DataGridTemplateColumn Width="200" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>

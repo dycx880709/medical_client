@@ -53,7 +53,7 @@ namespace Mseiot.Medical.Service.Services
 
         public async Task<MsResult<bool>> RemoveDecontaminateFlowSteps(List<int> decontaminateFlowStepIDs)
         {
-            return await HttpProxy.DeleteMessage<bool>("/api/DecontaminateFlow/RemoveDecontaminateFlowStep", new { ids = string.Join(",", decontaminateFlowStepIDs) });
+            return await HttpProxy.DeleteMessage<bool>("/api/DecontaminateFlow/RemoveDecontaminateFlowSteps", new { ids = string.Join(",", decontaminateFlowStepIDs) });
         }
 
         #endregion

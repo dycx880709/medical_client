@@ -150,7 +150,7 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             if (sender is FrameworkElement element && element.DataContext is DecontaminateFlowStep decontaminateFlowStep)
             {
-                var result = loading.AsyncWait("删除流程步骤中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlowSteps(new List<int> { decontaminateFlowStep.DecontaminateFlowID }));
+                var result = loading.AsyncWait("删除流程步骤中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlowSteps(new List<int> { decontaminateFlowStep.DecontaminateFlowStepID }));
                 if (result.IsSuccess) LoadDecontaminateSteps();
                 else Alert.ShowMessage(true, AlertType.Error, $"流程步骤删除失败,{ result.Error }");
             }
