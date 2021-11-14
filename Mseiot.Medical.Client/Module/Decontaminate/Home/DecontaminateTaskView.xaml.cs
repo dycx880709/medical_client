@@ -176,7 +176,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             {
                 DecontaminateTaskStatus.Wait
             };
-            var result = await SocketProxy.Instance.GetDecontaminateTasks(decontaminateTaskStatuss);
+            var result = await SocketProxy.Instance.GetDecontaminateTasks(decontaminateTaskStatuss,"",null,null);
 
             if (result.IsSuccess && result.Content != null)
             {

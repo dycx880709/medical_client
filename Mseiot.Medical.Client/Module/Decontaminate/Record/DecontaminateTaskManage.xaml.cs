@@ -36,6 +36,8 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             this.Loaded -= DecontaminateTaskManage_Loaded;
             lvDatas.ItemsSource = DecontaminateTasks;
+            dti.StartTime = DateTime.Now.AddDays(-30);
+            dti.EndTime = DateTime.Now.AddDays(30);
             LoadDecontaminateTasks();
         }
 
@@ -48,12 +50,17 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             DecontaminateTasks.Clear();
             loading.Start("获取内窥镜列表中,请稍后");
-            var result = await SocketProxy.Instance.GetDecontaminateTasks(new List<DecontaminateTaskStatus>() { DecontaminateTaskStatus.Complete });
+            var result = await SocketProxy.Instance.GetDecontaminateTasks(new List<DecontaminateTaskStatus>() { DecontaminateTaskStatus.Complete },tbSearch.Text,dti.StartTime,dti.EndTime);
             if (result.IsSuccess)
                 DecontaminateTasks.AddRange(result.Content);
             loading.Stop();
         }
 
         #endregion
+
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            LoadDecontaminateTasks();
+        }
     }
 }
