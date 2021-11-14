@@ -184,7 +184,7 @@
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
-            <local:ExaminationPartView x:Name="epv" IsReadOnly="{Binding IsEditable, ElementName=uc, Converter={StaticResource TrueToFalseConverter}}"
+            <local:ExaminationPartView x:Name="epv" IsReadOnly="{Binding IsEditable, ElementName=uc, Converter={StaticResource ReverseBooleanConverter}}"
                             SelectedExamination="{Binding SelectedValue.Examination, ElementName=dg_appointments}" Loading="{Binding ElementName=loading}"/>
         </controls:CustomGroupBox>
         <controls:Loading x:Name="loading" Grid.ColumnSpan="2"/>

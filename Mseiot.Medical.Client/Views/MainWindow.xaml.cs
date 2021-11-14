@@ -13,6 +13,7 @@ using Ms.Libs.TcpLib;
 using System.Net.Sockets;
 using MM.Medical.Client.Entities;
 using System.Linq;
+using MM.Medical.Client.Module.Decontaminate;
 
 namespace MM.Medical.Client.Views
 {
@@ -27,15 +28,37 @@ namespace MM.Medical.Client.Views
         public MainWindow()
         {
             InitializeComponent();
+            LoadSetting();
             this.Loaded += MainWindow_Loaded;
         }
 
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= MainWindow_Loaded;
             LoadMenus();
             UpdateTime();
-            await ConnectServer();
+            LoadTcp();
+        }
+
+        private async void LoadTcp()
+        {
+            var levels = CacheHelper.CurrentUser.Authority.Split(',');
+            if (levels.Contains("1") || levels.Contains("3") || CacheHelper.CurrentUser.LoginName.Equals("admin"))
+                await ConnectServer();
+        }
+
+        private void LoadSetting()
+        {
+            var levels = CacheHelper.CurrentUser.Authority.Split(',');
+            if (levels.Contains("2") || CacheHelper.CurrentUser.LoginName.Equals("admin"))
+            {
+                this.VisibilitySetting = Visibility.Visible;
+                this.NotifySetting += (_, e) =>
+                {
+                    var decontaminateSetting = new DecontaminateSetting();
+                    ContentWindow.Show(decontaminateSetting);
+                };
+            }
         }
 
         private void TcpProxy_ReceiveMessaged(object sender, Message e)
@@ -166,7 +189,8 @@ namespace MM.Medical.Client.Views
                         var menu = new Entities.Menu
                         {
                             Name = appLevel.Name,
-                            Identify = appLevel.Identify
+                            Identify = appLevel.Identify,
+                            Reusability = appLevel.Reusability,
                         };
                         menus.Add(menu);
                         if (appLevel.Children != null && appLevel.Children.Count > 0)
@@ -188,15 +212,25 @@ namespace MM.Medical.Client.Views
                 {
                     lvMenus.SelectedIndex = -1;
                 }
-                if (!string.IsNullOrEmpty(menu.Identify) && !navigateItems.ContainsKey(menu.Identify))
-                {
-                    var type = Type.GetType(menu.Identify);
-                    var uc = Activator.CreateInstance(type) as UserControl;
-                    navigateItems.Add(menu.Identify, uc);
-                }
                 if (!string.IsNullOrEmpty(menu.Identify))
                 {
-                    border.Child = navigateItems[menu.Identify];
+                    if (menu.Reusability)
+                    {
+                        if (!navigateItems.ContainsKey(menu.Identify))
+                        {
+                            var type = Type.GetType(menu.Identify);
+                            var uc = Activator.CreateInstance(type) as UserControl;
+                            navigateItems.Add(menu.Identify, uc);
+                        }
+                        border.Child = navigateItems[menu.Identify];
+                    }
+                    else
+                    {
+                        var type = Type.GetType(menu.Identify);
+                        var uc = Activator.CreateInstance(type) as UserControl;
+                        uc.Unloaded += (s, _) => (s as IDisposable)?.Dispose();
+                        border.Child = uc;
+                    }
                 }
             }
         }

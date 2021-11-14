@@ -7,7 +7,7 @@
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" 
-              d:DesignHeight="1080" d:DesignWidth="1920">
+             d:DesignHeight="1080" d:DesignWidth="1920">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
@@ -15,45 +15,46 @@
         </Grid.ColumnDefinitions>
         <controls:CustomGroupBox Header="统计条件">
             <StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="统计方式" Style="{StaticResource editorFormItemText}"/>
-                    <ComboBox x:Name="cb_time" SelectedIndex="4" SelectionChanged="TimeSpan_SelectionChanged">
-                        <ComboBoxItem>本日</ComboBoxItem>
-                        <ComboBoxItem>本周</ComboBoxItem>
-                        <ComboBoxItem>本月</ComboBoxItem>
-                        <ComboBoxItem>本年</ComboBoxItem>
-                        <ComboBoxItem>自定义</ComboBoxItem>
-                    </ComboBox>
-                </StackPanel>
-                <StackPanel Style="{StaticResource editorFormItem}">
-                    <TextBlock Text="图表类型" Style="{StaticResource editorFormItemText}"/>
-                    <ComboBox x:Name="cb_type" SelectedIndex="0" SelectionChanged="ChartType_SelectionChanged">
-                        <ComboBoxItem>曲线图</ComboBoxItem>
-                        <ComboBoxItem>柱形图</ComboBoxItem>
-                        <ComboBoxItem>饼状图</ComboBoxItem>
-                    </ComboBox>
-                </StackPanel>
+                <controls:CustomGroupBox Header="统计方式"/>
+                    <WrapPanel>
+                        <RadioButton Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrentDay}}"/>
+                        <RadioButton Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrenWeek}}" Margin="0,5"/>
+                        <RadioButton Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrentMonth}}"/>
+                        <RadioButton Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.CurrentYear}}" Margin="0,5"/>
+                        <RadioButton Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.Definition}}"/>
+                    </WrapPanel>
                 <StackPanel>
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedIndex, ElementName=cb_time}" Value="4">
+                                <DataTrigger Binding="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:StatisticsType.Definition}}" Value="True">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </StackPanel.Style>
-                    <StackPanel Orientation="Horizontal" Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="开始时间" Style="{StaticResource editorFormItemText}"/>
-                        <DatePicker x:Name="dp_start" Width="{StaticResource InputElementWidth}"/>
+                    <StackPanel Style="{StaticResource editorFormItem}">
+                        <TextBlock Text="年" Style="{StaticResource editorFormItemText}"/>
+                        <ComboBox x:Name="cb_year"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="结束时间" Style="{StaticResource editorFormItemText}"/>
-                        <DatePicker x:Name="dp_end" Width="{StaticResource InputElementWidth}"/>
+                    <StackPanel Style="{StaticResource editorFormItem}">
+                        <TextBlock Text="月" Style="{StaticResource editorFormItemText}"/>
+                        <ComboBox x:Name="cb_month"/>
+                    </StackPanel>
+                    <StackPanel Style="{StaticResource editorFormItem}">
+                        <TextBlock Text="日" Style="{StaticResource editorFormItemText}"/>
+                        <ComboBox x:Name="cb_day"/>
                     </StackPanel>
                 </StackPanel>
-                <Button Content="查询" Click="Start_Click" Margin="0,20"/>
+                <controls:CustomGroupBox Header="图表类型">
+                    <WrapPanel>
+                        <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.LineSeries}}" GroupName="ChartType" Content="曲线图"/>
+                        <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.Bar}}" GroupName="ChartType" Content="柱形图" Margin="0,5"/>
+                        <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.Pie}}" GroupName="ChartType" Content="饼状图"/>
+                    </WrapPanel>
+                </controls:CustomGroupBox>
+                <Button Content="统计" Click="Start_Click" Margin="0,20"/>
             </StackPanel>
         </controls:CustomGroupBox>
         <Grid Grid.Column="1">

@@ -16,13 +16,15 @@
 
             <converters:EnumToIntConverter x:Key="EnumToIntConverter"/>
             <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
+            <lc:TimeStampIsTodayConverter x:Key="TimeStampIsTodayConverter"/>
             <lc:PatientStatusToColorConverter x:Key="PatientStatusToColorConverter"/>
             <lc:AppointmentStatusToColorConverter x:Key="AppointmentStatusToColorConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:TimeStampToDateTimeConverter x:Key="TimeStampToDateTimeConverter"/>
             <converters:TimeStampToStringFormatConverter x:Key="TimeStampToStringFormatConverter"/>
             <converters:IntToFormatString x:Key="IntToFormatStringConverter"/>
-            <converters:TrueToFalseConverter x:Key="TrueToFalseConverter"/>
+            <converters:ReverseBooleanConverter x:Key="ReverseBooleanConverter"/>
+            <converters:ObjectEqualParamConverter x:Key="ObjectEqualParamConverter"/>
             <lc:PathToWebUrlConverter x:Key="PathToWebUrlConverter"/>
             <converters:YNToCNConvert x:Key="YNToCNConvert"/>
             <converters:SexConverter x:Key="SexConverter"/>

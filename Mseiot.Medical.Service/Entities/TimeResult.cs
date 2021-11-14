@@ -8,7 +8,7 @@ namespace Mseiot.Medical.Service.Entities
 {
     public class TimeResult
     {
-        public double TimeStamp { get; set; }
+        public int TimeStamp { get; set; }
         public int Count { get; set; }
     }
 

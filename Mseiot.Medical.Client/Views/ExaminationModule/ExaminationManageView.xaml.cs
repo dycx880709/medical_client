@@ -156,6 +156,11 @@ namespace MM.Medical.Client.Views
             {
                 if (this.consultingRoomId == 0)
                     return;
+                if (!rb_waiting.IsChecked.Value && !rb_checked.IsChecked.Value)
+                {
+                    Appointments.Clear();
+                    return;
+                }
                 var appointmentStatuses = new List<AppointmentStatus>();
                 if (rb_waiting.IsChecked.Value)
                     appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Checking });

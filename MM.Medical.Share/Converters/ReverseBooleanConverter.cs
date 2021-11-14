@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace MM.Medical.Share.Converters
 {
-    public class TrueToFalseConverter : IValueConverter
+    public class ReverseBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
