@@ -36,7 +36,7 @@ namespace MM.Medical.Client
             CacheHelper.InitialLogSetting();
 
             #region LiveChart
-            //Charting.For<TimeResult>(Mappers.Xy<TimeResult>().X(model => model.TimeStamp).Y(model => model.Count));
+            Charting.For<TimeResult>(Mappers.Xy<TimeResult>().X(model => model.TimeStamp).Y(model => model.Count));
             #endregion
 
             #region 异常处理注册
@@ -47,6 +47,7 @@ namespace MM.Medical.Client
             //非UI线程未捕获异常处理事件
             AppDomain.CurrentDomain.UnhandledException += (o,ex)=> LogHelper.Instance.Error($"程序发生错误：\n{(Exception)ex.ExceptionObject}");
             #endregion
+
             var login = new LoginView();
             login.ShowDialog();
         }
