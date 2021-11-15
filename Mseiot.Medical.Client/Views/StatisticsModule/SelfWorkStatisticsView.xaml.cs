@@ -53,12 +53,7 @@ namespace MM.Medical.Client.Views
         }
         public static readonly DependencyProperty ChartTypeProperty = DependencyProperty.Register("ChartType", typeof(ChartType), typeof(SelfWorkStatisticsView), new PropertyMetadata(ChartType.Bar));
        
-        public Func<double, string> Formatter { get; set; } = t =>
-        {
-            var dateTime = TimeHelper.FromUnixTime(Convert.ToInt64(t));
-            var format = dateTime.ToShortDateString();
-            return format;
-        };
+        public Func<double, string> Formatter { get; set; } = t => TimeHelper.FromUnixTime(Convert.ToInt64(t)).ToShortDateString();
 
         public SelfWorkStatisticsView()
         {
@@ -83,41 +78,75 @@ namespace MM.Medical.Client.Views
         {
             var count = dg_examinations.GetFullCountWithoutScroll();
             var timeInterval = GetStartEndTime();
+            var statisticsType = this.StatisticsType;
+            if (statisticsType == StatisticsType.Definition)
+            {
+                if (cb_day.SelectedIndex > 0)
+                    statisticsType = StatisticsType.CurrentDay;
+                else if (cb_month.SelectedIndex > 0)
+                    statisticsType = StatisticsType.CurrentMonth;
+                else
+                    statisticsType = StatisticsType.CurrentYear;
+            }
             var result = loading.AsyncWait("获取数据中,请稍后", SocketProxy.Instance.GetExaminationCountByTime(
                 timeInterval.Item1,
                 timeInterval.Item2,
-                this.StatisticsType,
+                statisticsType,
                 userInfo: "",
                 doctorID: CacheHelper.CurrentUser.UserID,
                 consultingName: CacheHelper.ConsultingRoomName));
-            if (result.IsSuccess) 
-                ReloadChart(result.Content);
-            else 
-                Alert.ShowMessage(true, AlertType.Error, $"获取数据失败,{ result.Error }");
+            if (result.IsSuccess) ReloadChart(result.Content);
+            else Alert.ShowMessage(true, AlertType.Error, $"获取数据失败,{ result.Error }");
         }
 
         private void ReloadChart(IList<TimeResult> datas)
         {
+            axisX.ShowLabels = false;
+            axisY.ShowLabels = false;
             chart.Series.Clear();
-            var yValues = new ChartValues<double>(datas.Select(t => (double)t.Count));
-            axisX.Labels = new ChartValues<string>(datas.Select(t => TimeHelper.FromUnixTime(t.TimeStamp).ToShortDateString()));
-            axisY.MaxValue = datas.Max(t => t.Count);
-            axisY.MinValue = 0;
-            var yStep = (int)((axisY.MaxValue - axisY.MinValue) / yValues.Count);
-            if (yStep == 0) yStep = 1;
-            axisY.Separator = new LiveCharts.Wpf.Separator { Step = yStep };
-            switch (this.ChartType)
+            if (datas.Count > 0)
             {
-                case ChartType.LineSeries:
-                    chart.Series.Add(new LineSeries { Values = yValues });
-                    break;
-                case ChartType.Bar:
-                    chart.Series.Add(new ColumnSeries { Values = yValues });
-                    break;
-                case ChartType.Pie:
-                    chart.Series.Add(new PieSeries { Values = yValues });
-                    break;
+                axisX.ShowLabels = true;
+                axisY.ShowLabels = true;
+                switch (this.StatisticsType)
+                {
+                    case StatisticsType.CurrentMonth:
+                    case StatisticsType.CurrenWeek:
+                    case StatisticsType.CurrentDay:
+                        axisX.Labels = new ChartValues<string>(datas.Select(t => TimeHelper.FromUnixTime(t.TimeStamp).ToShortDateString()));
+                        break;
+                    case StatisticsType.CurrentQuarter:
+                    case StatisticsType.CurrentYear:
+                        axisX.Labels = new ChartValues<string>(datas.Select(t => $"{ TimeHelper.FromUnixTime(Convert.ToInt64(t.TimeStamp)).Month }月"));
+                        break;
+                    case StatisticsType.Definition:
+                        if (cb_day.SelectedIndex > 0 || cb_month.SelectedIndex > 0)
+                            axisX.Labels = new ChartValues<string>(datas.Select(t => TimeHelper.FromUnixTime(t.TimeStamp).ToShortDateString()));
+                        else
+                            axisX.Labels = new ChartValues<string>(datas.Select(t => $"{ TimeHelper.FromUnixTime(Convert.ToInt64(t.TimeStamp)).Month }月"));
+                        break;
+                }
+                axisY.MaxValue = datas.Count > 0 ? datas.Max(t => t.Count) : 0;
+                axisY.MinValue = 0;
+                var yValues = new ChartValues<double>(datas.Select(t => (double)t.Count));
+                var yStep = (int)((axisY.MaxValue - axisY.MinValue) / yValues.Count);
+                if (yStep == 0) yStep = 1;
+                axisY.Separator = new LiveCharts.Wpf.Separator { Step = yStep };
+                switch (this.ChartType)
+                {
+                    case ChartType.LineSeries:
+                        chart.Series.Add(new LineSeries { Values = yValues });
+                        break;
+                    case ChartType.Bar:
+                        chart.Series.Add(new ColumnSeries { Values = yValues, Title = "" });
+                        break;
+                    case ChartType.Pie:
+                        chart.Series.Add(new PieSeries { Values = yValues });
+                        break;
+                }
+
             }
+            else Alert.ShowMessage(true, AlertType.Warning, $"查询无数据");
         }
 
         private (DateTime?, DateTime?) GetStartEndTime()
@@ -127,7 +156,7 @@ namespace MM.Medical.Client.Views
             switch (this.StatisticsType)
             {
                 case StatisticsType.CurrentDay:
-                    startDate = endDate;
+                    startDate = endDate.AddDays(-1);
                     break;
                 case StatisticsType.CurrenWeek:
                     if (endDate.DayOfWeek == DayOfWeek.Monday)
@@ -169,12 +198,11 @@ namespace MM.Medical.Client.Views
         private void GetDateDatas()
         {
             var years = new List<int>();
-            for (int i = 2020; i <= DateTime.Now.Year; i++)
+            for (int i = 2021; i <= DateTime.Now.Year; i++)
                 years.Add(i);
             cb_year.ItemsSource = years;
             cb_year.SelectedIndex = 0;
             cb_month.ItemsSource = new string[] { "全部", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月" };
-            cb_month.SelectedIndex = 0;
             cb_month.SelectionChanged += (_, e) =>
             {
                 if (cb_month.SelectedIndex == 0)
@@ -188,9 +216,10 @@ namespace MM.Medical.Client.Views
                     for (int i = 1; i <= totalDays; i++)
                         days.Add(i.ToString());
                     cb_day.ItemsSource = days;
-                    cb_day.SelectedIndex = 0;
                 }
+                cb_day.SelectedIndex = 0;
             };
+            cb_month.SelectedIndex = 0;
         }
     }
 }
