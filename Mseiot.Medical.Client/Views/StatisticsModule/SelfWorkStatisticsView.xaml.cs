@@ -52,7 +52,13 @@ namespace MM.Medical.Client.Views
             set { SetValue(ChartTypeProperty, value); }
         }
         public static readonly DependencyProperty ChartTypeProperty = DependencyProperty.Register("ChartType", typeof(ChartType), typeof(SelfWorkStatisticsView), new PropertyMetadata(ChartType.Bar));
-
+       
+        public Func<double, string> Formatter { get; set; } = t =>
+        {
+            var dateTime = TimeHelper.FromUnixTime(Convert.ToInt64(t));
+            var format = dateTime.ToShortDateString();
+            return format;
+        };
 
         public SelfWorkStatisticsView()
         {
@@ -60,12 +66,7 @@ namespace MM.Medical.Client.Views
             this.Loaded += SelfWorkStatisticsView_Loaded;
             this.DataContext = this;
         }
-        public Func<double, string> Formatter { get; set; } = t =>
-        {
-            var dateTime = TimeHelper.FromUnixTime(Convert.ToInt64(t));
-            var format = dateTime.ToShortDateString();
-            return format;
-        };
+
         private void SelfWorkStatisticsView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= SelfWorkStatisticsView_Loaded;
@@ -97,14 +98,11 @@ namespace MM.Medical.Client.Views
 
         private void ReloadChart(IList<TimeResult> datas)
         {
-            var xValues = new ChartValues<string>(datas.Select(t => t.TimeStamp.ToString()));
-            var yValues = new ChartValues<double>(datas.Select(t => (double)t.Count));
             chart.Series.Clear();
-            axisX.MaxValue = datas.Max(t => t.TimeStamp);
-            axisX.MinValue = datas.Min(t => t.TimeStamp);
-            axisX.Labels = xValues;
+            var yValues = new ChartValues<double>(datas.Select(t => (double)t.Count));
+            axisX.Labels = new ChartValues<string>(datas.Select(t => TimeHelper.FromUnixTime(t.TimeStamp).ToShortDateString()));
             axisY.MaxValue = datas.Max(t => t.Count);
-            axisY.MinValue = datas.Min(t => t.Count);
+            axisY.MinValue = 0;
             var yStep = (int)((axisY.MaxValue - axisY.MinValue) / yValues.Count);
             if (yStep == 0) yStep = 1;
             axisY.Separator = new LiveCharts.Wpf.Separator { Step = yStep };

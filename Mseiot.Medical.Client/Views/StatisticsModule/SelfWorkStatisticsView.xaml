@@ -48,13 +48,13 @@
                         <ComboBox x:Name="cb_day"/>
                     </StackPanel>
                 </StackPanel>
-                <controls:CustomGroupBox Header="图表类型">
+                <!--<controls:CustomGroupBox Header="图表类型">
                     <WrapPanel>
                         <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.Bar}}" GroupName="ChartType" Content="柱形图" Margin="0,5"/>
                         <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.LineSeries}}" GroupName="ChartType" Content="曲线图"/>
                         <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.Pie}}" GroupName="ChartType" Content="饼状图"/>
                     </WrapPanel>
-                </controls:CustomGroupBox>
+                </controls:CustomGroupBox>-->
                 <Button Content="统计" Click="Start_Click" Margin="0,20"/>
             </StackPanel>
         </controls:CustomGroupBox>
@@ -66,10 +66,10 @@
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}">
                 <lvc:CartesianChart x:Name="chart" Grid.Row="0" Background="White" Margin="5,0">
                     <lvc:CartesianChart.AxisX>
-                        <lvc:Axis x:Name="axisX" Title="检查时间" FontSize="{StaticResource NormalFontSize}" LabelsRotation="0" LabelFormatter="{Binding Formatter}"/>
+                        <lvc:Axis x:Name="axisX" Title="检查时间" FontSize="{StaticResource LargeFontSize}" LabelsRotation="0" LabelFormatter="{Binding Formatter}"/>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis x:Name="axisY" Title="检查总数" FontSize="{StaticResource NormalFontSize}" MinValue="0"/>
+                        <lvc:Axis x:Name="axisY" Title="检查总数" FontSize="{StaticResource LargeFontSize}" MinValue="0"/>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
             </Border>
