@@ -17,43 +17,43 @@
         <controls:CustomGroupBox Header="统计条件">
             <StackPanel>
                 <StackPanel Margin="10">
-                    <RadioButton Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentDay}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <RadioButton Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrenWeek}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
-                    <RadioButton Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentMonth}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <RadioButton Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentYear}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" Cursor="Hand"/>
-                    <RadioButton Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <RadioButton Content="本日" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentDay}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,20"/>
+                    <RadioButton Content="本周" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrenWeek}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <RadioButton Content="本月" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentMonth}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,20"/>
+                    <RadioButton Content="本年" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.CurrentYear}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <RadioButton Content="自定义" IsChecked="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,20"/>
                 </StackPanel>
-                <StackPanel>
+                <StackPanel HorizontalAlignment="Center">
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="IsEnabled" Value="False"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding StatisticsType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static entities:StatisticsType.Definition}}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </StackPanel.Style>
                     <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="年" Style="{StaticResource editorFormItemText}"/>
+                        <TextBlock Text="年" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                         <ComboBox x:Name="cb_year"/>
                     </StackPanel>
                     <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="月" Style="{StaticResource editorFormItemText}"/>
+                        <TextBlock Text="月" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                         <ComboBox x:Name="cb_month"/>
                     </StackPanel>
                     <StackPanel Style="{StaticResource editorFormItem}">
-                        <TextBlock Text="日" Style="{StaticResource editorFormItemText}"/>
+                        <TextBlock Text="日" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                         <ComboBox x:Name="cb_day"/>
                     </StackPanel>
                 </StackPanel>
-                <!--<controls:CustomGroupBox Header="图表类型">
+                <controls:CustomGroupBox Header="图表类型" Visibility="Collapsed">
                     <WrapPanel>
                         <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.Bar}}" GroupName="ChartType" Content="柱形图" Margin="0,5"/>
                         <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.LineSeries}}" GroupName="ChartType" Content="曲线图"/>
                         <RadioButton Click="ChartType_Click" IsChecked="{Binding ChartType, Converter={StaticResource ObjectEqualParamConverter}, ConverterParameter={x:Static local:ChartType.Pie}}" GroupName="ChartType" Content="饼状图"/>
                     </WrapPanel>
-                </controls:CustomGroupBox>-->
+                </controls:CustomGroupBox>
                 <Button Content="统计" Click="Start_Click" Margin="0,20"/>
             </StackPanel>
         </controls:CustomGroupBox>
@@ -61,45 +61,40 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}">
-                <lvc:CartesianChart x:Name="chart" Grid.Row="0" Background="White" Margin="5,0">
+            <Border BorderThickness="0,0,0,1" Margin="5" BorderBrush="{StaticResource Color_Border_Primary}">
+                <lvc:CartesianChart x:Name="chart" Grid.Row="0" Background="White" Margin="5,0" Foreground="{StaticResource Color_Font_Primary}" FontFamily="{StaticResource FontFamily}" FontSize="{StaticResource LargeFontSize}">
                     <lvc:CartesianChart.AxisX>
-                        <lvc:Axis x:Name="axisX" Title="检查时间" ShowLabels="False" FontSize="{StaticResource LargeFontSize}" LabelsRotation="0"/>
+                        <lvc:Axis x:Name="axisX" ShowLabels="False" LabelsRotation="0" FontSize="{StaticResource LargeFontSize}"/>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis x:Name="axisY" Title="检查总数" ShowLabels="False" FontSize="{StaticResource LargeFontSize}" MinValue="0"/>
+                        <lvc:Axis x:Name="axisY" Title="检查总数" FontFamily="{StaticResource FontFamily}" ShowLabels="False" MinValue="0" FontSize="{StaticResource LargeFontSize}"/>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
             </Border>
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="30"/>
-                </Grid.RowDefinitions>
-                <DataGrid x:Name="dg_examinations" Grid.Row="0">
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn  Width="55" Header="序号">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DataGridRow}}, Path=Header}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Appointment.Name}"/>
-                        <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}"/>
-                        <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Appointment.Birthday}"/>
-                        <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
-                        <DataGridTextColumn Width="*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
-                        <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}" Visibility="Collapsed"/>
-                        <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
-                        <DataGridTextColumn Width="2*" Header="检查部位" Binding="{Binding BodyPart}"/>
-                        <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding CheckType}" Visibility="Collapsed"/>
-                        <DataGridTextColumn Width="*" Header="送检诊室" Binding="{Binding ClassName}" Visibility="Collapsed"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-                <controls:Pager x:Name="pager" Grid.Row="1"/>
-            </Grid>
+            <DataGrid x:Name="dg_examinations" Margin="5" Grid.Row="1">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn  Width="55" Header="序号">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DataGridRow}}, Path=Header}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="100" Header="姓名" Binding="{Binding Appointment.Name}"/>
+                    <DataGridTextColumn Width="70" Header="性别" Binding="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}"/>
+                    <DataGridTextColumn Width="70" Header="年龄" Binding="{Binding Appointment.Birthday}"/>
+                    <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
+                    <DataGridTextColumn Width="*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
+                    <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}" Visibility="Collapsed"/>
+                    <DataGridTextColumn Width="100" Header="检查日期" Binding="{Binding ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                    <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding Appointment.AppointmentType}"/>
+                    <DataGridTextColumn Width="100" Header="送检诊室" Binding="{Binding Appointment.ConsultingRoomName}"/>
+                    <DataGridTextColumn Width="1.5*" Header="检查部位" Binding="{Binding BodyPart}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <controls:Pager x:Name="pager" Grid.Row="2" PageChanged="Pager_PageChanged"/>
         </Grid>
         <controls:Loading x:Name="loading" Grid.ColumnSpan="2"/>
     </Grid>

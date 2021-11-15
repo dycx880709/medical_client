@@ -45,7 +45,7 @@ namespace Mseiot.Medical.Service.Services
         public async Task<MsResult<ListResult<User>>> GetUsers(
             int index,
             int count,
-            string name,
+            string name = "",
             string sortType = "",
             int[] roleIds = null,
             int[] organizationids = null

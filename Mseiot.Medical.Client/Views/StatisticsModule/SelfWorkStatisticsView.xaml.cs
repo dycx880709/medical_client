@@ -1,5 +1,4 @@
 ﻿using LiveCharts;
-using LiveCharts.Geared;
 using LiveCharts.Wpf;
 using MM.Medical.Client.Core;
 using Ms.Controls;
@@ -10,17 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MM.Medical.Client.Views
 {
@@ -65,6 +55,7 @@ namespace MM.Medical.Client.Views
         private void SelfWorkStatisticsView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= SelfWorkStatisticsView_Loaded;
+            dg_examinations.LoadingRow += (o, ex) => ex.Row.Header = ex.Row.GetIndex() + 1;
             GetDateDatas();
         }
 
@@ -76,7 +67,6 @@ namespace MM.Medical.Client.Views
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            var count = dg_examinations.GetFullCountWithoutScroll();
             var timeInterval = GetStartEndTime();
             var statisticsType = this.StatisticsType;
             if (statisticsType == StatisticsType.Definition)
@@ -92,11 +82,38 @@ namespace MM.Medical.Client.Views
                 timeInterval.Item1,
                 timeInterval.Item2,
                 statisticsType,
-                userInfo: "",
-                doctorID: CacheHelper.CurrentUser.UserID,
-                consultingName: CacheHelper.ConsultingRoomName));
-            if (result.IsSuccess) ReloadChart(result.Content);
+                doctorID: CacheHelper.CurrentUser.UserID));
+            if (result.IsSuccess)
+            {
+                if (result.Content.Count > 0)
+                {
+                    ReloadChart(result.Content);
+                    GetExaminationDatas(timeInterval.Item1, timeInterval.Item2);
+                }
+                else Alert.ShowMessage(true, AlertType.Warning, $"查询无数据");
+            }
             else Alert.ShowMessage(true, AlertType.Error, $"获取数据失败,{ result.Error }");
+        }
+        private void Pager_PageChanged(object sender, PageChangedEventArgs args)
+        {
+            var timeInterval = GetStartEndTime();
+            GetExaminationDatas(timeInterval.Item1, timeInterval.Item2);
+        }
+
+        private void GetExaminationDatas(DateTime? startTime, DateTime? endTime)
+        {
+            pager.SelectedCount = dg_examinations.GetFullCountWithoutScroll();
+            var result2 = loading.AsyncWait("获取数据中,请稍后", SocketProxy.Instance.GetExaminations(
+              pager.PageIndex,
+              pager.SelectedCount,
+              startTime,
+              endTime,
+              doctorID: CacheHelper.CurrentUser.UserID));
+            if (result2.IsSuccess)
+            {
+                pager.TotalCount = result2.Content.Total;
+                dg_examinations.ItemsSource = result2.Content.Results;
+            }
         }
 
         private void ReloadChart(IList<TimeResult> datas)
@@ -144,9 +161,7 @@ namespace MM.Medical.Client.Views
                         chart.Series.Add(new PieSeries { Values = yValues });
                         break;
                 }
-
             }
-            else Alert.ShowMessage(true, AlertType.Warning, $"查询无数据");
         }
 
         private (DateTime?, DateTime?) GetStartEndTime()

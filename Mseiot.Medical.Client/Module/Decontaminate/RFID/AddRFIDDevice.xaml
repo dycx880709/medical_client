@@ -9,18 +9,18 @@
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="设备编号" Style="{StaticResource editorFormItemText}"></TextBlock>
+                <TextBlock Text="设备编号" Width="Auto" Style="{StaticResource editorFormItemText}"></TextBlock>
                 <TextBox Text="{Binding SN,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"></TextBox>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="设备名称" Style="{StaticResource editorFormItemText}"></TextBlock>
+                <TextBlock Text="设备名称" Width="Auto" Style="{StaticResource editorFormItemText}"></TextBlock>
                 <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"></TextBox>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="通信端口" Style="{StaticResource editorFormItemText}"></TextBlock>
+                <TextBlock Text="通信端口" Width="Auto" Style="{StaticResource editorFormItemText}"></TextBlock>
                 <ComboBox x:Name="cbSerialPorts" DropDownOpened="SerialPorts_DropDownOpened" Width="200"></ComboBox>
             </StackPanel>
-            <Button Click="Save_Click" Content="保存" IsEnabled="True" />
+            <Button Click="Save_Click" Content="保存" Margin="0,20,0,0" IsEnabled="True" />
         </StackPanel>
     </Grid>
 </UserControl>

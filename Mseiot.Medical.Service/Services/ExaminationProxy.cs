@@ -17,7 +17,10 @@ namespace Mseiot.Medical.Service.Services
             DateTime? startTime = null,
             DateTime? endTime = null,
             string userInfo = "",
-            string doctorID = ""
+            string doctorID = "",
+            string examinationResult = "",
+            string consultingName = "",
+            string examinationType = ""
         )
         {
             return await HttpProxy.GetMessage<ListResult<Examination>>("/api/examination/getexaminations", new
@@ -27,7 +30,10 @@ namespace Mseiot.Medical.Service.Services
                 StartTime = startTime != null ? TimeHelper.ToUnixTime(startTime.Value) : 0,
                 EndTime = endTime != null ? TimeHelper.ToUnixTime(endTime.Value) : long.MaxValue,
                 UserInfo = userInfo ?? "",
-                DoctorID = doctorID
+                DoctorID = doctorID,
+                ExaminationResult = examinationResult,
+                ConsultingName = consultingName,
+                AppointmentType = examinationType
             });
         }
 
@@ -37,9 +43,9 @@ namespace Mseiot.Medical.Service.Services
             StatisticsType timeType = 0,
             string userInfo = "",
             string doctorID = "",
-            string doctorName = "",
             string examinationResult = "",
-            string consultingName = ""
+            string consultingName = "",
+            string examinationType = ""
         )
         {
             return await HttpProxy.GetMessage<TimeResultCollection>("/api/examination/getexaminationcountbytime", new
@@ -49,9 +55,9 @@ namespace Mseiot.Medical.Service.Services
                 TimeType = (int)timeType,
                 UserInfo = userInfo ?? "",
                 DoctorID = doctorID,
-                DoctorName = doctorName,
                 ExaminationResult = examinationResult,
-                ConsultingName = consultingName
+                ConsultingName = consultingName,
+                AppointmentType = examinationType
         });
         }
             

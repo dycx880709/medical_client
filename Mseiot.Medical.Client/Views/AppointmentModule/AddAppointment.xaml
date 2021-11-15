@@ -6,8 +6,9 @@
              xmlns:core="clr-namespace:MM.Medical.Client.Core"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:validation="clr-namespace:MM.Medical.Share.Validations;assembly=MM.Medical.Share"
-             Width="580" Height="300"
+             Width="600" Height="380"
              mc:Ignorable="d" >
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -15,8 +16,8 @@
         </Grid.RowDefinitions>
         <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="患者名称" Grid.Column="0" Grid.Row="0" Style="{StaticResource editorFormItemText}"/>
-                <TextBox  Grid.Row="0" Grid.Column="1">
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="患者名称"/></TextBlock>
+                <TextBox>
                     <TextBox.Text>
                         <Binding Path="Appointment.Name" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
@@ -27,31 +28,39 @@
                 </TextBox>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="身份证号" Style="{StaticResource editorFormItemText}"/>
+                <TextBlock Text="身份证号"/>
                 <TextBox Text="{Binding Appointment.IDCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="社保账号" Style="{StaticResource editorFormItemText}"/>
+                <TextBlock Text="社保账号"/>
                 <TextBox Text="{Binding Appointment.SocialSecurityCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="性别" Style="{StaticResource editorFormItemText}"/>
+                <TextBlock Text="患者性别"/>
                 <ComboBox SelectedIndex="0" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding Appointment.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="年龄" Style="{StaticResource editorFormItemText}"/>
-                <TextBox x:Name="dpAppointmentTime" Text="{Binding Appointment.Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="患者年龄"/></TextBlock>
+                <TextBox>
+                    <TextBox.Text>
+                        <Binding Path="Appointment.Birthday" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <validation:NumberRangeValidationRule Title="患者年龄" MinValue="0" MaxValue="150" ValidatesOnTargetUpdated="False" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="检查类型" Style="{StaticResource editorFormItemText}"/>
+                <TextBlock Grid.Column="0" Grid.Row="0"><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="检查类型"/></TextBlock>
                 <ComboBox x:Name="cb_type" Text="{Binding Appointment.AppointmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="预约时间" Style="{StaticResource editorFormItemText}"/>
+                <TextBlock Grid.Column="0" Grid.Row="0"><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="预约时间"/></TextBlock>
                 <controls:DateTimePicker SelectedDateTime="{Binding Appointment.AppointmentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="指定诊室" Style="{StaticResource editorFormItemText}"/>
+                <TextBlock Text="指定诊室"/>
                 <ComboBox x:Name="cb_room" DisplayMemberPath="Name" SelectedValuePath="Name" SelectedValue="{Binding Appointment.ConsultingRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </WrapPanel>

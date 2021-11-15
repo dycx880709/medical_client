@@ -64,7 +64,7 @@
                             </Style>
                         </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn  Width="55" Header="序号">
+                            <DataGridTemplateColumn  Width="70" Header="序号">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DataGridRow}}, Path=Header}"/>
@@ -74,16 +74,17 @@
                             <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Appointment.Name}"/>
                             <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}"/>
                             <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Appointment.Birthday}"/>
-                            <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
-                            <DataGridTextColumn Width="*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
+                            <DataGridTextColumn Width="1.5*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
+                            <DataGridTextColumn Width="1.5*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
                             <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                            <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding Appointment.AppointmentType}"/>
                             <DataGridTextColumn Width="2*" Header="检查部位" Binding="{Binding BodyPart}"/>
-                            <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding CheckType}" Visibility="Collapsed"/>
-                            <DataGridTextColumn Width="*" Header="送检科室" Binding="{Binding ClassName}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*" Header="检查诊室" Binding="{Binding Appointment.ConsultingRoomName}"/>
                             <DataGridTextColumn Width="*" Header="检查医生" Binding="{Binding DoctorName}"/>
+                            <DataGridTextColumn Width="2*" Header="检查结果" Binding="{Binding Result}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

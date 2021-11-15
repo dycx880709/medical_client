@@ -30,19 +30,17 @@
             <converters:SexConverter x:Key="SexConverter"/>
 
             <!--编辑-->
-            <Style TargetType="StackPanel" x:Key="editorFormItem">
+            <Style TargetType="{x:Type StackPanel}" x:Key="editorFormItem">
                 <Setter Property="Margin" Value="10"/>
                 <Setter Property="Orientation" Value="Horizontal"/>
             </Style>
-
             <Style TargetType="{x:Type TextBlock}" x:Key="editorFormItemText" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="Width" Value="80"/>
                 <Setter Property="TextAlignment" Value="Right"/>
                 <Setter Property="Margin" Value="0,0,10,0"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
-
-            <Style TargetType="TextBox" x:Key="editorFormItemInput" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Style TargetType="{x:Type TextBox}" x:Key="editorFormItemInput" BasedOn="{StaticResource {x:Type TextBox}}">
                 <Setter Property="Width" Value="200"/>
             </Style>
             

@@ -7,7 +7,7 @@
              xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="1080" d:DesignWidth="1920">
 
     <UserControl.Resources>
@@ -204,7 +204,7 @@
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="主诉"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Width="290" Text="{Binding SelectedExamination.PatientTask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Width="290" Text="{Binding SelectedExamination.PatientTalk, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
             </WrapPanel>
             <ScrollViewer Grid.Row="1" Grid.Column="0">
@@ -234,7 +234,7 @@
                     </Expander>
                 </StackPanel>
             </ScrollViewer>
-            <controls:CustomGroupBox Grid.Row="1" Grid.Column="1" Margin="10">
+            <controls:CustomGroupBox Grid.Row="1" Grid.Column="1" Margin="5">
                 <controls:CustomGroupBox.Style>
                     <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
                         <Style.Triggers>
@@ -269,7 +269,7 @@
                     </TabItem>
                 </TabControl>
             </controls:CustomGroupBox>
-            <Grid Margin="5">
+            <Grid Margin="5" Background="White">
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Grid.Row" Value="1"/>

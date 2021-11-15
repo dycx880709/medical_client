@@ -39,7 +39,7 @@ namespace MM.Medical.Management.Views
         private void GetUsers()
         {
             RefreshItemCount();
-            var result = loading.AsyncWait("获取用户中,请稍后", SocketProxy.Instance.GetUsers(pager.PageIndex + 1, pager.SelectedCount, ""));
+            var result = loading.AsyncWait("获取用户中,请稍后", SocketProxy.Instance.GetUsers(pager.PageIndex + 1, pager.SelectedCount));
             if (result.IsSuccess)
             {
                 pager.TotalCount = result.Content.Total;
