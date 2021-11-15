@@ -74,5 +74,35 @@ namespace MM.Medical.Client.Views
         }
 
         #endregion
+
+        private async void Download_Click(object sender, RoutedEventArgs e)
+        {
+            SQLInfo sqlInfo=(sender as FrameworkElement).DataContext as SQLInfo;
+            if (sqlInfo != null)
+            {
+                System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
+                sfd.Filter = "数据库备份文件（*.sql）|*.sql";
+                sfd.FilterIndex = 1;
+
+                sfd.RestoreDirectory = true;
+                sfd.FileName = sqlInfo.Path;
+
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+
+                    loading.Start("正在下载备份文件");
+                    var result = await SocketProxy.Instance.DownloadDBRecord(sqlInfo.Path,sfd.FileName);
+                    if (result.IsSuccess)
+                    {
+                        Alert.ShowMessage(true, AlertType.Error, $"下载成功");
+                    }
+                    else
+                    {
+                        Alert.ShowMessage(false, AlertType.Error, $"下载失败");
+                    }
+                    loading.Stop();
+                }
+            }
+        }
     }
 }
