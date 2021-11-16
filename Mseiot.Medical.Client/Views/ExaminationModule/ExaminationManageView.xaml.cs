@@ -339,6 +339,7 @@ namespace MM.Medical.Client.Views
             {
                 if (!tb.IsChecked.Value && epv.SelectedExamination != null)
                 {
+                    epv.SelectedExamination.ReportTime = TimeHelper.ToUnixTime(DateTime.Now);
                     var result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyExamination(epv.SelectedExamination));
                     if (result.IsSuccess)
                     {

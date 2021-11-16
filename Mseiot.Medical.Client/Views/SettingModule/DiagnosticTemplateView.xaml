@@ -12,16 +12,18 @@
     <UserControl.Resources>
         <DataTemplate x:Key="MedicalTemplateDataTemplate" DataType="{x:Type entities:MedicalTemplate}">
             <Grid>
-                <Grid HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="15"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Path x:Name="path" Data="M2,0,2,10,10,5Z" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
-                    <TextBox x:Name="tb_name" Grid.Column="1" Background="Transparent" IsReadOnly="True" IsHitTestVisible="False" HorizontalAlignment="Left" 
-                             Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Path x:Name="path" Data="M2,0,2,10,10,5Z" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
+                <Grid x:Name="gd_content" Grid.Column="1" Margin="5,0">
+                    <TextBox x:Name="tb_name" Background="Transparent" IsReadOnly="True" IsHitTestVisible="False" HorizontalAlignment="Left" Width="Auto"
+                        MinWidth="{DynamicResource InputElementWidth}" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                        MaxWidth="{Binding ActualWidth, ElementName=gd_content}"/>
                 </Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0" Click="ModifyTemplate_Click"/>
                     <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="0,0,10,0" Click="StartModify_Click"/>
                     <controls:MediaButton x:Name="bt_remove" Click="RemoveTemplate_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>

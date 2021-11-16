@@ -27,7 +27,11 @@ namespace MM.Medical.Client.Views
             this.loading = loading;
             Appointment = rawAppointment.Copy();
             if (rawAppointment.AppointmentID == 0)
-                Appointment.AppointmentTime = TimeHelper.ToUnixTime(DateTime.Now);
+            {
+                var dateTime = DateTime.Now;
+                dateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour + 1, 0, 0);
+                Appointment.AppointmentTime = TimeHelper.ToUnixTime(dateTime);
+            }
             DataContext = this;
             this.Loaded += AddAppointment_Loaded;
         }

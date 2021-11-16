@@ -106,10 +106,12 @@
                         <ComboBoxItem>天</ComboBoxItem>
                     </ComboBox>
                 </Grid>
-                <ComboBox x:Name="cb_body" Template="{StaticResource MultipleComboBoxTemplate}" Grid.Row="1" Grid.Column="1" Text="{Binding CheckInfo.CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox x:Name="cb_body" Style="{StaticResource MultipleComboBoxStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding CheckInfo.CheckBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox Content="{Binding}" Click="SelectedBody_Click" VerticalContentAlignment="Center" HorizontalAlignment="Left"/>
+                            <Border>
+                                <CheckBox Content="{Binding}" Click="SelectedBody_Click" Height="Auto" Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                            </Border>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>

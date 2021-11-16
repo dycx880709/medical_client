@@ -150,10 +150,12 @@
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查部位"/>
-                    <ComboBox x:Name="cb_body" IsReadOnly="{Binding IsReadOnly}" Template="{StaticResource MultipleComboBoxTemplate}" Text="{Binding SelectedExamination.BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox x:Name="cb_body" IsReadOnly="{Binding IsReadOnly}" Style="{StaticResource MultipleComboBoxStyle}" Text="{Binding SelectedExamination.BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <CheckBox Content="{Binding}" Click="SelectedBody_Click" VerticalContentAlignment="Center" HorizontalAlignment="Left"/>
+                                <Border>
+                                    <CheckBox Content="{Binding}" Click="SelectedBody_Click" Height="Auto" Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                </Border>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -234,41 +236,39 @@
                     </Expander>
                 </StackPanel>
             </ScrollViewer>
-            <controls:CustomGroupBox Grid.Row="1" Grid.Column="1" Margin="5">
-                <controls:CustomGroupBox.Style>
-                    <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+            <TabControl Grid.Row="1" Grid.Column="1" Width="300" BorderBrush="{StaticResource Color_Border_Primary}" Margin="10">
+                <TabControl.Style>
+                    <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </controls:CustomGroupBox.Style>
-                <TabControl Grid.Row="1" Grid.Column="1" Width="300" BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0">
-                    <TabItem x:Name="ti_word" Width="150" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True">
-                        <TreeView x:Name="tv_medicalWord">
-                            <TreeView.ItemTemplate>
-                                <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
-                                    <StackPanel x:Name="sp" Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalWord_MouseLeftButtonDown">
-                                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </HierarchicalDataTemplate>
-                            </TreeView.ItemTemplate>
-                        </TreeView>
-                    </TabItem>
-                    <TabItem x:Name="ti_template" Width="150" Style="{StaticResource CustomHeaderTabItemStyle}" Header="诊断模板" Foreground="{StaticResource Color_Font_Primary}">
-                        <TreeView x:Name="tv_template">
-                            <TreeView.ItemTemplate>
-                                <HierarchicalDataTemplate DataType="{x:Type entities:MedicalTemplate}" ItemsSource="{Binding MedicalTemplates}">
-                                    <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalTemplate_MouseLeftButtonDown">
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </StackPanel>
-                                </HierarchicalDataTemplate>
-                            </TreeView.ItemTemplate>
-                        </TreeView>
-                    </TabItem>
-                </TabControl>
-            </controls:CustomGroupBox>
+                </TabControl.Style>
+                <TabItem x:Name="ti_word" Width="149" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True">
+                    <TreeView x:Name="tv_medicalWord">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
+                                <StackPanel x:Name="sp" Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalWord_MouseLeftButtonDown">
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </TabItem>
+                <TabItem x:Name="ti_template" Width="149" Style="{StaticResource CustomHeaderTabItemStyle}" Header="诊断模板" Foreground="{StaticResource Color_Font_Primary}">
+                    <TreeView x:Name="tv_template">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type entities:MedicalTemplate}" ItemsSource="{Binding MedicalTemplates}">
+                                <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalTemplate_MouseLeftButtonDown">
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </TabItem>
+            </TabControl>
             <Grid Margin="5" Background="White">
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">

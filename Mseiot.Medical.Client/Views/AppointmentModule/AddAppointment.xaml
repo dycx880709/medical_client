@@ -9,6 +9,10 @@
              Width="600" Height="380"
              mc:Ignorable="d" >
 
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource editorFormItemText}"/>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

@@ -36,9 +36,6 @@
                                         <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.Reserved}">
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
-                                        <!--<DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.PunchIn}">
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </DataTrigger>-->
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>

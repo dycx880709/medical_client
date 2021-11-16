@@ -73,34 +73,17 @@
                         <DataGridTemplateColumn Width="*" Header="状态">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Width="50" Height="30" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding AppointmentStatus, Converter={StaticResource EnumToStringConverter}}"/>
+                                    <Border Width="70" Height="23" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}" Text="{Binding AppointmentStatus, Converter={StaticResource EnumToStringConverter}}"/>
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Name}"/>
                         <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Sex, Converter={StaticResource SexConverter}}"/>
-                        <DataGridTemplateColumn Width="*" Header="预约时间">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border>
-                                        <TextBlock x:Name="tb" Text="--"/>
-                                    </Border>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
-                                            <Setter Property="Text" TargetName="tb" Value="{Binding AppointmentTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reported}">
-                                            <Setter Property="Text" TargetName="tb" Value="{Binding AppointmentTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="*" Header="预约时间" Binding="{Binding AppointmentTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <!--<controls:Pager x:Name="pager" Grid.Row="2"/>-->
             </Grid>
         </controls:CustomGroupBox>
         <controls:CustomGroupBox Grid.Column="1" Header="检查明细">
@@ -171,12 +154,24 @@
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Checked}">
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Reported}">
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Checked}"/>
+                                                <Condition Binding="{Binding IsEditable, ElementName=uc}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.Setters>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </MultiDataTrigger.Setters>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Reported}"/>
+                                                <Condition Binding="{Binding IsEditable, ElementName=uc}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.Setters>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </MultiDataTrigger.Setters>
+                                        </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>

@@ -55,7 +55,7 @@
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
+                        <Button Content="添加" Visibility="Collapsed" Margin="5,0,0,0" Click="AddWord_Click"/>
                         <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
                     </StackPanel>
                 </ControlTemplate>
