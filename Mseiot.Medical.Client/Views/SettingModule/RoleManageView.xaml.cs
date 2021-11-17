@@ -76,7 +76,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"新建角色名称不能为空", "软件提示");
+                        Alert.ShowMessage(true, AlertType.Error, $"新建角色名称不能为空");
                         return;
                     }
                     var add = new Role { Name = tb.Text };
@@ -92,7 +92,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"编辑角色名称不能为空", "软件提示");
+                        Alert.ShowMessage(true, AlertType.Error, $"编辑角色名称不能为空", "软件提示");
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         return;
                     }
@@ -108,7 +108,7 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            MsWindow.ShowDialog($"更新角色失败,{ result.Error }", "软件提示");
+                            Alert.ShowMessage(true, AlertType.Error, $"更新角色失败,{ result.Error }", "软件提示");
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         }
                     }
@@ -137,10 +137,11 @@ namespace MM.Medical.Client.Views
                 var lb = ControlHelper.GetParentObject<ListBox>(element);
                 if (lb.ItemsSource is ObservableCollection<Role> roles)
                 {
-                    if (!MsPrompt.ShowDialog("删除角色将该角色用户无法正常使用,是否继续"))
+                    if (!MsPrompt.ShowDialog("删除角色将该角色用户无法正常使用,是否继续?"))
                         return;
                     var result = loading.AsyncWait("删除角色中,请稍后", SocketProxy.Instance.RemoveRole(role.RoleID));
-                    if (!result.IsSuccess) MsWindow.ShowDialog($"删除角色失败,{ result.Error }", "软件提示");
+                    if (!result.IsSuccess) 
+                        Alert.ShowMessage(true, AlertType.Error, $"删除角色失败,{ result.Error }", "软件提示");
                     else roles.Remove(role);
                 }
             }
@@ -192,8 +193,8 @@ namespace MM.Medical.Client.Views
                 role.Authority = String.Join(",", levels);
                 var result = loading.AsyncWait("编辑角色权限中,请稍后", SocketProxy.Instance.ModifyRole(role));
                 if (!result.IsSuccess)
-                { 
-                    MsWindow.ShowDialog($"编辑角色权限失败,{ result.Error }", "软件提示");
+                {
+                    Alert.ShowMessage(true, AlertType.Error, $"编辑角色权限失败,{ result.Error }", "软件提示");
                     role.Authority = orgin;
                 }
             }

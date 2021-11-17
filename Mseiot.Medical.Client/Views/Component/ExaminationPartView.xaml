@@ -23,11 +23,17 @@
                     <Grid Grid.Column="1" Margin="2">
                         <Grid>
                             <Image x:Name="img" Source="{Binding Path, Converter={StaticResource PathToWebUrlConverter}}" Stretch="Fill"/>
-                            <controls:MediaButton x:Name="bt_play" FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Visible}" HoverSource="{StaticResource Img_Visible_Hover}" Click="PlayMedia_Click" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Border Opacity="0.6" Background="{StaticResource Color_Content_Primary}" CornerRadius="100"/>
+                                <controls:MediaButton x:Name="bt_play" FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Visible}" HoverSource="{StaticResource Img_Visible_Hover}" 
+                                            Click="PlayMedia_Click" Margin="5"/>
+                            </Grid>
                         </Grid>
                         <Grid x:Name="gd_tool" VerticalAlignment="Bottom">
-                            <ComboBox x:Name="cb_part" Visibility="Hidden" IsTabStop="False" BorderThickness="0" Height="25" Width="Auto" Margin="0,5,0,0" SelectedValue="{Binding BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectionChanged="BodyPart_SelectionChanged" ItemsSource="{Binding BodyParts, RelativeSource={RelativeSource AncestorLevel=1,AncestorType={x:Type local:ExaminationPartView},Mode=FindAncestor}}"/>
+                            <Border x:Name="cb_part" Visibility="Hidden" Opacity="0.6" Background="{StaticResource Color_Content_Primary}">
+                                <ComboBox IsTabStop="False" BorderThickness="0" Height="25" Width="Auto" SelectedValue="{Binding BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectionChanged="BodyPart_SelectionChanged" ItemsSource="{Binding BodyParts, RelativeSource={RelativeSource AncestorLevel=1,AncestorType={x:Type local:ExaminationPartView},Mode=FindAncestor}}"/>
+                            </Border>
                             <TextBlock x:Name="tb_part" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource Color_Font_Light}" Margin="2,5,0,0" Text="{Binding BodyPart}"/>
                         </Grid>
                     </Grid>
@@ -113,6 +119,9 @@
                                     <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
                                         <Setter Property="Text" Value="{Binding SelectedExamination.ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reported}">
+                                        <Setter Property="Text" Value="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </TextBox.Style>
@@ -126,6 +135,9 @@
                                 <Setter Property="Text" Value="--"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
+                                        <Setter Property="Text" Value="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reported}">
                                         <Setter Property="Text" Value="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
                                     </DataTrigger>
                                 </Style.Triggers>

@@ -1,5 +1,6 @@
 ﻿using MM.Medical.Client.Core;
 using Ms.Controls;
+using Ms.Controls.Core;
 using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
@@ -91,7 +92,7 @@ namespace MM.Medical.Client.Views
             if (dg_examinations.SelectedValue is Examination examination && examination.Appointment != null)
             {
                 var view = new ReportPreviewView(examination.Appointment.AppointmentID);
-                MsWindow.ShowDialog(view, "打印预览");
+                MsWindow.ShowDialog(view, "打印预览", showWindowMenu: false);
             }
         }
         private void Examination_PageChanged(object sender, PageChangedEventArgs args)
@@ -115,18 +116,26 @@ namespace MM.Medical.Client.Views
                     IsReadOnly = true,
                     Loading = this.loading,
                     SelectedExamination = result.Content,
-                    Height = SystemParameters.PrimaryScreenHeight * 0.93,
-                    Width = SystemParameters.PrimaryScreenWidth * 0.95
+                    Background = Brushes.White
                 };
-                MsWindow.ShowDialog(view, "病历记录");
+                MsWindow.ShowDialog(view, "病历记录", windowState: WindowState.Maximized);
             }
             else Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
         }
 
-        private void DataGridRow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2 && sender is FrameworkElement element && element.DataContext is Examination examination)
-                ShowExaminationPartView(examination);
+            if (sender is DataGrid datagrid)
+            {
+                Point aP = e.GetPosition(datagrid);
+                var obj = datagrid.InputHitTest(aP);
+                if (obj is FrameworkElement element)
+                {
+                    var dgr = ControlHelper.GetParentObject<DataGridRow>(element);
+                    if (dgr != null && dgr.DataContext is Examination examination)
+                        ShowExaminationPartView(examination);
+                }
+            }
         }
     }
 }

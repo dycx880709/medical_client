@@ -176,26 +176,27 @@ namespace MM.Medical.Client.Module.Decontaminate
             {
                 DecontaminateTaskStatus.Wait
             };
-            var result = await SocketProxy.Instance.GetDecontaminateTasks(decontaminateTaskStatuss,"",null,null);
+            var result = await SocketProxy.Instance.GetDecontaminateTasks(0, 10000, decontaminateTaskStatuss,"",null,null);
 
-            if (result.IsSuccess && result.Content != null)
+            if (result.IsSuccess && result.Content != null && result.Content.Results != null)
             {
-                for (int j = 0; j < result.Content.Count; j++)
+                var results = result.Content.Results;
+                for (int j = 0; j < results.Count; j++)
                 {
-                    if (DecontaminateTasks.Count(f => f.DecontaminateTaskID == result.Content[j].DecontaminateTaskID) == 0)
+                    if (DecontaminateTasks.Count(f => f.DecontaminateTaskID == results[j].DecontaminateTaskID) == 0)
                     {
                         this.Dispatcher.Invoke(() =>
                         {
-                            result.Content[j].CleanName = CacheHelper.UserName;
-                            if (result.Content[j].DecontaminateTaskSteps != null)
+                            results[j].CleanName = CacheHelper.UserName;
+                            if (results[j].DecontaminateTaskSteps != null)
                             {
-                                for (int i = 0; i < result.Content[j].DecontaminateTaskSteps.Count; i++)
+                                for (int i = 0; i < results[j].DecontaminateTaskSteps.Count; i++)
                                 {
-                                    result.Content[j].DecontaminateTaskSteps[i].Index = i + 1;
+                                    results[j].DecontaminateTaskSteps[i].Index = i + 1;
                                 }
                             }
                           
-                            DecontaminateTasks.Insert(0, result.Content[j]);
+                            DecontaminateTasks.Insert(0, results[j]);
                         });
                     }
                 }

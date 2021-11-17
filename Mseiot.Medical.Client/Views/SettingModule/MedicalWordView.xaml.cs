@@ -86,7 +86,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"新建医学词库名称不能为空", "软件提示");
+                        Alert.ShowMessage(true, AlertType.Error, $"新建医学词库名称不能为空");
                         return;
                     }
                     var add = new MedicalWord { Name = tb.Text, ParentID = template.ParentID };
@@ -102,7 +102,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"编辑医学词库名称不能为空", "软件提示");
+                        Alert.ShowMessage(true, AlertType.Error, $"编辑医学词库名称不能为空");
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         return;
                     }
@@ -122,7 +122,7 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            MsWindow.ShowDialog($"更新医学词库失败,{ result.Error }", "软件提示");
+                            Alert.ShowMessage(true, AlertType.Error, $"更新医学词库失败,{ result.Error }");
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         }
                     }
@@ -153,13 +153,10 @@ namespace MM.Medical.Client.Views
                 var lb = ControlHelper.GetParentObject<ListBox>(element);
                 if (lb.ItemsSource is ObservableCollection<MedicalWord> medicalWords)
                 {
-                    if (template.ParentID == 0)
-                    {
-                        if (!MsPrompt.ShowDialog("删除医学词库将清空其列表中的全部子项,是否继续"))
-                            return;
-                    }
+                    if (!MsPrompt.ShowDialog("确认删除此条医学词库内容,是否继续?"))
+                        return;
                     var result = loading.AsyncWait("删除医学词库中,请稍后", SocketProxy.Instance.RemoveMedicalWord(template.MedicalWordID));
-                    if (!result.IsSuccess) MsWindow.ShowDialog($"删除医学词库失败,{ result.Error }", "软件提示");
+                    if (!result.IsSuccess) Alert.ShowMessage(true, AlertType.Error, $"删除医学词库失败,{ result.Error }");
                     else medicalWords.Remove(template);
                 }
             }
@@ -169,7 +166,7 @@ namespace MM.Medical.Client.Views
         {
             var result = loading.AsyncWait("获取医学词库中,请稍后", SocketProxy.Instance.GetMedicalWords());
             if (result.IsSuccess) lt_diagnosis.ItemsSource = CacheHelper.SortMedicalWords(result.Content, 0);
-            else MsWindow.ShowDialog($"获取医学词库失败,{ result.Error }", "软件提示");
+            else Alert.ShowMessage(true, AlertType.Error, $"获取医学词库失败,{ result.Error }");
         }
         
 

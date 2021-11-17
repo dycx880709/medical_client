@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1080" d:DesignWidth="1920">
 
     <UserControl.Resources>
         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -19,8 +19,8 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
-        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+    <controls:CustomGroupBox Header="系统设置 \ 系统设置">
+        <Grid VerticalAlignment="Top" HorizontalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -96,7 +96,7 @@
                 </WrapPanel>
             </controls:CustomGroupBox>
             <Button Click="Save_Click" Grid.Row="2" Margin="0,20" Grid.ColumnSpan="3" Content="保存"/>
+            <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
         </Grid>
-        <controls:Loading x:Name="loading"/>
-    </Grid>
+    </controls:CustomGroupBox>
 </UserControl>

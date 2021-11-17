@@ -14,7 +14,7 @@
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <controls:CustomGroupBox Header="角色列表" Grid.Column="0">
+        <controls:CustomGroupBox Header="系统设置 \ 角色列表" Grid.Column="0">
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal">

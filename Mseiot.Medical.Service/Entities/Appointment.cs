@@ -16,7 +16,7 @@ namespace Mseiot.Medical.Service.Entities
         private string idCard;
         private string socialSecurityCode;
         private bool sex;
-        private long birthday;
+        private int birthday;
         private AppointmentStatus appointmentStatus;
         private Examination examination;
         private int endoscopeID;
@@ -93,7 +93,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 年龄
         /// </summary>
-        public long Birthday
+        public int Birthday
         {
             get { return birthday; }
             set

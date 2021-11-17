@@ -61,7 +61,7 @@ namespace MM.Medical.Client.Views
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            if (ConfirmWindow.Show("是否继续?"))
+            if (MsPrompt.ShowDialog("确认删除此次备份,是否继续?"))
             {
                 if (sender is FrameworkElement element && element.DataContext is SQLInfo sqlInfo)
                 {

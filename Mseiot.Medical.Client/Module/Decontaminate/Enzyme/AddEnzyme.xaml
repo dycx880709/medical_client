@@ -9,12 +9,12 @@
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="清洗酶名称" Width="Auto" Style="{StaticResource editorFormItemText}"/>
+                <TextBlock x:Name="tb_name" Text="清洗酶名称" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                 <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"/>
 
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="清洗时长" Width="Auto" Style="{StaticResource editorFormItemText}"/>
+                <TextBlock Text="清洗时长" Width="{Binding ActualWidth, ElementName=tb_name}" Style="{StaticResource editorFormItemText}"/>
                 <TextBox Text="{Binding Timeout,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"/>
             </StackPanel>
 

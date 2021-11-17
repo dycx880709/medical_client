@@ -27,7 +27,7 @@ namespace MM.Medical.Client.Views
     /// <summary>
     /// ExaminationManageView.xaml 的交互逻辑
     /// </summary>
-    public partial class ExaminationManageView : UserControl
+    public partial class ExaminationManageView : UserControl, IConnection
     {
         public ExaminationMedia SelectedMedia
         {
@@ -319,11 +319,16 @@ namespace MM.Medical.Client.Views
             if (dg_appointments.SelectedValue is Appointment info)
             {
                 var view = new ReportPreviewView(info.AppointmentID);
-                MsWindow.ShowDialog(view, "打印预览");
+                MsWindow.ShowDialog(view, "打印预览", showWindowMenu: false);
             }
         }
 
         private void StartCheck_Click(object sender, RoutedEventArgs e)
+        {
+            AcceptConsultingRoom();
+        }
+
+        private void AcceptConsultingRoom()
         {
             var result = loading.AsyncWait("更新出诊状态中,请稍后", SocketProxy.Instance.AcceptConsultingRoom(this.consultingRoomId, this.IsDoctorVisit));
             if (!result.IsSuccess)
@@ -381,5 +386,18 @@ namespace MM.Medical.Client.Views
 
         }
 
+        public void ReConnect()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                if (this.IsDoctorVisit)
+                    AcceptConsultingRoom();
+                LoadConsultingRoom();
+            });
+        }
+
+        public void Break()
+        {
+        }
     }
 }

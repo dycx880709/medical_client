@@ -11,14 +11,23 @@ namespace Mseiot.Medical.Service.Services
 {
     public partial class SocketProxy
     {
-        public async Task<MsResult<List<DecontaminateTask>>> GetDecontaminateTasks(List<DecontaminateTaskStatus> decontaminateTaskStatuses,string searchContent,DateTime? startTime,DateTime? endTime)
+        public async Task<MsResult<ListResult<DecontaminateTask>>> GetDecontaminateTasks(
+            int index,
+            int count,
+            List<DecontaminateTaskStatus> decontaminateTaskStatuses,
+            string searchContent,
+            DateTime? startTime,
+            DateTime? endTime
+        )
         {
-            return await HttpProxy.GetMessage<List<DecontaminateTask>>("/api/DecontaminateTask/get", new
+            return await HttpProxy.GetMessage<ListResult<DecontaminateTask>>("/api/DecontaminateTask/get", new
             {
-                decontaminateTaskStatuses = decontaminateTaskStatuses != null ? string.Join(",", decontaminateTaskStatuses.Select(t => (int)t)) : null,
+                Index = index,
+                Count = count,
+                DecontaminateTaskStatuses = decontaminateTaskStatuses != null ? string.Join(",", decontaminateTaskStatuses.Select(t => (int)t)) : null,
                 SearchContent = searchContent,
                 StartTime = startTime == null ?0: TimeHelper.ToUnixTime((DateTime)startTime),
-               EndTime = endTime == null ? long.MaxValue : TimeHelper.ToUnixTime((DateTime)endTime),
+                EndTime = endTime == null ? long.MaxValue : TimeHelper.ToUnixTime((DateTime)endTime),
             }) ;
         }
 

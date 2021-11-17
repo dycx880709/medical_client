@@ -133,7 +133,7 @@ namespace MM.Medical.Client.Views
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.DataContext is ConsultingRoom room)
+            if (sender is FrameworkElement element && element.DataContext is ConsultingRoom room && MsPrompt.ShowDialog("删除诊室可能将导致检查中心无法正常使用,是否继续?"))
             {
                 ResetConsultingRoom();
                 var lb = ControlHelper.GetParentObject<ListBox>(element);

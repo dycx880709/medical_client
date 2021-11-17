@@ -69,7 +69,7 @@ namespace MM.Medical.Client.Views
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            if (dg_user.SelectedValue is User user)
+            if (dg_user.SelectedValue is User user && MsPrompt.ShowDialog("确定删除该用户,是否继续?"))
             {
                 var result = loading.AsyncWait("删除用户中", SocketProxy.Instance.RemoveUser(user.UserID));
                 if (result.Content)

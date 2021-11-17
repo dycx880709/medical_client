@@ -48,17 +48,36 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private async void LoadDecontaminateTasks()
         {
+            pager.SelectedCount = lvDatas.GetFullCountWithoutScroll();
             DecontaminateTasks.Clear();
             loading.Start("获取内窥镜列表中,请稍后");
-            var result = await SocketProxy.Instance.GetDecontaminateTasks(new List<DecontaminateTaskStatus>() { DecontaminateTaskStatus.Complete },tbSearch.Text,dti.StartTime,dti.EndTime);
-            if (result.IsSuccess)
-                DecontaminateTasks.AddRange(result.Content);
-            loading.Stop();
+            var result = await SocketProxy.Instance.GetDecontaminateTasks(
+                pager.PageIndex,
+                pager.SelectedCount,
+                new List<DecontaminateTaskStatus>() { DecontaminateTaskStatus.Complete },
+                tbSearch.Text,
+                dti.StartTime,
+                dti.EndTime
+            );
+            this.Dispatcher.Invoke(() =>
+            {
+                if (result.IsSuccess)
+                {
+                    DecontaminateTasks.AddRange(result.Content.Results);
+                    pager.TotalCount = result.Content.Total;
+                }
+                loading.Stop();
+            });
         }
 
         #endregion
 
         private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            LoadDecontaminateTasks();
+        }
+
+        private void Pager_PageChanged(object sender, PageChangedEventArgs args)
         {
             LoadDecontaminateTasks();
         }

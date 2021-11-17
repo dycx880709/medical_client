@@ -434,7 +434,10 @@ namespace MM.Medical.Client.Views
             {
                 var result = await SocketProxy.Instance.ModifyExaminationMedia(media);
                 if (!result.IsSuccess)
-                    this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, $"检查部位设置失败,{ result.Error }"));
+                {
+                    this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, $"设置是否打印失败,{ result.Error }"));
+                    media.IsSelected = !media.IsSelected;
+                }
             }
         }
 

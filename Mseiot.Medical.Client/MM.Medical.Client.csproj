@@ -64,6 +64,7 @@
       <HintPath>packages\OpenCvSharp4.4.5.3.20210817\lib\net461\OpenCvSharp.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -144,12 +145,6 @@
     <Compile Include="Views\AppointmentModule\AppointmentManage.xaml.cs">
       <DependentUpon>AppointmentManage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Component\AddBookingView.xaml.cs">
-      <DependentUpon>AddBookingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AppointmentModule\BookingManageView.xaml.cs">
-      <DependentUpon>BookingManageView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Component\AddUserView.xaml.cs">
       <DependentUpon>AddUserView.xaml</DependentUpon>
     </Compile>
@@ -158,9 +153,6 @@
     </Compile>
     <Compile Include="Views\Component\ExaminationPartView.xaml.cs">
       <DependentUpon>ExaminationPartView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Component\PatientManageView.xaml.cs">
-      <DependentUpon>PatientManageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Component\ReportPreviewView.xaml.cs">
       <DependentUpon>ReportPreviewView.xaml</DependentUpon>
@@ -201,11 +193,11 @@
     <Compile Include="Module\Decontaminate\System\DecontaminateSetting.xaml.cs">
       <DependentUpon>DecontaminateSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ExaminationModule\ExaminationItemView.xaml.cs">
+      <DependentUpon>ExaminationItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingModule\BackupDBManage.xaml.cs">
       <DependentUpon>BackupDBManage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StatisticsModule\ConditionStatisticsView.xaml.cs">
-      <DependentUpon>ConditionStatisticsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatisticsModule\SelfWorkStatisticsView.xaml.cs">
       <DependentUpon>SelfWorkStatisticsView.xaml</DependentUpon>
@@ -224,9 +216,6 @@
     </Compile>
     <Compile Include="Views\SettingModule\ConsultingManageView.xaml.cs">
       <DependentUpon>ConsultingManageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingModule\DataBackingView.xaml.cs">
-      <DependentUpon>DataBackingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingModule\DiagnosticTemplateView.xaml.cs">
       <DependentUpon>DiagnosticTemplateView.xaml</DependentUpon>
@@ -283,14 +272,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Component\AddBookingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AppointmentModule\BookingManageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Component\AddUserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -300,10 +281,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Component\ExaminationPartView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Component\PatientManageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -359,13 +336,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\ExaminationModule\ExaminationItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingModule\BackupDBManage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\StatisticsModule\ConditionStatisticsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StatisticsModule\SelfWorkStatisticsView.xaml">
       <SubType>Designer</SubType>
@@ -400,10 +377,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingModule\ConsultingManageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingModule\DataBackingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

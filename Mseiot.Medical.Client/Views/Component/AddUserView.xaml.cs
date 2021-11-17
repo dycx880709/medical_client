@@ -54,7 +54,7 @@ namespace MM.Medical.Client.Views
             }
             else
             {
-                MsWindow.ShowDialog($"获取角色列表失败,{ result.Error }", "软件提示");
+                Alert.ShowMessage(true, AlertType.Error, $"获取角色列表失败,{ result.Error }", "软件提示");
                 this.Close();
             }
         }
@@ -63,17 +63,17 @@ namespace MM.Medical.Client.Views
         {
             if (string.IsNullOrEmpty(user.LoginName))
             {
-                MsWindow.ShowDialog("登录名不能为空", "软件提示");
+                Alert.ShowMessage(true, AlertType.Error, "登录名不能为空", "软件提示");
                 return;
             }
             if (string.IsNullOrEmpty(user.LoginName))
             {
-                MsWindow.ShowDialog("用户姓名不能为空", "软件提示");
+                Alert.ShowMessage(true, AlertType.Error, "用户姓名不能为空", "软件提示");
                 return;
             }
             if (cb_roles.SelectedValue == null)
             {
-                MsWindow.ShowDialog("用户角色不能为空", "软件提示");
+                Alert.ShowMessage(true, AlertType.Error, "用户角色不能为空", "软件提示");
                 return;
             }
             if (string.IsNullOrEmpty(user.UserID))
@@ -85,7 +85,7 @@ namespace MM.Medical.Client.Views
                     user.CopyTo(originUser);
                     this.Close();
                 }
-                else MsWindow.ShowDialog($"添加用户失败,{ result.Error }", "软件提示");
+                else Alert.ShowMessage(true, AlertType.Error, $"添加用户失败,{ result.Error }", "软件提示");
             }
             else
             {
@@ -95,7 +95,7 @@ namespace MM.Medical.Client.Views
                     user.CopyTo(originUser);
                     this.Close();
                 }
-                else MsWindow.ShowDialog($"编辑用户失败,{ result.Error }", "软件提示");
+                else Alert.ShowMessage(true, AlertType.Error, $"编辑用户失败,{ result.Error }", "软件提示");
             }
         }
     }

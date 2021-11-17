@@ -40,88 +40,94 @@
                     <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
                     <Setter Property="Visibility" TargetName="bt_remove" Value="Collapsed"/>
                 </DataTrigger>
+                <DataTrigger Binding="{Binding ParentID}" Value="0">
+                    <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
+                    <Setter Property="Visibility" TargetName="bt_remove" Value="Collapsed"/>
+                </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid x:Name="grid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="4*"/>
-        </Grid.ColumnDefinitions>
-        <controls:CustomGroupBox Header="列表一" Margin="5,0">
-            <controls:CustomGroupBox.AttachContent>
-                <ControlTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="添加" Visibility="Collapsed" Margin="5,0,0,0" Click="AddWord_Click"/>
-                        <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
-                    </StackPanel>
-                </ControlTemplate>
-            </controls:CustomGroupBox.AttachContent>
-            <ListBox x:Name="lt_diagnosis" ItemTemplate="{StaticResource MedicalWordDataTemplate}" Grid.Column="0"/>
-        </controls:CustomGroupBox>
-        <controls:CustomGroupBox Grid.Column="1" Header="列表二" Margin="5,0" DataContext="{Binding SelectedValue,ElementName=lt_diagnosis}">
-            <controls:CustomGroupBox.AttachContent>
-                <ControlTemplate>
-                    <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
-                </ControlTemplate>
-            </controls:CustomGroupBox.AttachContent>
-            <controls:CustomGroupBox.Style>
-                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedValue, ElementName=lt_diagnosis}" Value="{x:Null}">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedValue.MedicalWordID, ElementName=lt_diagnosis}" Value="0">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </controls:CustomGroupBox.Style>
-            <ListBox x:Name="lt_body" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding MedicalWords}"/>
-        </controls:CustomGroupBox>
-        <controls:CustomGroupBox Grid.Column="2" Header="列表三" Margin="5,0" DataContext="{Binding SelectedValue, ElementName=lt_body}">
-            <controls:CustomGroupBox.AttachContent>
-                <ControlTemplate>
-                    <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
-                </ControlTemplate>
-            </controls:CustomGroupBox.AttachContent>
-            <controls:CustomGroupBox.Style>
-                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedValue, ElementName=lt_body}" Value="{x:Null}">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedValue.MedicalWordID, ElementName=lt_body}" Value="0">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </controls:CustomGroupBox.Style>
-            <ListBox x:Name="lt_describe" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding MedicalWords}"/>
-        </controls:CustomGroupBox>
-        <controls:CustomGroupBox Grid.Column="3" Header="列表四" Margin="5,0" DataContext="{Binding SelectedValue, ElementName=lt_describe}">
-            <controls:CustomGroupBox.AttachContent>
-                <ControlTemplate>
-                    <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
-                </ControlTemplate>
-            </controls:CustomGroupBox.AttachContent>
-            <controls:CustomGroupBox.Style>
-                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedValue, ElementName=lt_describe}" Value="{x:Null}">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedValue.MedicalWordID, ElementName=lt_describe}" Value="0">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </controls:CustomGroupBox.Style>
-            <ListBox x:Name="lt_symptom" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding MedicalWords}"/>
-        </controls:CustomGroupBox>
-        <controls:Loading x:Name="loading" Grid.ColumnSpan="4"/>
-    </Grid>
+    <controls:CustomGroupBox Header="系统设置 \ 医学词库">
+        <Grid x:Name="grid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <controls:CustomGroupBox Header="列表一" Margin="5">
+                <controls:CustomGroupBox.AttachContent>
+                    <ControlTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="添加" Visibility="Collapsed" Margin="5,0,0,0" Click="AddWord_Click"/>
+                            <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </controls:CustomGroupBox.AttachContent>
+                <ListBox x:Name="lt_diagnosis" ItemTemplate="{StaticResource MedicalWordDataTemplate}" Grid.Column="0"/>
+            </controls:CustomGroupBox>
+            <controls:CustomGroupBox Grid.Column="1" Header="列表二" Margin="5" DataContext="{Binding SelectedValue,ElementName=lt_diagnosis}">
+                <controls:CustomGroupBox.AttachContent>
+                    <ControlTemplate>
+                        <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
+                    </ControlTemplate>
+                </controls:CustomGroupBox.AttachContent>
+                <controls:CustomGroupBox.Style>
+                    <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedValue, ElementName=lt_diagnosis}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedValue.MedicalWordID, ElementName=lt_diagnosis}" Value="0">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:CustomGroupBox.Style>
+                <ListBox x:Name="lt_body" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding MedicalWords}"/>
+            </controls:CustomGroupBox>
+            <controls:CustomGroupBox Grid.Column="2" Header="列表三" Margin="5" DataContext="{Binding SelectedValue, ElementName=lt_body}">
+                <controls:CustomGroupBox.AttachContent>
+                    <ControlTemplate>
+                        <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
+                    </ControlTemplate>
+                </controls:CustomGroupBox.AttachContent>
+                <controls:CustomGroupBox.Style>
+                    <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedValue, ElementName=lt_body}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedValue.MedicalWordID, ElementName=lt_body}" Value="0">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:CustomGroupBox.Style>
+                <ListBox x:Name="lt_describe" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding MedicalWords}"/>
+            </controls:CustomGroupBox>
+            <controls:CustomGroupBox Grid.Column="3" Header="列表四" Margin="5" DataContext="{Binding SelectedValue, ElementName=lt_describe}">
+                <controls:CustomGroupBox.AttachContent>
+                    <ControlTemplate>
+                        <Button Content="添加" Margin="5,0,0,0" Click="AddWord_Click"/>
+                    </ControlTemplate>
+                </controls:CustomGroupBox.AttachContent>
+                <controls:CustomGroupBox.Style>
+                    <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedValue, ElementName=lt_describe}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedValue.MedicalWordID, ElementName=lt_describe}" Value="0">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:CustomGroupBox.Style>
+                <ListBox x:Name="lt_symptom" ItemTemplate="{StaticResource MedicalWordDataTemplate}" ItemsSource="{Binding MedicalWords}"/>
+            </controls:CustomGroupBox>
+            <controls:Loading x:Name="loading" Grid.ColumnSpan="4"/>
+        </Grid>
+    </controls:CustomGroupBox>
 </UserControl>

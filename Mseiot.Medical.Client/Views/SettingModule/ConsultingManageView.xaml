@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <controls:CustomGroupBox Header="诊室管理">
+        <controls:CustomGroupBox Header="系统设置 \ 诊室管理">
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal">

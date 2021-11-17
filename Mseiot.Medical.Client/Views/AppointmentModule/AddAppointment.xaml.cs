@@ -19,12 +19,14 @@ namespace MM.Medical.Client.Views
     public partial class AddAppointment : UserControl
     {
         public Appointment Appointment { get; set; } = new Appointment();
+        public List<ConsultingRoom> ConsultingRooms { get; set; }
         private readonly Loading loading;
 
         public AddAppointment(Appointment rawAppointment, Loading loading)
         {
             InitializeComponent();
             this.loading = loading;
+            this.ConsultingRooms = new List<ConsultingRoom>();
             Appointment = rawAppointment.Copy();
             if (rawAppointment.AppointmentID == 0)
             {
@@ -44,6 +46,9 @@ namespace MM.Medical.Client.Views
 
         private void GetAppointInfos()
         {
+            var result2 = loading.AsyncWait("获取预约诊室中,请稍后", SocketProxy.Instance.GetConsultingRooms());
+            if (result2.IsSuccess)
+                this.ConsultingRooms = result2.Content;
             var result = loading.AsyncWait("获取预约类型中,请稍后", SocketProxy.Instance.GetBaseWords("检查类型"));
             if (result.IsSuccess)
             { 
@@ -52,9 +57,6 @@ namespace MM.Medical.Client.Views
                 if (!string.IsNullOrEmpty(cb_type.Text))
                     cb_type.SelectedIndex = checkTypes.IndexOf(cb_type.Text);
             }
-            var result2 = loading.AsyncWait("获取预约诊室中,请稍后", SocketProxy.Instance.GetConsultingRooms());
-            if (result2.IsSuccess)
-                cb_room.ItemsSource = result2.Content;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -69,7 +71,7 @@ namespace MM.Medical.Client.Views
                 Alert.ShowMessage(true, AlertType.Error, "检查类型输入不合法");
                 return;
             }
-            if (Appointment.Birthday == 0)
+            if (Appointment.Birthday == 0 && tb_birthday.Text != "0")
             {
                 Alert.ShowMessage(true, AlertType.Error, "患者年龄输入不合法");
                 return;
@@ -96,6 +98,11 @@ namespace MM.Medical.Client.Views
         private void Rescan_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void AppointmentType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            cb_room.ItemsSource = ConsultingRooms.Where(t => t.ExaminationTypes.Split(',').Any(p => p.Equals(cb_type.SelectedValue)));
         }
     }
 }

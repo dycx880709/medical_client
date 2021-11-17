@@ -45,7 +45,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="患者年龄"/></TextBlock>
-                <TextBox>
+                <TextBox x:Name="tb_birthday">
                     <TextBox.Text>
                         <Binding Path="Appointment.Birthday" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
@@ -57,7 +57,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Grid.Column="0" Grid.Row="0"><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="检查类型"/></TextBlock>
-                <ComboBox x:Name="cb_type" Text="{Binding Appointment.AppointmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox x:Name="cb_type" Text="{Binding Appointment.AppointmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="AppointmentType_SelectionChanged"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Grid.Column="0" Grid.Row="0"><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="预约时间"/></TextBlock>
@@ -65,7 +65,18 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="指定诊室"/>
-                <ComboBox x:Name="cb_room" DisplayMemberPath="Name" SelectedValuePath="Name" SelectedValue="{Binding Appointment.ConsultingRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox x:Name="cb_room" DisplayMemberPath="Name" SelectedValuePath="Name" SelectedValue="{Binding Appointment.ConsultingRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.Style>
+                        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedValue, ElementName=cb_type}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">

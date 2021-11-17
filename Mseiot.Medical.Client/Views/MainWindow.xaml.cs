@@ -30,6 +30,12 @@ namespace MM.Medical.Client.Views
             InitializeComponent();
             LoadSetting();
             this.Loaded += MainWindow_Loaded;
+            this.Closing += MainWindow_Closing;
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = !MsPrompt.ShowDialog("确认退出系统吗?");
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -81,6 +87,11 @@ namespace MM.Medical.Client.Views
                         loading.Start("启动连接已断开,断线重连中");
                     });
                     SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
+                    foreach (var item in navigateItems)
+                    {
+                        if (item.Value is IConnection conn)
+                            conn.Break();
+                    }
                     await System.Threading.Tasks.Task.Delay(1000);
                     await ConnectServer();
                     break;
@@ -99,6 +110,11 @@ namespace MM.Medical.Client.Views
                             loading.Stop();
                         });
                         SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+                        foreach (var item in navigateItems)
+                        {
+                            if (item.Value is IConnection conn)
+                                conn.ReConnect();
+                        }
                     }
                     else
                     {
@@ -208,29 +224,21 @@ namespace MM.Medical.Client.Views
             Entities.Menu menu = (sender as ListView).SelectedItem as Entities.Menu;
             if (menu != null)
             {
-                if (sender != lvMenus)
-                {
-                    lvMenus.SelectedIndex = -1;
-                }
+                if (sender != lvMenus) lvMenus.SelectedIndex = -1;
                 if (!string.IsNullOrEmpty(menu.Identify))
                 {
-                    if (menu.Reusability)
-                    {
-                        if (!navigateItems.ContainsKey(menu.Identify))
-                        {
-                            var type = Type.GetType(menu.Identify);
-                            var uc = Activator.CreateInstance(type) as UserControl;
-                            navigateItems.Add(menu.Identify, uc);
-                        }
-                        border.Child = navigateItems[menu.Identify];
-                    }
-                    else
+                    if (navigateItems.ContainsKey(menu.Identify) && !menu.Reusability)
+                        navigateItems.Remove(menu.Identify);
+                    if (!navigateItems.ContainsKey(menu.Identify))
                     {
                         var type = Type.GetType(menu.Identify);
                         var uc = Activator.CreateInstance(type) as UserControl;
-                        uc.Unloaded += (s, _) => (s as IDisposable)?.Dispose();
-                        border.Child = uc;
+                        if (!menu.Reusability)
+                            uc.Unloaded += (s, _) => (s as IDisposable)?.Dispose();
+                        navigateItems.Add(menu.Identify, uc);
                     }
+                    var navigateItem = navigateItems[menu.Identify];
+                    border.Child = navigateItem;
                 }
             }
         }

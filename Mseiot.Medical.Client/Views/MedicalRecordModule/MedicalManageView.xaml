@@ -14,9 +14,29 @@
         <controls:CustomGroupBox.AttachContent>
             <ControlTemplate>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="打开" Margin="5,0" Click="Open_Click"/>
-                    <Button Content="刷新" Margin="5,0" Click="Refresh_Click"/>
-                    <Button Content="打印" Margin="5,0,0,0" Click="Report_Click"/>
+                    <Button Content="打开" Margin="5,0" Click="Open_Click">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedValue, ElementName=dg_examinations}" Value="{x:Null}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="打印" Margin="5,0" Click="Report_Click">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedValue, ElementName=dg_examinations}" Value="{x:Null}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
                 </StackPanel>
             </ControlTemplate>
         </controls:CustomGroupBox.AttachContent>
@@ -57,12 +77,7 @@
                     </WrapPanel>
                 </Grid>
                 <Border Grid.Row="1">
-                    <DataGrid x:Name="dg_examinations">
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
-                                <EventSetter Event="MouseLeftButtonDown" Handler="DataGridRow_MouseLeftButtonDown"/>
-                            </Style>
-                        </DataGrid.Resources>
+                    <DataGrid x:Name="dg_examinations" MouseDoubleClick="DataGrid_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn  Width="70" Header="序号">
                                 <DataGridTemplateColumn.CellTemplate>

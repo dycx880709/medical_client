@@ -7,91 +7,94 @@
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400"/>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <controls:CustomGroupBox Header="词库词条" Grid.Column="0">
-            <controls:CustomGroupBox.AttachContent>
-                <ControlTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="添加" Margin="5,0" Visibility="Collapsed" Click="AddWord_Click" Cursor="Hand"/>
-                        <Button Content="刷新" Click="RefreshWord_Click"/>
-                    </StackPanel>
-                </ControlTemplate>
-            </controls:CustomGroupBox.AttachContent>
-            <ListBox x:Name="lb_words">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid HorizontalAlignment="Left">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Path x:Name="path" Data="M2,0,2,10,10,5Z" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
-                                <TextBox x:Name="tb_name" IsHitTestVisible="False" Grid.Column="1" IsReadOnly="True" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
+
+    <controls:CustomGroupBox Header="系统设置 \ 基础词条">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <controls:CustomGroupBox Header="词库词条" Grid.Column="0" Margin="5">
+                <controls:CustomGroupBox.AttachContent>
+                    <ControlTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="添加" Margin="5,0" Visibility="Collapsed" Click="AddWord_Click" Cursor="Hand"/>
+                            <Button Content="刷新" Click="RefreshWord_Click"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </controls:CustomGroupBox.AttachContent>
+                <ListBox x:Name="lb_words">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid HorizontalAlignment="Left">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="15"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Path x:Name="path" Data="M2,0,2,10,10,5Z" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
+                                    <TextBox x:Name="tb_name" IsHitTestVisible="False" Grid.Column="1" IsReadOnly="True" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
+                                </Grid>
+                                <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Click="SaveWord_Click" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0"/>
+                                    <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" Click="ModifyWord_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="10,0"/>
+                                    <controls:MediaButton x:Name="bt_remove" ToolTip="删除" Click="RemoveWord_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
+                                </StackPanel>
                             </Grid>
-                            <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Click="SaveWord_Click" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0"/>
-                                <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" Click="ModifyWord_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="10,0"/>
-                                <controls:MediaButton x:Name="bt_remove" ToolTip="删除" Click="RemoveWord_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
-                            </StackPanel>
-                        </Grid>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Content}" Value="{x:Null}">
-                                <Setter Property="Visibility" TargetName="path" Value="Hidden"/>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Content}" Value="{x:Null}">
+                                    <Setter Property="Visibility" TargetName="path" Value="Hidden"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Content}" Value="">
+                                    <Setter Property="Visibility" TargetName="path" Value="Hidden"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="Visibility" TargetName="bt_comfirm" Value="Visible"/>
+                                    <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
+                                    <Setter Property="IsReadOnly" TargetName="tb_name" Value="False"/>
+                                    <Setter Property="IsHitTestVisible" TargetName="tb_name" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding BaseWordID}" Value="0">
+                                    <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
+                                    <Setter Property="Visibility" TargetName="bt_remove" Value="Collapsed"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:CustomGroupBox>
+            <controls:CustomGroupBox Header="词条明细" Grid.Column="2" Margin="5">
+                <controls:CustomGroupBox.Style>
+                    <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedValue, ElementName=lb_words}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Content}" Value="">
-                                <Setter Property="Visibility" TargetName="path" Value="Hidden"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter Property="Visibility" TargetName="bt_comfirm" Value="Visible"/>
-                                <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
-                                <Setter Property="IsReadOnly" TargetName="tb_name" Value="False"/>
-                                <Setter Property="IsHitTestVisible" TargetName="tb_name" Value="True"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding BaseWordID}" Value="0">
-                                <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
-                                <Setter Property="Visibility" TargetName="bt_remove" Value="Collapsed"/>
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </controls:CustomGroupBox>
-        <controls:CustomGroupBox Header="词条明细" Grid.Column="2">
-            <controls:CustomGroupBox.Style>
-                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedValue, ElementName=lb_words}" Value="{x:Null}">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </controls:CustomGroupBox.Style>
-            <controls:CustomGroupBox.AttachContent>
-                <ControlTemplate>
-                    <Button Content="添加" Click="AddItem_Click"/>
-                </ControlTemplate>
-            </controls:CustomGroupBox.AttachContent>
-            <ListBox ItemsSource="{Binding SelectedValue.Items, ElementName=lb_words}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <TextBlock Margin="3,0,0,0" Text="{Binding}" Foreground="{StaticResource Color_Font_Primary}"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <controls:MediaButton Click="ModifyItem_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
-                                <controls:MediaButton Click="RemoveItem_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}" Margin="10,0,0,0"/>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </controls:CustomGroupBox>
-        <controls:SliderPanel x:Name="sp" Grid.ColumnSpan="3"/>
-        <controls:Loading x:Name="loading" Grid.ColumnSpan="3"/>
-    </Grid>
+                        </Style.Triggers>
+                    </Style>
+                </controls:CustomGroupBox.Style>
+                <controls:CustomGroupBox.AttachContent>
+                    <ControlTemplate>
+                        <Button Content="添加" Click="AddItem_Click"/>
+                    </ControlTemplate>
+                </controls:CustomGroupBox.AttachContent>
+                <ListBox ItemsSource="{Binding SelectedValue.Items, ElementName=lb_words}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Margin="3,0,0,0" Text="{Binding}" Foreground="{StaticResource Color_Font_Primary}"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <controls:MediaButton Click="ModifyItem_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
+                                    <controls:MediaButton Click="RemoveItem_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:CustomGroupBox>
+            <controls:SliderPanel x:Name="sp" Grid.ColumnSpan="3"/>
+            <controls:Loading x:Name="loading" Grid.ColumnSpan="3"/>
+        </Grid>
+    </controls:CustomGroupBox>
 </UserControl>

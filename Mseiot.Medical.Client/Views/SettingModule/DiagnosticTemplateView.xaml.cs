@@ -147,20 +147,20 @@ namespace MM.Medical.Client.Views
             if (sender is FrameworkElement element && element.DataContext is MedicalTemplate template)
             {
                 ResetMedicalTemplate();
-                if (template.ParentID == 0)
+                if (MsPrompt.ShowDialog("确定删除此模板目录内容,是否继续?"))
                 {
-                    if (MsPrompt.ShowDialog("删除模板目录项将清空其列表中的全部子项,是否继续"))
+                    if (template.ParentID == 0)
                     {
                         var result = loading.AsyncWait("删除模板项中,请稍后", SocketProxy.Instance.RemoveMedicalTemplate(template.MedicalTemplateID));
                         if (!result.IsSuccess) MsWindow.ShowDialog($"删除模板信息失败,{ result.Error }", "软件提示");
                         else (lb_template.ItemsSource as ObservableCollection<MedicalTemplate>).Remove(template);
                     }
-                }
-                else
-                {
-                    var result = loading.AsyncWait("删除模板信息中,请稍后", SocketProxy.Instance.RemoveMedicalTemplate(template.MedicalTemplateID));
-                    if (!result.IsSuccess) MsWindow.ShowDialog($"删除模板信息失败,{ result.Error }", "软件提示");
-                    else (lb_item.ItemsSource as ObservableCollection<MedicalTemplate>).Remove(template);
+                    else
+                    {
+                        var result = loading.AsyncWait("删除模板信息中,请稍后", SocketProxy.Instance.RemoveMedicalTemplate(template.MedicalTemplateID));
+                        if (!result.IsSuccess) MsWindow.ShowDialog($"删除模板信息失败,{ result.Error }", "软件提示");
+                        else (lb_item.ItemsSource as ObservableCollection<MedicalTemplate>).Remove(template);
+                    }
                 }
             }
         }
