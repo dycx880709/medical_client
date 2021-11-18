@@ -4,6 +4,7 @@ using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
@@ -20,24 +21,35 @@ namespace MM.Medical.Client.Views
     /// <summary>
     /// ReportPreviewView.xaml 的交互逻辑
     /// </summary>
-    public partial class ReportPreviewView : System.Windows.Controls.UserControl
+    public partial class ReportPreviewView : System.Windows.Controls.UserControl, INotifyPropertyChanged
     {
+        
         private Examination examination;
         private int appointmentID;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public string Printer
+        {
+            get { return CacheHelper.LocalSetting.Printer; }
+            set 
+            {
+                CacheHelper.LocalSetting.Printer = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Printer"));
+            }
+        }
+
 
         public ReportPreviewView(int appointmentID)
         {
             InitializeComponent();
             this.appointmentID = appointmentID;
-            this.MaxHeight = 1123;
-            this.Height = SystemParameters.PrimaryScreenHeight * 0.92;
-            this.Width = this.Height / 1123 * 794;
             this.Loaded += ReportPreviewView_Loaded;
         }
 
         private void ReportPreviewView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= ReportPreviewView_Loaded;
+            gb_content.Width = gb_content.ActualHeight / 1123 * 794;
             LoadExaminationInfo();
             LoadSystemSetting();
         }
@@ -75,11 +87,12 @@ namespace MM.Medical.Client.Views
 
         private void Print_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(CacheHelper.Printer))
+            if (string.IsNullOrEmpty(this.Printer))
             {
                 var view = new SetPrinterView();
-                if (!cw.ShowDialog("打印机设置", view))
+                if (!cw.ShowDialog("打印机列表", view)) 
                     return;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Printer"));
             }
             var filePath = SaveJpeg(CacheHelper.TempPath);
             var pd = new PrintDocument();
@@ -146,7 +159,8 @@ namespace MM.Medical.Client.Views
         private void PrinterSetting_Click(object sender, RoutedEventArgs e)
         {
             var view = new SetPrinterView();
-            cw.ShowDialog("打印机设置", view);
+            if (cw.ShowDialog("打印机设置", view))
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Printer"));
         }
     }
 }

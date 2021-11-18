@@ -19,5 +19,10 @@ namespace Mseiot.Medical.Service.Services
         {
             return await HttpProxy.PostMessage<int>("/api/examination/addmedia", media);
         }
+
+        public async Task<MsResult<bool>> RemoveExaminationMedia(int examinationMediaId)
+        {
+            return await HttpProxy.DeleteMessage<bool>("/api/examination/removemedia", new { ExaminationMediaId = examinationMediaId });
+        }
     }
 }

@@ -15,27 +15,32 @@
             <Grid Height="120" Width="160">
                 <Grid x:Name="content">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="cb" VerticalAlignment="Center" Margin="2" Click="MediaPrint_Click"
-                              IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Grid Grid.Column="1" Margin="2">
+                    <Grid Grid.Column="0" Margin="2">
                         <Grid>
                             <Image x:Name="img" Source="{Binding Path, Converter={StaticResource PathToWebUrlConverter}}" Stretch="Fill"/>
                             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Border Opacity="0.6" Background="{StaticResource Color_Content_Primary}" CornerRadius="100"/>
                                 <controls:MediaButton x:Name="bt_play" FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Visible}" HoverSource="{StaticResource Img_Visible_Hover}" 
-                                            Click="PlayMedia_Click" Margin="5"/>
+                                                      Click="PlayMedia_Click" Margin="5"/>
                             </Grid>
                         </Grid>
                         <Grid x:Name="gd_tool" VerticalAlignment="Bottom">
                             <Border x:Name="cb_part" Visibility="Hidden" Opacity="0.6" Background="{StaticResource Color_Content_Primary}">
                                 <ComboBox IsTabStop="False" BorderThickness="0" Height="25" Width="Auto" SelectedValue="{Binding BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    SelectionChanged="BodyPart_SelectionChanged" ItemsSource="{Binding BodyParts, RelativeSource={RelativeSource AncestorLevel=1,AncestorType={x:Type local:ExaminationPartView},Mode=FindAncestor}}"/>
+                                          SelectionChanged="BodyPart_SelectionChanged" ItemsSource="{Binding BodyParts, RelativeSource={RelativeSource AncestorLevel=1,AncestorType={x:Type local:ExaminationPartView},Mode=FindAncestor}}"/>
                             </Border>
                             <TextBlock x:Name="tb_part" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource Color_Font_Light}" Margin="2,5,0,0" Text="{Binding BodyPart}"/>
                         </Grid>
+                    </Grid>
+                    <Grid Grid.Column="1" Margin="0,2">
+                        <CheckBox x:Name="cb" IsTabStop="False" VerticalAlignment="Top" Click="MediaPrint_Click" ToolTip="选中" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <controls:MediaButton x:Name="mb_export"  IsTabStop="False" Click="ExportMedia_Click" ToolTip="导出" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}"
+                                              Height="15" Width="15" VerticalAlignment="Center"/>
+                        <controls:MediaButton x:Name="mb_remove"  IsTabStop="False" Click="RemoveMedia_Click" ToolTip="删除" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}" 
+                                              Height="15" Width="15" VerticalAlignment="Bottom"/>
                     </Grid>
                 </Grid>
                 <Grid x:Name="loading" Visibility="Hidden">
@@ -58,6 +63,7 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding MediaType}" Value="{x:Static entities:MediaType.Video}">
                     <Setter Property="Visibility" TargetName="cb" Value="Collapsed"/>
+                    <Setter Property="VerticalAlignment" TargetName="mb_export" Value="Top"/>
                     <Setter Property="NormalSource" TargetName="bt_play" Value="{StaticResource Img_Play}"/>
                     <Setter Property="HoverSource" TargetName="bt_play" Value="{StaticResource Img_Play_Hover}"/>
                 </DataTrigger>
@@ -162,7 +168,7 @@
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查部位"/>
-                    <ComboBox x:Name="cb_body" IsReadOnly="{Binding IsReadOnly}" Style="{StaticResource MultipleComboBoxStyle}" Text="{Binding SelectedExamination.BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox x:Name="cb_body" IsReadOnly="{Binding IsReadOnly}" DropDownOpened="BodyPart_DropDownOpened" Style="{StaticResource MultipleComboBoxStyle}" Text="{Binding SelectedExamination.BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Border>
@@ -336,13 +342,13 @@
                                     <ToggleButton.Style>
                                         <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
                                             <Setter Property="Content" Value="开始录像"/>
-                                            <Setter Property="IsEnabled" Value="False"/>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
                                             <Style.Triggers>
                                                 <Trigger Property="IsChecked" Value="True">
                                                     <Setter Property="Content" Value="停止录像" />
                                                 </Trigger>
                                                 <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checking}">
-                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                    <Setter Property="Visibility" Value="Visible"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

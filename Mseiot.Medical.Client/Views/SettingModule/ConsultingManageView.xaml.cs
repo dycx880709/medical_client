@@ -205,5 +205,24 @@ namespace MM.Medical.Client.Views
                     cb_type.Text = cb_type.Text.Substring(0, cb_type.Text.Length - 1);
             }
         }
+
+        private void Type_DropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is ComboBox cb_type && cb_type.DataContext is ConsultingRoom room)
+            {
+                var selectedTypes = new List<string>();
+                if (!string.IsNullOrEmpty(room.ExaminationTypes))
+                    selectedTypes = room.ExaminationTypes.Split(',').ToList();
+                for (int i = 0; i < cb_type.Items.Count; i++)
+                {
+                    var cbi = cb_type.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
+                    if (cbi != null)
+                    {
+                        var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
+                        cb.IsChecked = selectedTypes.Any(t => t.Equals(cb_type.Items[i].ToString()));
+                    }
+                }
+            }
+        }
     }
 }

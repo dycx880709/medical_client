@@ -25,8 +25,8 @@
                             <TextBox x:Name="tb_name" IsReadOnly="True" IsHitTestVisible="False" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
                             <Grid HorizontalAlignment="Center">
                                 <TextBlock x:Name="tb_type" Text="{Binding ExaminationTypes}" VerticalAlignment="Center"/>
-                                <ComboBox x:Name="cb_type" Style="{StaticResource MultipleComboBoxStyle}" ItemsSource="{Binding ExaminationTypes, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type local:ConsultingManageView}, Mode=FindAncestor}}" 
-                                                Visibility="Collapsed" Text="{Binding ExaminationTypes, Mode=TwoWay, UpdateSourceTrigger=Explicit}">
+                                <ComboBox x:Name="cb_type" Style="{StaticResource MultipleComboBoxStyle}" ItemsSource="{Binding ExaminationTypes, RelativeSource={RelativeSource AncestorType={x:Type local:ConsultingManageView}}}" 
+                                          DropDownOpened="Type_DropDownOpened" Visibility="Hidden" Text="{Binding ExaminationTypes, Mode=TwoWay, UpdateSourceTrigger=Explicit}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <Border>

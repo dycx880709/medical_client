@@ -92,7 +92,7 @@ namespace MM.Medical.Client.Views
             if (dg_examinations.SelectedValue is Examination examination && examination.Appointment != null)
             {
                 var view = new ReportPreviewView(examination.Appointment.AppointmentID);
-                MsWindow.ShowDialog(view, "打印预览", showInTaskbar: true, showWindowMenu: false);
+                MsWindow.ShowDialog(view, "打印预览", showInTaskbar: true, windowState: WindowState.Maximized);
             }
         }
         private void Examination_PageChanged(object sender, PageChangedEventArgs args)

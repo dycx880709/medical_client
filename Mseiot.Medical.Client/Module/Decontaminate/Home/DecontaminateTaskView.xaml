@@ -10,7 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         
-        <Border>
+        <Border Background="{DynamicResource Color_Content_Secondary}">
             <ListView x:Name="lvDrawGrid" BorderThickness="0" Padding="0">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">

@@ -319,7 +319,7 @@ namespace MM.Medical.Client.Views
             if (dg_appointments.SelectedValue is Appointment info)
             {
                 var view = new ReportPreviewView(info.AppointmentID);
-                MsWindow.ShowDialog(view, "打印预览", showInTaskbar: true, showWindowMenu: false);
+                MsWindow.ShowDialog(view, "打印预览", showInTaskbar: true, windowState: WindowState.Maximized);
             }
         }
 

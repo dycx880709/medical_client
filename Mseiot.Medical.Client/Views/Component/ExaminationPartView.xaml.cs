@@ -64,6 +64,7 @@ namespace MM.Medical.Client.Views
         public IEnumerable<MedicalWord> OriginMedicalWords { get; set; }
         public IEnumerable<MedicalWord> MedicalWords { get; set; }
         public List<string> BodyParts { get; set; }
+        private SystemSetting systemSetting;
         private MediaPlayer player;
 
         private static void SelectedExaminationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -128,6 +129,7 @@ namespace MM.Medical.Client.Views
                 };
             }
             else player.Open(new Uri("screenshot.mp3", UriKind.Relative));
+            this.systemSetting = result.Content;
         }
 
         private void GetMedicalDatas()
@@ -173,6 +175,22 @@ namespace MM.Medical.Client.Views
             }
         }
 
+
+        private void BodyPart_DropDownOpened(object sender, EventArgs e)
+        {
+            var selectedItems = new List<string>();
+            if (!string.IsNullOrEmpty(SelectedExamination.BodyPart))
+                selectedItems = SelectedExamination.BodyPart.Split(',').ToList();
+            for (int i = 0; i < cb_body.Items.Count; i++)
+            {
+                var cbi = cb_body.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
+                if (cbi != null)
+                {
+                    var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
+                    cb.IsChecked = selectedItems.Any(t => t.Equals(cb_body.Items[i].ToString()));
+                }
+            }
+        }
         private void SelectedBody_Click(object sender, RoutedEventArgs e)
         {
             cb_body.Text = string.Empty;
@@ -291,8 +309,15 @@ namespace MM.Medical.Client.Views
         {
             if (sender is ToggleButton tb)
             {
+                tb.IsEnabled = false;
                 if (tb.IsChecked.Value)
                 {
+                    if (SelectedExamination.Videos.Count >= systemSetting.MediaCount)
+                    {
+                        Alert.ShowMessage(true, AlertType.Warning, "采集视频数量超过上限");
+                        tb.IsEnabled = true;
+                        return;
+                    }
                     var image = video.Shotcut();
                     if (image != null && image.Length > 0)
                     {
@@ -371,20 +396,25 @@ namespace MM.Medical.Client.Views
                         tb.IsChecked = tb.IsChecked.Value;
                     }
                 }
+                this.Dispatcher.Invoke(() => tb.IsEnabled = true);
             }
         }
         private void PlayMedia_Click(object sender, RoutedEventArgs e)
         {
             if (sender is FrameworkElement element && element.DataContext is ExaminationMedia media)
             {
+
                 if (media.MediaType == MediaType.Image)
                 {
+                    video.Dispose();
                     var remoteAddress = SocketProxy.Instance.GetFileRounter() + media.Path;
                     bd_media.Visibility = Visibility.Visible;
                     img_media.Source = new BitmapImage(new Uri(remoteAddress, UriKind.Absolute));
                 }
                 else
                 {
+                    bd_media.Visibility = Visibility.Hidden;
+                    img_media.Source = null;
                     var remoteAddress = SocketProxy.Instance.GetFileRounter() + media.VideoPath;
                     video.SetSource(remoteAddress, true);
                 }
@@ -402,12 +432,8 @@ namespace MM.Medical.Client.Views
                     bd_media.Visibility = Visibility.Hidden;
                     img_media.Source = null;
                 }
-                else if (media.MediaType == MediaType.Video)
-                {
-                    if (SelectedExamination.Appointment.AppointmentStatus == AppointmentStatus.Checking)
-                        video.SetSource(CacheHelper.EndoscopeDeviceID, true);
-                    else video.Dispose();
-                }
+                if (SelectedExamination.Appointment.AppointmentStatus == AppointmentStatus.Checking)
+                    video.SetSource(CacheHelper.EndoscopeDeviceID, true);
                 bt_close.Visibility = Visibility.Hidden;
             }
         }
@@ -432,6 +458,15 @@ namespace MM.Medical.Client.Views
         {
             if (sender is FrameworkElement element && element.DataContext is ExaminationMedia media)
             {
+                if (media.IsSelected)
+                {
+                    if (SelectedExamination.Images.Count(t => t.IsSelected) > systemSetting.PrintImageCount)
+                    {
+                        Alert.ShowMessage(true, AlertType.Warning, "报告图片数量超过上限");
+                        media.IsSelected = false;
+                        return;
+                    }
+                }
                 var result = await SocketProxy.Instance.ModifyExaminationMedia(media);
                 if (!result.IsSuccess)
                 {
@@ -443,6 +478,11 @@ namespace MM.Medical.Client.Views
 
         private async void Shotcut()
         {
+            if (SelectedExamination.Images.Count >= systemSetting.CutshotImageCount)
+            {
+                Alert.ShowMessage(true, AlertType.Warning, "采集图片数量超过上限");
+                return;
+            }
             var image = video.Shotcut();
             if (image != null && image.Length > 0)
             {
@@ -469,6 +509,59 @@ namespace MM.Medical.Client.Views
                 }
                 else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传图片失败,{ result.Error }");
                 player.Position = TimeSpan.Zero;
+            }
+        }
+
+        private void RemoveMedia_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is ExaminationMedia media)
+            {
+                var name = media.MediaType == MediaType.Image ? "图片" : "视频";
+                var result = Loading.AsyncWait($"删除{ name }中,请稍后", SocketProxy.Instance.RemoveExaminationMedia(media.ExaminationMediaID));
+                if (result.IsSuccess)
+                {
+                    if (media.MediaType == MediaType.Image)
+                        SelectedExamination.Images.Remove(media);
+                    else if (media.MediaType == MediaType.Video)
+                        SelectedExamination.Videos.Remove(media);
+                }
+                else Alert.ShowMessage(true, AlertType.Error, $"删除{ name }失败,{ result.Error }");
+            }
+        }
+
+        private void ExportMedia_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is ExaminationMedia media)
+            {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                dialog.RootFolder = Environment.SpecialFolder.Desktop;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    if (media.MediaType == MediaType.Video && !string.IsNullOrEmpty(media.VideoPath))
+                    {
+                        var localVideoPath = Path.Combine(dialog.SelectedPath, $"{media.ExaminationMediaID}_{ TimeHelper.ToUnixTime(DateTime.Now) }.mp4");
+                        var videoPath = "files/" + media.VideoPath;
+                        var result = Loading.AsyncWait("导出视频文件中,请稍后", SocketProxy.Instance.HttpProxy.DownloadFile(videoPath, localVideoPath));
+                        if (!result.IsSuccess)
+                        {
+                            Alert.ShowMessage(true, AlertType.Error, $"导出视频文件失败,{ result.Error }");
+                            return;
+                        }
+                        Alert.ShowMessage(true, AlertType.Success, $"视频导出成功");
+                    }
+                    else if (!string.IsNullOrEmpty(media.Path)) 
+                    {
+                        var localVideoPath = Path.Combine(dialog.SelectedPath, $"{media.ExaminationMediaID}_{ TimeHelper.ToUnixTime(DateTime.Now) }.jpg");
+                        var imagePath = "files/" + media.Path;
+                        var result = Loading.AsyncWait("导出图片文件中,请稍后", SocketProxy.Instance.HttpProxy.DownloadFile(imagePath, localVideoPath));
+                        if (!result.IsSuccess)
+                        { 
+                            Alert.ShowMessage(true, AlertType.Error, $"导出图片文件失败,{ result.Error }");
+                            return;
+                        }
+                        Alert.ShowMessage(true, AlertType.Success, $"图片导出成功");
+                    }
+                }
             }
         }
     }
