@@ -3,25 +3,16 @@ using Ms.Controls;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Printing;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Path = System.IO.Path;
 
 namespace MM.Medical.Client.Views
@@ -84,52 +75,41 @@ namespace MM.Medical.Client.Views
 
         private void Print_Click(object sender, RoutedEventArgs e)
         {
-            //var filePath = SaveJpeg(CacheHelper.TempPath);
-            //var pd = new PrintDocument();
-            //pd.DefaultPageSettings.PaperSize = new PaperSize();
-            //pd.PrintPage += (s, args) =>
+            if (string.IsNullOrEmpty(CacheHelper.Printer))
+            {
+                var view = new SetPrinterView();
+                if (!cw.ShowDialog("打印机设置", view))
+                    return;
+            }
+            var filePath = SaveJpeg(CacheHelper.TempPath);
+            var pd = new PrintDocument();
+            pd.PrinterSettings.PrinterName = CacheHelper.LocalSetting.Printer;
+            var i = Image.FromFile(filePath);
+            pd.DefaultPageSettings.PaperSize = new PaperSize("检 查报告单", i.Width, i.Height);
+            pd.DefaultPageSettings.Landscape = false;
+            pd.PrintPage += (_, ev) =>
+            {
+                var m = ev.PageBounds;
+                ev.Graphics.DrawImage(i, m);
+                i.Dispose();
+                File.Delete(filePath);
+                examination.Appointment.AppointmentStatus = AppointmentStatus.Reported;
+                var result = loading.AsyncWait("保存打印中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(examination.Appointment));
+                if (result.IsSuccess)
+                    Alert.ShowMessage(true, AlertType.Success, "打印完成");
+            };
+            pd.Print();
+            //var printDialog = new System.Windows.Controls.PrintDialog();
+            //printDialog.PrintTicket.PageOrientation = PageOrientation.Portrait;
+            //printDialog.PrintTicket.PageMediaSize = new PageMediaSize(794, 1123);
+            //if (printDialog.ShowDialog().Value)
             //{
-            //    var i = System.Drawing.Image.FromFile(filePath);
-            //    var m = args.PageBounds;
-            //    if (i.Width < i.Height)
-            //        i.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            //    if (i.Width >= i.Height)
-            //    {
-            //        if ((double)i.Width / (double)i.Height <= (double)m.Width / (double)m.Height)
-            //        {
-            //            int w = (int)((double)i.Width / (double)i.Height * (double)m.Height);
-            //            int dx = (m.Width - w) / 2;
-            //            m.X = dx;
-            //            m.Y = 0;
-            //            m.Width = w;
-            //        }
-            //        else
-            //        {
-            //            int h = (int)((double)i.Height / (double)i.Width * (double)m.Width);
-            //            int dy = (m.Height - h) / 2;
-            //            m.X = 0;
-            //            m.Y = dy;
-            //            m.Height = h;
-            //        }
-            //    }
-            //    args.Graphics.DrawImage(i, m);
-            //};
-            //pd.PrintController = new StandardPrintController();
-            //pd.Print();
-            //File.Delete(filePath);
-            //examination.Appointment.AppointmentStatus = AppointmentStatus.Reported;
-            //var result = loading.AsyncWait("保存打印中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(examination.Appointment));
-            //if (result.IsSuccess)
-            //    Alert.ShowMessage(true, AlertType.Success, "打印完成");
-
-            var printDialog = new System.Windows.Controls.PrintDialog();
-            printDialog.PrintTicket.PageBorderless = System.Printing.PageBorderless.None;
-            if (printDialog.ShowDialog().Value)
-                printDialog.PrintVisual(this.gb_print, "检查单报告");
-            examination.Appointment.AppointmentStatus = AppointmentStatus.Reported;
-            var result = loading.AsyncWait("保存打印中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(examination.Appointment));
-            if (result.IsSuccess)
-                Alert.ShowMessage(true, AlertType.Success, "打印完成");
+            //    printDialog.PrintVisual(this.gb_print, "检查单报告");
+            //    examination.Appointment.AppointmentStatus = AppointmentStatus.Reported;
+            //    var result = loading.AsyncWait("保存打印中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(examination.Appointment));
+            //    if (result.IsSuccess)
+            //        Alert.ShowMessage(true, AlertType.Success, "打印完成");
+            //}
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
@@ -161,6 +141,12 @@ namespace MM.Medical.Client.Views
             using (FileStream file = new FileStream(filePath, FileMode.Create))
                 encode.Save(file);
             return filePath;
+        }
+
+        private void PrinterSetting_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new SetPrinterView();
+            cw.ShowDialog("打印机设置", view);
         }
     }
 }

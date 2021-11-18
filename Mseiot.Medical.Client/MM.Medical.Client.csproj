@@ -193,6 +193,9 @@
     <Compile Include="Module\Decontaminate\System\DecontaminateSetting.xaml.cs">
       <DependentUpon>DecontaminateSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Component\SetPrinterView.xaml.cs">
+      <DependentUpon>SetPrinterView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ExaminationModule\ExaminationItemView.xaml.cs">
       <DependentUpon>ExaminationItemView.xaml</DependentUpon>
     </Compile>
@@ -335,6 +338,10 @@
     <Page Include="Module\Decontaminate\System\DecontaminateSetting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Component\SetPrinterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExaminationModule\ExaminationItemView.xaml">
       <SubType>Designer</SubType>

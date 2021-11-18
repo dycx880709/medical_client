@@ -19,6 +19,7 @@ namespace MM.Medical.Client.Core
     {
         public static string UserName { get { return CurrentUser.Name; } }
         public static string RoleName { get { return CurrentUser.RoleName; } }
+        public static string Printer { get { return LocalSetting.Printer; } }
         public static LocalSetting LocalSetting { get; private set; }
         public static User CurrentUser { get; set; } = new User();
         public static string ConsultingRoomName { get; set; }

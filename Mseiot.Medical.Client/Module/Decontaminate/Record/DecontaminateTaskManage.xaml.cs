@@ -38,7 +38,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             lvDatas.ItemsSource = DecontaminateTasks;
             dti.StartTime = DateTime.Now.AddDays(-30);
             dti.EndTime = DateTime.Now.AddDays(30);
-            LoadDecontaminateTasks();
+            pager.SelectedCount = lvDatas.GetFullCountWithoutScroll();
         }
 
 

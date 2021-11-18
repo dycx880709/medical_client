@@ -38,9 +38,11 @@ namespace MM.Medical.Client.Views
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(this.OldPwd))
-                Alert.ShowMessage(true, AlertType.Warning, "旧密码不能为空");
+                Alert.ShowMessage(true, AlertType.Warning, "旧密码验证未通过");
             else if (string.IsNullOrEmpty(this.NewPwd))
-                Alert.ShowMessage(true, AlertType.Warning, "新密码不能为空");
+                Alert.ShowMessage(true, AlertType.Warning, "新密码验证未通过");
+            else if (string.IsNullOrEmpty(this.ComfirmPwd))
+                Alert.ShowMessage(true, AlertType.Warning, "确认密码验证未通过");
             else if (!NewPwd.Equals(this.ComfirmPwd))
                 Alert.ShowMessage(true, AlertType.Warning, "新密码与确认密码不一致");
             else

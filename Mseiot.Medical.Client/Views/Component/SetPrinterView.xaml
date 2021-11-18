@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="MM.Medical.Client.Views.SetPrinterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MM.Medical.Client.Views"
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             mc:Ignorable="d" 
+             Height="400" Width="300">
+    
+    <controls:CustomGroupBox Header="打印机列表">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <ListBox x:Name="lb_printer"/>
+            <Button Grid.Row="1" Content="设置" Click="Save_Click"/>
+        </Grid>
+    </controls:CustomGroupBox>
+</UserControl>
