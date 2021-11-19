@@ -49,6 +49,14 @@
     </UserControl.Resources>
 
     <controls:CustomGroupBox Header="系统设置 \ 医学词库">
+        <controls:CustomGroupBox.AttachContent>
+            <ControlTemplate>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="导入" Margin="5,0" Click="ImportWord_Click"/>
+                    <Button Content="导出" Margin="5,0,0,0" Click="ExportWord_Click"/>
+                </StackPanel>
+            </ControlTemplate>
+        </controls:CustomGroupBox.AttachContent>
         <Grid x:Name="grid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -60,8 +68,6 @@
                 <controls:CustomGroupBox.AttachContent>
                     <ControlTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Button Content="导入" Margin="5,0" Click="ImportWord_Click"/>
-                            <Button Content="导出" Margin="5,0" Click="ExportWord_Click"/>
                             <Button Content="添加" Visibility="Collapsed" Margin="5,0" Click="AddWord_Click"/>
                             <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
                         </StackPanel>

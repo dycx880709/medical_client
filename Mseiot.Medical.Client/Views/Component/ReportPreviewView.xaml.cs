@@ -69,7 +69,7 @@ namespace MM.Medical.Client.Views
                 }
                 else
                 {
-                    Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
+                    Alert.ShowMessage(true, AlertType.Error, $"获取检查打印信息失败,{ result.Error }");
                     this.Close();
                 }
             }

@@ -67,6 +67,14 @@
         </DataTemplate>
     </UserControl.Resources>
     <controls:CustomGroupBox Header="系统设置 \ 诊断模板" Grid.Column="0">
+        <controls:CustomGroupBox.AttachContent>
+            <ControlTemplate>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="导入" Margin="5,0" Click="ImportTemplate_Click"/>
+                    <Button Content="导出" Margin="5,0,0,0" Click="ExportTemplate_Click" Cursor="Hand"/>
+                </StackPanel>
+            </ControlTemplate>
+        </controls:CustomGroupBox.AttachContent>
         <Grid Background="Transparent">
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -78,8 +86,6 @@
                     <controls:CustomGroupBox.AttachContent>
                         <ControlTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="导入" Margin="5,0" Click="ImportTemplate_Click"/>
-                                <Button Content="导出" Margin="5,0" Click="ExportTemplate_Click"/>
                                 <Button Content="添加" Margin="5,0,0,0" Click="AddTemplate_Click"/>
                                 <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
                             </StackPanel>

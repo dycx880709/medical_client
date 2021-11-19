@@ -166,7 +166,7 @@ namespace MM.Medical.Client.Views
             var result = loading.AsyncWait("获取检查类型信息中,请稍后", SocketProxy.Instance.GetBaseWords("检查类型"));
             if (result.IsSuccess)
                 this.ExaminationTypes = result.SplitContent("检查类型");
-            else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
+            else Alert.ShowMessage(true, AlertType.Error, $"获取检查类型信息失败,{ result.Error }");
         }
 
         private void ResetConsultingRoom()

@@ -71,7 +71,6 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("Modsee");
             }
         }
-        [JsonIgnore]
         public ObservableCollection<MedicalTemplate> MedicalTemplates { get; set; } = new ObservableCollection<MedicalTemplate>();
     }
 }

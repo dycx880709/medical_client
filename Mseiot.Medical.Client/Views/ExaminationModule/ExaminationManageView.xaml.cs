@@ -121,7 +121,7 @@ namespace MM.Medical.Client.Views
                     this.IsDoctorVisit = result.Content.IsUsed;
                     LoadAppointments();
                 }
-                else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
+                else Alert.ShowMessage(true, AlertType.Error, $"获取检查诊室信息失败,{ result.Error }");
             }
             else Alert.ShowMessage(false, AlertType.Error, $"检查诊室未配置,模块不可能");
         }
@@ -171,7 +171,7 @@ namespace MM.Medical.Client.Views
                 var startTime = TimeHelper.ToUnixDate(DateTime.Now);
                 var endTime = startTime + 24 * 60 * 60 - 1;
                 //pager.SelectedCount = dg_appointments.GetFullCountWithoutScroll();
-                var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetAppointments(
+                var result = loading.AsyncWait("获取检查预约信息中,请稍后", SocketProxy.Instance.GetAppointments(
                     0,      //pager.PageIndex
                     1000,   //pager.SelectedCount
                     TimeHelper.FromUnixTime(startTime),
@@ -186,7 +186,7 @@ namespace MM.Medical.Client.Views
                     CollectionView.Refresh();
                     //pager.TotalCount = result.Content.Total;
                 }
-                else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
+                else Alert.ShowMessage(true, AlertType.Error, $"获取检查预约信息失败,{ result.Error }");
             }
         }
 
@@ -365,7 +365,7 @@ namespace MM.Medical.Client.Views
                 {
                     var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetExaminationsByAppointmentID(appointment.AppointmentID));
                     if (result.IsSuccess) examination = result.Content;
-                    else Alert.ShowMessage(true, AlertType.Error, $"获取检查信息失败,{ result.Error }");
+                    else Alert.ShowMessage(true, AlertType.Error, $"获取检查详细信息失败,{ result.Error }");
                 }
                 else examination = new Examination();
                 if (examination.Images == null)

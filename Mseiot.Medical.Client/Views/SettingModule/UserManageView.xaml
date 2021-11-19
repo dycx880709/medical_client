@@ -34,7 +34,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
-            <controls:Pager x:Name="pager" Grid.Row="1"/>
+            <controls:Pager x:Name="pager" Grid.Row="1" PageChanged="Pager_PageChanged"/>
             <controls:SliderPanel x:Name="sp" Grid.RowSpan="2"/>
             <controls:Loading x:Name="loading" Grid.RowSpan="2"/>
         </Grid>

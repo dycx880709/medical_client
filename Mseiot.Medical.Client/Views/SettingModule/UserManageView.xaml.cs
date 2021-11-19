@@ -33,12 +33,12 @@ namespace MM.Medical.Client.Views
 
         private void UserManageView_Loaded(object sender, RoutedEventArgs e)
         {
-            GetUsers();
+            pager.SelectedCount = dg_user.GetFullCountWithoutScroll();
         }
 
         private void GetUsers()
         {
-            RefreshItemCount();
+            pager.SelectedCount = dg_user.GetFullCountWithoutScroll();
             var result = loading.AsyncWait("获取用户中,请稍后", SocketProxy.Instance.GetUsers(pager.PageIndex + 1, pager.SelectedCount));
             if (result.IsSuccess)
             {
@@ -63,7 +63,8 @@ namespace MM.Medical.Client.Views
             if (dg_user.SelectedValue is User user)
             {
                 var view = new AddUserView(user, this.loading);
-                sp.ShowDialog("编辑用户", view);
+                if (sp.ShowDialog("编辑用户", view))
+                    GetUsers();
             }
         }
 
@@ -83,14 +84,9 @@ namespace MM.Medical.Client.Views
             GetUsers();
         }
 
-        private int RefreshItemCount()
+        private void Pager_PageChanged(object sender, PageChangedEventArgs args)
         {
-            var columnHeight = CacheHelper.GetResource<int>("DataGrdiColumnHeight");
-            var rowHeight = CacheHelper.GetResource<int>("DataGrdiRowHeight");
-            var height = dg_user.ActualHeight - columnHeight;
-            var count = (int)(height / rowHeight);
-            pager.SelectedCount = count;
-            return count;
+            GetUsers();
         }
     }
 }
