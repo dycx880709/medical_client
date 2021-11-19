@@ -30,5 +30,10 @@ namespace Mseiot.Medical.Service.Services
         {
             return await HttpProxy.PutMessage<bool>("/api/medicaltemplate/modify", template);
         }
+
+        public async Task<MsResult<bool>> ImportMedicalTemplate(string jsonSource)
+        { 
+            return await HttpProxy.PostMessage<bool>("/api/medicaltemplate/import", jsonSource);
+        }
     }
 }

@@ -19,6 +19,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ms.Controls.Core;
+using Newtonsoft.Json;
+using System.IO;
+using Ms.Libs.SysLib;
 
 namespace MM.Medical.Client.Views
 {
@@ -178,7 +181,42 @@ namespace MM.Medical.Client.Views
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (lb_words.ItemsSource is ObservableCollection<BaseWordExtend> list)
+            {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                dialog.RootFolder = Environment.SpecialFolder.Desktop;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                { 
+                    var jsonSource = JsonConvert.SerializeObject(list);
+                    var filePath = System.IO.Path.Combine(dialog.SelectedPath, $"基础词库_{ TimeHelper.ToUnixTime(DateTime.Now) }.json");
+                    File.WriteAllText(filePath, jsonSource);
+                    Alert.ShowMessage(true, AlertType.Success, "基础词库导出完成");
+                }
+            }
+        }
+        private void ImportWord_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            dialog.Filter = "基础词库文件（*.json）|*.json";
+            if (dialog.ShowDialog().Value)
+            {
+                var json = File.ReadAllText(dialog.FileName);
+                var datas = JsonConvert.DeserializeObject<List<BaseWord>>(json);
+                if (datas == null || datas.Count == 0)
+                    Alert.ShowMessage(true, AlertType.Error, "基础词库文件格式异常");
+                else
+                {
+                    var result = loading.AsyncWait("导入基础词库中,请稍后", SocketProxy.Instance.ImportBaseWord(json));
+                    if (result.IsSuccess)
+                    {
+                        Alert.ShowMessage(true, AlertType.Success, "导入基础词库成功");
+                        GetBaseWords();
+                    }
+                    else
+                        Alert.ShowMessage(true, AlertType.Error, $"导入基础词库失败,{ result.Error }");
+                }
+            }
         }
 
         private void ResetBaseWord()
@@ -207,5 +245,6 @@ namespace MM.Medical.Client.Views
             else 
                 MsWindow.ShowDialog($"获取基础词库失败,{ result.Error }", "软件提示");
         }
+
     }
 }

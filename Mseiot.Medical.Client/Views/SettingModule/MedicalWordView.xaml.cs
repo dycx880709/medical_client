@@ -1,11 +1,14 @@
 ﻿using MM.Medical.Client.Core;
 using Ms.Controls;
 using Ms.Controls.Core;
+using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -165,8 +168,10 @@ namespace MM.Medical.Client.Views
         private void GetMedicalWords()
         {
             var result = loading.AsyncWait("获取医学词库中,请稍后", SocketProxy.Instance.GetMedicalWords());
-            if (result.IsSuccess) lt_diagnosis.ItemsSource = CacheHelper.SortMedicalWords(result.Content, 0);
-            else Alert.ShowMessage(true, AlertType.Error, $"获取医学词库失败,{ result.Error }");
+            if (result.IsSuccess) 
+                lt_diagnosis.ItemsSource = CacheHelper.SortMedicalWords(result.Content, 0);
+            else 
+                Alert.ShowMessage(true, AlertType.Error, $"获取医学词库失败,{ result.Error }");
         }
         
 
@@ -190,6 +195,47 @@ namespace MM.Medical.Client.Views
             {
                 var medicalWord = listbox.Items.OfType<MedicalWord>().FirstOrDefault(p => p.IsSelected);
                 ResetListBox(listbox, medicalWord);
+            }
+        }
+
+        private void ImportWord_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            dialog.Filter = "医学词库文件（*.json）|*.json";
+            if (dialog.ShowDialog().Value)
+            {
+                var json = File.ReadAllText(dialog.FileName);
+                var datas = JsonConvert.DeserializeObject<List<MedicalWord>>(json);
+                if (datas == null || datas.Count == 0)
+                    Alert.ShowMessage(true, AlertType.Error, "医学词库文件格式异常");
+                else
+                {
+                    var result = loading.AsyncWait("导入医学词库中,请稍后", SocketProxy.Instance.ImportMedicalWord(json));
+                    if (result.IsSuccess)
+                    {
+                        Alert.ShowMessage(true, AlertType.Success, "导入医学词库成功");
+                        GetMedicalWords();
+                    }
+                    else
+                        Alert.ShowMessage(true, AlertType.Error, $"导入医学词库失败,{ result.Error }");
+                }
+            }
+        }
+
+        private void ExportWord_Click(object sender, RoutedEventArgs e)
+        {
+            if (lt_diagnosis.ItemsSource is ObservableCollection<MedicalWord> medicalWords)
+            {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                dialog.RootFolder = Environment.SpecialFolder.Desktop;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    var jsonSource = JsonConvert.SerializeObject(medicalWords);
+                    var filePath = System.IO.Path.Combine(dialog.SelectedPath, $"医学词库_{ TimeHelper.ToUnixTime(DateTime.Now) }.json");
+                    File.WriteAllText(filePath, jsonSource);
+                    Alert.ShowMessage(true, AlertType.Success, "医学词库导出完成");
+                }
             }
         }
     }

@@ -94,7 +94,7 @@ namespace MM.Medical.Client.Views
             else this.StopRecord();
             lock (this.videoWriterLocker)
             {
-                var fps = videoCapture.Fps == 0 ? 20 : videoCapture.Fps;
+                var fps = videoCapture.Fps == 0 ? 10 : videoCapture.Fps;
                 this.videoWriter = new VideoWriter(videoFullPath, FourCC.MJPG, fps, new OpenCvSharp.Size(videoCapture.FrameWidth, videoCapture.FrameHeight));
             }
             return true;

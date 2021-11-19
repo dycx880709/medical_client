@@ -386,8 +386,7 @@
                             <TextBlock Text="段"/>
                         </StackPanel>
                     </controls:CustomGroupBox.Header>
-                    <ListBox SelectedValue="{Binding SelectedMedia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ItemsSource="{Binding SelectedExamination.Videos}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}">
+                    <ListBox SelectedValue="{Binding SelectedMedia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SelectedExamination.Videos}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
@@ -396,6 +395,11 @@
                     </ListBox>
                 </controls:CustomGroupBox>
                 <controls:CustomGroupBox Margin="5" Grid.Column="1" Grid.RowSpan="2">
+                    <controls:CustomGroupBox.AttachContent>
+                        <ControlTemplate>
+                            <CheckBox Content="只显示已选" IsChecked="{Binding ShowSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="ShowSelect_Click"/>
+                        </ControlTemplate>
+                    </controls:CustomGroupBox.AttachContent>
                     <controls:CustomGroupBox.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="截图"/>
@@ -414,8 +418,7 @@
                             <TextBlock Text="张"/>
                         </StackPanel>
                     </controls:CustomGroupBox.Header>
-                    <ListBox SelectedValue="{Binding SelectedMedia, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                 ItemsSource="{Binding SelectedExamination.Images}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}"/>
+                    <ListBox SelectedValue="{Binding SelectedMedia, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SelectedExamination.Images}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}"/>
                 </controls:CustomGroupBox>
                 <controls:CustomGroupBox x:Name="cgb_word" Visibility="Collapsed" Grid.Row="1" Margin="5,0" Header="特殊字符">
                     <controls:CustomGroupBox.AttachContent>

@@ -54,7 +54,13 @@ namespace MM.Medical.Client.Views
             get { return (Loading)GetValue(LoadingProperty); }
             set { SetValue(LoadingProperty, value); }
         }
+        public bool ShowSelected
+        {
+            get { return (bool)GetValue(ShowSelectedProperty); }
+            set { SetValue(ShowSelectedProperty, value); }
+        }
 
+        public static readonly DependencyProperty ShowSelectedProperty = DependencyProperty.Register("ShowSelected", typeof(bool), typeof(ExaminationPartView), new PropertyMetadata(false));
         public static readonly DependencyProperty SelectedExaminationProperty = DependencyProperty.Register("SelectedExamination", typeof(Examination), typeof(ExaminationPartView), new PropertyMetadata(null, SelectedExaminationPropertyChanged));
         public static readonly DependencyProperty LoadingProperty = DependencyProperty.Register("Loading", typeof(Loading), typeof(ExaminationPartView), new PropertyMetadata(null));
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(ExaminationPartView), new PropertyMetadata(false));
@@ -75,6 +81,7 @@ namespace MM.Medical.Client.Views
                 epv.bd_media.Visibility = Visibility.Hidden;
                 epv.img_media.Source = null;
                 epv.bt_close.Visibility = Visibility.Hidden;
+                epv.ShowSelected = false;
             }
         }
 
@@ -118,7 +125,6 @@ namespace MM.Medical.Client.Views
                 Console.WriteLine($"按键{ shotcutKey }为截图按键");
                 Application.Current.MainWindow.KeyDown += (_, e) =>
                 {
-                    //Console.WriteLine($"按键{ e.Key }已被按下,{ DateTime.Now.ToString("HH:mm:ss") }");
                     if (this.SelectedExamination != null && SelectedExamination.Appointment != null && SelectedExamination.Appointment.AppointmentStatus == AppointmentStatus.Checking)
                     {
                         if (e.Key.ToString().Equals(shotcutKey))
@@ -315,6 +321,7 @@ namespace MM.Medical.Client.Views
                     if (SelectedExamination.Videos.Count >= systemSetting.MediaCount)
                     {
                         Alert.ShowMessage(true, AlertType.Warning, "采集视频数量超过上限");
+                        tb.IsChecked = false;
                         tb.IsEnabled = true;
                         return;
                     }
@@ -563,6 +570,15 @@ namespace MM.Medical.Client.Views
                     }
                 }
             }
+        }
+
+        private void ShowSelect_Click(object sender, RoutedEventArgs e)
+        {
+            var collection = CollectionViewSource.GetDefaultView(SelectedExamination.Images);
+            collection.Filter = null;
+            if (this.ShowSelected)
+                collection.Filter = t => t is ExaminationMedia media && media.IsSelected;
+            collection.Refresh();
         }
     }
 }

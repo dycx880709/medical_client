@@ -7,7 +7,7 @@
              xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="640" d:DesignWidth="1080">
+             d:DesignHeight="1080" d:DesignWidth="1920">
 
     <UserControl.Resources>
         <DataTemplate x:Key="MedicalTemplateDataTemplate" DataType="{x:Type entities:MedicalTemplate}">
@@ -78,6 +78,8 @@
                     <controls:CustomGroupBox.AttachContent>
                         <ControlTemplate>
                             <StackPanel Orientation="Horizontal">
+                                <Button Content="导入" Margin="5,0" Click="ImportTemplate_Click"/>
+                                <Button Content="导出" Margin="5,0" Click="ExportTemplate_Click"/>
                                 <Button Content="添加" Margin="5,0,0,0" Click="AddTemplate_Click"/>
                                 <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
                             </StackPanel>

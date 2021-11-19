@@ -1,4 +1,5 @@
 ﻿using Ms.Libs.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,7 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        [JsonIgnore]
         public bool IsSelected
         {
             get { return isSelected; }

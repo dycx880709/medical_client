@@ -1,4 +1,5 @@
 ﻿using Mseiot.Medical.Service.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ namespace MM.Medical.Client.Entities
 {
     public class BaseWordExtend : BaseWord
     {
+        [JsonIgnore]
         public ObservableCollection<string> Items { get; set; }
         public BaseWordExtend(BaseWord word)
         {

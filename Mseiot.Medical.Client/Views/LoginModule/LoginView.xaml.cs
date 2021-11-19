@@ -118,14 +118,10 @@ namespace MM.Medical.Client.Views
                 mw.Show();
                 this.Close();
             }
-            else if (result.IsConnectError)
-            {
+            else if (result.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
                 tbTips.Text = result.Error;
-            }
             else
-            {
                 tbTips.Text = "用户名或密码错误";
-            }
             btLogin.IsEnabled = true;
         }
 
