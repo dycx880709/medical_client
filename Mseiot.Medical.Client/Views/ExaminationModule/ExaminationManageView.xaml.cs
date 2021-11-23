@@ -360,14 +360,15 @@ namespace MM.Medical.Client.Views
         {
             if (dg_appointments.SelectedValue is Appointment appointment)
             {
-                Examination examination = null;
+                Examination examination = new Examination();
                 if (appointment.AppointmentStatus != AppointmentStatus.Waiting)
                 {
                     var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetExaminationsByAppointmentID(appointment.AppointmentID));
-                    if (result.IsSuccess) examination = result.Content;
-                    else Alert.ShowMessage(true, AlertType.Error, $"获取检查详细信息失败,{ result.Error }");
+                    if (result.IsSuccess) 
+                        examination = result.Content;
+                    else 
+                        Alert.ShowMessage(true, AlertType.Error, $"获取检查详细信息失败,{ result.Error }");
                 }
-                else examination = new Examination();
                 if (examination.Images == null)
                     examination.Images = new ObservableCollection<ExaminationMedia>();
                 if (examination.Videos == null)

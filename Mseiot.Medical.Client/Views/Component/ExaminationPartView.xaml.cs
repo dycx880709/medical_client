@@ -125,7 +125,10 @@ namespace MM.Medical.Client.Views
                 Console.WriteLine($"按键{ shotcutKey }为截图按键");
                 Application.Current.MainWindow.KeyDown += (_, e) =>
                 {
-                    if (this.SelectedExamination != null && SelectedExamination.Appointment != null && SelectedExamination.Appointment.AppointmentStatus == AppointmentStatus.Checking)
+                    if (this.SelectedExamination != null && 
+                    SelectedExamination.Appointment != null && 
+                    SelectedExamination.Appointment.AppointmentStatus == AppointmentStatus.Checking &&
+                    this.IsLoaded)
                     {
                         if (e.Key.ToString().Equals(shotcutKey))
                             Shotcut();

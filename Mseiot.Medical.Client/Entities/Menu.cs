@@ -9,7 +9,6 @@ namespace MM.Medical.Client.Entities
     public class Menu
     {
         public string Name { get; set; }
-
         public string Identify { get; set; }
         public bool Reusability { get; set; }
         public List<Menu> Children { get; set; } = new List<Menu>();
@@ -25,7 +24,5 @@ namespace MM.Medical.Client.Entities
                 return true;
             }
         }
-
-  
     }
 }

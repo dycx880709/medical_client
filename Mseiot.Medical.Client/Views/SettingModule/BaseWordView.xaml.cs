@@ -66,7 +66,7 @@ namespace MM.Medical.Client.Views
                 {
                     var result = loading.AsyncWait("删除词条中,请稍后", SocketProxy.Instance.RemoveBaseWord(word.BaseWordID));
                     if (!result.IsSuccess) 
-                        MsWindow.ShowDialog($"删除词条失败,{ result.Error }", "软件提示");
+                        Alert.ShowMessage(true, AlertType.Error, $"删除词条失败,{ result.Error }");
                     else 
                         words.Remove(word);
                 }
@@ -102,7 +102,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"新建词条名称不能为空", "软件提示");
+                        Alert.ShowMessage(true, AlertType.Error, "新建词条名称不能为空");
                         return;
                     }
                     var add = new BaseWordExtend { Title = tb.Text };
@@ -118,7 +118,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"编辑词条名称不能为空", "软件提示");
+                        Alert.ShowMessage(true, AlertType.Error, "编辑词条名称不能为空");
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         return;
                     }
@@ -134,7 +134,7 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            MsWindow.ShowDialog($"更新词条失败,{ result.Error }", "软件提示");
+                            Alert.ShowMessage(true, AlertType.Error, $"更新词条失败,{ result.Error }");
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         }
                     }
@@ -145,16 +145,19 @@ namespace MM.Medical.Client.Views
         {
             if (lb_words.SelectedValue is BaseWordExtend word && sender is FrameworkElement element && element.DataContext is string item)
             {
-                var word_back = word.Copy();
-                word_back.Items.Remove(item);
-                var result = loading.AsyncWait("删除词条明细中,请稍后", SocketProxy.Instance.ModifyBaseWord(word_back));
-                if (result.IsSuccess) 
-                    word.Items.Remove(item);
-                else 
-                    MsWindow.ShowDialog($"删除词条明细失败,{ result.Error }", "软件提示");
+                if (MsPrompt.ShowDialog("确定删除此模板目录内容,是否继续?"))
+                {
+                    var word_back = word.Copy();
+                    word_back.Items.Remove(item);
+                    var result = loading.AsyncWait("删除词条明细中,请稍后", SocketProxy.Instance.ModifyBaseWord(word_back));
+                    if (result.IsSuccess)
+                        word.Items.Remove(item);
+                    else
+                        Alert.ShowMessage(true, AlertType.Error, $"删除词条明细失败,{ result.Error }");
+                }
             }
-            else 
-                MsWindow.ShowDialog("请选择需要编辑明细的词条", "软件提示");
+            else
+                Alert.ShowMessage(true, AlertType.Error, "请选择需要编辑明细的词条");
         }
 
         private void ModifyItem_Click(object sender, RoutedEventArgs e)
@@ -164,8 +167,8 @@ namespace MM.Medical.Client.Views
                 var view = new AddWordItemView(word, word.Items.IndexOf(item), this.loading);
                 sp.ShowDialog("编辑词条明细", view);
             }
-            else 
-                MsWindow.ShowDialog("请选择需要编辑明细的词条", "软件提示");
+            else
+                Alert.ShowMessage(true, AlertType.Error, "请选择需要编辑明细的词条");
         }
 
         private void AddItem_Click(object sender, RoutedEventArgs e)
@@ -175,8 +178,8 @@ namespace MM.Medical.Client.Views
                 var view = new AddWordItemView(word, -1, this.loading);
                 sp.ShowDialog("添加词条明细", view);
             }
-            else 
-                MsWindow.ShowDialog("请选择需要添加明细的词条", "软件提示");
+            else
+                Alert.ShowMessage(true, AlertType.Error, "请选择需要添加明细的词条");
         }
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)
@@ -242,8 +245,8 @@ namespace MM.Medical.Client.Views
             var result = loading.AsyncWait("获取基础词库中,请稍后", SocketProxy.Instance.GetBaseWords());
             if (result.IsSuccess) 
                 lb_words.ItemsSource = new ObservableCollection<BaseWordExtend>(result.Content.Select(t => new BaseWordExtend(t)));
-            else 
-                MsWindow.ShowDialog($"获取基础词库失败,{ result.Error }", "软件提示");
+            else
+                Alert.ShowMessage(true, AlertType.Error, $"获取基础词库失败,{ result.Error }");
         }
 
     }

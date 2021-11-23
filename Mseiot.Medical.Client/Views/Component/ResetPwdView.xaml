@@ -15,7 +15,7 @@
                 <controls:CustomTextBox.Text>
                     <Binding Path="OldPwd" Mode="OneWayToSource" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                         <Binding.ValidationRules>
-                            <validations:StringLengthValidationRule Title="旧密码" MinValue="6" MaxValue="20" ValidatesOnTargetUpdated="False"/>
+                            <validations:StringLengthValidationRule Title="密码" MinValue="6" MaxValue="20" ValidatesOnTargetUpdated="False"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </controls:CustomTextBox.Text>
@@ -27,7 +27,7 @@
                 <controls:CustomTextBox.Text>
                     <Binding Path="NewPwd" Mode="OneWayToSource" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                         <Binding.ValidationRules>
-                            <validations:StringLengthValidationRule Title="旧密码" MinValue="6" MaxValue="20" ValidatesOnTargetUpdated="False"/>
+                            <validations:StringLengthValidationRule Title="密码" MinValue="6" MaxValue="20" ValidatesOnTargetUpdated="False"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </controls:CustomTextBox.Text>
@@ -39,7 +39,7 @@
                 <controls:CustomTextBox.Text>
                     <Binding Path="ComfirmPwd" Mode="OneWayToSource" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                         <Binding.ValidationRules>
-                            <validations:StringLengthValidationRule Title="旧密码" MinValue="6" MaxValue="20" ValidatesOnTargetUpdated="False"/>
+                            <validations:StringLengthValidationRule Title="密码" MinValue="6" MaxValue="20" ValidatesOnTargetUpdated="False"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </controls:CustomTextBox.Text>

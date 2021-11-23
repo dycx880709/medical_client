@@ -75,7 +75,7 @@
                         </lvc:CartesianChart.AxisY>
                     </lvc:CartesianChart>
                 </Border>
-                <DataGrid x:Name="dg_examinations" Grid.Row="1">
+                <DataGrid x:Name="dg_examinations" Grid.Row="1" Margin="5">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn  Width="55" Header="序号">
                             <DataGridTemplateColumn.CellTemplate>
