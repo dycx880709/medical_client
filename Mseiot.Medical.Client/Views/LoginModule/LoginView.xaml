@@ -5,66 +5,59 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
         xmlns:core="clr-namespace:MM.Medical.Client.Core"
-        mc:Ignorable="d" Height="500" Width="1000" BorderThickness="0" VisibilityMax="Collapsed" VisibilityMin="Collapsed"
-        OpacityMask="White" WindowStartupLocation="CenterScreen" HeaderBackground="Transparent"
-        Title="{x:Static core:CacheHelper.ProductName}">
+        mc:Ignorable="d" Height="500" Width="1000" BorderThickness="0" 
+        VisibilityMax="Collapsed" VisibilityMin="Collapsed"
+        OpacityMask="White" 
+        WindowStartupLocation="CenterScreen" 
+        HeaderBackground="Transparent">
 
-    <Border>
-        <Border.Effect>
-            <DropShadowEffect ShadowDepth="0" Opacity="0.4"/>
-        </Border.Effect>
-        <Border.Background>
-            <ImageBrush Stretch="Uniform" ImageSource="/MM.Medical.Share;component/Images/login_bg.jpg"/>
-        </Border.Background>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid x:Name="layout" Grid.ColumnSpan="2" Background="Transparent">
-                <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="White" FontSize="{StaticResource NormalFontSize}" FontStyle="Italic">
-                        <Run Text="网络版 版本号:" />
-                        <Run Text="{x:Static core:CacheHelper.ClientVersion}" x:Name="tb_version"/>
-                </TextBlock>
-            </Grid>
-            <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid>
+    <controls:BaseWindow.Header>
+        <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="White" FontSize="{StaticResource NormalFontSize}" FontStyle="Italic">
+                    <Run Text="网络版 版本号:" />
+                    <Run Text="{x:Static core:CacheHelper.ClientVersion}" x:Name="tb_version"/>
+        </TextBlock>
+    </controls:BaseWindow.Header>
+    <controls:BaseWindow.Background>
+        <ImageBrush Stretch="Uniform" ImageSource="/MM.Medical.Share;component/Images/login_bg.jpg"/>
+    </controls:BaseWindow.Background>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="/MM.Medical.Share;component/Images/logo.png" Height="40" Stretch="Uniform" Margin="0,0,10,0"/>
+                    <TextBlock Text="{x:Static core:CacheHelper.ProductName}" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Primary}" FontSize="{StaticResource LargeExFontSize}"/>
+                </StackPanel>
+                <Grid Grid.Row="1" Width="300">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Source="/MM.Medical.Share;component/Images/logo.png" Height="40" Stretch="Uniform" Margin="0,0,10,0"/>
-                        <TextBlock Text="{x:Static core:CacheHelper.ProductName}" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Primary}" FontSize="{StaticResource LargeExFontSize}"/>
-                    </StackPanel>
-                    <Grid Grid.Row="1" Width="300">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="60"/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <controls:CustomTextBox x:Name="tbName" Watermark="请输入登录账号" Removed="tbName_Removed" Selected="tbName_Selected" Grid.Row="0" Grid.Column="1" Width="Auto"/>
-                        <controls:CustomTextBox x:Name="tbPwd" Watermark="请输入登录密码" IsPassword="True" VerticalContentAlignment="Center"  Grid.Row="1" Grid.Column="1" Margin="0,10" Width="Auto" />
-                        <Grid Grid.Column="1" Grid.Row="2" Margin="0,10">
-                            <CheckBox x:Name="cbRemember" IsChecked="True" IsEnabled="{Binding ElementName=pbPwd,Path=IsEnabled}" HorizontalAlignment="Left"
-                                Content="记住密码" FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="cbLogin" Grid.Column="1" Grid.Row="2" IsChecked="True" IsEnabled="{Binding ElementName=pbPwd,Path=IsEnabled}" HorizontalAlignment="Right"
-                                Content="自动登录" FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
-                        </Grid>
-                       <Button x:Name="btLogin" Grid.Row="3" Grid.Column="1" Content="登录" Margin="0,10" IsDefault="True" Width="300" Click="Login_Click" BorderBrush="Transparent"/>
-                        <TextBlock x:Name="tbTips" Foreground="{DynamicResource Color_Danger}" FontSize="{StaticResource LargeFontSize}" Margin="0,10,0,0" 
-                            Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <controls:CustomTextBox x:Name="tbName" Watermark="请输入登录账号" Removed="tbName_Removed" Selected="tbName_Selected" Grid.Row="0" Grid.Column="1" Width="Auto"/>
+                    <controls:CustomTextBox x:Name="tbPwd" Watermark="请输入登录密码" IsPassword="True" VerticalContentAlignment="Center"  Grid.Row="1" Grid.Column="1" Margin="0,10" Width="Auto" />
+                    <Grid Grid.Column="1" Grid.Row="2" Margin="0,10">
+                        <CheckBox x:Name="cbRemember" IsChecked="True" IsEnabled="{Binding ElementName=pbPwd,Path=IsEnabled}" HorizontalAlignment="Left"
+                            Content="记住密码" FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
+                        <CheckBox x:Name="cbLogin" Grid.Column="1" Grid.Row="2" IsChecked="True" IsEnabled="{Binding ElementName=pbPwd,Path=IsEnabled}" HorizontalAlignment="Right"
+                            Content="自动登录" FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
                     </Grid>
+                    <Button x:Name="btLogin" Grid.Row="3" Grid.Column="1" Content="登录" Margin="0,10" IsDefault="True" Width="300" Click="Login_Click" BorderBrush="Transparent"/>
+                    <TextBlock x:Name="tbTips" Foreground="{DynamicResource Color_Danger}" FontSize="{StaticResource LargeFontSize}" Margin="0,10,0,0" 
+                        Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
             </Grid>
-            <controls:ChildWindow x:Name="cw" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-            <controls:Loading x:Name="loading"/>
         </Grid>
-    </Border>
+        <controls:ChildWindow x:Name="cw" Grid.ColumnSpan="2"/>
+        <controls:Loading x:Name="loading" Grid.ColumnSpan="2"/>
+    </Grid>
 </controls:BaseWindow>

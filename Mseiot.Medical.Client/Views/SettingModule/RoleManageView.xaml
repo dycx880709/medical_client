@@ -63,8 +63,9 @@
             <TreeView x:Name="lb_level" IsTabStop="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,15,0,0">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type entities:AppLevel}" ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal" Background="Transparent" Margin="0,5">
-                            <CheckBox Content="{Binding Name}" ToolTip="{Binding Describe}" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="ModifyLevel_Click"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="ModifyLevel_Click"/>
+                            <TextBlock Text="{Binding Name}" ToolTip="{Binding Describe}" IsHitTestVisible="False" Margin="5,0,0,0" FontWeight="Bold"/>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>

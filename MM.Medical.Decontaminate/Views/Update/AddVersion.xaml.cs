@@ -141,7 +141,7 @@ namespace MM.Medical.Decontaminate.Views
         {
             var openFileDialog = new OpenFileDialog()
             {
-                Filter = $"Zip压缩包|*.zip;",
+                Filter = "Zip压缩包|*.zip",
                 Multiselect = false,
                 RestoreDirectory = true
             };

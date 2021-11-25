@@ -145,9 +145,10 @@ namespace MM.Medical.Client.Views
         {
             if (lb_words.SelectedValue is BaseWordExtend word && sender is FrameworkElement element && element.DataContext is string item)
             {
-                if (MsPrompt.ShowDialog("确定删除此模板目录内容,是否继续?"))
+                if (MsPrompt.ShowDialog("确定删除该词条明细,是否继续?"))
                 {
                     var word_back = word.Copy();
+                    word_back.Items.AddRange(word_back.Content.Split(','));
                     word_back.Items.Remove(item);
                     var result = loading.AsyncWait("删除词条明细中,请稍后", SocketProxy.Instance.ModifyBaseWord(word_back));
                     if (result.IsSuccess)

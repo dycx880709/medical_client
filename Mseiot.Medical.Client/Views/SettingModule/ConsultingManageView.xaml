@@ -18,47 +18,59 @@
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
-            <ListBox x:Name="lb_rooms">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <TextBox x:Name="tb_name" IsReadOnly="True" IsHitTestVisible="False" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
-                            <Grid HorizontalAlignment="Center">
-                                <TextBlock x:Name="tb_type" Text="{Binding ExaminationTypes}" VerticalAlignment="Center"/>
-                                <ComboBox x:Name="cb_type" Style="{StaticResource MultipleComboBoxStyle}" ItemsSource="{Binding ExaminationTypes, RelativeSource={RelativeSource AncestorType={x:Type local:ConsultingManageView}}}" 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <TextBlock Text="诊室名称" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <TextBlock Text="检查类型" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Text="操作" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <Border VerticalAlignment="Bottom" BorderThickness="0,0,0,2" Margin="10,0" BorderBrush="{StaticResource Color_Border_Primary}"/>
+                </Grid>
+                <ListBox x:Name="lb_rooms" Grid.Row="1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBox x:Name="tb_name" IsReadOnly="True" IsHitTestVisible="False" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
+                                <Grid HorizontalAlignment="Center">
+                                    <TextBlock x:Name="tb_type" Text="{Binding ExaminationTypes}" VerticalAlignment="Center"/>
+                                    <ComboBox x:Name="cb_type" Style="{StaticResource MultipleComboBoxStyle}" ItemsSource="{Binding ExaminationTypes, RelativeSource={RelativeSource AncestorType={x:Type local:ConsultingManageView}}}" 
                                           DropDownOpened="Type_DropDownOpened" Visibility="Hidden" Text="{Binding ExaminationTypes, Mode=TwoWay, UpdateSourceTrigger=Explicit}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border>
-                                                <CheckBox Content="{Binding}" Click="SelectedType_Click" Height="Auto" Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border>
+                                                    <CheckBox Content="{Binding}" Click="SelectedType_Click" Height="Auto" Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </Grid>
+                                <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Click="Save_Click" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0"/>
+                                    <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" Click="Edit_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="10,0"/>
+                                    <controls:MediaButton x:Name="bt_remove" ToolTip="删除" Click="Remove_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
+                                </StackPanel>
                             </Grid>
-                            <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Click="Save_Click" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0"/>
-                                <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" Click="Edit_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="10,0"/>
-                                <controls:MediaButton x:Name="bt_remove" ToolTip="删除" Click="Remove_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
-                            </StackPanel>
-                        </Grid>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter Property="Visibility" TargetName="bt_comfirm" Value="Visible"/>
-                                <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
-                                <Setter Property="IsReadOnly" TargetName="tb_name" Value="False"/>
-                                <Setter Property="IsHitTestVisible" TargetName="tb_name" Value="True"/>
-                                <Setter Property="Visibility" TargetName="cb_type" Value="Visible"/>
-                                <Setter Property="Visibility" TargetName="tb_type" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ConsultingRoomID}" Value="0">
-                                <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
-                                <Setter Property="Visibility" TargetName="bt_remove" Value="Collapsed"/>
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="Visibility" TargetName="bt_comfirm" Value="Visible"/>
+                                    <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
+                                    <Setter Property="IsReadOnly" TargetName="tb_name" Value="False"/>
+                                    <Setter Property="IsHitTestVisible" TargetName="tb_name" Value="True"/>
+                                    <Setter Property="Visibility" TargetName="cb_type" Value="Visible"/>
+                                    <Setter Property="Visibility" TargetName="tb_type" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ConsultingRoomID}" Value="0">
+                                    <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
+                                    <Setter Property="Visibility" TargetName="bt_remove" Value="Collapsed"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
         </controls:CustomGroupBox>
         <controls:SliderPanel x:Name="sp"/>
         <controls:Loading x:Name="loading"/>

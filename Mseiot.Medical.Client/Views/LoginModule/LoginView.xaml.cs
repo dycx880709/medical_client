@@ -56,11 +56,6 @@ namespace MM.Medical.Client.Views
             cbRemember.IsChecked = LocalSetting.IsRemember;
             cbLogin.IsChecked = LocalSetting.AutoLogin;
             tb_version.Text = CacheHelper.ClientVersion;
-            layout.MouseMove += (o, e) =>
-            {
-                if (e.LeftButton == MouseButtonState.Pressed)
-                    this.DragMove();
-            };
             if (string.IsNullOrEmpty(LocalSetting.ServerSetting.Address) 
                 || LocalSetting.ServerSetting.HttpPort == 0
                 || LocalSetting.ServerSetting.TcpPort == 0) 
