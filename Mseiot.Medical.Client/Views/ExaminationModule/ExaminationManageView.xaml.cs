@@ -123,7 +123,7 @@ namespace MM.Medical.Client.Views
                 }
                 else Alert.ShowMessage(true, AlertType.Error, $"获取检查诊室信息失败,{ result.Error }");
             }
-            else Alert.ShowMessage(false, AlertType.Error, $"检查诊室未配置,模块不可能");
+            else Alert.ShowMessage(false, AlertType.Error, $"检查诊室未配置,模块不可用");
         }
 
         private void TcpProxy_ReceiveMessaged(object sender, Message e)

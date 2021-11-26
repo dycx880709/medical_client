@@ -15,6 +15,7 @@ namespace MM.Medical.Client.Entities
         public ServerSetting ServerSetting { get; set; }
         public List<ServerSetting> ServerSettingRecords { get; set; }
         public string Printer { get; set; }
+        public string ConsultingRoomName { get; set; }
         /// <summary>
         /// 是否记住密码
         /// </summary>

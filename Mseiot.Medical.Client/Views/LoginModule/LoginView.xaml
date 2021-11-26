@@ -7,7 +7,8 @@
         xmlns:core="clr-namespace:MM.Medical.Client.Core"
         mc:Ignorable="d" Height="500" Width="1000" BorderThickness="0" 
         VisibilityMax="Collapsed" VisibilityMin="Collapsed"
-        OpacityMask="White" 
+        OpacityMask="White" VisibilitySetting="Visible"
+        NotifySetting="Window_NotifySetting"
         WindowStartupLocation="CenterScreen" 
         HeaderBackground="Transparent">
 

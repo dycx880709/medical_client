@@ -30,7 +30,12 @@
       "ProjectGuid": "680bc546-cea8-4f54-a80b-4c386ceb5df4",
       "DisplayName": "Ms.Libs",
       "ColorIndex": 4
+    },
+    "9d3effc8-948e-4abd-a6bc-6bbfc3e294d6": {
+      "ProjectGuid": "9d3effc8-948e-4abd-a6bc-6bbfc3e294d6",
+      "DisplayName": "MM.Medical.Decontaminate",
+      "ColorIndex": 5
     }
   },
-  "NextColorIndex": 5
+  "NextColorIndex": 6
 }

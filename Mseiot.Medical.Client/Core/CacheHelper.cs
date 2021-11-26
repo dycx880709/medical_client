@@ -19,9 +19,9 @@ namespace MM.Medical.Client.Core
     {
         public static string UserName { get { return CurrentUser.Name; } }
         public static string RoleName { get { return CurrentUser.RoleName; } }
+        public static string ConsultingRoomName { get { return LocalSetting.ConsultingRoomName; } }
         public static LocalSetting LocalSetting { get; private set; }
         public static User CurrentUser { get; set; } = new User();
-        public static string ConsultingRoomName { get; set; }
         public static string RFIDCom { get; set; }
         public static int EndoscopeDeviceID { get; set; }
         public static string VideoPath { get; set; }
@@ -43,7 +43,6 @@ namespace MM.Medical.Client.Core
         public static void LoadSetting()
         {
             CacheHelper.RFIDCom = CacheHelper.GetConfig<string>("RFIDCom");
-            CacheHelper.ConsultingRoomName = CacheHelper.GetConfig<string>("ConsultingRoom");
             CacheHelper.EndoscopeDeviceID = CacheHelper.GetConfig<int>("EndoscopeDeviceID");
             CacheHelper.IsDebug = CacheHelper.GetConfig<bool>("IsDebug");
 
@@ -57,10 +56,7 @@ namespace MM.Medical.Client.Core
             if (Directory.Exists(CacheHelper.VideoPath))
                 Directory.Delete(CacheHelper.VideoPath, true);
             Directory.CreateDirectory(CacheHelper.VideoPath);
-
-            CacheHelper.LocalSetting.ServerSetting.Address= CacheHelper.GetConfig<string>("Address");
-            CacheHelper.LocalSetting.ServerSetting.HttpPort = CacheHelper.GetConfig<int>("HttpPort");
-            CacheHelper.LocalSetting.ServerSetting.TcpPort = CacheHelper.GetConfig<int>("TcpPort");
+          
         }
 
         public static void SaveLocalSetting()

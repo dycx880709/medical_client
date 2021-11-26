@@ -72,6 +72,24 @@ namespace MM.Medical.Client.Views
             }
         }
 
+        private async void Window_NotifySetting(object sender, EventArgs e)
+        {
+            if (cw.Visibility == Visibility.Visible)
+                cw.Close();
+            else
+            {
+                var view = new SeverSetting();
+                if (cw.ShowDialog("服务配置", view))
+                {
+                    var serverSetting = LocalSetting.ServerSetting;
+                    SocketProxy.Instance.Load(serverSetting.Address, serverSetting.HttpPort, serverSetting.TcpPort);
+                    btLogin.IsEnabled = true;
+                    tbTips.Text = "";
+                    await Updater();
+                }
+            }
+        }
+        
         #region 登录
 
         private void Login_Click(object sender, RoutedEventArgs e)

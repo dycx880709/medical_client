@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{771C8A73-AFAA-4137-8273-8044D0E6CE1D}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>MM.Medical.Client</RootNamespace>
     <AssemblyName>MM.Medical.Client</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -200,6 +200,9 @@
     <Compile Include="Views\ExaminationModule\ExaminationItemView.xaml.cs">
       <DependentUpon>ExaminationItemView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LoginModule\SeverSetting.xaml.cs">
+      <DependentUpon>SeverSetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingModule\BackupDBManage.xaml.cs">
       <DependentUpon>BackupDBManage.xaml</DependentUpon>
     </Compile>
@@ -347,6 +350,10 @@
     <Page Include="Views\ExaminationModule\ExaminationItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginModule\SeverSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SettingModule\BackupDBManage.xaml">
       <Generator>MSBuild:Compile</Generator>
