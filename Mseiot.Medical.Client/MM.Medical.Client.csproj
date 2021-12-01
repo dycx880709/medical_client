@@ -113,6 +113,7 @@
       <DependentUpon>MenuModule.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AppointmentStatusToColorConverter.cs" />
+    <Compile Include="Converters\EndoscopeStateIsEnabledConverter.cs" />
     <Compile Include="Converters\EndoscopeStateToColorConverter.cs" />
     <Compile Include="Converters\ExamineIsEditConverter.cs" />
     <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />

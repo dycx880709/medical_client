@@ -9,6 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
+        <converters:EndoscopeStateIsEnabledConverter x:Key="EndoscopeStateIsEnabledConverter"/>
         <converters:EndoscopeStateToColorConverter x:Key="EndoscopeStateToColorConverter"/>
     </UserControl.Resources>
     
@@ -41,6 +42,25 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="制卡" Tag="{Binding}" Click="CreateRFID_Click"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="是否启用" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ToggleButton x:Name="tb" Click="Switch_Click" IsChecked="{Binding State, Converter={StaticResource EndoscopeStateIsEnabledConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SwitchToggleButtonStyle}"/>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding State}" Value="Using">
+                                        <Setter Property="IsEnabled" TargetName="tb" Value="False"/>
+                                        <Setter Property="ToolTip" TargetName="tb" Value="检查过程中无法禁用"/>
+                                        <Setter Property="IsChecked" TargetName="tb" Value="True"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding State}" Value="Decontaminating">
+                                        <Setter Property="IsEnabled" TargetName="tb" Value="False"/>
+                                        <Setter Property="ToolTip" TargetName="tb" Value="清洗过程中无法禁用"/>
+                                        <Setter Property="IsChecked" TargetName="tb" Value="True"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

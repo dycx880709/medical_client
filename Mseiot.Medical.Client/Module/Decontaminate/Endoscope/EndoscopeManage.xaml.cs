@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -38,7 +39,6 @@ namespace MM.Medical.Client.Module.Decontaminate
             lvDatas.ItemsSource = Endoscopes;
             LoadEndoscopes();
         }
-
 
         #region 数据
 
@@ -118,7 +118,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                 }
                 catch (Exception ex)
                 {
-                    Alert.ShowMessage(true, AlertType.Error, "写卡失败:" + ex.Message);
+                    Alert.ShowMessage(false, AlertType.Error, "写卡失败:" + ex.Message);
                 }
                 finally
                 {
@@ -128,5 +128,29 @@ namespace MM.Medical.Client.Module.Decontaminate
         }
 
         #endregion
+
+        private async void Switch_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton tb && tb.DataContext is Endoscope endoscope)
+            {
+                var state = endoscope.State == EndoscopeState.Disabled ? "禁用" : "启用";
+                loading.Start($"{ state }内窥镜中,请稍后");
+                var result = await SocketProxy.Instance.ModifyEndoscope(endoscope);
+                this.Dispatcher.Invoke(() =>
+                {
+                    if (result.IsSuccess)
+                    {
+                        Alert.ShowMessage(true, AlertType.Success, $"{ state }内窥镜成功");
+                        LoadEndoscopes();
+                    }
+                    else
+                    {
+                        Alert.ShowMessage(false, AlertType.Error, $"{ state }内窥镜失败,{ result.Error }");
+                        tb.IsChecked = !tb.IsChecked.Value;
+                    }
+                    loading.Stop();
+                });
+            }
+        }
     }
 }

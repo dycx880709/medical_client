@@ -44,7 +44,6 @@ namespace MM.Medical.Client.Module.Decontaminate
         }
         private void SerialPorts_DropDownOpened(object sender, EventArgs e)
         {
-
             LoadSerialPorts();
         }
 

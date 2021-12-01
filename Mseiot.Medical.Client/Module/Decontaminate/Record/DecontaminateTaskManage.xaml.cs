@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ using System.Windows.Shapes;
 using MM.Libs.RFID;
 using MM.Medical.Client.Core;
 using Ms.Controls;
+using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 
@@ -80,6 +82,37 @@ namespace MM.Medical.Client.Module.Decontaminate
         private void Pager_PageChanged(object sender, PageChangedEventArgs args)
         {
             LoadDecontaminateTasks();
+        }
+
+        private async void Excel_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.RootFolder = Environment.SpecialFolder.Desktop;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var filePath = System.IO.Path.Combine(dialog.SelectedPath, $"清洗记录_{ TimeHelper.ToUnixTime(DateTime.Now) }.xls");
+                loading.Start("导出清洗数据中,请稍后");
+                var result = await SocketProxy.Instance.GetDecontaminateTasks(
+                    0,
+                    10000,
+                    new List<DecontaminateTaskStatus>() { DecontaminateTaskStatus.Complete },
+                    "",
+                    dti.StartTime,
+                    dti.EndTime
+                );
+                if (!result.IsSuccess)
+                    this.Dispatcher.Invoke(() => Alert.ShowMessage(false, AlertType.Error, $"导出清洗数据失败,{ result.Error }"));
+                else
+                {
+                    var excelDatas = result.Content.Results.Select(t => new DecontaminateTaskExcel(t));
+                    var result2 = ExcelHelper.DataListToExcel(filePath, excelDatas);
+                    if (result2.Item1)
+                        this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Success, "导出清洗数据完成"));
+                    else
+                        this.Dispatcher.Invoke(() => Alert.ShowMessage(false, AlertType.Error, "导出清洗数据到Excel失败"));
+                }
+                this.Dispatcher.Invoke(() => loading.Stop());
+            }
         }
     }
 }

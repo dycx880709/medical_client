@@ -40,7 +40,7 @@
                 <ListView Width="{Binding Width,ElementName=menuContainer}" x:Name="lvMenus" SelectionChanged="Menu_Selected">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"></StackPanel>
+                            <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>

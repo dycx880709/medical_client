@@ -28,11 +28,15 @@ namespace MM.Medical.Client.Module.Decontaminate
     /// </summary>
     public partial class DecontaminateTaskView : UserControl
     {
+        private List<RFIDProxy> rfidProxys;
         public DecontaminateTaskView()
         {
             InitializeComponent();
             this.Loaded += DecontaminateTask_Loaded;
+            this.Unloaded += DecontaminateTaskView_Unloaded;
             this.SizeChanged += DecontaminateTaskView_SizeChanged;
+            lvTasks.ItemsSource = DecontaminateTasks;
+            LoadRFID();
         }
 
         private void DecontaminateTaskView_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -41,11 +45,14 @@ namespace MM.Medical.Client.Module.Decontaminate
             DrawGrid();
         }
 
+        private void DecontaminateTaskView_Unloaded(object sender, RoutedEventArgs e)
+        {
+            timer.Dispose();
+            timerCheck.Dispose();
+        }
+
         private void DecontaminateTask_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Loaded -= DecontaminateTask_Loaded;
-            LoadRFID();
-            lvTasks.ItemsSource = DecontaminateTasks;
             timer = new Timer(GetDatas, null, 0, 3000);
             timerCheck = new Timer(CheckStatus, null, 1000, 1000);
         }
@@ -87,6 +94,7 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private async void LoadRFID()
         {
+
             var result = await SocketProxy.Instance.GetRFIDDevices();
             if (result.IsSuccess)
             {
@@ -100,62 +108,85 @@ namespace MM.Medical.Client.Module.Decontaminate
                     }
                 }
             }
+            else
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    Alert.ShowMessage(false, AlertType.Error, $"获取内窥镜串口信息失败,{ result.Error }");
+                });
+            }
         }
 
         private async void RfidProxy_NotifyEPCReceived(object sender, EPCInfo e)
         {
-            areDecontaminateTasks.WaitOne();
-            for (int i = 0; i < DecontaminateTasks.Count; i++)
+            var isLoaded = false;
+            isLoaded = this.Dispatcher.Invoke(() => isLoaded = this.IsLoaded);
+            if (isLoaded)
             {
-                var item = DecontaminateTasks[i];
-                if (item.EndoscopeID == e.EPC && item.DecontaminateTaskSteps != null)
+                areDecontaminateTasks.WaitOne();
+                for (int i = 0; i < DecontaminateTasks.Count; i++)
                 {
-                    item.CleanUserID = CacheHelper.CurrentUser.UserID;
-                    if (item.StartTime == 0)
+                    var item = DecontaminateTasks[i];
+                    if (item.EndoscopeID == e.EPC && item.DecontaminateTaskSteps != null)
                     {
-                        item.StartTime = TimeHelper.ToUnixTime(DateTime.Now);
-                    }
-                    DecontaminateTaskStep decontaminateTaskStep = item.DecontaminateTaskSteps.FirstOrDefault(f => f.RFIDDeviceSN == e.DeviceID && f.DecontaminateStepStatus != DecontaminateStepStatus.Complete);
-                    if (decontaminateTaskStep != null)
-                    {
-                        if (decontaminateTaskStep.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
+                        item.CleanUserID = CacheHelper.CurrentUser.UserID;
+                        if (item.StartTime == 0)
                         {
-                            decontaminateTaskStep.StartTime= TimeHelper.ToUnixTime(DateTime.Now);
-                            decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Run;
+                            item.StartTime = TimeHelper.ToUnixTime(DateTime.Now);
                         }
-                        else
+                        DecontaminateTaskStep decontaminateTaskStep = item.DecontaminateTaskSteps.FirstOrDefault(f => f.RFIDDeviceSN == e.DeviceID && f.DecontaminateStepStatus != DecontaminateStepStatus.Complete);
+                        if (decontaminateTaskStep != null)
                         {
-                            decontaminateTaskStep.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
-                            decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Complete;
-                        }
-                    }
-                    if (item.DecontaminateTaskSteps.Count(f => f.DecontaminateStepStatus == DecontaminateStepStatus.Wait || f.DecontaminateStepStatus == DecontaminateStepStatus.Run) == 0)
-                    {
-                        item.DecontaminateTaskStatus = DecontaminateTaskStatus.Complete;
-                        item.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
-                        var result = await SocketProxy.Instance.ChangeDecontaminateTaskStatus(item);
-                        if (result.IsSuccess)
-                        {
-                            
-                            this.Dispatcher.Invoke(() =>
+                            if (decontaminateTaskStep.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
                             {
-                                DecontaminateTasks.Remove(item);
-                            });
-                        
-                        }
-                        else
-                        {
-                            this.Dispatcher.Invoke(() =>
+                                decontaminateTaskStep.StartTime = TimeHelper.ToUnixTime(DateTime.Now);
+                                decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Run;
+                            }
+                            else
                             {
-                                Alert.ShowMessage(true, AlertType.Error, result.Error);
-                            });
+                                if (TimeHelper.ToUnixTime(DateTime.Now) - decontaminateTaskStep.StartTime >= decontaminateTaskStep.Timeout)
+                                {
+                                    decontaminateTaskStep.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
+                                    decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Complete;
+                                }
+                                else
+                                {
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        Alert.ShowMessage(false, AlertType.Error, "清洗时间不足,无法结束当前步骤");
+                                    });
+                                }
+
+                            }
                         }
-                     
+                        if (item.DecontaminateTaskSteps.Count(f => f.DecontaminateStepStatus == DecontaminateStepStatus.Wait || f.DecontaminateStepStatus == DecontaminateStepStatus.Run) == 0)
+                        {
+                            item.DecontaminateTaskStatus = DecontaminateTaskStatus.Complete;
+                            item.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
+                            var result = await SocketProxy.Instance.ChangeDecontaminateTaskStatus(item);
+                            if (result.IsSuccess)
+                            {
+
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    DecontaminateTasks.Remove(item);
+                                });
+
+                            }
+                            else
+                            {
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    Alert.ShowMessage(true, AlertType.Error, result.Error);
+                                });
+                            }
+
+                        }
+                        break;
                     }
-                    break;
                 }
+                areDecontaminateTasks.Set();
             }
-            areDecontaminateTasks.Set();
         }
 
 
@@ -215,9 +246,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             set { SetValue(ColumnWidthProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ColumnCount.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ColumnWidthProperty =
-            DependencyProperty.Register("ColumnWidth", typeof(double), typeof(DecontaminateTaskView), new PropertyMetadata(0.0));
+        public static readonly DependencyProperty ColumnWidthProperty = DependencyProperty.Register("ColumnWidth", typeof(double), typeof(DecontaminateTaskView), new PropertyMetadata(0.0));
 
         public double RowHeight
         {
@@ -225,8 +254,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             set { SetValue(RowHeightProperty, value); }
         }
 
-        public static readonly DependencyProperty RowHeightProperty =
-            DependencyProperty.Register("RowHeight", typeof(double), typeof(DecontaminateTaskView), new PropertyMetadata(0.0));
+        public static readonly DependencyProperty RowHeightProperty = DependencyProperty.Register("RowHeight", typeof(double), typeof(DecontaminateTaskView), new PropertyMetadata(0.0));
 
 
         private int rowCount;
