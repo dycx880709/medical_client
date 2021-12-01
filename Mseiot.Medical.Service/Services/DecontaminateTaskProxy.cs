@@ -26,8 +26,8 @@ namespace Mseiot.Medical.Service.Services
                 Count = count,
                 DecontaminateTaskStatuses = decontaminateTaskStatuses != null ? string.Join(",", decontaminateTaskStatuses.Select(t => (int)t)) : null,
                 SearchContent = searchContent,
-                StartTime = startTime == null ?0: TimeHelper.ToUnixTime((DateTime)startTime),
-                EndTime = endTime == null ? long.MaxValue : TimeHelper.ToUnixTime((DateTime)endTime),
+                StartTime = startTime == null ? 0: TimeHelper.ToUnixTime((DateTime)startTime),
+                EndTime = endTime == null ? TimeHelper.ToUnixTime(DateTime.Now) : TimeHelper.ToUnixTime(endTime.Value),
             }) ;
         }
 

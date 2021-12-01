@@ -309,11 +309,8 @@ namespace MM.Medical.Client.Views
                             {
                                 var decontaminateTask = new DecontaminateTask
                                 {
-                                    DoctorUserID = CacheHelper.CurrentUser.UserID,
                                     EndoscopeID = commit_ex.EndoscopeID,
-                                    PatientName = appointment.Name,
-                                    PatientID = appointment.IDCard,
-                                    PatientSI = appointment.SocialSecurityCode
+                                    ExaminationID = commit_ex.ExaminationID
                                 };
                                 var result2 = loading.AsyncWait("创建清洗任务中,请稍后", SocketProxy.Instance.AddDecontaminateTask(decontaminateTask));
                                 if (!result2.IsSuccess)

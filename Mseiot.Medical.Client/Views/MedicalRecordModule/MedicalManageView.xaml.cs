@@ -62,7 +62,8 @@ namespace MM.Medical.Client.Views
                 pager.SelectedCount,
                 dti_examination.StartTime,
                 dti_examination.EndTime,
-                tb_user.Text.Trim()
+                tb_user.Text.Trim(),
+                diagnoseInfo: tb_diagnose.Text.Trim()
             ));
             if (result.IsSuccess)
             {

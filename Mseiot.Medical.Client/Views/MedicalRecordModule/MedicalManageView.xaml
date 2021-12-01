@@ -77,11 +77,11 @@
                         </StackPanel>
                         <StackPanel Style="{StaticResource editorFormItem}">
                             <TextBlock Text="身份信息"/>
-                            <controls:CustomTextBox x:Name="tb_user" Watermark="可输入病人姓名、身份证、社保号" Width="250" Text="{Binding Appointment.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <controls:CustomTextBox x:Name="tb_user" Watermark="可输入病人姓名、身份证、社保号" Width="250" Text=""/>
                         </StackPanel>
                         <StackPanel Style="{StaticResource editorFormItem}">
                             <TextBlock Text="诊断信息"/>
-                            <controls:CustomTextBox x:Name="tb_diagnose" Watermark="对临床诊断、内镜所见、镜下诊断、活检部位、病理诊断、医生建议进行全文搜索" Width="550" Text="{Binding Appointment.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <controls:CustomTextBox x:Name="tb_diagnose" Watermark="对临床诊断、内镜所见、镜下诊断、活检部位、病理诊断、医生建议进行全文搜索" Width="550" Text=""/>
                         </StackPanel>
                         <Button Content="查询" Click="Get_Click" Grid.Column="1" IsDefault="True"/>
                     </WrapPanel>

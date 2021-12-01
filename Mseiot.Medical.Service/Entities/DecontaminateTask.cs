@@ -35,11 +35,6 @@ namespace Mseiot.Medical.Service.Entities
         public string CleanName { get; set; }
 
         /// <summary>
-        /// 医生ID
-        /// </summary>
-        public string DoctorUserID { get; set; }
-
-        /// <summary>
         /// 医生
         /// </summary>
         public string DoctorName { get; set; }
@@ -74,8 +69,16 @@ namespace Mseiot.Medical.Service.Entities
         /// </summary>
         public long EndTime { get; set; }
 
+        /// <summary>
+        /// 患者年龄
+        /// </summary>
+        public int PatientBirthday { get; set; }
 
-      
+        /// <summary>
+        /// 检查ID
+        /// </summary>
+        public int ExaminationID { get; set; }
+
 
 
         /// <summary>
