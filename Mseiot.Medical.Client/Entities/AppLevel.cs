@@ -43,7 +43,7 @@ namespace MM.Medical.Client.Entities
                         new AppLevel { Name="病历中心", Level = "32", Identify="MM.Medical.Client.Views.MedicalManageView" },
                         new AppLevel { Name="我的工作台", Level="33", Identify="MM.Medical.Client.Views.SelfWorkStatisticsView" },
                         new AppLevel { Name="主任管理", Level="34", Identify="MM.Medical.Client.Views.SpecialStatisticsView" },
-                        new AppLevel 
+                        new AppLevel
                         {
                             Name = "系统管理", Level = "35",
                             Children= new List<AppLevel>

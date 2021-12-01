@@ -7,6 +7,7 @@
              xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
+             xmlns:core="clr-namespace:MM.Medical.Client.Core"
              mc:Ignorable="d"
              d:DesignHeight="1080" d:DesignWidth="1920">
 
@@ -89,7 +90,7 @@
             <WrapPanel VerticalAlignment="Center" Grid.ColumnSpan="3" HorizontalAlignment="Center">
                 <WrapPanel.Resources>
                     <sys:Double x:Key="InputElementWidth">100</sys:Double>
-                    <sys:Double x:Key="InputElementHeight">30</sys:Double>
+                    <sys:Double x:Key="InputElementHeight">25</sys:Double>
                     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource editorFormItemText}">
                         <Setter Property="Width" Value="80"/>
                         <Setter Property="Margin" Value="0,0,5,0"/>
@@ -101,19 +102,72 @@
                 </WrapPanel.Resources>
                 <StackPanel>
                     <TextBlock Text="姓名"/>
-                    <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.Appointment.Name}"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Name}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="性别"/>
-                    <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.Appointment.Sex, Converter={StaticResource SexConverter}}"/>
+                    <ComboBox IsReadOnly="{Binding IsReadOnly}" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding SelectedExamination.Appointment.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="年龄"/>
-                    <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.Appointment.Birthday}"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Birthday}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查类型"/>
-                    <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.Appointment.AppointmentType}"/>
+                    <ComboBox x:Name="cb_type" IsReadOnly="{Binding IsReadOnly}" SelectedValue="{Binding SelectedExamination.Appointment.AppointmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="麻醉方法"/>
+                    <ComboBox x:Name="cb_anesthesia" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="患者来源"/>
+                    <ComboBox x:Name="cb_source" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.PatientSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBoxItem>门诊</ComboBoxItem>
+                        <ComboBoxItem>住院</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel.Style>
+                        <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource {x:Type StackPanel}}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedIndex, ElementName=cb_source}" Value="1">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="住院号"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.HospitalID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel.Style>
+                        <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource {x:Type StackPanel}}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedIndex, ElementName=cb_source}" Value="1">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="科室"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel.Style>
+                        <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource {x:Type StackPanel}}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedIndex, ElementName=cb_source}" Value="1">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="床号"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.RoomID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查时间"/>
@@ -134,22 +188,21 @@
                     </TextBox>
                 </StackPanel>
                 <StackPanel>
+                    <StackPanel.Style>
+                        <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource editorFormItem}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reported}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
                     <TextBlock Text="报告日期"/>
-                    <TextBox IsReadOnly="True">
-                        <TextBox.Style>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Setter Property="Text" Value="--"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
-                                        <Setter Property="Text" Value="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reported}">
-                                        <Setter Property="Text" Value="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                    <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查医生"/>
@@ -179,40 +232,12 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel>
-                    <TextBlock Text="检查体位"/>
-                    <ComboBox x:Name="cb_bodyLoc" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.BodyPose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="审核医生"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.AuditDoctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel>
-                    <TextBlock Text="麻醉方法"/>
-                    <ComboBox x:Name="cb_anesthesia" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="术前用药"/>
-                    <ComboBox x:Name="cb_preoperative" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Preoperative, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="插入途径"/>
-                    <ComboBox x:Name="cb_insert" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.InsertType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="组织采取"/>
-                    <ComboBox x:Name="cb_org" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.CollectOrg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="细胞采取"/>
-                    <ComboBox x:Name="cb_cell" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.CollectCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="HIV"/>
-                    <ComboBox x:Name="cb_hiv" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.HIV, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="HCV"/>
-                    <ComboBox x:Name="cb_hcv" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.HCV, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="HBasg"/>
-                    <ComboBox x:Name="cb_hbasg" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.HBasg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="医生助理"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Nurse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="内镜编号"/>
@@ -264,8 +289,13 @@
                         </Style.Triggers>
                     </Style>
                 </TabControl.Style>
-                <TabItem x:Name="ti_word" Width="149" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True">
-                    <TreeView x:Name="tv_medicalWord">
+                <TabItem x:Name="ti_word" Width="149" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True" Cursor="Hand">
+                    <TreeView x:Name="tv_medicalWord" Focusable="False">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                <Setter Property="Focusable" Value="False"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
                                 <StackPanel x:Name="sp" Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalWord_MouseLeftButtonDown">
@@ -276,7 +306,12 @@
                     </TreeView>
                 </TabItem>
                 <TabItem x:Name="ti_template" Width="149" Style="{StaticResource CustomHeaderTabItemStyle}" Header="诊断模板" Foreground="{StaticResource Color_Font_Primary}">
-                    <TreeView x:Name="tv_template">
+                    <TreeView x:Name="tv_template" Focusable="False">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                <Setter Property="Focusable" Value="False"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type entities:MedicalTemplate}" ItemsSource="{Binding MedicalTemplates}">
                                 <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalTemplate_MouseLeftButtonDown">

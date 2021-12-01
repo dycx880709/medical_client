@@ -35,12 +35,18 @@ namespace MM.Medical.Client.Module.Decontaminate
             this.endoscope_origin = endoscope;
             this.endoscope = endoscope.Copy();
             this.loading = loading;
+            cb_used.IsChecked = endoscope.State != EndoscopeState.Disabled;
             DataContext = this.endoscope;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
 
+            if (!cb_used.IsChecked.Value)
+                endoscope.State = EndoscopeState.Disabled;
+            else if (endoscope_origin.State == EndoscopeState.Decontaminating || endoscope_origin.State == EndoscopeState.Using)
+                endoscope.State = endoscope_origin.State;
+            else endoscope.State = EndoscopeState.Waiting;
             if (endoscope.EndoscopeID == 0)
             {
                 var result = loading.AsyncWait("添加内窥镜中,请稍后", SocketProxy.Instance.AddEndoscope(endoscope));

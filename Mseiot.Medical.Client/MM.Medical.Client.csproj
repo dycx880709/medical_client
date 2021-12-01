@@ -113,6 +113,8 @@
       <DependentUpon>MenuModule.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AppointmentStatusToColorConverter.cs" />
+    <Compile Include="Converters\EndoscopeStateToColorConverter.cs" />
+    <Compile Include="Converters\ExamineIsEditConverter.cs" />
     <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
     <Compile Include="Converters\PathToWebUrlConverter.cs" />
     <Compile Include="Converters\PatientStatusToColorConverter.cs" />
@@ -146,13 +148,16 @@
     <Compile Include="Views\AppointmentModule\AppointmentManage.xaml.cs">
       <DependentUpon>AppointmentManage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Component\CheckSettingView.xaml.cs">
+      <DependentUpon>CheckSettingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Component\AddUserView.xaml.cs">
       <DependentUpon>AddUserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Component\AddWordItemView.xaml.cs">
       <DependentUpon>AddWordItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Component\ExaminationPartView.xaml.cs">
+    <Compile Include="Views\ExaminationModule\ExaminationPartView.xaml.cs">
       <DependentUpon>ExaminationPartView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Component\ReportPreviewView.xaml.cs">
@@ -197,8 +202,8 @@
     <Compile Include="Views\Component\SetPrinterView.xaml.cs">
       <DependentUpon>SetPrinterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ExaminationModule\ExaminationItemView.xaml.cs">
-      <DependentUpon>ExaminationItemView.xaml</DependentUpon>
+    <Compile Include="Views\ExaminationModule\ExaminationPartWindow.xaml.cs">
+      <DependentUpon>ExaminationPartWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginModule\SeverSetting.xaml.cs">
       <DependentUpon>SeverSetting.xaml</DependentUpon>
@@ -279,6 +284,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Component\CheckSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Component\AddUserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -287,7 +296,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Component\ExaminationPartView.xaml">
+    <Page Include="Views\ExaminationModule\ExaminationPartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -347,7 +356,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExaminationModule\ExaminationItemView.xaml">
+    <Page Include="Views\ExaminationModule\ExaminationPartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

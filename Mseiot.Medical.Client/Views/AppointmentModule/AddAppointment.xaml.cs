@@ -19,14 +19,12 @@ namespace MM.Medical.Client.Views
     public partial class AddAppointment : UserControl
     {
         public Appointment Appointment { get; set; } = new Appointment();
-        public List<ConsultingRoom> ConsultingRooms { get; set; }
         private readonly Loading loading;
 
         public AddAppointment(Appointment rawAppointment, Loading loading)
         {
             InitializeComponent();
             this.loading = loading;
-            this.ConsultingRooms = new List<ConsultingRoom>();
             Appointment = rawAppointment.Copy();
             if (rawAppointment.AppointmentID == 0)
             {
@@ -34,28 +32,28 @@ namespace MM.Medical.Client.Views
                 dateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour + 1, 0, 0);
                 Appointment.AppointmentTime = TimeHelper.ToUnixTime(dateTime);
             }
-            DataContext = this;
             this.Loaded += AddAppointment_Loaded;
         }
 
         private void AddAppointment_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= AddAppointment_Loaded;
-            GetAppointInfos();
+            GetBaseWords();
+            DataContext = this.Appointment;
         }
 
-        private void GetAppointInfos()
+        private void GetBaseWords()
         {
-            var result2 = loading.AsyncWait("获取预约诊室中,请稍后", SocketProxy.Instance.GetConsultingRooms());
-            if (result2.IsSuccess)
-                this.ConsultingRooms = result2.Content;
-            var result = loading.AsyncWait("获取预约类型中,请稍后", SocketProxy.Instance.GetBaseWords("检查类型"));
+            var result = loading.AsyncWait("获取预约类型中,请稍后", SocketProxy.Instance.GetBaseWords(
+                "检查类型",
+                "麻醉方法"
+            ));
             if (result.IsSuccess)
             { 
                 var checkTypes = result.SplitContent("检查类型");
                 cb_type.ItemsSource = checkTypes;
-                if (!string.IsNullOrEmpty(cb_type.Text))
-                    cb_type.SelectedIndex = checkTypes.IndexOf(cb_type.Text);
+                var anesthesias = result.SplitContent("麻醉方法");
+                cb_anesthesia.ItemsSource = anesthesias;
             }
         }
 
@@ -68,7 +66,7 @@ namespace MM.Medical.Client.Views
             }
             if (string.IsNullOrEmpty(Appointment.AppointmentType))
             {
-                Alert.ShowMessage(true, AlertType.Error, "检查类型输入不合法");
+                Alert.ShowMessage(true, AlertType.Error, "检查类型不能为空");
                 return;
             }
             if (Appointment.Birthday == 0 && tb_birthday.Text != "0")
@@ -80,6 +78,34 @@ namespace MM.Medical.Client.Views
             {
                 Alert.ShowMessage(true, AlertType.Error, "预约时间输入不能早于当前时间");
                 return;
+            }
+            if (string.IsNullOrEmpty(Appointment.Telephone))
+            {
+                Alert.ShowMessage(true, AlertType.Error, "患者电话号码不能为空");
+                return;
+            }
+            if (string.IsNullOrEmpty(Appointment.Anesthesia))
+            {
+                Alert.ShowMessage(true, AlertType.Error, "患者麻醉方式不能为空");
+                return;
+            }
+            if (cb_anesthesia.SelectedIndex == 1)
+            {
+                if (string.IsNullOrEmpty(Appointment.HospitalID))
+                {
+                    Alert.ShowMessage(true, AlertType.Error, "住院号不能为空");
+                    return;
+                }
+                if (string.IsNullOrEmpty(Appointment.Department))
+                {
+                    Alert.ShowMessage(true, AlertType.Error, "科室不能为空");
+                    return;
+                }
+                if (string.IsNullOrEmpty(Appointment.RoomID))
+                {
+                    Alert.ShowMessage(true, AlertType.Error, "床号不能为空");
+                    return;
+                }
             }
             if (Appointment.AppointmentID == 0)
             {
@@ -98,11 +124,6 @@ namespace MM.Medical.Client.Views
         private void Rescan_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void AppointmentType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            cb_room.ItemsSource = ConsultingRooms.Where(t => t.ExaminationTypes.Split(',').Any(p => p.Equals(cb_type.SelectedValue)));
         }
     }
 }

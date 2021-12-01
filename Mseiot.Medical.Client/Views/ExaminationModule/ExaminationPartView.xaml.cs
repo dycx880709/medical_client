@@ -158,28 +158,14 @@ namespace MM.Medical.Client.Views
         private void GetBaseWords()
         {
             var result = Loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetBaseWords(
-                "HIV",
-                "HCV",
-                "HBasg",
-                "组织采取",
-                "细胞采取",
-                "插入途径",
-                "检查体位",
                 "麻醉方法",
                 "检查部位",
-                "术前用药"
+                "检查类型"
             ));
             if (result.IsSuccess)
             {
-                cb_bodyLoc.ItemsSource = result.SplitContent("检查体位");
                 cb_anesthesia.ItemsSource = result.SplitContent("麻醉方法");
-                cb_preoperative.ItemsSource = result.SplitContent("术前用药");
-                cb_insert.ItemsSource = result.SplitContent("插入途径");
-                cb_org.ItemsSource = result.SplitContent("组织采取");
-                cb_cell.ItemsSource = result.SplitContent("细胞采取");
-                cb_hiv.ItemsSource = result.SplitContent("HIV");
-                cb_hcv.ItemsSource = result.SplitContent("HCV");
-                cb_hbasg.ItemsSource = result.SplitContent("HBasg");
+                cb_type.ItemsSource = result.SplitContent("检查类型");
                 cb_body.ItemsSource = BodyParts = result.SplitContent("检查部位");
             }
         }
@@ -216,9 +202,9 @@ namespace MM.Medical.Client.Views
 
         private void ExaminationText_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement element && !this.IsReadOnly)
+            if (sender is TextBox textBox && !this.IsReadOnly)
             {
-                var expander = ControlHelper.GetParentObject<Expander>(element);
+                var expander = ControlHelper.GetParentObject<Expander>(textBox);
                 var title = expander.Header.ToString();
                 var medicalWord = MedicalWords.FirstOrDefault(t => t.Name.Equals(title));
                 if (medicalWord == null) tv_medicalWord.ItemsSource = null;
@@ -227,6 +213,7 @@ namespace MM.Medical.Client.Views
                     ti_template.IsSelected = true;
                 else ti_word.IsSelected = true;
                 cgb_word.Visibility = Visibility.Visible;
+                textBox.SelectionStart = textBox.Text.Length;
             }
         }
 
@@ -254,37 +241,37 @@ namespace MM.Medical.Client.Views
                             if (string.IsNullOrEmpty(SelectedExamination.ClinicalDiagnosis))
                                 SelectedExamination.ClinicalDiagnosis = word.Name;
                             else if (!SelectedExamination.ClinicalDiagnosis.Contains(word.Name))
-                                SelectedExamination.ClinicalDiagnosis += "\n" + word.Name;
+                                SelectedExamination.ClinicalDiagnosis += " " + word.Name;
                             break;
                         case "内镜所见":
                             if (string.IsNullOrEmpty(SelectedExamination.EndoscopicFindings))
                                 SelectedExamination.EndoscopicFindings = word.Name;
                             else if (!SelectedExamination.EndoscopicFindings.Contains(word.Name))
-                                SelectedExamination.EndoscopicFindings += "\n" + word.Name;
+                                SelectedExamination.EndoscopicFindings += " " + word.Name;
                             break;
                         case "镜下诊断":
                             if (string.IsNullOrEmpty(SelectedExamination.MicroscopicDiagnosis))
                                 SelectedExamination.MicroscopicDiagnosis = word.Name;
                             else if (!SelectedExamination.MicroscopicDiagnosis.Contains(word.Name))
-                                SelectedExamination.MicroscopicDiagnosis += "\n" + word.Name;
+                                SelectedExamination.MicroscopicDiagnosis += " " + word.Name;
                             break;
                         case "活检部位":
                             if (string.IsNullOrEmpty(SelectedExamination.BiopsySite))
                                 SelectedExamination.BiopsySite = word.Name;
                             else if (!SelectedExamination.BiopsySite.Contains(word.Name))
-                                SelectedExamination.BiopsySite += "\n" + word.Name;
+                                SelectedExamination.BiopsySite += " " + word.Name;
                             break;
                         case "病理诊断":
                             if (string.IsNullOrEmpty(SelectedExamination.PathologicalDiagnosis))
                                 SelectedExamination.PathologicalDiagnosis = word.Name;
                             else if (!SelectedExamination.PathologicalDiagnosis.Contains(word.Name))
-                                SelectedExamination.PathologicalDiagnosis += "\n" + word.Name;
+                                SelectedExamination.PathologicalDiagnosis += " " + word.Name;
                             break;
                         case "医生建议":
                             if (string.IsNullOrEmpty(SelectedExamination.DoctorAdvice))
                                 SelectedExamination.DoctorAdvice = word.Name;
                             else if (!SelectedExamination.DoctorAdvice.Contains(word.Name))
-                                SelectedExamination.DoctorAdvice += "\n" + word.Name;
+                                SelectedExamination.DoctorAdvice += " " + word.Name;
                             break;
                     }
                 }
@@ -355,14 +342,14 @@ namespace MM.Medical.Client.Views
                                     this.Dispatcher.Invoke(() =>
                                     {
                                         Alert.ShowMessage(true, AlertType.Error, "开启录像失败");
-                                        tb.IsChecked = tb.IsChecked.Value;
+                                        tb.IsChecked = false;
                                     });
                                 }
                             }
                             else this.Dispatcher.Invoke(() =>
                             {
                                 media.ErrorMsg = $"上传视频数据失败,{ result2.Error }";
-                                tb.IsChecked = tb.IsChecked.Value;
+                                tb.IsChecked = false;
                             });
                         }
                         else
@@ -370,14 +357,14 @@ namespace MM.Medical.Client.Views
                             this.Dispatcher.Invoke(() =>
                             {
                                 media.ErrorMsg = $"上传视频预览图片失败,{ result.Error }";
-                                tb.IsChecked = tb.IsChecked.Value;
+                                tb.IsChecked = false;
                             });
                         }
                     }
                     else
                     {
                         Alert.ShowMessage(true, AlertType.Error, "预览图获取失败,录像已停止");
-                        tb.IsChecked = tb.IsChecked.Value;
+                        tb.IsChecked = false;
                     }
                 }
                 else
@@ -403,7 +390,7 @@ namespace MM.Medical.Client.Views
                     else
                     {
                         Alert.ShowMessage(true, AlertType.Error, "停止录像失败");
-                        tb.IsChecked = tb.IsChecked.Value;
+                        tb.IsChecked = !tb.IsChecked.Value;
                     }
                 }
                 this.Dispatcher.Invoke(() => tb.IsEnabled = true);

@@ -6,7 +6,7 @@
              xmlns:core="clr-namespace:MM.Medical.Client.Core"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:validation="clr-namespace:MM.Medical.Share.Validations;assembly=MM.Medical.Share"
-             Width="600" Height="380"
+             Width="600" Height="450"
              mc:Ignorable="d" >
 
     <UserControl.Resources>
@@ -23,7 +23,7 @@
                 <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="患者名称"/></TextBlock>
                 <TextBox>
                     <TextBox.Text>
-                        <Binding Path="Appointment.Name" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
+                        <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
                                 <validation:StringLengthValidationRule Title="患者名称长度" MinValue="2" MaxValue="10" ValidatesOnTargetUpdated="False" />
                             </Binding.ValidationRules>
@@ -32,22 +32,14 @@
                 </TextBox>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="身份证号"/>
-                <TextBox Text="{Binding Appointment.IDCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-            <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="社保账号"/>
-                <TextBox Text="{Binding Appointment.SocialSecurityCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-            <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="患者性别"/>
-                <ComboBox SelectedIndex="0" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding Appointment.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="患者性别"/></TextBlock>
+                <ComboBox SelectedIndex="0" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="患者年龄"/></TextBlock>
                 <TextBox x:Name="tb_birthday">
                     <TextBox.Text>
-                        <Binding Path="Appointment.Birthday" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
+                        <Binding Path="Birthday" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
                                 <validation:NumberRangeValidationRule Title="患者年龄" MinValue="0" MaxValue="150" ValidatesOnTargetUpdated="False" />
                             </Binding.ValidationRules>
@@ -56,16 +48,32 @@
                 </TextBox>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Grid.Column="0" Grid.Row="0"><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="检查类型"/></TextBlock>
-                <ComboBox x:Name="cb_type" Text="{Binding Appointment.AppointmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="AppointmentType_SelectionChanged"/>
+                <TextBlock Text="身份证号"/>
+                <TextBox Text="{Binding IDCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Grid.Column="0" Grid.Row="0"><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="预约时间"/></TextBlock>
-                <controls:DateTimePicker SelectedDateTime="{Binding Appointment.AppointmentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+                <TextBlock Text="社保账号"/>
+                <TextBox Text="{Binding SocialSecurityCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="电话号码"/></TextBlock>
+                <TextBox Text="{Binding Telephone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="检查类型"/></TextBlock>
+                <ComboBox x:Name="cb_type" SelectedValue="{Binding AppointmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="麻醉方法"/></TextBlock>
+                <ComboBox x:Name="cb_anesthesia" SelectedValue="{Binding Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="预约时间"/></TextBlock>
+                <controls:DateTimePicker SelectedDateTime="{Binding AppointmentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}" Visibility="Collapsed">
                 <TextBlock Text="指定诊室"/>
-                <ComboBox x:Name="cb_room" DisplayMemberPath="Name" SelectedValuePath="Name" SelectedValue="{Binding Appointment.ConsultingRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox x:Name="cb_room" DisplayMemberPath="Name" SelectedValuePath="Name" SelectedValue="{Binding ConsultingRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.Style>
                         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
                             <Setter Property="IsEnabled" Value="True"/>
@@ -77,6 +85,55 @@
                         </Style>
                     </ComboBox.Style>
                 </ComboBox>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/><Run Text="患者来源"/></TextBlock>
+                <ComboBox x:Name="cb_source" Text="{Binding PatientSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBoxItem>门诊</ComboBoxItem>
+                    <ComboBoxItem>住院</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource editorFormItem}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=cb_source}" Value="1">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="住院号"/></TextBlock>
+                <TextBox Text="{Binding HospitalID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource editorFormItem}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=cb_source}" Value="1">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="科室"/></TextBlock>
+                <TextBox Text="{Binding Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource editorFormItem}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=cb_source}" Value="1">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="床号"/></TextBlock>
+                <TextBox Text="{Binding RoomID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">

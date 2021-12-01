@@ -4,9 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             xmlns:converters="clr-namespace:MM.Medical.Client.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <converters:EndoscopeStateToColorConverter x:Key="EndoscopeStateToColorConverter"/>
+    </UserControl.Resources>
+    
     <Grid>
         <controls:CustomGroupBox Header="内镜管理">
             <controls:CustomGroupBox.AttachContent>
@@ -19,9 +24,19 @@
             </controls:CustomGroupBox.AttachContent>
             <DataGrid x:Name="lvDatas">
                 <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="*" Header="使用状态">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="{StaticResource ControlCornerRadius}" Background="{Binding State, Converter={StaticResource EndoscopeStateToColorConverter}}">
+                                    <TextBlock Margin="0,3" Foreground="{StaticResource Color_Font_Light}" TextAlignment="Center" Width="{StaticResource ButtonWidth}" Text="{Binding State, Converter={StaticResource EnumToStringConverter}}"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Width="*" Header="设备编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
                     <DataGridTextColumn Width="*" Header="生产厂家" Binding="{Binding Factory}"/>
                     <DataGridTextColumn Width="*" Header="设备型号" Binding="{Binding Model}"/>
+                    <DataGridTextColumn Width="*" Header="机身编号" Binding="{Binding IMEI}"/>
                     <DataGridTemplateColumn Header="RFID" Width="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

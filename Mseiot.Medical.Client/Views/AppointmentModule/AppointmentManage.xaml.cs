@@ -148,11 +148,9 @@ namespace MM.Medical.Client.Views
             {
                 if (appointment.AppointmentStatus == AppointmentStatus.Reserved)
                 {
-                    var bakAppointment = appointment.Copy();
-                    bakAppointment.AppointmentStatus = AppointmentStatus.PunchIn;
-                    var result = loading.AsyncWait("签到预约中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(bakAppointment));
-                    if (result.IsSuccess) LoadAppointments();
-                    else Alert.ShowMessage(true, AlertType.Error, $"签到预约失败,{ result.Error }");
+                    var view = new CheckSettingView(appointment, this.loading);
+                    if (child.ShowDialog("预约签到", view))
+                        view.Appointment.CopyTo(appointment);
                 }
             }
             else Alert.ShowMessage(true, AlertType.Warning, $"请选择签到项");

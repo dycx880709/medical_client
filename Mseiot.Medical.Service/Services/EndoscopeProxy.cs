@@ -12,7 +12,12 @@ namespace Mseiot.Medical.Service.Services
     {
         public async Task<MsResult<List<Endoscope>>> GetEndoscopes()
         {
-            return await HttpProxy.GetMessage<List<Endoscope>>("/api/Endoscope/get");
+            return await HttpProxy.GetMessage<List<Endoscope>>("/api/Endoscope/gets");
+        }
+
+        public async Task<MsResult<Endoscope>> GetEndoscopeById(int endoscopeId)
+        {
+            return await HttpProxy.GetMessage<Endoscope>("/api/Endoscope/get", new { EndoscopeId = endoscopeId });
         }
 
         public async Task<MsResult<int>> AddEndoscope(Endoscope endoscope)

@@ -198,11 +198,12 @@ namespace MM.Medical.Client.Views
                 var commit_ex = appointment.Examination.Copy();
                 if (tb.IsChecked.Value)
                 {
-                    void CommitExamination(int endoscopeID)
+                    void CommitExamination(Endoscope endoscope)
                     {
                         commit_ex.DoctorName = CacheHelper.CurrentUser.Name;
                         commit_ex.DoctorID = CacheHelper.CurrentUser.UserID;
-                        commit_ex.EndoscopeID = endoscopeID;
+                        commit_ex.Endoscope = endoscope;
+                        commit_ex.EndoscopeID = endoscope.EndoscopeID;
                         commit_ex.AppointmentID = appointment.AppointmentID;
                         commit_ex.ExaminationTime = TimeHelper.ToUnixTime(DateTime.Now);
                         var result1 = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.AddExamination(commit_ex));
@@ -232,14 +233,43 @@ namespace MM.Medical.Client.Views
                         }
                     }
                     if (CacheHelper.IsDebug)
-                        CommitExamination(0);
+                    {
+                        var result = loading.AsyncWait("读取内窥镜中,请稍后", SocketProxy.Instance.GetEndoscopeById(1));
+                        if (result.IsSuccess)
+                            CommitExamination(result.Content);
+                        else
+                            Alert.ShowMessage(false, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
+                    }
                     else
                     {
                         loading.Start("读取内窥镜信息中,请稍后");
                         var rfidProxy = new RFIDProxy();
-                        rfidProxy.NotifyEPCReceived += (_, device) =>
+                        rfidProxy.NotifyEPCReceived += async (_, device) =>
                         {
-                            this.Dispatcher.Invoke(() => CommitExamination(device.EPC));
+                            var result = await SocketProxy.Instance.GetEndoscopeById(device.EPC);
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                if (result.IsSuccess)
+                                {
+                                    switch (result.Content.State)
+                                    {
+                                        case EndoscopeState.Waiting:
+                                            CommitExamination(result.Content);
+                                            break;
+                                        case EndoscopeState.Using:
+                                            Alert.ShowMessage(false, AlertType.Error, "内窥镜正在使用中,请勿重复使用");
+                                            break;
+                                        case EndoscopeState.Decontaminating:
+                                            Alert.ShowMessage(false, AlertType.Error, "内窥镜正在清洗中,请勿重复使用");
+                                            break;
+                                        case EndoscopeState.Disabled:
+                                            Alert.ShowMessage(false, AlertType.Error, "内窥镜已禁止使用");
+                                            break;
+                                    }
+                                }
+                                else
+                                    Alert.ShowMessage(false, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
+                            });
                             rfidProxy.Close();
                         };
                         rfidProxy.NotifyDeviceStatusChanged += (_, status) =>
@@ -267,7 +297,7 @@ namespace MM.Medical.Client.Views
                         commit_ex.CopyTo(appointment.Examination);
                         commit.AppointmentStatus = AppointmentStatus.Checked;
                         appointment.Examination.Appointment = appointment;
-                        var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(commit));
+                        var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointment(commit));
                         if (!result.IsSuccess)
                         {
                             Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result.Error }");
@@ -275,7 +305,7 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            if (commit_ex.EndoscopeID != 0)
+                            if (!CacheHelper.IsDebug)
                             {
                                 var decontaminateTask = new DecontaminateTask
                                 {
@@ -286,10 +316,13 @@ namespace MM.Medical.Client.Views
                                     PatientSI = appointment.SocialSecurityCode
                                 };
                                 var result2 = loading.AsyncWait("创建清洗任务中,请稍后", SocketProxy.Instance.AddDecontaminateTask(decontaminateTask));
-                                if (result2.IsSuccess)
-                                    Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存并生成清洗任务");
+                                if (!result2.IsSuccess)
+                                    Alert.ShowMessage(true, AlertType.Warning, $"检查已结束,报告已保存但生成清洗任务失败,{ result.Error }");
+                                else
+                                    Alert.ShowMessage(false, AlertType.Success, $"检查已结束,报告已保存并生成清洗任务");
                             }
-                            else Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
+                            else 
+                                Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
                             commit.CopyTo(appointment);
                             CollectionView.Refresh();
                             epv.video.Dispose();
@@ -344,7 +377,8 @@ namespace MM.Medical.Client.Views
             {
                 if (!tb.IsChecked.Value && epv.SelectedExamination != null)
                 {
-                    epv.SelectedExamination.ReportTime = TimeHelper.ToUnixTime(DateTime.Now);
+                    if (epv.SelectedExamination.ReportTime == 0)
+                        epv.SelectedExamination.ReportTime = TimeHelper.ToUnixTime(DateTime.Now);
                     var result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyExamination(epv.SelectedExamination));
                     if (result.IsSuccess)
                     {

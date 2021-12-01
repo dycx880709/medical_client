@@ -22,7 +22,16 @@ namespace Mseiot.Medical.Service.Entities
         private int endoscopeID;
         private string appointmentType;
         private string consultingRoomName;
+        private string telephone;
+        private string anesthesia;
+        private string patientSource;
+        private string hospitalID;
+        private string roomID;
+        private string department;
+        private bool isPrior;
 
+        /// <summary>
+        /// ID
         /// </summary>
         public int AppointmentID { get; set; }
         /// <summary>
@@ -163,6 +172,94 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("ConsultingRoomName");
             }
         }
+        /// <summary>
+        /// 科室
+        /// </summary>
+        public string Department
+        {
+            get { return department; }
+            set
+            {
+                department = value;
+                RaisePropertyChanged("Department");
+            }
+        }
+        /// <summary>
+        /// 床号
+        /// </summary>
+        public string RoomID
+        {
+            get { return roomID; }
+            set
+            {
+                roomID = value;
+                RaisePropertyChanged("RoomID");
+            }
+        }
+        /// <summary>
+        /// 住院号
+        /// </summary>
+        public string HospitalID
+        {
+            get { return hospitalID; }
+            set
+            {
+                hospitalID = value;
+                RaisePropertyChanged("HospitalID");
+            }
+        }
+        /// <summary>
+        /// 患者来源
+        /// </summary>
+        public string PatientSource
+        {
+            get { return patientSource; }
+            set
+            {
+                patientSource = value;
+                RaisePropertyChanged("PatientSource");
+            }
+        }
+        /// <summary>
+        /// 麻醉方法
+        /// </summary>
+        public string Anesthesia
+        {
+            get { return anesthesia; }
+            set
+            {
+                anesthesia = value;
+                RaisePropertyChanged("Anesthesia");
+            }
+        }
+        /// <summary>
+        /// 电话号码
+        /// </summary>
+        public string Telephone
+        {
+            get { return telephone; }
+            set
+            {
+                telephone = value;
+                RaisePropertyChanged("Telephone");
+            }
+        }
+        /// <summary>
+        /// 是否优先
+        /// </summary>
+        public bool IsPrior
+        {
+            get { return isPrior; }
+            set
+            {
+                isPrior = value;
+                RaisePropertyChanged("IsPrior");
+            }
+        }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public int CreateTime { get; set; }
     }
 
     public enum AppointmentStatus

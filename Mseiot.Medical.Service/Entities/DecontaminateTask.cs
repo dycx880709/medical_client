@@ -253,11 +253,30 @@ namespace Mseiot.Medical.Service.Entities
         /// 型号
         /// </summary>
         public string Model { get; set; }
-
+        /// <summary>
+        /// 机身编号
+        /// </summary>
+        public string IMEI { get; set; }
         /// <summary>
         /// 采购时间
         /// </summary>
         public long Time { get; set; }
+        /// <summary>
+        /// 内窥镜状态
+        /// </summary>
+        public EndoscopeState State { get; set; }
+    }
+
+    public enum EndoscopeState
+    { 
+        [Description("待用")]
+        Waiting,
+        [Description("使用中")]
+        Using,
+        [Description("清洗中")]
+        Decontaminating,
+        [Description("停用")]
+        Disabled
     }
 
     public class DecontaminateFlow : BaseModel

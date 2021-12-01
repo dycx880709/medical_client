@@ -7,17 +7,17 @@
              xmlns:core="clr-namespace:MM.Medical.Client.Core"
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" x:Name="uc"
-             d:DesignHeight="1080" d:DesignWidth="1920">
+             d:DesignHeight="1080" d:DesignWidth="768">
 
     <Grid>
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource Color_Border_Primary}"/>
         <Border BorderThickness="1" BorderBrush="{StaticResource Color_Border_Secondary}" Margin="10">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Border Background="{StaticResource Color_Content_Secondary}">
+                <!--<Border Height="50" Background="{StaticResource Color_Content_Secondary}" Visibility="Collapsed">
                     <Grid Margin="10,0">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="当前打印机:(" FontWeight="Bold"/>
@@ -43,8 +43,12 @@
                             <Button Content="打印" Click="Print_Click"/>
                         </StackPanel>
                     </Grid>
-                </Border>
+                </Border>-->
                 <Grid Grid.Row="1" Background="{StaticResource Color_Content_Primary}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,5,0">
+                        <Button Content="另存为" Click="SaveAs_Click" Margin="5,0"/>
+                        <Button Content="打印" Click="Print_Click"/>
+                    </StackPanel>
                     <Grid>
                         <Border Width="{Binding ActualWidth, ElementName=gb_content}" Opacity="0.3" Background="Black" Margin="10" HorizontalAlignment="Center">
                             <Border.Effect>
@@ -59,7 +63,7 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <StackPanel x:Name="sp_title" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10">
-                                        <Image Stretch="Uniform" Height="35" Width="35">
+                                        <Image Stretch="Uniform" Height="50" Width="50">
                                             <Image.Style>
                                                 <Style TargetType="{x:Type Image}">
                                                     <Setter Property="Source" Value="{Binding ReportIcon, Converter={StaticResource PathToWebUrlConverter}}"/>
@@ -67,13 +71,19 @@
                                                         <DataTrigger Binding="{Binding ReportIcon}" Value="">
                                                             <Setter Property="Source" Value="/MM.Medical.Share;component/Images/report_ico.jpg"/>
                                                         </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ReportIcon}" Value="{x:Null}">
+                                                            <Setter Property="Source" Value="/MM.Medical.Share;component/Images/report_ico.jpg"/>
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Image.Style>
                                         </Image>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
-                                            <TextBlock Text="{Binding HospitalName}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
-                                            <TextBlock Text="{Binding ReportName}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
+                                                <TextBlock Text="{Binding HospitalName}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
+                                                <TextBlock Text="{Binding ReportName}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
+                                            </StackPanel>
+                                            <TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource LargeFontSize}"><Run Text="{Binding DataContext.Appointment.AppointmentType, ElementName=gd_content}"/>报告单</TextBlock>
                                         </StackPanel>
                                     </StackPanel>
                                     <Grid x:Name="gd_content" Grid.Row="1" Margin="10,0">
@@ -83,10 +93,18 @@
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0">
+                                            <Grid.Resources>
+                                                <Style x:Key="editorFormItemTextExtend" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource editorFormItemText}">
+                                                    <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                    <Setter Property="Height" Value="22"/>
+                                                </Style>
+                                            </Grid.Resources>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="30"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
@@ -99,24 +117,55 @@
                                                 <ColumnDefinition Width="3*"/>
                                             </Grid.ColumnDefinitions>
                                             <Border Grid.ColumnSpan="8" BorderThickness="0,0,0,2" BorderBrush="{StaticResource Color_Border_Primary}"/>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="检查号:" Grid.Column="0" Grid.Row="0"/>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="登记号:" Grid.Column="2" Grid.Row="0" Visibility="Collapsed"/>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="报告日期:" Grid.Column="6" Grid.Row="0"/>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="姓    名:" Grid.Column="0" Grid.Row="1"/>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="性    别:" Grid.Column="2" Grid.Row="1"/>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="年    龄:" Grid.Column="4" Grid.Row="1"/>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="部    位:" Grid.Column="6" Grid.Row="1"/>
-                                            <Border Grid.Row="2" Grid.ColumnSpan="8" BorderThickness="0,0,0,2" BorderBrush="{StaticResource Color_Border_Primary}"/>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="内    镜:" Grid.Row="2"/>
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource NormalFontSize}" Text="主    诉:" Grid.Column="2" Grid.Row="2"/>
-                                            <TextBlock Margin="2,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding Appointment.Number}" VerticalAlignment="Center"/>
-                                            <TextBlock Margin="2,0,0,0" Grid.Row="0" Grid.Column="7" Text="{Binding ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy-MM-dd HH:mm:ss}" VerticalAlignment="Center"/>
-                                            <TextBlock Margin="2,0,0,0" Grid.Row="1" Grid.Column="1" Text="{Binding Appointment.Name}" VerticalAlignment="Center"/>
-                                            <TextBlock Margin="2,0,0,0" Grid.Row="1" Grid.Column="3" Text="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}" VerticalAlignment="Center"/>
-                                            <TextBlock Margin="2,0,0,0" Grid.Row="1" Grid.Column="5" Text="{Binding Appointment.Birthday}" VerticalAlignment="Center"/>
-                                            <TextBlock Margin="2,0,0,0" Grid.Row="1" Grid.Column="7" Text="{Binding BodyPart}" VerticalAlignment="Center"/>
-                                            <TextBlock Margin="2,0,0,0" Grid.Row="2" Grid.Column="1" Text="{Binding Endoscope.Model}" VerticalAlignment="Center"/>
-                                            <TextBlock Margin="2,0,0,0" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="7" Text="{Binding PatientTalk}" VerticalAlignment="Center"/>
+                                            <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="检查号:" Grid.Column="0" Grid.Row="0"/>
+                                            <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="报告日期:" Grid.Column="6" Grid.Row="0"/>
+                                            <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="姓    名:" Grid.Column="0" Grid.Row="1"/>
+                                            <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="性    别:" Grid.Column="2" Grid.Row="1"/>
+                                            <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="年    龄:" Grid.Column="4" Grid.Row="1"/>
+                                            <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="部    位:" Grid.Column="6" Grid.Row="1"/>
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Appointment.Number}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Row="0" Grid.Column="7" Text="{Binding ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy-MM-dd HH:mm:ss}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Appointment.Name}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding Appointment.Birthday}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding BodyPart}" VerticalAlignment="Center"/>
+
+                                            <Grid Grid.Row="2" Grid.ColumnSpan="8">
+                                                <Grid.Style>
+                                                    <Style TargetType="{x:Type Grid}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Appointment.PatientSource}" Value="住院">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Grid.Style>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="类    型:" Grid.Column="0" Grid.Row="2"/>
+                                                <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="住 院 号:" Grid.Column="2" Grid.Row="2"/>
+                                                <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="科    室:" Grid.Column="4" Grid.Row="2"/>
+                                                <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="床    号:" Grid.Column="6" Grid.Row="2"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Appointment.PatientSource}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding Appointment.HospitalID}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="5" Text="{Binding Appointment.Department}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="7" Text="{Binding Appointment.RoomID}" VerticalAlignment="Center"/>
+                                            </Grid>
+
+                                            <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="内    镜:" Grid.Row="3"/>
+                                            <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="主    诉:" Grid.Column="2" Grid.Row="3"/>
+                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Endoscope.Model}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="5" Text="{Binding PatientTalk}" VerticalAlignment="Center"/>
+                                            <Border Grid.Row="3" Grid.ColumnSpan="8" BorderThickness="0,0,0,2" BorderBrush="{StaticResource Color_Border_Primary}"/>
                                         </Grid>
                                         <StackPanel x:Name="sp_standard" Grid.Row="1">
                                             <ListBox IsHitTestVisible="False" HorizontalAlignment="Center" Width="{Binding ActualWidth, ElementName=sp_standard}" ItemsSource="{Binding Images}">
@@ -157,13 +206,47 @@
                                                     </ItemsPanelTemplate>
                                                 </ListBox.ItemsPanel>
                                             </ListBox>
-                                            <StackPanel Margin="20,10">
-                                                <TextBlock Text="内镜所见:" HorizontalAlignment="Left" FontWeight="Bold"/>
-                                                <TextBlock Text="{Binding EndoscopicFindings}" TextWrapping="Wrap"/>
-                                            </StackPanel>
-                                            <StackPanel Margin="20,0">
-                                                <TextBlock Text="诊断结果:" HorizontalAlignment="Left" FontWeight="Bold"/>
-                                                <TextBlock Text="{Binding MicroscopicDiagnosis}" TextWrapping="Wrap"/>
+                                            <StackPanel Margin="10">
+                                                <StackPanel>
+                                                    <TextBlock Text="内镜所见:" HorizontalAlignment="Left" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding EndoscopicFindings}" TextWrapping="Wrap"/>
+                                                </StackPanel>
+                                                <StackPanel Margin="0,10">
+                                                    <StackPanel.Style>
+                                                        <Style TargetType="{x:Type StackPanel}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding BiopsySite}" Value="">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding BiopsySite}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </StackPanel.Style>
+                                                    <TextBlock Text="活检部位:" HorizontalAlignment="Left" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding BiopsySite}" TextWrapping="Wrap"/>
+                                                </StackPanel>
+                                                <StackPanel Margin="0,10">
+                                                    <TextBlock Text="诊断结果:" HorizontalAlignment="Left" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding MicroscopicDiagnosis}" TextWrapping="Wrap"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <StackPanel.Style>
+                                                        <Style TargetType="{x:Type StackPanel}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding DoctorAdvice}" Value="">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DoctorAdvice}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </StackPanel.Style>
+                                                    <TextBlock Text="医生建议:" HorizontalAlignment="Left" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding DoctorAdvice}" TextWrapping="Wrap"/>
+                                                </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
                                         <Grid Grid.Row="2" Margin="0,0,0,10">
@@ -179,14 +262,14 @@
                                                     </Border>
                                                 </StackPanel>
                                                 <Border BorderBrush="{StaticResource Color_Border_Primary}" BorderThickness="0,0,0,1">
-                                                    <Grid Margin="0,5,0,0">
+                                                    <Grid Margin="0,3">
                                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                            <TextBlock Text="检查医师：" FontWeight="Bold"/>
+                                                            <TextBlock Text="检查医生：" FontWeight="Bold"/>
                                                             <TextBlock Text="{Binding DoctorName}"/>
                                                         </StackPanel>
-                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,5">
-                                                            <TextBlock Text="打印报告：" FontWeight="Bold"/>
-                                                            <TextBlock Text="{x:Static core:CacheHelper.UserName}"/>
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,100,0">
+                                                            <TextBlock Text="审核医生：" FontWeight="Bold"/>
+                                                            <TextBlock Text="{Binding AuditDoctor}"/>
                                                         </StackPanel>
                                                     </Grid>
                                                 </Border>

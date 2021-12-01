@@ -11,16 +11,7 @@ namespace Mseiot.Medical.Service.Entities
 {
     public class Examination : NotifyPropertyBase
     {
-        private string hiv;
-        private string hcv;
-        private string hBasg;
-        private string anesthesia;
-        private string collectCell;
-        private string collectOrg;
-        private string insertType;
-        private string preoperative;
         private string result;
-        private string bodyPose;
         private long examinationTime;
         private string bodyPart;
         private string clinicalDiagnosis;
@@ -33,8 +24,10 @@ namespace Mseiot.Medical.Service.Entities
         private string doctorName;
         private int examinationID;
         private int endoscopeID;
-        private Appointment appointment;
         private string patientTalk;
+        private string auditDoctor;
+        private string nurse;
+        private Appointment appointment;
 
         /// <summary>
         /// 检查ID
@@ -161,30 +154,6 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
         /// <summary>
-        /// 检查体位
-        /// </summary>
-        public string BodyPose
-        {
-            get { return bodyPose; }
-            set
-            {
-                bodyPose = value;
-                RaisePropertyChanged("BodyPose");
-            }
-        }
-        /// <summary>
-        /// 麻醉方法
-        /// </summary>
-        public string Anesthesia
-        {
-            get { return anesthesia; }
-            set
-            {
-                anesthesia = value;
-                RaisePropertyChanged("Anesthesia");
-            }
-        }
-        /// <summary>
         /// 检查结果
         /// </summary>
         public string Result
@@ -194,90 +163,6 @@ namespace Mseiot.Medical.Service.Entities
             {
                 result = value;
                 RaisePropertyChanged("Result");
-            }
-        }
-        /// <summary>
-        /// 术前用药
-        /// </summary>
-        public string Preoperative
-        {
-            get { return preoperative; }
-            set
-            {
-                preoperative = value;
-                RaisePropertyChanged("Preoperative");
-            }
-        }
-        /// <summary>
-        /// 插入方式
-        /// </summary>
-        public string InsertType
-        {
-            get { return insertType; }
-            set
-            {
-                insertType = value;
-                RaisePropertyChanged("InsertType");
-            }
-        }
-        /// <summary>
-        /// 采集组织
-        /// </summary>
-        public string CollectOrg
-        {
-            get { return collectOrg; }
-            set
-            {
-                collectOrg = value;
-                RaisePropertyChanged("CollectOrg");
-            }
-        }
-        /// <summary>
-        /// 采集细胞
-        /// </summary>
-        public string CollectCell
-        {
-            get { return collectCell; }
-            set
-            {
-                collectCell = value;
-                RaisePropertyChanged("CollectCell");
-            }
-        }
-        /// <summary>
-        /// HIV
-        /// </summary>
-        public string HIV
-        {
-            get { return hiv; }
-            set
-            {
-                hiv = value;
-                RaisePropertyChanged("HIV");
-            }
-        }
-        /// <summary>
-        /// HBasg
-        /// </summary>
-        public string HBasg
-        {
-            get { return hBasg; }
-            set
-            {
-                hBasg = value;
-                RaisePropertyChanged("HBasg");
-            }
-        }
-        /// <summary>
-        /// HCV
-        /// </summary>
-        public string HCV
-        {
-            get { return hcv; }
-            set
-            {
-                hcv = value;
-                RaisePropertyChanged("HCV");
             }
         }
         /// <summary>
@@ -317,18 +202,41 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
         /// <summary>
+        /// 护士
+        /// </summary>
+        public string Nurse
+        {
+            get { return nurse; }
+            set
+            {
+                nurse = value;
+                RaisePropertyChanged("Nurse");
+            }
+        }
+        /// <summary>
+        /// 审核医生
+        /// </summary>
+        public string AuditDoctor
+        {
+            get { return auditDoctor; }
+            set 
+            {
+                auditDoctor = value;
+                RaisePropertyChanged("AuditDoctor");
+            }
+        }
+        /// <summary>
         /// 关联预约ID
         /// </summary>
         public Appointment Appointment
         {
             get { return appointment; }
-            set 
+            set
             {
                 appointment = value;
                 RaisePropertyChanged("Appointment");
             }
         }
-
         public string DoctorID { get; set; }
         public Endoscope Endoscope { get; set; }
 

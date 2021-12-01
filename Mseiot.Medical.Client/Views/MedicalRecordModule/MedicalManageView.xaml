@@ -5,10 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:converter="clr-namespace:MM.Medical.Client.Converters"
              xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
+
+    <UserControl.Resources>
+        <converter:ExamineToCanEditConverter x:Key="ExamineToCanEditConverter"/>
+    </UserControl.Resources>
     
     <controls:CustomGroupBox Header="病历中心">
         <controls:CustomGroupBox.AttachContent>
@@ -25,6 +30,7 @@
                             </Style>
                         </Button.Style>
                     </Button>
+                    <Button Content="编辑" Margin="5,0" Click="Edit_Click" IsEnabled="{Binding SelectedValue, ElementName=dg_examinations, Converter={StaticResource ExamineToCanEditConverter}}"/>
                     <Button Content="打印" Margin="5,0" Click="Report_Click">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
@@ -73,6 +79,10 @@
                             <TextBlock Text="身份信息"/>
                             <controls:CustomTextBox x:Name="tb_user" Watermark="可输入病人姓名、身份证、社保号" Width="250" Text="{Binding Appointment.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
+                        <StackPanel Style="{StaticResource editorFormItem}">
+                            <TextBlock Text="诊断信息"/>
+                            <controls:CustomTextBox x:Name="tb_diagnose" Watermark="对临床诊断、内镜所见、镜下诊断、活检部位、病理诊断、医生建议进行全文搜索" Width="550" Text="{Binding Appointment.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
                         <Button Content="查询" Click="Get_Click" Grid.Column="1" IsDefault="True"/>
                     </WrapPanel>
                 </Grid>
@@ -96,10 +106,11 @@
                             <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
                             <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding Appointment.AppointmentType}"/>
-                            <DataGridTextColumn Width="2*" Header="检查部位" Binding="{Binding BodyPart}"/>
+                            <DataGridTextColumn Width="*" Header="内镜型号" Binding="{Binding Endoscope.Model}"/>
+                            <DataGridTextColumn Width="2*" Header="检查结果" Binding="{Binding Result}"/>
                             <DataGridTextColumn Width="*" Header="检查诊室" Binding="{Binding Appointment.ConsultingRoomName}"/>
                             <DataGridTextColumn Width="*" Header="检查医生" Binding="{Binding DoctorName}"/>
-                            <DataGridTextColumn Width="2*" Header="检查结果" Binding="{Binding Result}"/>
+                            <DataGridTextColumn Width="2*" Header="检查部位" Binding="{Binding BodyPart}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

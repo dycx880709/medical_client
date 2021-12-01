@@ -20,7 +20,8 @@ namespace Mseiot.Medical.Service.Services
             string doctorID = "",
             string examinationResult = "",
             string consultingName = "",
-            string examinationType = ""
+            string examinationType = "",
+            string diagnoseInfo = ""
         )
         {
             return await HttpProxy.GetMessage<ListResult<Examination>>("/api/examination/getexaminations", new
@@ -33,7 +34,8 @@ namespace Mseiot.Medical.Service.Services
                 DoctorID = doctorID,
                 ExaminationResult = examinationResult,
                 ConsultingName = consultingName,
-                AppointmentType = examinationType
+                AppointmentType = examinationType,
+                DiagnoseInfo = diagnoseInfo
             });
         }
 

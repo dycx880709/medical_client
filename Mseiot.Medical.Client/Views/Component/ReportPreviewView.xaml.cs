@@ -153,6 +153,11 @@ namespace MM.Medical.Client.Views
                     fe.Measure(size);
                     fe.Arrange(new Rect(size));
                     dialog.PrintVisual(fe, $"{ examination.Appointment.Name }检查报告单");
+                    examination.Appointment.AppointmentStatus = AppointmentStatus.Reported;
+                    var result = loading.AsyncWait("保存打印中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(examination.Appointment));
+                    if (result.IsSuccess)
+                        Alert.ShowMessage(true, AlertType.Success, "打印完成");
+
                 }
             }
             finally

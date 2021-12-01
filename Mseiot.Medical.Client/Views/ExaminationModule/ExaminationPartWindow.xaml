@@ -1,0 +1,33 @@
+﻿<controls:BaseWindow x:Class="MM.Medical.Client.Views.ExaminationPartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MM.Medical.Client.Views"
+        mc:Ignorable="d" WindowState="Maximized" 
+        VisibilityMax="Collapsed" VisibilityMin="Collapsed"
+        Title="病历记录">
+
+    <controls:BaseWindow.Header>
+        <Grid>
+            <TextBlock Text="病历记录" Margin="10,0,0,0" HorizontalAlignment="Left" FontWeight="Bold" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}"/>
+            <controls:MediaButton NormalSource="{StaticResource Img_Save}" HorizontalAlignment="Right" Width="{StaticResource ButtonHeight}" Height="{StaticResource ButtonHeight}" HoverSource="{StaticResource Img_Save_Hover}" 
+                                  Margin="0,-10,0,0" ToolTip="保存" VerticalAlignment="Center" Click="Save_Click">
+                <controls:MediaButton.Style>
+                    <Style TargetType="{x:Type controls:MediaButton}" BasedOn="{StaticResource {x:Type controls:MediaButton}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReadOnly, ElementName=epv}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:MediaButton.Style>
+            </controls:MediaButton>
+        </Grid>
+    </controls:BaseWindow.Header>
+    <Grid>
+        <local:ExaminationPartView x:Name="epv" Loading="{Binding ElementName=loading}"/>
+        <controls:Loading x:Name="loading"/>
+    </Grid>
+</controls:BaseWindow>

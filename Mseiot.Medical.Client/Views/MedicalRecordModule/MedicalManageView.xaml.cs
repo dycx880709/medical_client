@@ -106,19 +106,16 @@ namespace MM.Medical.Client.Views
                 ShowExaminationPartView(examination);
         }
 
-        private void ShowExaminationPartView(Examination examination)
+        private void ShowExaminationPartView(Examination examination, bool isReadOnly = true)
         {
             var result = loading.AsyncWait("获取病历信息中,请稍后", SocketProxy.Instance.GetExaminationsByAppointmentID(examination.AppointmentID));
             if (result.IsSuccess)
             {
-                var view = new ExaminationPartView
-                {
-                    IsReadOnly = true,
-                    Loading = this.loading,
-                    SelectedExamination = result.Content,
-                    Background = Brushes.White
-                };
-                MsWindow.ShowDialog(view, "病历记录", windowState: WindowState.Maximized);
+                var window = new ExaminationPartWindow();
+                window.epv.IsReadOnly = isReadOnly;
+                window.epv.SelectedExamination = result.Content;
+                window.epv.Background = Brushes.White;
+                window.ShowDialog();
             }
             else Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
         }
@@ -136,6 +133,12 @@ namespace MM.Medical.Client.Views
                         ShowExaminationPartView(examination);
                 }
             }
+        }
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            if (dg_examinations.SelectedValue is Examination examination)
+                ShowExaminationPartView(examination, false);
         }
     }
 }
