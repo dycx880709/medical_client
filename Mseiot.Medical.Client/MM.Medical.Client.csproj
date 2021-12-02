@@ -124,6 +124,7 @@
     <Compile Include="Core\Const.cs" />
     <Compile Include="Core\Extension.cs" />
     <Compile Include="Core\KeyHookHelper.cs" />
+    <Compile Include="Core\RFIDManager.cs" />
     <Compile Include="Entities\BaseWordExtend.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\SystemSettingExtend.cs" />

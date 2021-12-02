@@ -44,6 +44,14 @@ namespace MM.Medical.Client.Views
             LoadMenus();
             UpdateTime();
             LoadTcp();
+            LoadRFID();
+        }
+
+        private async void LoadRFID()
+        {
+            var result = await RFIDManager.Instance.Load();
+            if (!result.Item1)
+                Alert.ShowMessage(false, AlertType.Error, $"采集设备获取失败,{ result.Item2 }");
         }
 
         private async void LoadTcp()

@@ -28,7 +28,6 @@ namespace MM.Medical.Client.Module.Decontaminate
     /// </summary>
     public partial class DecontaminateTaskView : UserControl
     {
-        private List<RFIDProxy> rfidProxys;
         public DecontaminateTaskView()
         {
             InitializeComponent();

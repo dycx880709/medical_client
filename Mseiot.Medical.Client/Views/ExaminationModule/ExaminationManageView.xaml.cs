@@ -86,7 +86,7 @@ namespace MM.Medical.Client.Views
 
         private void LoadRFIDProxy()
         {
-            if (string.IsNullOrEmpty(CacheHelper.RFIDCom))
+            if (!CacheHelper.IsDebug && string.IsNullOrEmpty(CacheHelper.LocalSetting.RFIDCom))
             {
                 Alert.ShowMessage(false, AlertType.Error, "设备读卡器未配置");
             }
@@ -285,7 +285,7 @@ namespace MM.Medical.Client.Views
                                 rfidProxy.Close();
                             }
                         };
-                        rfidProxy.Open(CacheHelper.RFIDCom);
+                        rfidProxy.Open(CacheHelper.LocalSetting.RFIDCom);
                     }
                 }
                 else
