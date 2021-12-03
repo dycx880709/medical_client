@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MM.Libs.RFID;
 using MM.Medical.Client.Core;
+using MM.Medical.Client.Entities;
 using Ms.Controls;
 using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;

@@ -16,6 +16,7 @@ namespace Mseiot.Medical.Service.Entities
         private string roleName;
         private int roleID;
 
+        public int ID { get; set; }
         /// <summary>
         /// 用户ID
         /// </summary>

@@ -28,7 +28,6 @@ namespace MM.Medical.Client.Views
         public MainWindow()
         {
             InitializeComponent();
-            LoadSetting();
             this.Loaded += MainWindow_Loaded;
             this.Closing += MainWindow_Closing;
         }
@@ -44,7 +43,7 @@ namespace MM.Medical.Client.Views
             LoadMenus();
             UpdateTime();
             LoadTcp();
-            LoadRFID();
+            //LoadRFID();
         }
 
         private async void LoadRFID()
@@ -59,20 +58,6 @@ namespace MM.Medical.Client.Views
             var levels = CacheHelper.CurrentUser.Authority.Split(',');
             if (levels.Contains("1") || levels.Contains("3") || CacheHelper.CurrentUser.LoginName.Equals("admin"))
                 await ConnectServer();
-        }
-
-        private void LoadSetting()
-        {
-            var levels = CacheHelper.CurrentUser.Authority.Split(',');
-            if (levels.Contains("2") || CacheHelper.CurrentUser.LoginName.Equals("admin"))
-            {
-                this.VisibilitySetting = Visibility.Visible;
-                this.NotifySetting += (_, e) =>
-                {
-                    var decontaminateSetting = new DecontaminateSetting();
-                    ContentWindow.Show(decontaminateSetting);
-                };
-            }
         }
 
         private void TcpProxy_ReceiveMessaged(object sender, Message e)

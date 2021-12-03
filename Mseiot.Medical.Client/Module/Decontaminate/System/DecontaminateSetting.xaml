@@ -10,7 +10,7 @@
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="发卡器串口" Style="{StaticResource editorFormItemText}"></TextBlock>
+                <TextBlock Text="制卡器串口" Style="{StaticResource editorFormItemText}"></TextBlock>
                 <ComboBox x:Name="cbSerialPorts" DropDownOpened="SerialPorts_DropDownOpened"></ComboBox>
             </StackPanel>
             <Button Margin="0,10,0,0" Click="Save_Click" Content="保存" />

@@ -36,6 +36,7 @@ namespace MM.Libs.RFID
         /// <param name="com"></param>
         public void Open(string com)
         {
+            Close();
             if (string.IsNullOrWhiteSpace(com))
             {
                 return;
@@ -59,7 +60,7 @@ namespace MM.Libs.RFID
 
                             NotifyDeviceStatusChanged?.Invoke(this, true);
                         }
-                        catch
+                        catch (Exception e)
                         {
                             NotifyDeviceStatusChanged?.Invoke(this, false);
 

@@ -9,12 +9,8 @@
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="生产厂家" Width="Auto" Style="{StaticResource editorFormItemText}"/>
-                <TextBox Text="{Binding Factory,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"/>
-            </StackPanel>
-            <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock Text="设备型号" Width="Auto" Style="{StaticResource editorFormItemText}"/>
-                <TextBox Text="{Binding Model,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"/>
+                <TextBlock Text="流程名称" Width="Auto" Style="{StaticResource editorFormItemText}"/>
+                <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource editorFormItemInput}"/>
             </StackPanel>
 
             <Button Click="Save_Click" Content="保存" Margin="0,20,0,0" IsDefault="True"/>

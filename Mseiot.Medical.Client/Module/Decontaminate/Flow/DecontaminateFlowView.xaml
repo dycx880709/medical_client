@@ -16,19 +16,17 @@
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Click="AddFlow_Click" Content="添加" Margin="5,0"/>
-                   
+                        <Button Click="AddFlow_Click" Content="添加"/>
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
             <DataGrid x:Name="lvDecontaminateFlows" Grid.Row="1" SelectionChanged="DecontaminateFlows_SelectionChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Header="生产厂家" Binding="{Binding Factory}"/>
-                    <DataGridTextColumn Width="*" Header="设备型号" Binding="{Binding Model}"/>
-                    <DataGridTemplateColumn Width="200" Header="操作">
+                    <DataGridTextColumn Width="2*" Header="流程名称" Binding="{Binding Name}"/>
+                    <DataGridTemplateColumn Width="*" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" IsEnabled="{Binding Editable}">
                                     <Button ToolTip="修改" Style="{StaticResource Button_Primary_Circle}" Margin="0,0,5,0" Content="/Images/icon/editor.png" Tag="{Binding}" Click="ModifyFlow_Click"/>
                                     <Button Tag="{Binding}" ToolTip="删除" Style="{StaticResource Button_Danger_Circle}" Content="/Images/icon/delete.png" Click="RemoveFlow_Click"/>
                                 </StackPanel>
@@ -39,10 +37,19 @@
             </DataGrid>
         </controls:CustomGroupBox>
         <controls:CustomGroupBox Grid.Column="2" Header="流程步骤">
+            <controls:CustomGroupBox.Style>
+                <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource CustomGroupBoxStyle2}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedValue, ElementName=lvDecontaminateFlows}" Value="{x:Null}">
+                            <Setter  Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:CustomGroupBox.Style>
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button  Click="AddFlowStep_Click" Content="添加" Margin="0,0,5,0"/>
+                        <Button  Click="AddFlowStep_Click" Content="添加"/>
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>

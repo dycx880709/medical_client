@@ -126,7 +126,9 @@
     <Compile Include="Core\KeyHookHelper.cs" />
     <Compile Include="Core\RFIDManager.cs" />
     <Compile Include="Entities\BaseWordExtend.cs" />
+    <Compile Include="Entities\DecontaminateTaskExcel.cs" />
     <Compile Include="Entities\Menu.cs" />
+    <Compile Include="Entities\RFIDDeviceExtend.cs" />
     <Compile Include="Entities\SystemSettingExtend.cs" />
     <Compile Include="Entities\LocalSetting.cs" />
     <Compile Include="Entities\AppLevel.cs" />

@@ -18,8 +18,8 @@
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Click="Add_Click" Content="添加" Margin="0,0,10,0" HorizontalAlignment="Right"/>
-                
+                        <Button Click="Setting_Click" Width="Auto" Padding="10,0" Content="配置制卡器" Margin="5,0"/>
+                        <Button Click="Add_Click" Content="添加" HorizontalAlignment="Right"/>
                     </StackPanel>
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
@@ -38,7 +38,7 @@
                     <DataGridTextColumn Width="*" Header="生产厂家" Binding="{Binding Factory}"/>
                     <DataGridTextColumn Width="*" Header="设备型号" Binding="{Binding Model}"/>
                     <DataGridTextColumn Width="*" Header="机身编号" Binding="{Binding IMEI}"/>
-                    <DataGridTemplateColumn Header="RFID" Width="200">
+                    <DataGridTemplateColumn Header="RFID" Width="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="制卡" Tag="{Binding}" Click="CreateRFID_Click"/>
@@ -64,7 +64,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="200" Header="操作">
+                    <DataGridTemplateColumn Width="150" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

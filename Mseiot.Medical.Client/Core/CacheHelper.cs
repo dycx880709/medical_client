@@ -22,9 +22,10 @@ namespace MM.Medical.Client.Core
         public static string ConsultingRoomName { get { return LocalSetting.ConsultingRoomName; } }
         public static LocalSetting LocalSetting { get; private set; }
         public static User CurrentUser { get; set; } = new User();
-        public static int EndoscopeDeviceID { get; set; }
-        public static string VideoPath { get; set; }
-        public static bool IsDebug { get; set; }
+        public static int EndoscopeDeviceID { get; private set; }
+        public static string VideoPath { get; private set; }
+        public static string RFIDCom { get; private set; } 
+        public static bool IsDebug { get; private set; }
 
         public static T GetConfig<T>(string name)
         {
@@ -42,6 +43,7 @@ namespace MM.Medical.Client.Core
         public static void LoadSetting()
         {
             CacheHelper.EndoscopeDeviceID = CacheHelper.GetConfig<int>("EndoscopeDeviceID");
+            CacheHelper.RFIDCom = CacheHelper.GetConfig<string>("RFIDCom");
             CacheHelper.IsDebug = CacheHelper.GetConfig<bool>("IsDebug");
 
             if (File.Exists(SettingPath))

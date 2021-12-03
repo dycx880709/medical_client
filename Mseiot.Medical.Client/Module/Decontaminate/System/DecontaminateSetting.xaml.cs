@@ -53,7 +53,7 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             CacheHelper.LocalSetting.RFIDCom = cbSerialPorts.SelectedItem as string;
             CacheHelper.SaveLocalSetting();
-            this.Close();
+            this.Close(true);
         }
     }
 }

@@ -34,26 +34,32 @@ namespace MM.Medical.Client.Views
             get { return (ExaminationMedia)GetValue(SelectedMediaProperty); }
             set { SetValue(SelectedMediaProperty, value); }
         }
+        public static readonly DependencyProperty SelectedMediaProperty = 
+            DependencyProperty.Register("SelectedMedia", typeof(ExaminationMedia), typeof(ExaminationManageView), new PropertyMetadata(null));
+       
         public bool IsEditable
         {
             get { return (bool)GetValue(IsEditableProperty); }
             set { SetValue(IsEditableProperty, value); }
         }
+        public static readonly DependencyProperty IsEditableProperty = 
+            DependencyProperty.Register("IsEditable", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+        
         public bool IsDoctorVisit
         {
             get { return (bool)GetValue(IsDoctorVisitProperty); }
             set { SetValue(IsDoctorVisitProperty, value); }
         }
+        public static readonly DependencyProperty IsFullScreenProperty = 
+            DependencyProperty.Register("IsFullScreen", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+
         public bool IsFullScreen
         {
             get { return (bool)GetValue(IsFullScreenProperty); }
             set { SetValue(IsFullScreenProperty, value); }
         }
-
-        public static readonly DependencyProperty SelectedMediaProperty = DependencyProperty.Register("SelectedMedia", typeof(ExaminationMedia), typeof(ExaminationManageView), new PropertyMetadata(null));
-        public static readonly DependencyProperty IsEditableProperty = DependencyProperty.Register("IsEditable", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
-        public static readonly DependencyProperty IsFullScreenProperty = DependencyProperty.Register("IsFullScreen", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
-        public static readonly DependencyProperty IsDoctorVisitProperty = DependencyProperty.Register("IsDoctorVisit", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsDoctorVisitProperty = 
+            DependencyProperty.Register("IsDoctorVisit", typeof(bool), typeof(ExaminationManageView), new PropertyMetadata(false));
        
         public ObservableCollection<Appointment> Appointments { get; set; } = new ObservableCollection<Appointment>();
         private ICollectionView CollectionView { get { return CollectionViewSource.GetDefaultView(Appointments); }}
@@ -62,37 +68,89 @@ namespace MM.Medical.Client.Views
         public IEnumerable<MedicalWord> MedicalWords { get; set; }
         public List<string> BodyParts { get; set; }
 
+        private bool isInited = false;
+        private RFIDProxy rfidProxy;
         private int consultingRoomId;
+        private Action<EPCInfo> rfidNotifyAction;
 
         public ExaminationManageView()
         {
             InitializeComponent();
-            this.Loaded += ExaminationManageView_Loaded;
             dg_appointments.ItemsSource = this.Appointments;
             CollectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
             CollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
             CollectionView.Filter = t => t is Appointment appointment && (appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Cancel || appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Exprire);
             this.IsEnabled = false;
+            this.Loaded += ExaminationManageView_Loaded;
+            this.Unloaded += ExaminationManageView_Unloaded;
+        }
+
+        private void ExaminationManageView_Unloaded(object sender, RoutedEventArgs e)
+        {
+            StopRFIDProxy();
         }
 
         private void ExaminationManageView_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Loaded -= ExaminationManageView_Loaded;
-            LoadConsultingRoom();
-            LoadRFIDProxy();
-            ResetCheckingExamination();
-            SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+            if (!this.isInited)
+            {
+                LoadConsultingRoom();
+                ResetChecking();
+                SocketProxy.Instance.TcpProxy.ReceiveMessaged += TcpProxy_ReceiveMessaged;
+                this.isInited = true;
+            }
+            StartRFIDProxy();
         }
 
-        private void LoadRFIDProxy()
+        private void StopRFIDProxy()
         {
-            if (!CacheHelper.IsDebug && string.IsNullOrEmpty(CacheHelper.LocalSetting.RFIDCom))
+            if (this.rfidProxy != null)
             {
-                Alert.ShowMessage(false, AlertType.Error, "设备读卡器未配置");
+                this.rfidNotifyAction = null;
+                rfidProxy.Close();
+                rfidProxy = null;
             }
         }
 
-        private async void ResetCheckingExamination()
+        private void StartRFIDProxy()
+        {
+            if (!CacheHelper.IsDebug)
+            {
+                if (!string.IsNullOrEmpty(CacheHelper.RFIDCom))
+                {
+                    loading.Start("读取内窥镜中,请稍后");
+                    this.rfidProxy = new RFIDProxy();
+                    rfidProxy.NotifyDeviceStatusChanged += (_, status) =>
+                    {
+                        if (!status)
+                        {
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                loading.Stop();
+                                Alert.ShowMessage(true, AlertType.Error, "读取内窥镜失败,开启检查失败");
+                            });
+                            rfidProxy.Close();
+                        }
+                        this.Dispatcher.Invoke(() => loading.Stop());
+                    };
+                    rfidProxy.NotifyEPCReceived += (_, e) =>
+                    {
+                        if (this.rfidNotifyAction != null)
+                        {
+                            rfidNotifyAction.Invoke(e);
+                        }
+                    };
+                    rfidProxy.Open(CacheHelper.RFIDCom);
+                }
+                else
+                {
+                    Alert.ShowMessage(false, AlertType.Error, "设备读卡器未配置");
+                    this.IsEnabled = false;
+                }
+            }
+        }
+
+        private async void ResetChecking()
         {
             var condition = Appointments.FirstOrDefault(t => t.AppointmentStatus == AppointmentStatus.Checking);
             if (condition != null)
@@ -121,9 +179,15 @@ namespace MM.Medical.Client.Views
                     this.IsDoctorVisit = result.Content.IsUsed;
                     LoadAppointments();
                 }
-                else Alert.ShowMessage(true, AlertType.Error, $"获取检查诊室信息失败,{ result.Error }");
+                else
+                {
+                    Alert.ShowMessage(true, AlertType.Error, $"获取检查诊室信息失败,{ result.Error }");
+                }
             }
-            else Alert.ShowMessage(false, AlertType.Error, $"检查诊室未配置,模块不可用");
+            else
+            {
+                Alert.ShowMessage(false, AlertType.Error, $"检查诊室未配置,模块不可用");
+            }
         }
 
         private void TcpProxy_ReceiveMessaged(object sender, Message e)
@@ -143,7 +207,10 @@ namespace MM.Medical.Client.Views
                                 Appointments.Add(appointment);
                                 CollectionView.Refresh();
                             }
-                            else condition.AppointmentStatus = appointment.AppointmentStatus;
+                            else
+                            {
+                                condition.AppointmentStatus = appointment.AppointmentStatus;
+                            }
                         });
                     }
                 }
@@ -166,10 +233,8 @@ namespace MM.Medical.Client.Views
                     appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Waiting, AppointmentStatus.Checking });
                 if (rb_checked.IsChecked.Value)
                     appointmentStatuses.AddRange(new AppointmentStatus[] { AppointmentStatus.Checked, AppointmentStatus.Reported });
-                //var startTime = 0;
-                //var endTime = int.MaxValue;
                 var startTime = TimeHelper.ToUnixDate(DateTime.Now);
-                var endTime = startTime + 24 * 60 * 60 - 1;
+                var endTime = TimeHelper.ToUnixDate(DateTime.Now.AddDays(1)) - 1;
                 //pager.SelectedCount = dg_appointments.GetFullCountWithoutScroll();
                 var result = loading.AsyncWait("获取检查预约信息中,请稍后", SocketProxy.Instance.GetAppointments(
                     0,      //pager.PageIndex
@@ -186,7 +251,10 @@ namespace MM.Medical.Client.Views
                     CollectionView.Refresh();
                     //pager.TotalCount = result.Content.Total;
                 }
-                else Alert.ShowMessage(true, AlertType.Error, $"获取检查预约信息失败,{ result.Error }");
+                else
+                {
+                    Alert.ShowMessage(true, AlertType.Error, $"获取检查预约信息失败,{ result.Error }");
+                }
             }
         }
 
@@ -243,9 +311,9 @@ namespace MM.Medical.Client.Views
                     else
                     {
                         loading.Start("读取内窥镜信息中,请稍后");
-                        var rfidProxy = new RFIDProxy();
-                        rfidProxy.NotifyEPCReceived += async (_, device) =>
+                        this.rfidNotifyAction = async device =>
                         {
+                            this.rfidNotifyAction = null;
                             var result = await SocketProxy.Instance.GetEndoscopeById(device.EPC);
                             this.Dispatcher.Invoke(() =>
                             {
@@ -254,10 +322,8 @@ namespace MM.Medical.Client.Views
                                     switch (result.Content.State)
                                     {
                                         case EndoscopeState.Waiting:
-                                            CommitExamination(result.Content);
-                                            break;
                                         case EndoscopeState.Using:
-                                            Alert.ShowMessage(false, AlertType.Error, "内窥镜正在使用中,请勿重复使用");
+                                            CommitExamination(result.Content);
                                             break;
                                         case EndoscopeState.Decontaminating:
                                             Alert.ShowMessage(false, AlertType.Error, "内窥镜正在清洗中,请勿重复使用");
@@ -268,24 +334,12 @@ namespace MM.Medical.Client.Views
                                     }
                                 }
                                 else
-                                    Alert.ShowMessage(false, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
-                            });
-                            rfidProxy.Close();
-                        };
-                        rfidProxy.NotifyDeviceStatusChanged += (_, status) =>
-                        {
-                            if (!status)
-                            {
-                                this.Dispatcher.Invoke(() =>
                                 {
-                                    loading.Stop();
-                                    Alert.ShowMessage(true, AlertType.Error, "读取内窥镜失败,开启检查失败");
-                                    tb.IsChecked = !tb.IsChecked.Value;
-                                });
-                                rfidProxy.Close();
-                            }
+                                    Alert.ShowMessage(false, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
+                                }
+                                loading.Stop();
+                            });
                         };
-                        rfidProxy.Open(CacheHelper.LocalSetting.RFIDCom);
                     }
                 }
                 else
@@ -314,9 +368,9 @@ namespace MM.Medical.Client.Views
                                 };
                                 var result2 = loading.AsyncWait("创建清洗任务中,请稍后", SocketProxy.Instance.AddDecontaminateTask(decontaminateTask));
                                 if (!result2.IsSuccess)
-                                    Alert.ShowMessage(true, AlertType.Warning, $"检查已结束,报告已保存但生成清洗任务失败,{ result.Error }");
+                                    Alert.ShowMessage(false, AlertType.Warning, $"检查已结束,报告已保存但生成清洗任务失败,{ result.Error }");
                                 else
-                                    Alert.ShowMessage(false, AlertType.Success, $"检查已结束,报告已保存并生成清洗任务");
+                                    Alert.ShowMessage(true, AlertType.Success, $"检查已结束,报告已保存并生成清洗任务");
                             }
                             else 
                                 Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
@@ -327,7 +381,7 @@ namespace MM.Medical.Client.Views
                     }
                     else
                     {
-                        Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result1.Error }");
+                        Alert.ShowMessage(false, AlertType.Error, $"结束检查失败,{ result1.Error }");
                         tb.IsChecked = !tb.IsChecked.Value;
                     }
                 }
@@ -382,7 +436,10 @@ namespace MM.Medical.Client.Views
                         Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
                         epv.video.Dispose();
                     }
-                    else Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败,{ result.Error }");
+                    else
+                    {
+                        Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败,{ result.Error }");
+                    }
                 }
             }
         }

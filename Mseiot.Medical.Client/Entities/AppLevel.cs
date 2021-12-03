@@ -31,7 +31,6 @@ namespace MM.Medical.Client.Entities
                         new AppLevel { Name="采集设备", Level = "23", Identify="MM.Medical.Client.Module.Decontaminate.RFIDDeviceManage" },
                         new AppLevel { Name="流程管理", Level = "24", Identify="MM.Medical.Client.Module.Decontaminate.DecontaminateFlowView" },
                         new AppLevel { Name="清洗记录", Level = "25", Identify="MM.Medical.Client.Module.Decontaminate.DecontaminateTaskManage", Reusability=true },
-                        new AppLevel { Name="清洗酶", Level = "26", Identify="MM.Medical.Client.Module.Decontaminate.EnzymeManage" }
                     }
                 },
                 new AppLevel 

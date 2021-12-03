@@ -1,5 +1,6 @@
 ﻿using MM.Libs.RFID;
 using MM.Medical.Client.Core;
+using MM.Medical.Client.Entities;
 using Ms.Controls;
 using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
@@ -28,6 +29,8 @@ namespace MM.Medical.Client.Module.Decontaminate
     /// </summary>
     public partial class DecontaminateTaskView : UserControl
     {
+        private List<RFIDExProxy> proxys;
+        private List<RFIDDevice> devices;
         public DecontaminateTaskView()
         {
             InitializeComponent();
@@ -35,7 +38,8 @@ namespace MM.Medical.Client.Module.Decontaminate
             this.Unloaded += DecontaminateTaskView_Unloaded;
             this.SizeChanged += DecontaminateTaskView_SizeChanged;
             lvTasks.ItemsSource = DecontaminateTasks;
-            LoadRFID();
+            this.proxys = new List<RFIDExProxy>();
+            this.devices = new List<RFIDDevice>();
         }
 
         private void DecontaminateTaskView_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -48,12 +52,14 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             timer.Dispose();
             timerCheck.Dispose();
+            StopRFIDs();
         }
 
         private void DecontaminateTask_Loaded(object sender, RoutedEventArgs e)
         {
             timer = new Timer(GetDatas, null, 0, 3000);
             timerCheck = new Timer(CheckStatus, null, 1000, 1000);
+            StartRFIDs();
         }
 
         #region RFID
@@ -85,26 +91,35 @@ namespace MM.Medical.Client.Module.Decontaminate
                         }
                     }
                 }
-              
             }
             areDecontaminateTasks.Set();
             timerCheck.Change(1000, 1000);
         }
 
-        private async void LoadRFID()
+        private void StopRFIDs()
+        {
+            if (proxys.Count > 0)
+            {
+                foreach (var proxy in proxys)
+                {
+                    proxy.Close();
+                }
+                proxys.Clear();
+            }
+            devices.Clear();
+        }
+
+        private async void StartRFIDs()
         {
 
             var result = await SocketProxy.Instance.GetRFIDDevices();
             if (result.IsSuccess)
             {
-                if (result.Content != null)
+                proxys.Clear();
+                if (result.Content != null && result.Content.Count > 0)
                 {
-                    foreach(var item in result.Content)
-                    {
-                        RFIDProxy rfidProxy = new RFIDProxy();
-                        rfidProxy.Open(item.Com);
-                        rfidProxy.NotifyEPCReceived += RfidProxy_NotifyEPCReceived;
-                    }
+                    this.AddCom(result.Content.ToArray());
+                    this.devices = result.Content;
                 }
             }
             else
@@ -116,83 +131,182 @@ namespace MM.Medical.Client.Module.Decontaminate
             }
         }
 
-        private async void RfidProxy_NotifyEPCReceived(object sender, EPCInfo e)
+        private void AddCom(params RFIDDevice[] devcices)
         {
-            var isLoaded = false;
-            isLoaded = this.Dispatcher.Invoke(() => isLoaded = this.IsLoaded);
-            if (isLoaded)
+            foreach (var devcice in devcices)
             {
-                areDecontaminateTasks.WaitOne();
-                for (int i = 0; i < DecontaminateTasks.Count; i++)
+                var proxy = proxys.FirstOrDefault(t => t.Com.Equals(devcice.Com));
+                if (proxy == null)
                 {
-                    var item = DecontaminateTasks[i];
-                    if (item.EndoscopeID == e.EPC && item.DecontaminateTaskSteps != null)
+                    proxy = new RFIDExProxy { Com = devcice.Com };
+                    proxy.NotifyEPCReceived += (s, e) =>
                     {
-                        item.CleanUserID = CacheHelper.CurrentUser.UserID;
-                        if (item.StartTime == 0)
+                        if (s is RFIDExProxy p)
                         {
-                            item.StartTime = TimeHelper.ToUnixTime(DateTime.Now);
+                            RfidProxy_NotifyEPCReceived(p, e);
                         }
-                        DecontaminateTaskStep decontaminateTaskStep = item.DecontaminateTaskSteps.FirstOrDefault(f => f.RFIDDeviceSN == e.DeviceID && f.DecontaminateStepStatus != DecontaminateStepStatus.Complete);
-                        if (decontaminateTaskStep != null)
+                    };
+                    proxy.NotifyDeviceStatusChanged += (sender, status) =>
+                    {
+                        if (sender is RFIDExProxy rfid)
                         {
-                            if (decontaminateTaskStep.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
-                            {
-                                decontaminateTaskStep.StartTime = TimeHelper.ToUnixTime(DateTime.Now);
-                                decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Run;
-                            }
+                            if (status)
+                                LogHelper.Instance.Error($"串口{ rfid.Com }连接失败");
                             else
-                            {
-                                if (TimeHelper.ToUnixTime(DateTime.Now) - decontaminateTaskStep.StartTime >= decontaminateTaskStep.Timeout)
-                                {
-                                    decontaminateTaskStep.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
-                                    decontaminateTaskStep.DecontaminateStepStatus = DecontaminateStepStatus.Complete;
-                                }
-                                else
-                                {
-                                    this.Dispatcher.Invoke(() =>
-                                    {
-                                        Alert.ShowMessage(false, AlertType.Error, "清洗时间不足,无法结束当前步骤");
-                                    });
-                                }
-
-                            }
+                                LogHelper.Instance.Info($"串口{ rfid.Com }连接成功");
                         }
-                        if (item.DecontaminateTaskSteps.Count(f => f.DecontaminateStepStatus == DecontaminateStepStatus.Wait || f.DecontaminateStepStatus == DecontaminateStepStatus.Run) == 0)
-                        {
-                            item.DecontaminateTaskStatus = DecontaminateTaskStatus.Complete;
-                            item.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
-                            var result = await SocketProxy.Instance.ChangeDecontaminateTaskStatus(item);
-                            if (result.IsSuccess)
-                            {
-
-                                this.Dispatcher.Invoke(() =>
-                                {
-                                    DecontaminateTasks.Remove(item);
-                                });
-
-                            }
-                            else
-                            {
-                                this.Dispatcher.Invoke(() =>
-                                {
-                                    Alert.ShowMessage(true, AlertType.Error, result.Error);
-                                });
-                            }
-
-                        }
-                        break;
-                    }
+                    };
+                    proxy.Open(devcice.Com);
+                    proxys.Add(proxy);
                 }
-                areDecontaminateTasks.Set();
             }
         }
 
+        private User currentClearUser;
 
+        private async void RfidProxy_NotifyEPCReceived(RFIDExProxy proxy, EPCInfo e)
+        {
+            areDecontaminateTasks.WaitOne();
+            await ExecuteClearTask(proxy.Com, e);
+            areDecontaminateTasks.Set();
+        }
+
+
+        private async Task ExecuteClearTask(string com, EPCInfo info)
+        {
+            if (info.EPC < 100000000) //清洗内镜
+            {
+                var decontaminateTask = DecontaminateTasks.FirstOrDefault(t => t.EndoscopeID == info.EPC);
+                if (decontaminateTask != null)
+                {
+                    if (string.IsNullOrEmpty(decontaminateTask.CleanUserID))
+                    {
+                        if (currentClearUser != null)
+                        {
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                decontaminateTask.CleanUserID = currentClearUser.UserID;
+                                decontaminateTask.CleanName = currentClearUser.Name;
+                            });
+                            currentClearUser = null;
+                        }
+                        else
+                        {
+                            this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, "未设置清洗人员"));
+                            return;
+                        }
+                      
+                    }
+                    if (decontaminateTask.DecontaminateTaskSteps == null || decontaminateTask.DecontaminateTaskSteps.Count == 0)
+                    {
+                        var res1 = await SocketProxy.Instance.GetDecontaminateFlowByRFIDCom(com);
+                        if (res1.IsSuccess)
+                        {
+                            var res2 = await SocketProxy.Instance.GetDecontaminateFlowSteps(res1.Content.DecontaminateFlowID);
+                            if (res2.IsSuccess)
+                            {
+                                decontaminateTask.StartTime = TimeHelper.ToUnixTime(DateTime.Now);
+                                decontaminateTask.DecontaminateTaskSteps = res2.Content.Select(t =>
+                                {
+                                    return new DecontaminateTaskStep
+                                    {
+                                        DecontaminateTaskID = decontaminateTask.DecontaminateTaskID,
+                                        Name = t.Name,
+                                        RFIDDeviceID = t.RFIDDeviceID,
+                                        Timeout = t.Timeout,
+                                    };
+                                }).ToList();
+                            }
+                            else
+                            {
+                                this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, $"获取清洗流程步骤失败,{ res2.Error }"));
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, $"获取清洗流程失败,{ res1.Error }"));
+                            return;
+                        }
+                    }
+                    var firstStep = decontaminateTask.DecontaminateTaskSteps.FirstOrDefault(t => t.DecontaminateStepStatus != DecontaminateStepStatus.Complete);
+                    if (firstStep != null)
+                    {
+                        if (firstStep.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
+                        {
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                firstStep.DecontaminateStepStatus = DecontaminateStepStatus.Run;
+                                firstStep.StartTime = TimeHelper.ToUnixTime(DateTime.Now);
+                            });
+                        }
+                        else
+                        {
+                            if (TimeHelper.ToUnixTime(DateTime.Now) - firstStep.StartTime < firstStep.Timeout)
+                            {
+                                this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, $"流程时间未达到最低限制"));
+                                return;
+                            }
+                            else
+                            {
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    firstStep.DecontaminateStepStatus = DecontaminateStepStatus.Complete;
+                                    firstStep.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
+                                });
+                            }
+                        }
+                    }
+                    if (decontaminateTask.DecontaminateTaskSteps.All(t => t.DecontaminateStepStatus == DecontaminateStepStatus.Complete))
+                    {
+                        decontaminateTask.DecontaminateTaskStatus = DecontaminateTaskStatus.Complete;
+                        decontaminateTask.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
+                        var result = await SocketProxy.Instance.ChangeDecontaminateTaskStatus(decontaminateTask);
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            if (result.IsSuccess)
+                            {
+                                DecontaminateTasks.Remove(decontaminateTask);
+                            }
+                            else
+                            {
+                                Alert.ShowMessage(true, AlertType.Error, result.Error);
+                            }
+                        });
+                    }
+                }
+            }
+            else if (info.EPC > 100000000 && info.EPC < 200000000) //清洗人员
+            {
+                this.Dispatcher.Invoke(() => loading.Start("获取清洗人员数据中,请稍后"));
+                var result = await SocketProxy.Instance.GetUserById((info.EPC - 100000000).ToString());
+                this.Dispatcher.Invoke(() =>
+                {
+                    if (!result.IsSuccess)
+                        Alert.ShowMessage(true, AlertType.Error, $"获取清洗人员数据失败,{ result.Error }");
+                    else
+                    {
+                        if (currentClearUser == null || currentClearUser.UserID.Equals(result.Content.UserID))
+                        {
+                            currentClearUser = result.Content;
+                            Alert.ShowMessage(true, AlertType.Success, $"清理人员{ currentClearUser.Name }准备就绪");
+                        }
+                        else if (!currentClearUser.UserID.Equals(result.Content.UserID))
+                        {
+                            Alert.ShowMessage(true, AlertType.Warning, $"清理人员{ currentClearUser.Name }已被{ result.Content.Name }替换");
+                        }
+                    }
+                    loading.Stop();
+                });
+            }
+            else
+            {
+                Alert.ShowMessage(true, AlertType.Error, "错误的读卡信息");
+            }
+        }
         #endregion
 
         #region 数据
-
 
         Timer timer;
         Timer timerCheck;
@@ -202,12 +316,8 @@ namespace MM.Medical.Client.Module.Decontaminate
         public async void GetDatas(object obj)
         {
             timer.Change(Timeout.Infinite, Timeout.Infinite);
-            List<DecontaminateTaskStatus> decontaminateTaskStatuss = new List<DecontaminateTaskStatus> 
-            {
-                DecontaminateTaskStatus.Wait
-            };
+            List<DecontaminateTaskStatus> decontaminateTaskStatuss = new List<DecontaminateTaskStatus> { DecontaminateTaskStatus.Wait };
             var result = await SocketProxy.Instance.GetDecontaminateTasks(0, 10000, decontaminateTaskStatuss,"",null,null);
-
             if (result.IsSuccess && result.Content != null && result.Content.Results != null)
             {
                 var results = result.Content.Results;
@@ -217,7 +327,6 @@ namespace MM.Medical.Client.Module.Decontaminate
                     {
                         this.Dispatcher.Invoke(() =>
                         {
-                            results[j].CleanName = CacheHelper.UserName;
                             if (results[j].DecontaminateTaskSteps != null)
                             {
                                 for (int i = 0; i < results[j].DecontaminateTaskSteps.Count; i++)
@@ -231,7 +340,6 @@ namespace MM.Medical.Client.Module.Decontaminate
                     }
                 }
             }
-
             timer.Change(3000, 3000);
         }
 
@@ -255,14 +363,11 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         public static readonly DependencyProperty RowHeightProperty = DependencyProperty.Register("RowHeight", typeof(double), typeof(DecontaminateTaskView), new PropertyMetadata(0.0));
 
-
         private int rowCount;
-        
 
         private void GetColumnCount()
         {
             ColumnWidth = (lvDrawGrid.ActualWidth-5-150) / (double)7.0;
-
             rowCount = (int)(Math.Floor(lvDrawGrid.ActualHeight / 120));
             RowHeight =  lvDrawGrid.ActualHeight / (double)rowCount;
         }

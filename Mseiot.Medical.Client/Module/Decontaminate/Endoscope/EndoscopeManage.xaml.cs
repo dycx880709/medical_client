@@ -109,22 +109,37 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             if (sender is FrameworkElement element && element.DataContext is Endoscope endoscope)
             {
-                RFIDProxy rfidProxy = new RFIDProxy();
-                try
+                if (string.IsNullOrEmpty(CacheHelper.LocalSetting.RFIDCom))
                 {
-                    rfidProxy.OpenWait(CacheHelper.LocalSetting.RFIDCom);
-                    await rfidProxy.WriteEPC(endoscope.EndoscopeID);
-                    Alert.ShowMessage(true, AlertType.Success, "写卡成功");
+                    Alert.ShowMessage(false, AlertType.Error, "制卡器未配置,请先配置制卡器");
+                    var view = new DecontaminateSetting();
+                    child.ShowDialog("配置制卡器", view);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Alert.ShowMessage(false, AlertType.Error, "写卡失败:" + ex.Message);
-                }
-                finally
-                {
-                    rfidProxy.Close();
+                    RFIDProxy rfidProxy = new RFIDProxy();
+                    try
+                    {
+                        rfidProxy.OpenWait(CacheHelper.LocalSetting.RFIDCom);
+                        await rfidProxy.WriteEPC(endoscope.EndoscopeID);
+                        this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Success, "写卡成功"));
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Dispatcher.Invoke(() => Alert.ShowMessage(false, AlertType.Error, "写卡失败:" + ex.Message));
+                    }
+                    finally
+                    {
+                        rfidProxy.Close();
+                    }
                 }
             }
+        }
+
+        private void Setting_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new DecontaminateSetting();
+            child.ShowDialog("配置制卡器", view);
         }
 
         #endregion

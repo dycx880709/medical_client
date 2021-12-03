@@ -13,7 +13,16 @@
             <ColumnDefinition Width="800"/>
         </Grid.ColumnDefinitions>
 
-        <controls:CustomGroupBox Header="清洗列表">
+        <controls:CustomGroupBox Header="清洗列表" Margin="5">
+            <controls:CustomGroupBox.HeaderMenu>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="日期:" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}" Margin="0,0,5,0"/>
+                    <controls:DateTimeInterval x:Name="dti"/>
+                    <controls:CustomTextBox x:Name="tbSearch" Margin="5,0" Watermark="清洗人员/内镜编号/患者姓名/身份证号/医保号/检查医生" Width="380"/>
+                    <Button Content="搜索" Margin="10,0" Click="Search_Click"/>
+                    <Button Content="导出" Click="Excel_Click"/>
+                </StackPanel>
+            </controls:CustomGroupBox.HeaderMenu>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -21,13 +30,13 @@
                 </Grid.RowDefinitions>
                 <DataGrid x:Name="lvDatas">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="150" Header="内镜编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
-                        <DataGridTextColumn Width="150" Header="患者姓名" Binding="{Binding PatientName}"/>
-                        <DataGridTextColumn Width="150" Header="患者年龄" Binding="{Binding PatientBirthday}"/>
+                        <DataGridTextColumn Width="120" Header="内镜编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
+                        <DataGridTextColumn Width="120" Header="患者姓名" Binding="{Binding PatientName}"/>
+                        <DataGridTextColumn Width="120" Header="患者年龄" Binding="{Binding PatientBirthday}"/>
                         <DataGridTextColumn Width="*" Header="患者身份证" Binding="{Binding PatientID}"/>
                         <DataGridTextColumn Width="*" Header="患者医保号" Binding="{Binding PatientSI}"/>
-                        <DataGridTextColumn Width="150" Header="检查医生" Binding="{Binding DoctorName}"/>
-                        <DataGridTextColumn Width="150" Header="清洗员" Binding="{Binding CleanName}"/>
+                        <DataGridTextColumn Width="120" Header="检查医生" Binding="{Binding DoctorName}"/>
+                        <DataGridTextColumn Width="120" Header="清洗员" Binding="{Binding CleanName}"/>
                         <DataGridTextColumn Width="*" Header="开始时间" Binding="{Binding StartTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
                         <DataGridTextColumn Width="*" Header="结束时间" Binding="{Binding EndTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
                     </DataGrid.Columns>
@@ -35,14 +44,7 @@
                 <controls:Pager x:Name="pager" Grid.Row="1" PageChanged="Pager_PageChanged"/>
             </Grid>
         </controls:CustomGroupBox>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5,0,0" HorizontalAlignment="Right">
-            <controls:DateTimeInterval x:Name="dti"/>
-            <controls:CustomTextBox x:Name="tbSearch" Margin="5,0" Watermark="清洗人员/内镜编号/患者姓名/身份证号/医保号/检查医生" Width="400"/>
-            <Button Content="搜索" Margin="10,0" Click="Search_Click"/>
-            <Button Content="导出" Margin="10,0,0,0" Click="Excel_Click"/>
-        </StackPanel>
-
-        <controls:CustomGroupBox Header="清洗步骤" Grid.Column="1">
+        <controls:CustomGroupBox Header="清洗步骤" Grid.Column="1" Margin="5">
             <DataGrid ItemsSource="{Binding SelectedItem.DecontaminateTaskSteps, ElementName=lvDatas}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*" Header="步骤名称" Binding="{Binding Name}"/>

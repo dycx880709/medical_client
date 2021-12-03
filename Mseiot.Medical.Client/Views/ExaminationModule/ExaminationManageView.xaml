@@ -182,6 +182,7 @@
             <local:ExaminationPartView x:Name="epv" IsReadOnly="{Binding IsEditable, ElementName=uc, Converter={StaticResource ReverseBooleanConverter}}"
                             SelectedExamination="{Binding SelectedValue.Examination, ElementName=dg_appointments}" Loading="{Binding ElementName=loading}"/>
         </controls:CustomGroupBox>
+        <controls:ChildWindow x:Name="child" Grid.ColumnSpan="2"/>
         <controls:Loading x:Name="loading" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>

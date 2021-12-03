@@ -12,10 +12,11 @@
         <controls:CustomGroupBox.AttachContent>
             <ControlTemplate>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Click="Setting_Click" Width="Auto" Padding="10,0" Content="配置制卡器" Margin="5,0"/>
                     <Button Click="Add_Click" Content="新增" Margin="5,0"/>
                     <Button Click="Edit_Click" Content="编辑" Margin="5,0"/>
                     <Button Click="Remove_Click" Content="删除" Margin="5,0"/>
-                    <Button Click="Refresh_Click" Content="刷新" Margin="5,0"/>
+                    <Button Click="Refresh_Click" Content="刷新" Margin="5,0,0,0"/>
                 </StackPanel>
             </ControlTemplate>
         </controls:CustomGroupBox.AttachContent>
@@ -31,6 +32,13 @@
                         <DataGridTextColumn Width="*" Binding="{Binding Name}" Header="姓名"/>
                         <DataGridTextColumn Width="*" Binding="{Binding RoleName}" Header="角色"/>
                         <DataGridTextColumn Width="*" Binding="{Binding CreateTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}" Header="创建时间"/>
+                        <DataGridTemplateColumn Header="RFID" Width="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="制卡" Tag="{Binding}" Click="CreateRFID_Click"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
