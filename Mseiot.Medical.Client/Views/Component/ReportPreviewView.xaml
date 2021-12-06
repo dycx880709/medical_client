@@ -6,9 +6,21 @@
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:core="clr-namespace:MM.Medical.Client.Core"
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" x:Name="uc"
              d:DesignHeight="1080" d:DesignWidth="768">
 
+    <UserControl.Resources>
+        <sys:Double x:Key="NormalFontSize">14</sys:Double>
+        <sys:Double x:Key="LargeFontSize">16</sys:Double>
+        <sys:Double x:Key="NavigateFontSize">18</sys:Double>
+        <sys:Double x:Key="LargeExFontSize">22</sys:Double>
+
+        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource Color_Border_Primary}"/>
         <Border BorderThickness="1" BorderBrush="{StaticResource Color_Border_Secondary}" Margin="10">
@@ -95,7 +107,7 @@
                                         <Grid Grid.Row="0">
                                             <Grid.Resources>
                                                 <Style x:Key="editorFormItemTextExtend" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource editorFormItemText}">
-                                                    <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
+                                                    <Setter Property="FontSize" Value="14"/>
                                                     <Setter Property="FontWeight" Value="Bold"/>
                                                     <Setter Property="Height" Value="22"/>
                                                 </Style>
@@ -163,7 +175,7 @@
 
                                             <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="内    镜:" Grid.Row="3"/>
                                             <TextBlock VerticalAlignment="Center" Style="{StaticResource editorFormItemTextExtend}" Text="主    诉:" Grid.Column="2" Grid.Row="3"/>
-                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Endoscope.Model}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Endoscope.Model}" VerticalAlignment="Center"/>
                                             <TextBlock Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="5" Text="{Binding PatientTalk}" VerticalAlignment="Center"/>
                                             <Border Grid.Row="3" Grid.ColumnSpan="8" BorderThickness="0,0,0,2" BorderBrush="{StaticResource Color_Border_Primary}"/>
                                         </Grid>

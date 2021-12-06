@@ -4,13 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             xmlns:converters="clr-namespace:Ms.Controls.Converters;assembly=Ms.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
 
+    <UserControl.Resources>
+        <converters:TimeStampToRestConverter x:Key="TimeStampToRestConverter"/>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="800"/>
+            <ColumnDefinition Width="550"/>
         </Grid.ColumnDefinitions>
 
         <controls:CustomGroupBox Header="清洗列表" Margin="5">
@@ -30,15 +35,17 @@
                 </Grid.RowDefinitions>
                 <DataGrid x:Name="lvDatas">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="120" Header="内镜编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
-                        <DataGridTextColumn Width="120" Header="患者姓名" Binding="{Binding PatientName}"/>
-                        <DataGridTextColumn Width="120" Header="患者年龄" Binding="{Binding PatientBirthday}"/>
-                        <DataGridTextColumn Width="*" Header="患者身份证" Binding="{Binding PatientID}"/>
-                        <DataGridTextColumn Width="*" Header="患者医保号" Binding="{Binding PatientSI}"/>
-                        <DataGridTextColumn Width="120" Header="检查医生" Binding="{Binding DoctorName}"/>
-                        <DataGridTextColumn Width="120" Header="清洗员" Binding="{Binding CleanName}"/>
-                        <DataGridTextColumn Width="*" Header="开始时间" Binding="{Binding StartTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
-                        <DataGridTextColumn Width="*" Header="结束时间" Binding="{Binding EndTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
+                        <DataGridTextColumn Width="80" Header="内镜编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
+                        <DataGridTextColumn Width="100" Header="患者姓名" Binding="{Binding PatientName}"/>
+                        <DataGridTextColumn Width="60" Header="年龄" Binding="{Binding PatientBirthday}"/>
+                        <DataGridTextColumn Width="*" Header="身份证" Binding="{Binding PatientID}"/>
+                        <DataGridTextColumn Width="*" Header="医保号" Binding="{Binding PatientSI}"/>
+                        <DataGridTextColumn Width="100" Header="检查医生" Binding="{Binding DoctorName}"/>
+                        <DataGridTextColumn Width="100" Header="清洗员" Binding="{Binding CleanName}"/>
+                        <DataGridTextColumn Width="*" Header="清洗开始时间" Binding="{Binding StartTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
+                        <DataGridTextColumn Width="*" Header="清洗结束时间" Binding="{Binding EndTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
+                        <DataGridTextColumn Width="*" Header="检查开始时间" Binding="{Binding StartExamineTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
+                        <DataGridTextColumn Width="*" Header="检查结束时间" Binding="{Binding EndExamineTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <controls:Pager x:Name="pager" Grid.Row="1" PageChanged="Pager_PageChanged"/>
@@ -47,10 +54,10 @@
         <controls:CustomGroupBox Header="清洗步骤" Grid.Column="1" Margin="5">
             <DataGrid ItemsSource="{Binding SelectedItem.DecontaminateTaskSteps, ElementName=lvDatas}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Header="步骤名称" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Width="0.6*" Header="步骤名称" Binding="{Binding Name}"/>
                     <DataGridTextColumn Width="*" Header="开始时间" Binding="{Binding StartTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
                     <DataGridTextColumn Width="*" Header="结束时间" Binding="{Binding EndTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
-                    <DataGridTextColumn Width="*" Header="清洗时间(秒)" Binding="{Binding UseTime}"/>
+                    <DataGridTextColumn Width="0.6*" Header="清洗时间" Binding="{Binding UseTime, Converter={StaticResource TimeStampToRestConverter}}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </controls:CustomGroupBox>

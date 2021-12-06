@@ -20,13 +20,5 @@ namespace MM.Medical.Client.Core
             if (word == null) return null;
             else return string.IsNullOrEmpty(word.Content) ? null : word.Content.Split(separator).ToList();
         }
-
-        public static int GetFullCountWithoutScroll(this DataGrid selector)
-        {
-            var columnHeight = CacheHelper.GetResource<int>("DataGrdiColumnHeight");
-            var rowHeight = CacheHelper.GetResource<int>("DataGrdiRowHeight");
-            var height = selector.ActualHeight - columnHeight;
-            return (int)(height / rowHeight);
-        }
     }
 }

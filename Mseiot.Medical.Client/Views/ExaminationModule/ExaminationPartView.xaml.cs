@@ -6,6 +6,7 @@ using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -475,6 +476,10 @@ namespace MM.Medical.Client.Views
 
         private async void Shotcut()
         {
+            if (SelectedExamination.Images == null)
+            {
+                SelectedExamination.Images = new ObservableCollection<ExaminationMedia>();
+            }
             if (SelectedExamination.Images.Count >= systemSetting.CutshotImageCount)
             {
                 Alert.ShowMessage(true, AlertType.Warning, "采集图片数量超过上限");

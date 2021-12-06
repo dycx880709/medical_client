@@ -139,6 +139,13 @@
                     </Border>
                     <Border Width="200" CornerRadius="3,0,3,3" Margin="2,1,2,2" Background="{DynamicResource Color_Input_Background}">
                         <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                    <Setter Property="FontFamily" Value="{StaticResource FontFamily}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Color_Font_Primary}"/>
+                                    <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
+                                </Style>
+                            </StackPanel.Resources>
                             <!--当前登录用户-->
                             <Border Height="80" BorderThickness="0,0,0,1" BorderBrush="{StaticResource Color_Border_Primary}">
                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">

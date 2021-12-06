@@ -4,6 +4,7 @@
              xmlns:lc="clr-namespace:MM.Medical.Client.Converters"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:converters="clr-namespace:MM.Medical.Share.Converters;assembly=MM.Medical.Share"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Startup="Application_Startup">
     
     <Application.Resources>
@@ -29,7 +30,17 @@
             <converters:YNToCNConvert x:Key="YNToCNConvert"/>
             <converters:SexConverter x:Key="SexConverter"/>
 
-            <!--编辑-->
+            <sys:Double x:Key="InputElementHeight">36</sys:Double>
+            <sys:Double x:Key="ButtonHeight">30</sys:Double>
+            <sys:Double x:Key="DataGrdiColumnHeight">48</sys:Double>
+            <sys:Double x:Key="DataGrdiRowHeight">40</sys:Double>
+            <sys:Double x:Key="MicroFontSize">12</sys:Double>
+            <sys:Double x:Key="SmallFontSize">14</sys:Double>
+            <sys:Double x:Key="NormalFontSize">16</sys:Double>
+            <sys:Double x:Key="LargeFontSize">18</sys:Double>
+            <sys:Double x:Key="NavigateFontSize">20</sys:Double>
+            <sys:Double x:Key="LargeExFontSize">24</sys:Double>
+            
             <Style TargetType="{x:Type StackPanel}" x:Key="editorFormItem">
                 <Setter Property="Margin" Value="10"/>
                 <Setter Property="Orientation" Value="Horizontal"/>

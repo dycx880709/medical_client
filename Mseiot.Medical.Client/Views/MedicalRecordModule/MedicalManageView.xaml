@@ -101,6 +101,7 @@
                             <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Appointment.Birthday}"/>
                             <DataGridTextColumn Width="1.5*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
                             <DataGridTextColumn Width="1.5*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
+                            <DataGridTextColumn Width="*" Header="患者来源" Binding="{Binding Appointment.PatientSource}"/>
                             <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}" Visibility="Collapsed"/>

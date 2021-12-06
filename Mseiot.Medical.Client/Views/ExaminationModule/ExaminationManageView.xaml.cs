@@ -433,12 +433,20 @@ namespace MM.Medical.Client.Views
                     var result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyExamination(epv.SelectedExamination));
                     if (result.IsSuccess)
                     {
-                        Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
-                        epv.video.Dispose();
+                        result = loading.AsyncWait("保存检查信息中,请稍后", SocketProxy.Instance.ModifyAppointment(epv.SelectedExamination.Appointment));
+                        if (result.IsSuccess)
+                        {
+                            Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
+                            epv.video.Dispose();
+                        }
+                        else
+                        {
+                            Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败2,{ result.Error }");
+                        }
                     }
                     else
                     {
-                        Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败,{ result.Error }");
+                        Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败1,{ result.Error }");
                     }
                 }
             }
