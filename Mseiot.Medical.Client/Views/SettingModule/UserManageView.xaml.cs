@@ -35,6 +35,7 @@ namespace MM.Medical.Client.Views
         private void UserManageView_Loaded(object sender, RoutedEventArgs e)
         {
             pager.SelectedCount = dg_user.GetFullCountWithoutScroll();
+            GetUsers();
         }
 
         private void GetUsers()

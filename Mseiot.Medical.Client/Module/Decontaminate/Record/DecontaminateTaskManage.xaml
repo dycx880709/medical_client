@@ -23,7 +23,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="日期:" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}" Margin="0,0,5,0"/>
                     <controls:DateTimeInterval x:Name="dti"/>
-                    <controls:CustomTextBox x:Name="tbSearch" Margin="5,0" Watermark="清洗人员/内镜编号/患者姓名/身份证号/医保号/检查医生" Width="380"/>
+                    <controls:CustomTextBox x:Name="tbSearch" Margin="5,0" Watermark="清洗人员/内镜编号/患者姓名/身份证号/医保号/检查医生" Width="430"/>
                     <Button Content="搜索" Margin="10,0" Click="Search_Click"/>
                     <Button Content="导出" Click="Excel_Click"/>
                 </StackPanel>
@@ -38,8 +38,8 @@
                         <DataGridTextColumn Width="80" Header="内镜编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
                         <DataGridTextColumn Width="100" Header="患者姓名" Binding="{Binding PatientName}"/>
                         <DataGridTextColumn Width="60" Header="年龄" Binding="{Binding PatientBirthday}"/>
-                        <DataGridTextColumn Width="*" Header="身份证" Binding="{Binding PatientID}"/>
-                        <DataGridTextColumn Width="*" Header="医保号" Binding="{Binding PatientSI}"/>
+                        <DataGridTextColumn Width="120" Header="身份证" Binding="{Binding PatientID}"/>
+                        <DataGridTextColumn Width="120" Header="医保号" Binding="{Binding PatientSI}"/>
                         <DataGridTextColumn Width="100" Header="检查医生" Binding="{Binding DoctorName}"/>
                         <DataGridTextColumn Width="100" Header="清洗员" Binding="{Binding CleanName}"/>
                         <DataGridTextColumn Width="*" Header="清洗开始时间" Binding="{Binding StartTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
