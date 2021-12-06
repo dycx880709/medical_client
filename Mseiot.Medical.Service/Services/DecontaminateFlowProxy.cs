@@ -17,11 +17,6 @@ namespace Mseiot.Medical.Service.Services
             return await HttpProxy.GetMessage<List<DecontaminateFlow>>("/api/DecontaminateFlow/get");
         }
 
-        public async Task<MsResult<DecontaminateFlow>> GetDecontaminateFlowByRFIDCom(string com)
-        { 
-            return await HttpProxy.GetMessage<DecontaminateFlow>("/api/decontaminateFlow/getbyrfidcom", new { Com = com });
-        }
-
         public async Task<MsResult<int>> AddDecontaminateFlow(DecontaminateFlow decontaminateFlow)
         {
             return await HttpProxy.PostMessage<int>("/api/DecontaminateFlow/add", decontaminateFlow);

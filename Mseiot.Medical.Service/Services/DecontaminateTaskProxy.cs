@@ -40,5 +40,15 @@ namespace Mseiot.Medical.Service.Services
         {
             return await HttpProxy.PostMessage<bool>("/api/DecontaminateTask/ChangeDecontaminateTaskStatus", decontaminateTask);
         }
+
+        public async Task<MsResult<List<DecontaminateTaskStep>>> AddDecontaminateTaskSteps(int decontaminateTaskID, string com)
+        {
+            return await HttpProxy.GetMessage<List<DecontaminateTaskStep>>("/api/decontaminateTask/AddDecontaminateTaskSteps", new { DecontaminateTaskID = decontaminateTaskID, Com = com });
+        }
+
+        public async Task<MsResult<bool>> ChangeDecontaminateTaskStepStatus(DecontaminateTaskStep decontaminateTaskStep)
+        { 
+            return await HttpProxy.PostMessage<bool>("/api/decontaminateTask/ChangeDecontaminateTaskStepStatus", decontaminateTaskStep);
+        }
     }
 }

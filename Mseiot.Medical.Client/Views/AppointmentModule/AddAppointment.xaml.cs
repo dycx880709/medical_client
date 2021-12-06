@@ -28,8 +28,8 @@ namespace MM.Medical.Client.Views
             Appointment = rawAppointment.Copy();
             if (rawAppointment.AppointmentID == 0)
             {
-                var dateTime = DateTime.Now;
-                dateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour + 1, 0, 0);
+                var dateTime = DateTime.Now.AddHours(1);
+                dateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
                 Appointment.AppointmentTime = TimeHelper.ToUnixTime(dateTime);
             }
             this.Loaded += AddAppointment_Loaded;

@@ -16,7 +16,9 @@ namespace MM.Medical.Client.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Examination examination)
-                return examination.DoctorName.Equals(CacheHelper.CurrentUser.Name) && TimeHelper.FromUnixTime(examination.ExaminationTime).Date == DateTime.Now.Date;
+            {
+                return CacheHelper.CurrentUser.UserID.Equals("0") || CacheHelper.CurrentUser.IsProfessor || (examination.DoctorName.Equals(CacheHelper.CurrentUser.Name) && TimeHelper.FromUnixTime(examination.ExaminationTime).Date == DateTime.Now.Date);
+            }
             return false;
         }
 

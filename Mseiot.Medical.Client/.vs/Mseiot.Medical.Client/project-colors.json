@@ -35,7 +35,17 @@
       "ProjectGuid": "9d3effc8-948e-4abd-a6bc-6bbfc3e294d6",
       "DisplayName": "MM.Medical.Decontaminate",
       "ColorIndex": 5
+    },
+    "dd36c5d8-efa7-432b-a0fd-11b4cbfda32c": {
+      "ProjectGuid": "dd36c5d8-efa7-432b-a0fd-11b4cbfda32c",
+      "DisplayName": "MM.Libs.RFID",
+      "ColorIndex": 6
+    },
+    "220ae704-6f4b-4191-8096-fd274a00930d": {
+      "ProjectGuid": "220ae704-6f4b-4191-8096-fd274a00930d",
+      "DisplayName": "MM.Libs.RFID.Test",
+      "ColorIndex": 7
     }
   },
-  "NextColorIndex": 6
+  "NextColorIndex": 8
 }

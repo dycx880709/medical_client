@@ -1,4 +1,5 @@
 ﻿using Ms.Libs.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,6 +96,18 @@ namespace Mseiot.Medical.Service.Entities
             {
                 this.isOnline = value;
                 RaisePropertyChanged("IsOnline");
+            }
+        }
+        [JsonIgnore]
+        public bool IsProfessor
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(this.Authority))
+                {
+                    return Authority.Split(',').Any(t => t.Equals("34"));
+                }
+                return false;
             }
         }
         public int CreateTime { get; set; }

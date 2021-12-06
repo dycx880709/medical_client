@@ -201,7 +201,10 @@ namespace Mseiot.Medical.Service.Entities
         /// RFID编号
         /// </summary>
         public int RFIDDeviceSN { get; set; }
-
+        /// <summary>
+        /// RFID通信串口
+        /// </summary>
+        public string RFIDDeviceCom { get; set; }
 
         private DecontaminateStepStatus decontaminateStepStatus;
         /// <summary>
