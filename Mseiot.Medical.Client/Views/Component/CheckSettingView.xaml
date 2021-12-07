@@ -59,7 +59,23 @@
                 <TextBlock Style="{StaticResource editorFormItemText}" Text="优先分配"/>
                 <CheckBox IsChecked="{Binding IsPrior, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
-            <Button Content="签到" Margin="0,20" Click="Save_Click" IsDefault="True"/>
+            <Button Content="签到" Margin="0,20" Click="Save_Click" IsDefault="True">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsChecked, ElementName=rb_appoint}" Value="True"/>
+                                    <Condition Binding="{Binding SelectedValue, ElementName=cb_room}" Value="{x:Null}"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

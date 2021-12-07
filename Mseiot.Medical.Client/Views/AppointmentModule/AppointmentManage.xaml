@@ -116,7 +116,7 @@
                         <TextBlock Text="预约日期"/>
                         <controls:DateTimeInterval x:Name="dtiTime"/>
                         <TextBlock Text="患者信息"/>
-                        <controls:CustomTextBox Margin="5,0" Width="200" x:Name="tbSearchName" Watermark="身份证、社保号码、姓名"/>
+                        <controls:CustomTextBox Margin="5,0" Width="215" x:Name="tbSearchName" Watermark="身份证、社保号码、姓名"/>
                         <Button Content="查询" Click="Search_Click" IsDefault="True"/>
                     </StackPanel>
                 </Grid>

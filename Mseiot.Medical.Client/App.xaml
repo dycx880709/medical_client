@@ -31,6 +31,7 @@
             <converters:SexConverter x:Key="SexConverter"/>
 
             <sys:Double x:Key="InputElementHeight">36</sys:Double>
+            <sys:Double x:Key="InputElementWidth">180</sys:Double>
             <sys:Double x:Key="ButtonHeight">30</sys:Double>
             <sys:Double x:Key="DataGrdiColumnHeight">48</sys:Double>
             <sys:Double x:Key="DataGrdiRowHeight">40</sys:Double>
@@ -50,6 +51,7 @@
                 <Setter Property="TextAlignment" Value="Right"/>
                 <Setter Property="Margin" Value="0,0,10,0"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
             </Style>
             <Style TargetType="{x:Type TextBox}" x:Key="editorFormItemInput" BasedOn="{StaticResource {x:Type TextBox}}">
                 <Setter Property="Width" Value="200"/>

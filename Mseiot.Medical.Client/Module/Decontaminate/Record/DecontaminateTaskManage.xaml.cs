@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,19 +39,21 @@ namespace MM.Medical.Client.Module.Decontaminate
         private void DecontaminateTaskManage_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= DecontaminateTaskManage_Loaded;
+            pager.PageChanged += Pager_PageChanged;
             lvDatas.ItemsSource = DecontaminateTasks;
             dti.StartTime = DateTime.Now.AddDays(-30);
             dti.EndTime = DateTime.Now.AddDays(30);
             LoadDecontaminateTasks();
         }
 
-
         #region 数据
-
+        AutoResetEvent areDecontaminateTask = new AutoResetEvent(true);
         public ObservableCollection<DecontaminateTask> DecontaminateTasks { get; set; } = new ObservableCollection<DecontaminateTask>();
 
         private async void LoadDecontaminateTasks()
         {
+            areDecontaminateTask.WaitOne();
+            pager.PageChanged -= Pager_PageChanged;
             pager.SelectedCount = lvDatas.GetFullCountWithoutScroll();
             DecontaminateTasks.Clear();
             loading.Start("获取内窥镜列表中,请稍后");
@@ -71,6 +74,8 @@ namespace MM.Medical.Client.Module.Decontaminate
                 }
                 loading.Stop();
             });
+            pager.PageChanged += Pager_PageChanged;
+            areDecontaminateTask.Set();
         }
 
         #endregion

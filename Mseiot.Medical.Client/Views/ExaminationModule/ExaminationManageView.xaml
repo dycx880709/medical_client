@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             xmlns:core="clr-namespace:MM.Medical.Client.Core"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" x:Name="uc"
              d:DesignHeight="1080" d:DesignWidth="1920">
@@ -25,37 +26,35 @@
                     </Style.Triggers>
                 </Style>
             </controls:CustomGroupBox.Style>
-            <controls:CustomGroupBox.AttachContent>
-                <ControlTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <ToggleButton x:Name="tb_check" Width="60" IsChecked="{Binding IsDoctorVisit, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="StartCheck_Click" VerticalAlignment="Center" Margin="5,0">
-                            <ToggleButton.Style>
-                                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
-                                    <Setter Property="Content" Value="出诊"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsChecked" Value="True">
-                                            <Setter Property="Content" Value="停诊"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ToggleButton.Style>
-                        </ToggleButton>
-                        <Button Content="叫号" Width="60" Margin="5,0,0,0" Click="Call_Click">
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ItemsSource[0].AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Waiting}">
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <Button Content="刷新" Width="60" Margin="5,0,0,0" Visibility="Collapsed" Click="Refresh_Click"/>
-                    </StackPanel>
-                </ControlTemplate>
-            </controls:CustomGroupBox.AttachContent>
+            <controls:CustomGroupBox.HeaderMenu>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton x:Name="tb_check" Width="60" IsChecked="{Binding IsDoctorVisit, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="StartCheck_Click" VerticalAlignment="Center" Margin="5,0">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                                <Setter Property="Content" Value="出诊"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Content" Value="停诊"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+                    <Button Content="叫号" Width="60" Margin="5,0,0,0" Click="Call_Click">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ItemsSource[0].AppointmentStatus, ElementName=dg_appointments}" Value="{x:Static entities:AppointmentStatus.Waiting}">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="刷新" Width="60" Margin="5,0,0,0" Visibility="Collapsed" Click="Refresh_Click"/>
+                </StackPanel>
+            </controls:CustomGroupBox.HeaderMenu>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>

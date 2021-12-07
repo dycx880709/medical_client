@@ -23,7 +23,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="日期:" VerticalAlignment="Center" FontSize="{StaticResource LargeFontSize}" Margin="0,0,5,0"/>
                     <controls:DateTimeInterval x:Name="dti"/>
-                    <controls:CustomTextBox x:Name="tbSearch" Margin="5,0" Watermark="清洗人员/内镜编号/患者姓名/身份证号/医保号/检查医生" Width="430"/>
+                    <controls:CustomTextBox x:Name="tbSearch" Margin="5,0" Watermark="清洗人员/内镜编号/患者姓名/身份证号/医保号/检查医生" Width="440"/>
                     <Button Content="搜索" Margin="10,0" Click="Search_Click"/>
                     <Button Content="导出" Click="Excel_Click"/>
                 </StackPanel>
@@ -48,7 +48,7 @@
                         <DataGridTextColumn Width="*" Header="检查结束时间" Binding="{Binding EndExamineTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <controls:Pager x:Name="pager" Grid.Row="1" PageChanged="Pager_PageChanged"/>
+                <controls:Pager x:Name="pager" Grid.Row="1"/>
             </Grid>
         </controls:CustomGroupBox>
         <controls:CustomGroupBox Header="清洗步骤" Grid.Column="1" Margin="5">

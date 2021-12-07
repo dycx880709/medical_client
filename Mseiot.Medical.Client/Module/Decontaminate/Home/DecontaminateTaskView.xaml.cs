@@ -207,6 +207,10 @@ namespace MM.Medical.Client.Module.Decontaminate
                             var res1 = await SocketProxy.Instance.AddDecontaminateTaskSteps(decontaminateTask.DecontaminateTaskID, com);
                             if (res1.IsSuccess)
                             {
+                                for (int i = 0; i < res1.Content.Count; i++)
+                                {
+                                    res1.Content[i].Index = i+1;
+                                }
                                 this.Dispatcher.Invoke(() => decontaminateTask.DecontaminateTaskSteps = res1.Content);
                             }
                             else
@@ -241,6 +245,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                             else
                             {
                                 condition.DecontaminateStepStatus = DecontaminateStepStatus.Complete;
+                                condition.ResidueTime = 0;
                                 condition.EndTime = TimeHelper.ToUnixTime(DateTime.Now);
                             }
                         }

@@ -45,17 +45,27 @@ namespace MM.Medical.Client.Views
         {
             var result = loading.AsyncWait("获取预约诊室中,请稍后", SocketProxy.Instance.GetConsultingRooms());
             if (result.IsSuccess)
+            {
                 cb_room.ItemsSource = result.Content.Where(t => t.ExaminationTypes.Split(',').Any(p => p.Equals(Appointment.AppointmentType)));
+            }
             else
+            {
                 Alert.ShowMessage(false, AlertType.Error, $"获取预约诊室失败,{ result.Error }");
+            }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             Appointment.AppointmentStatus = AppointmentStatus.PunchIn;
             var result = loading.AsyncWait("签到预约中,请稍后", SocketProxy.Instance.ModifyAppointment(this.Appointment));
-            if (result.IsSuccess) this.Close(true);
-            else Alert.ShowMessage(false, AlertType.Error, $"签到预约失败,{ result.Error }");
+            if (result.IsSuccess)
+            {
+                this.Close(true);
+            }
+            else
+            {
+                Alert.ShowMessage(false, AlertType.Error, $"签到预约失败,{ result.Error }");
+            }
         }
     }
 }

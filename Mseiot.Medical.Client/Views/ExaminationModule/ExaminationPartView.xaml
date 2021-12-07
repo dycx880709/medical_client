@@ -89,7 +89,7 @@
             </Grid.ColumnDefinitions>
             <WrapPanel VerticalAlignment="Center" Grid.ColumnSpan="3" HorizontalAlignment="Center">
                 <WrapPanel.Resources>
-                    <sys:Double x:Key="InputElementWidth">100</sys:Double>
+                    <sys:Double x:Key="InputElementWidth">110</sys:Double>
                     <sys:Double x:Key="InputElementHeight">25</sys:Double>
                     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource editorFormItemText}">
                         <Setter Property="Width" Value="80"/>
@@ -99,6 +99,9 @@
                     <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource editorFormItem}">
                         <Setter Property="Margin" Value="2,4"/>
                     </Style>
+                    <!--<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>-->
                 </WrapPanel.Resources>
                 <StackPanel>
                     <TextBlock Text="姓名"/>

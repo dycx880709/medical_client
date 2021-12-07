@@ -81,7 +81,7 @@ namespace MM.Medical.Client.Views
             }
             if (string.IsNullOrEmpty(Appointment.Telephone))
             {
-                Alert.ShowMessage(true, AlertType.Error, "患者电话号码不能为空");
+                Alert.ShowMessage(true, AlertType.Error, "患者电话号码输入不合法");
                 return;
             }
             if (string.IsNullOrEmpty(Appointment.Anesthesia))
@@ -89,7 +89,7 @@ namespace MM.Medical.Client.Views
                 Alert.ShowMessage(true, AlertType.Error, "患者麻醉方式不能为空");
                 return;
             }
-            if (cb_anesthesia.SelectedIndex == 1)
+            if (cb_source.SelectedIndex == 1)
             {
                 if (string.IsNullOrEmpty(Appointment.HospitalID))
                 {

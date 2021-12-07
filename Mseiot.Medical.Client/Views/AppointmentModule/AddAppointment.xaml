@@ -6,7 +6,7 @@
              xmlns:core="clr-namespace:MM.Medical.Client.Core"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:validation="clr-namespace:MM.Medical.Share.Validations;assembly=MM.Medical.Share"
-             Width="600" Height="450"
+             Width="650" Height="450"
              mc:Ignorable="d" >
 
     <UserControl.Resources>
@@ -25,7 +25,7 @@
                     <TextBox.Text>
                         <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
-                                <validation:StringLengthValidationRule Title="患者名称长度" MinValue="2" MaxValue="10" ValidatesOnTargetUpdated="False" />
+                                <validation:StringLengthValidationRule Title="患者名称" MinValue="2" MaxValue="10" ValidatesOnTargetUpdated="False" />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -49,7 +49,15 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="身份证号"/>
-                <TextBox Text="{Binding IDCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox>
+                    <TextBox.Text>
+                        <Binding Path="IDCard" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <validation:StringLengthValidationRule Title="身份证号" Nullable="True" EqualValue="18" ValidatesOnTargetUpdated="False" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="社保账号"/>
@@ -57,7 +65,15 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="电话号码"/></TextBlock>
-                <TextBox Text="{Binding Telephone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox>
+                    <TextBox.Text>
+                        <Binding Path="Telephone" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <validation:StringLengthValidationRule Title="电话号码" EqualValue="11" ValidatesOnTargetUpdated="False" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="检查类型"/></TextBlock>
