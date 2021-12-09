@@ -65,7 +65,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="电话号码"/></TextBlock>
-                <TextBox x:Name="tb_telephone">
+                <TextBox>
                     <TextBox.Text>
                         <Binding Path="Telephone" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
                             <Binding.ValidationRules>
