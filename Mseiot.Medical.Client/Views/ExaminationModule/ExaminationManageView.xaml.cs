@@ -329,9 +329,11 @@ namespace MM.Medical.Client.Views
                                             break;
                                         case EndoscopeState.Decontaminating:
                                             Alert.ShowMessage(false, AlertType.Error, "内窥镜正在清洗中,请勿重复使用");
+                                            tb.IsChecked = !tb.IsChecked.Value;
                                             break;
                                         case EndoscopeState.Disabled:
                                             Alert.ShowMessage(false, AlertType.Error, "内窥镜已禁止使用");
+                                            tb.IsChecked = !tb.IsChecked.Value;
                                             break;
                                     }
                                 }

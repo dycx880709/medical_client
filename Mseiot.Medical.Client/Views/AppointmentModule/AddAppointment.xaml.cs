@@ -74,6 +74,11 @@ namespace MM.Medical.Client.Views
                 Alert.ShowMessage(true, AlertType.Error, "患者年龄输入不合法");
                 return;
             }
+            if (!string.IsNullOrEmpty(Appointment.Telephone) && Appointment.Telephone.Length != 18)
+            {
+                Alert.ShowMessage(true, AlertType.Error, "患者身份证长度输入不合法");
+                return;
+            }
             if (Appointment.AppointmentTime < TimeHelper.ToUnixTime(DateTime.Now))
             {
                 Alert.ShowMessage(true, AlertType.Error, "预约时间输入不能早于当前时间");

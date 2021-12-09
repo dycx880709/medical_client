@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
-        xmlns:local="clr-namespace:MM.Medical.Client"
+        xmlns:local="clr-namespace:MM.Medical.Client.Views"
         xmlns:converter="clr-namespace:MM.Medical.Client.Converters"
         xmlns:core="clr-namespace:MM.Medical.Client.Core"
         WindowState="Maximized" mc:Ignorable="d" 
@@ -36,7 +36,7 @@
             </StackPanel>
 
             <Grid x:Name="menuContainer" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <ListView Width="{Binding Width,ElementName=menuContainer}" x:Name="lvMenus" SelectionChanged="Menu_Selected">
+                <ListView Width="{Binding Width,ElementName=menuContainer}" x:Name="lvMenus" SelectedValue="{Binding SelectedMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" SelectionChanged="Menu_Selected">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
@@ -56,13 +56,13 @@
                                                         <Path x:Name="path" Data="M0,0,5,5,10,0" Visibility="Collapsed" Stroke="{StaticResource Color_Font_Primary}" StrokeThickness="1" VerticalAlignment="Center" Margin="10,-5,0,0"/>
                                                     </StackPanel>
                                                 </Border>
-                                                <Popup x:Name="popup" AllowsTransparency="True" StaysOpen="{Binding IsMouseOver, ElementName=border}" Width="{Binding ActualWidth,ElementName=border}" Height="240" PopupAnimation="Fade" VerticalOffset="0" Placement="Bottom"  PlacementTarget="{Binding ElementName=border}">
+                                                <Popup x:Name="popup" AllowsTransparency="True" StaysOpen="{Binding IsMouseOver, ElementName=border}" Width="{Binding ActualWidth,ElementName=border}" Height="Auto" PopupAnimation="Fade" VerticalOffset="0" Placement="Bottom"  PlacementTarget="{Binding ElementName=border}">
                                                     <Border x:Name="border_children" Margin="0,0,0,0"  VerticalAlignment="Top">
                                                         <Border Margin="3" Background="{StaticResource Color_Input_Background}">
                                                             <Border.Effect>
                                                                 <DropShadowEffect ShadowDepth="0" Opacity="0.5"/>
                                                             </Border.Effect>
-                                                            <ListView ItemsSource="{Binding Children}" SelectionChanged="Menu_Selected" Margin="0" Padding="0">
+                                                            <ListView ItemsSource="{Binding Children}" SelectedValue="{Binding SelectedMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" SelectionChanged="Menu_Selected" Margin="0" Padding="0">
                                                                 <ListView.ItemContainerStyle>
                                                                     <Style TargetType="{x:Type ListViewItem}">
                                                                         <Setter Property="Width" Value="Auto"/>

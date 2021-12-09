@@ -25,6 +25,16 @@ namespace MM.Medical.Client.Views
         private readonly Dictionary<string, UserControl> navigateItems 
             = new Dictionary<string, UserControl>();
 
+        public Entities.Menu SelectedMenu
+        {
+            get { return (Entities.Menu)GetValue(SelectedMenuProperty); }
+            set { SetValue(SelectedMenuProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedMenu.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedMenuProperty =
+            DependencyProperty.Register("SelectedMenu", typeof(Entities.Menu), typeof(MainWindow), new PropertyMetadata(null));
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,14 +53,6 @@ namespace MM.Medical.Client.Views
             LoadMenus();
             UpdateTime();
             LoadTcp();
-            //LoadRFID();
-        }
-
-        private async void LoadRFID()
-        {
-            var result = await RFIDManager.Instance.Load();
-            if (!result.Item1)
-                Alert.ShowMessage(false, AlertType.Error, $"采集设备获取失败,{ result.Item2 }");
         }
 
         private async void LoadTcp()
@@ -214,8 +216,7 @@ namespace MM.Medical.Client.Views
 
         private void Menu_Selected(object sender, SelectionChangedEventArgs e)
         {
-            Entities.Menu menu = (sender as ListView).SelectedItem as Entities.Menu;
-            if (menu != null)
+            if (sender is ListView lv && lv.SelectedItem is Entities.Menu menu)
             {
                 if (sender != lvMenus) lvMenus.SelectedIndex = -1;
                 if (!string.IsNullOrEmpty(menu.Identify))
