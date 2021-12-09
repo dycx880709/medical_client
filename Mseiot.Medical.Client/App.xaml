@@ -53,9 +53,6 @@
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
             </Style>
-            <Style TargetType="{x:Type controls:CustomTextBox}" BasedOn="{StaticResource {x:Type controls:CustomTextBox}}">
-                <Setter Property="Foreground" Value="{DynamicResource Color_Font_Primary}"/>
-            </Style>
             <Style TargetType="{x:Type TextBox}" x:Key="editorFormItemInput" BasedOn="{StaticResource {x:Type TextBox}}">
                 <Setter Property="Width" Value="200"/>
             </Style>
