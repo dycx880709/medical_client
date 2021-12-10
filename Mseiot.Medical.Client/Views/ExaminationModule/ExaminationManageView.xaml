@@ -28,7 +28,7 @@
             </controls:CustomGroupBox.Style>
             <controls:CustomGroupBox.HeaderMenu>
                 <StackPanel Orientation="Horizontal">
-                    <ToggleButton x:Name="tb_check" Width="60" IsChecked="{Binding IsDoctorVisit, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="StartCheck_Click" VerticalAlignment="Center" Margin="5,0">
+                    <ToggleButton x:Name="tb_check" Width="60" IsChecked="{Binding IsDoctorVisit, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="StartCheck_Click" VerticalAlignment="Center" Margin="5,0,0,0">
                         <ToggleButton.Style>
                             <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
                                 <Setter Property="Content" Value="出诊"/>

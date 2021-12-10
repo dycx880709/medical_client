@@ -499,7 +499,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\bg.jpg" />
     <Resource Include="Images\Icon\delete.png" />
     <Resource Include="Images\Icon\editor.png" />
     <Resource Include="Images\Icon\show.png" />
