@@ -104,12 +104,12 @@ namespace MM.Medical.Client.Views
             var loginPwd = tbPwd.Text.Trim();
             if (string.IsNullOrEmpty(loginName))
             {
-                MsWindow.ShowDialog("登录名称不能为空");
+                Alert.ShowMessage(true, AlertType.Warning, "登录名称不能为空");
                 return;
             }
             if (string.IsNullOrEmpty(loginPwd))
             {
-                MsWindow.ShowDialog("登录密码不能为空");
+                Alert.ShowMessage(true, AlertType.Warning, "登录密码不能为空");
                 return;
             }
             btLogin.IsEnabled = false;
