@@ -196,7 +196,7 @@ namespace MM.Medical.Client.Views
         {
             if (e.Module == Command.Module_Appointment)
             {
-                if (e.Method == Command.ChangeStatus_Appointment)
+                if (e.Method == Command.Change_Appointment)
                 {
                     var appointment = Newtonsoft.Json.JsonConvert.DeserializeObject<Appointment>(System.Text.Encoding.UTF8.GetString(e.Content));
                     if (appointment.ConsultingRoomName.Equals(CacheHelper.ConsultingRoomName))

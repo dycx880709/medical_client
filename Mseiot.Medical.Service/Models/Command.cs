@@ -13,7 +13,7 @@ namespace Mseiot.Medical.Service.Models
 
         public const byte Module_Appointment = 1;
         public const byte Allot_Appointment = 0;
-        public const byte ChangeStatus_Appointment = 1;
+        public const byte Change_Appointment = 1;
 
         public const byte Module_Version = 100;
         public const byte New_Version = 0;

@@ -53,7 +53,7 @@ namespace MM.Medical.Client.Views
 
         private void TcpProxy_ReceiveMessaged(object sender, Ms.Libs.TcpLib.Message e)
         {
-            if (e.Module == Command.Module_Appointment && e.Method == Command.ChangeStatus_Appointment)
+            if (e.Module == Command.Module_Appointment && e.Method == Command.Change_Appointment)
             {
                 var appointment = Newtonsoft.Json.JsonConvert.DeserializeObject<Appointment>(Encoding.UTF8.GetString(e.Content));
                 this.Dispatcher.Invoke(() =>
@@ -66,8 +66,7 @@ namespace MM.Medical.Client.Views
                     }
                     else
                     {
-                        condition.ConsultingRoomName = appointment.ConsultingRoomName;
-                        condition.AppointmentStatus = appointment.AppointmentStatus;
+                        appointment.CopyTo(condition);
                     }
                 });
             }

@@ -111,7 +111,6 @@ namespace MM.Medical.Client.Views
             sk.Keys.AddRange(new List<string> { "℃", "°" });
             sk.Keys.AddRange(new List<string> { "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ" });
             sk.Keys.AddRange(new List<string> { "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω" });
-            sk.NotifyKey += Sk_NotifyKey;
         }
 
         private void GetSystemSetting()
@@ -123,7 +122,6 @@ namespace MM.Medical.Client.Views
                 var soundPath = SocketProxy.Instance.GetFileRounter() + result.Content.CutshotSound;
                 player.Open(new Uri(soundPath, UriKind.Absolute));
                 var shotcutKey = result.Content.CutshotKeyboard;
-                Console.WriteLine($"按键{ shotcutKey }为截图按键");
                 Application.Current.MainWindow.KeyDown += (_, e) =>
                 {
                     if (this.SelectedExamination != null && 
@@ -216,12 +214,6 @@ namespace MM.Medical.Client.Views
                 cgb_word.Visibility = Visibility.Visible;
                 textBox.SelectionStart = textBox.Text.Length;
             }
-        }
-
-        private void Sk_NotifyKey(object sender, string e)
-        {
-            if (Keyboard.FocusedElement is TextBox tb)
-                tb.Text += e;
         }
 
         private void CloseWord_Click(object sender, RoutedEventArgs e)

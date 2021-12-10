@@ -174,7 +174,7 @@
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查时间"/>
-                    <TextBox IsReadOnly="True">
+                    <TextBox IsReadOnly="True" BorderThickness="0">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                                 <Setter Property="Text" Value="--"/>
@@ -263,22 +263,22 @@
                         </Style>
                     </StackPanel.Resources>
                     <Expander Header="临床诊断" IsExpanded="True">
-                        <TextBox MinHeight="100" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.ClinicalDiagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox MinHeight="100" VerticalContentAlignment="Top" AcceptsReturn="True" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.ClinicalDiagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Expander>
                     <Expander Header="内镜所见" IsExpanded="True">
-                        <TextBox MinHeight="120" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.EndoscopicFindings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox MinHeight="120" VerticalContentAlignment="Top" AcceptsReturn="True" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.EndoscopicFindings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Expander>
                     <Expander Header="镜下诊断" IsExpanded="True">
-                        <TextBox MinHeight="100" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.MicroscopicDiagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox MinHeight="100" VerticalContentAlignment="Top" AcceptsReturn="True" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.MicroscopicDiagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Expander>
                     <Expander Header="活检部位" IsExpanded="True">
-                        <TextBox MinHeight="100" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.BiopsySite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox MinHeight="100" VerticalContentAlignment="Top" AcceptsReturn="True" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.BiopsySite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Expander>
                     <Expander Header="病理诊断" IsExpanded="True">
-                        <TextBox MinHeight="100" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.PathologicalDiagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox MinHeight="100" VerticalContentAlignment="Top" AcceptsReturn="True" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.PathologicalDiagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Expander>
                     <Expander Header="医生建议" IsExpanded="True">
-                        <TextBox MinHeight="100" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.DoctorAdvice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox MinHeight="100" VerticalContentAlignment="Top" AcceptsReturn="True" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.DoctorAdvice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Expander>
                 </StackPanel>
             </ScrollViewer>
