@@ -33,7 +33,7 @@ namespace MM.Medical.Share.Core
             CacheHelper.ClientVersion = $"{version.Major}.{version.Minor}.{version.Build}.{(version.Revision.ToString().Length > 3 ? version.Revision.ToString() : "0" + version.Revision.ToString())}";
             CacheHelper.ProductName = product.Product;
             CacheHelper.ProcessName = Process.GetCurrentProcess().ProcessName;
-            CacheHelper.ApplicationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), compary.Company, $"{ product.Product }_v{version.Major}.{version.Minor}");
+            CacheHelper.ApplicationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), compary.Company, product.Product);
             if (!Directory.Exists(CacheHelper.ApplicationPath))
                 Directory.CreateDirectory(CacheHelper.ApplicationPath);
             if (!Directory.Exists(CacheHelper.TempPath))
