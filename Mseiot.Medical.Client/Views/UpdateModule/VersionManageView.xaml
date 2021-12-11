@@ -16,7 +16,7 @@
     <Grid>
         <msControls:CustomGroupBox Header="版本列表">
             <msControls:CustomGroupBox.HeaderMenu>
-                <Button Content="添加" Click="AddVersion_Click"/>
+                <Button x:Name="bt_version" Content="添加" Click="AddVersion_Click"/>
             </msControls:CustomGroupBox.HeaderMenu>
             <DataGrid x:Name="dgDatas">
                 <DataGrid.Columns>

@@ -1,4 +1,5 @@
-﻿using Ms.Controls;
+﻿using MM.Medical.Client.Core;
+using Ms.Controls;
 using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,7 @@ namespace MM.Medical.Client.Views
         {
             versions.Clear();
             loading.Start("获取版本信息,请稍后");
+            bt_version.IsEnabled = false;
             var result = await SocketProxy.Instance.GetVersions();
             this.Dispatcher.Invoke(() =>
             {
@@ -54,6 +56,19 @@ namespace MM.Medical.Client.Views
                     if (result.Content != null && result.Content != null)
                     {
                         versions.AddRange(result.Content);
+                        var currentCodes = CacheHelper.ClientVersion.Split('.');
+                        bt_version.IsEnabled = result.Content.Any(t =>
+                        {
+                            var codes = t.VersionCode.Split('.');
+                            for (int i = 0; i < codes.Length; i++)
+                            {
+                                if (Convert.ToInt32(codes[i]) > Convert.ToInt32(currentCodes[i]))
+                                {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        });
                     }
                 }
                 else
