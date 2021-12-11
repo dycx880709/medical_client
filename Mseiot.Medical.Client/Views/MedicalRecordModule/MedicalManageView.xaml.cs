@@ -42,7 +42,7 @@ namespace MM.Medical.Client.Views
             var startTime = TimeHelper.ToUnixDate(DateTime.Now);
             var today = TimeHelper.FromUnixTime(startTime);
             dti_examination.StartTime = today.AddDays(-7);
-            dti_examination.EndTime = today.AddDays(7);
+            dti_examination.EndTime = today.AddDays(1);
             dg_examinations.LoadingRow += (o, ex) => ex.Row.Header = ex.Row.GetIndex() + 1;
             LoadExaminationInfos();
             this.DataContext = this;

@@ -33,7 +33,7 @@ namespace Mseiot.Medical.Service.Services
         /// </summary>
         /// <param name="versionIDs"></param>
         /// <returns></returns>
-        public Task<MsResult<bool>> RemoveVersions(List<string> versionIDs)
+        public Task<MsResult<bool>> RemoveVersions(List<int> versionIDs)
         {
             return HttpProxy.DeleteMessage<bool>("api/version/remove", new KeyValuePair<string, string>("versionIDs", string.Join(",", versionIDs)));
         }

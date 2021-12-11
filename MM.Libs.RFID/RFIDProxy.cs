@@ -60,7 +60,7 @@ namespace MM.Libs.RFID
 
                             NotifyDeviceStatusChanged?.Invoke(this, true);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             NotifyDeviceStatusChanged?.Invoke(this, false);
 

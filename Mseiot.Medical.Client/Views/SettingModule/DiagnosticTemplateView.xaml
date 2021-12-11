@@ -17,7 +17,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Path x:Name="path" Data="M2,0,2,10,10,5Z" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
+                <Ellipse x:Name="path" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
                 <Grid x:Name="gd_content" Grid.Column="1" Margin="5,0">
                     <TextBox x:Name="tb_name" Background="Transparent" IsReadOnly="True" IsHitTestVisible="False" HorizontalAlignment="Left" Width="Auto"
                         MinWidth="{DynamicResource InputElementWidth}" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
@@ -138,12 +138,12 @@
                         </Grid.RowDefinitions>
                         <GroupBox Header="内镜所见" Margin="5">
                             <Border x:Name="border1" Margin="5">
-                                <TextBox x:Name="tb_modsee" Text="{Binding Modsee, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextWrapping="Wrap" Height="{Binding ActualHeight, ElementName=border1}" Width="{Binding ActualWidth, ElementName=border1}"/>
+                                <TextBox x:Name="tb_modsee" AcceptsReturn="True" Text="{Binding Modsee, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextWrapping="Wrap" Height="{Binding ActualHeight, ElementName=border1}" Width="{Binding ActualWidth, ElementName=border1}"/>
                             </Border>
                         </GroupBox>
                         <GroupBox Header="镜下诊断" Grid.Row="1" Margin="5">
                             <Border x:Name="border2" Margin="5">
-                                <TextBox x:Name="tb_moddia" Text="{Binding Moddia, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextWrapping="Wrap" Height="{Binding ActualHeight, ElementName=border2}" Width="{Binding ActualWidth, ElementName=border1}"/>
+                                <TextBox x:Name="tb_moddia" AcceptsReturn="True" Text="{Binding Moddia, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextWrapping="Wrap" Height="{Binding ActualHeight, ElementName=border2}" Width="{Binding ActualWidth, ElementName=border1}"/>
                             </Border>
                         </GroupBox>
                     </Grid>

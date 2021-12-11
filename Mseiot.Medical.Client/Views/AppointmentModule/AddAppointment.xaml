@@ -49,7 +49,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="身份证号"/>
-                <TextBox>
+                <TextBox x:Name="tb_id">
                     <TextBox.Text>
                         <Binding Path="IDCard" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
                             <Binding.ValidationRules>

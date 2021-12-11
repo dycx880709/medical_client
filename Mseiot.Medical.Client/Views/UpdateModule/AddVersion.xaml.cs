@@ -1,14 +1,16 @@
-﻿using Microsoft.Win32;
+﻿using MM.Medical.Client.Core;
 using Ms.Controls;
 using Ms.Libs.SysLib;
-using Mseiot.Medical.Service.Services;
-using System;
 using System.Collections.Generic;
+using System;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Version = Mseiot.Medical.Service.Entities.Version;
+using Mseiot.Medical.Service.Services;
 
 namespace MM.Medical.Client.Views
 {
@@ -17,138 +19,78 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class AddVersion : UserControl
     {
-        private Loading loading;
-        private Version version;
+        public Version Version { get; private set; }
+        public bool IsSuccess { get; private set; }
 
-        #region 构造器
+        private Version origin;
+        private Loading loading;
 
         public AddVersion(Version version, Loading loading)
         {
             InitializeComponent();
-            this.version = version;
             this.loading = loading;
-            this.Loaded += AddVersion_Loaded;
-        }
-
-        private void AddVersion_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.DataContext = this.version;
-        }
-
-        #endregion
-
-        public async Task<bool> Save()
-        {
-            #region 输入有效性验证
-            if (string.IsNullOrEmpty(version.Code))
+            if (version != null)
             {
-                MsWindow.ShowDialog("版本号不能为空");
-                return false;
-            }
-
-            #region 版本号有效性校验
-            if (!VersionCodeValidate())
-            {
-                MsWindow.ShowDialog("版本号校验未通过");
-                tbVersionCode.Focus();
-                return false;
-            }
-            #endregion
-
-            if (string.IsNullOrEmpty(version.LocalPath))
-            {
-                MsWindow.ShowDialog("上传新版本文件不能为空");
-                return false;
-            }
-
-            #endregion
-
-            #region  验证版本
-
-            var result = await SocketProxy.Instance.VerifyVersion(this.version);
-            if (!result.IsSuccess)
-            {
-                MsWindow.ShowDialog(result.Error);
-                return false;
-            }
-
-            #endregion
-
-            var panelResult = false;
-            loading.Start("上传版本中,请稍后");
-            #region 文件上传
-            if (string.IsNullOrEmpty(version.LocalPath))
-            {
-                loading.SetMessage("版本文件上传中");
-                var fileSize = FileHelper.GetFileLength(version.LocalPath);
-                var upload = await SocketProxy.Instance.UploadFile(version.LocalPath);
-                if(!upload.IsSuccess)
-                {
-                    MsWindow.ShowDialog($"上传版本失败:{ upload.Error }");
-                    return false;
-                }
-                else
-                {
-                    version.Path = upload.Content;
-                    version.Size = fileSize;
-                    version.Time = TimeHelper.ToUnixTime(DateTime.Now);
-                }
-            }
-            #endregion
-            var res = await SocketProxy.Instance.AddVersion(this.version);
-            loading.Stop();
-            if (res.IsSuccess)
-            {
-                version.VersionID = res.Content;
-                MsWindow.ShowDialog("版本更新成功,软件将重启");
-                panelResult = true;
+                this.Version = version.Copy();
+                this.origin = version; 
             }
             else
             {
-                MsWindow.ShowDialog($"版本更新失败,{ res.Error }");
-                panelResult = false;
+                Version = new Version();
             }
-            return panelResult;
+            Version.VersionCode = CacheHelper.ClientVersion;
+            DataContext = this;
         }
 
-        private bool VersionCodeValidate()
+        private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool isValidVersionCode = true;
-            if (this.version != null && !string.IsNullOrEmpty(version.Code) && version.Code.Contains("."))
+            loading.Start("压缩文件中,请稍后");
+            string zipFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "update.zip");
+            var zipResult = await ZipHelper.ZipDirectory(AppDomain.CurrentDomain.BaseDirectory, zipFileName);
+            if (zipResult.IsSuccess)
             {
-                var codes = version.Code.Split('.');
-                if (codes.Length == 4)
+                this.Dispatcher.Invoke(() => loading.SetMessage("上传版本中,请稍后"));
+                var fi = new FileInfo(zipFileName);
+                Version.Size = fi.Length;
+                var uploadResult = await SocketProxy.Instance.UploadFile(zipFileName);
+                if (uploadResult.IsSuccess)
                 {
-                    foreach (var code in codes)
+                    loading.SetMessage("保存版本信息中,请稍后");
+                    Version.UserID = CacheHelper.CurrentUser.UserID;
+                    Version.Path = uploadResult.Content;
+                    var result = await SocketProxy.Instance.AddVersion(Version);
+                    this.Dispatcher.Invoke(() =>
                     {
-                        if (!uint.TryParse(code, out var ucode))
+                        loading.Stop();
+                        if (result.IsSuccess)
                         {
-                            isValidVersionCode = false;
-                            break;
+                            Version.VersionID = result.Content;
+                            Version.CopyTo(origin);
+                            this.Close(true);
                         }
-                    }
+                        else
+                        {
+                            Alert.ShowMessage(false, AlertType.Error, result.Error);
+                        }
+                    });
                 }
-                else isValidVersionCode = false;
+                else
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        Alert.ShowMessage(false, AlertType.Error, "上传版本失败");
+                        loading.Stop();
+                    }); 
+                }
             }
-            else isValidVersionCode = false;
-            return isValidVersionCode;
-        }
-
-        #region 选择文件
-
-        //选择文件
-        private void SelectFile_Click(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog()
+            else
             {
-                Filter = $"Zip压缩包|*.zip;",
-                Multiselect = false,
-                RestoreDirectory = true
-            };
-            if (openFileDialog.ShowDialog().Value)
-                version.LocalPath = openFileDialog.FileName;
+                this.Dispatcher.Invoke(()=>
+                {
+                    Alert.ShowMessage(false, AlertType.Error, zipResult.Error);
+                    loading.Stop();
+                });
+            }
         }
-
-        #endregion
     }
 }

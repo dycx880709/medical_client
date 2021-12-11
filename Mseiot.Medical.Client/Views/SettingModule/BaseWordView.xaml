@@ -41,7 +41,7 @@
                                         <ColumnDefinition Width="15"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Path x:Name="path" Data="M2,0,2,10,10,5Z" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
+                                    <Ellipse x:Name="path" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
                                     <TextBox x:Name="tb_name" IsHitTestVisible="False" Grid.Column="1" IsReadOnly="True" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
                                 </Grid>
                                 <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">

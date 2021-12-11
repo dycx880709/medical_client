@@ -41,8 +41,10 @@ namespace MM.Medical.Client.Module.Decontaminate
             this.Loaded -= DecontaminateTaskManage_Loaded;
             pager.PageChanged += Pager_PageChanged;
             lvDatas.ItemsSource = DecontaminateTasks;
-            dti.StartTime = DateTime.Now.AddDays(-30);
-            dti.EndTime = DateTime.Now.AddDays(30);
+            var startTime = TimeHelper.ToUnixDate(DateTime.Now);
+            var today = TimeHelper.FromUnixTime(startTime);
+            dti.StartTime = today.AddDays(-7);
+            dti.EndTime = today.AddDays(1);
             LoadDecontaminateTasks();
         }
 

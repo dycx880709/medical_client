@@ -113,6 +113,10 @@ namespace MM.Medical.Client.Views
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         }
                     }
+                    else
+                    {
+                        room.IsSelected = false;
+                    }
                 }
             }
         }

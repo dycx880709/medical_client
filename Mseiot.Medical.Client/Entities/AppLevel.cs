@@ -55,6 +55,7 @@ namespace MM.Medical.Client.Entities
                                 new AppLevel { Name="医学词库", Level="356", Identify="MM.Medical.Client.Views.MedicalWordView" },
                                 new AppLevel { Name="诊室管理", Level="357", Identify="MM.Medical.Client.Views.ConsultingManageView" },
                                 new AppLevel { Name="数据备份", Level="358", Identify="MM.Medical.Client.Views.BackupDBManage" },
+                                new AppLevel { Name="版本管理", Level="359", Identify="MM.Medical.Client.Views.VersionManageView" },
                             }
                         }
                     }

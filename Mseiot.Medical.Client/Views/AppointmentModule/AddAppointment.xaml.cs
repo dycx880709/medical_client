@@ -74,7 +74,7 @@ namespace MM.Medical.Client.Views
                 Alert.ShowMessage(true, AlertType.Error, "患者年龄输入不合法");
                 return;
             }
-            if (!string.IsNullOrEmpty(Appointment.IDCard) && Appointment.IDCard.Length != 18)
+            if (!string.IsNullOrEmpty(tb_id.Text) && tb_id.Text.Length != 18)
             {
                 Alert.ShowMessage(true, AlertType.Error, "患者身份证长度输入不合法");
                 return;
