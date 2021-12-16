@@ -39,9 +39,15 @@ namespace MM.Medical.Client.Views
                     epv.video.Dispose();
                     this.DialogResult = true;
                 }
-                else Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败2,{ result.Error }");
+                else
+                {
+                    Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败2,{ result.Error }");
+                }
             }
-            else Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败1,{ result.Error }");
+            else
+            {
+                Alert.ShowMessage(true, AlertType.Error, $"保存检查信息失败1,{ result.Error }");
+            }
         }
     }
 }

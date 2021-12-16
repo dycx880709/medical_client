@@ -340,6 +340,7 @@ namespace MM.Medical.Client.Views
                                 else
                                 {
                                     Alert.ShowMessage(false, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
+                                    tb.IsChecked = !tb.IsChecked.Value;
                                 }
                                 loading.Stop();
                             });

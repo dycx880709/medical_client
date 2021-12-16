@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <controls:CustomGroupBox Header="系统设置 \ 数据备份">
+        <controls:CustomGroupBox Header="系统管理 \ 数据备份">
             <controls:CustomGroupBox.AttachContent>
                 <ControlTemplate>
 

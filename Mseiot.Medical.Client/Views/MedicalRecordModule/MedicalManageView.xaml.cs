@@ -70,7 +70,10 @@ namespace MM.Medical.Client.Views
                 pager.TotalCount = result.Content.Total;
                 dg_examinations.ItemsSource = result.Content.Results;
             }
-            else Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
+            else
+            {
+                Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
+            }
         }
 
         private void Get_Click(object sender, RoutedEventArgs e)
@@ -86,7 +89,9 @@ namespace MM.Medical.Client.Views
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             if (dg_examinations.SelectedValue is Examination examination)
+            {
                 ShowExaminationPartView(examination);
+            }
         }
         private void Report_Click(object sender, RoutedEventArgs e)
         {
@@ -104,7 +109,9 @@ namespace MM.Medical.Client.Views
         private void Examination_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (dg_examinations.SelectedValue is Examination examination)
+            {
                 ShowExaminationPartView(examination);
+            }
         }
 
         private void ShowExaminationPartView(Examination examination, bool isReadOnly = true)
@@ -116,9 +123,15 @@ namespace MM.Medical.Client.Views
                 window.epv.IsReadOnly = isReadOnly;
                 window.epv.SelectedExamination = result.Content;
                 window.epv.Background = Brushes.White;
-                window.ShowDialog();
+                if (window.ShowDialog().Value)
+                {
+                    result.Content.CopyTo(examination);
+                }
             }
-            else Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
+            else
+            {
+                Alert.ShowMessage(true, AlertType.Error, $"获取病历信息失败,{ result.Error }");
+            }
         }
 
         private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -131,7 +144,9 @@ namespace MM.Medical.Client.Views
                 {
                     var dgr = ControlHelper.GetParentObject<DataGridRow>(element);
                     if (dgr != null && dgr.DataContext is Examination examination)
+                    {
                         ShowExaminationPartView(examination);
+                    }
                 }
             }
         }
@@ -139,7 +154,9 @@ namespace MM.Medical.Client.Views
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             if (dg_examinations.SelectedValue is Examination examination)
+            {
                 ShowExaminationPartView(examination, false);
+            }
         }
     }
 }

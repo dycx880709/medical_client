@@ -19,7 +19,7 @@
         </Style>
     </UserControl.Resources>
 
-    <controls:CustomGroupBox Header="系统设置 \ 系统设置">
+    <controls:CustomGroupBox Header="系统管理 \ 系统设置">
         <Grid VerticalAlignment="Top" HorizontalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>

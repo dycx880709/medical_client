@@ -48,7 +48,7 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <controls:CustomGroupBox Header="系统设置 \ 医学词库">
+    <controls:CustomGroupBox Header="系统管理 \ 医学词库">
         <controls:CustomGroupBox.AttachContent>
             <ControlTemplate>
                 <StackPanel Orientation="Horizontal">

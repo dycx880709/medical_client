@@ -72,7 +72,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"新建诊室名称不能为空", "软件提示");
+                        Alert.ShowMessage(false, AlertType.Error, "新建诊室名称不能为空");
                         return;
                     }
                     var add = new ConsultingRoom { Name = tb.Text, ExaminationTypes = cb.Text };
@@ -89,7 +89,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        MsWindow.ShowDialog($"编辑诊室名称不能为空", "软件提示");
+                        Alert.ShowMessage(false, AlertType.Error, "编辑诊室名称不能为空");
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         tb.GetBindingExpression(ComboBox.TextProperty).UpdateTarget();
                         return;
@@ -108,7 +108,7 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            MsWindow.ShowDialog($"更新诊室失败,{ result.Error }", "软件提示");
+                            Alert.ShowMessage(false, AlertType.Error, $"更新诊室失败,{ result.Error }");
                             cb.GetBindingExpression(ComboBox.TextProperty).UpdateTarget();
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         }
@@ -145,11 +145,14 @@ namespace MM.Medical.Client.Views
                 {
                     if (room.IsUsed)
                     {
-                        MsWindow.ShowDialog($"诊室使用中,删除诊室失败", "软件提示");
+                        Alert.ShowMessage(false, AlertType.Error, "诊室使用中,删除诊室失败");
                         return;
                     }
                     var result = loading.AsyncWait("删除诊室中,请稍后", SocketProxy.Instance.RemoveConsultingRoom(room.ConsultingRoomID));
-                    if (!result.IsSuccess) MsWindow.ShowDialog($"删除诊室失败,{ result.Error }", "软件提示");
+                    if (!result.IsSuccess)
+                    {
+                        Alert.ShowMessage(false, AlertType.Error, $"删除诊室失败,{ result.Error }");
+                    }
                     else rooms.Remove(room);
                 }
             }
@@ -179,7 +182,9 @@ namespace MM.Medical.Client.Views
             if (room != null)
             {
                 if (room.ConsultingRoomID == 0)
+                {
                     (lb_rooms.ItemsSource as ObservableCollection<ConsultingRoom>).Remove(room);
+                }
                 else
                 {
                     var index = lb_rooms.Items.IndexOf(room);
@@ -203,10 +208,14 @@ namespace MM.Medical.Client.Views
                     var cbi = cb_type.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
                     var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
                     if (cb.IsChecked.Value)
+                    {
                         cb_type.Text += cb.Content.ToString() + ",";
+                    }
                 }
                 if (!string.IsNullOrEmpty(cb_type.Text))
+                {
                     cb_type.Text = cb_type.Text.Substring(0, cb_type.Text.Length - 1);
+                }
             }
         }
 
@@ -216,15 +225,35 @@ namespace MM.Medical.Client.Views
             {
                 var selectedTypes = new List<string>();
                 if (!string.IsNullOrEmpty(room.ExaminationTypes))
-                    selectedTypes = room.ExaminationTypes.Split(',').ToList();
-                for (int i = 0; i < cb_type.Items.Count; i++)
                 {
-                    var cbi = cb_type.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
-                    if (cbi != null)
+                    selectedTypes = room.ExaminationTypes.Split(',').ToList();
+                }
+                void UpdateSelectedType()
+                {
+                    for (int i = 0; i < cb_type.Items.Count; i++)
                     {
-                        var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
-                        cb.IsChecked = selectedTypes.Any(t => t.Equals(cb_type.Items[i].ToString()));
+                        var cbi = cb_type.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
+                        if (cbi != null)
+                        {
+                            var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
+                            cb.IsChecked = selectedTypes.Any(t => t.Equals(cb_type.Items[i].ToString()));
+                        }
                     }
+                }
+                if (cb_type.ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+                {
+                    UpdateSelectedType();
+                }
+                else
+                {
+                    Task.Run(async () =>
+                    {
+                        while (cb_type.ItemContainerGenerator.Status != System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+                        {
+                            await Task.Delay(100);
+                        }
+                        this.Dispatcher.Invoke(()=> UpdateSelectedType());
+                    });
                 }
             }
         }

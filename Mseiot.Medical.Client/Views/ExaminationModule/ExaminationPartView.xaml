@@ -51,6 +51,16 @@
                 </Grid>
             </Grid>
             <DataTemplate.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding VideoPath}" Value="{x:Null}"/>
+                        <Condition Binding="{Binding MediaType}" Value="Video"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Visibility" TargetName="mb_export" Value="Hidden"/>
+                        <Setter Property="Visibility" TargetName="mb_remove" Value="Hidden"/>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
                 <DataTrigger Binding="{Binding Path}" Value="{x:Null}">
                     <Setter Property="Source" TargetName="img" Value="{Binding Buffer}"/>
                     <Setter Property="Visibility" TargetName="tb_msg" Value="Visible"/>
@@ -114,6 +124,10 @@
                 <StackPanel>
                     <TextBlock Text="年龄"/>
                     <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Birthday}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="电话号码"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Telephone}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查类型"/>
