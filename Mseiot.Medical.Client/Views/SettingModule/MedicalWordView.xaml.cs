@@ -63,9 +63,9 @@ namespace MM.Medical.Client.Views
                 {
                     var medicalWord = new MedicalWord() { ParentID = mediacalWordID, IsSelected = true };
                     medicalWords.Add(medicalWord);
+                    lb.UpdateLayout();
                     lb.ScrollIntoView(medicalWord);
                     lb.SelectedValue = medicalWord;
-                    lb.UpdateLayout();
                     var lbv = lb.ItemContainerGenerator.ContainerFromIndex(lb.Items.Count - 1) as ListBoxItem;
                     if (lbv != null)
                     {

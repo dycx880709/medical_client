@@ -30,6 +30,7 @@ namespace MM.Medical.Client.Module.Decontaminate
     /// </summary>
     public partial class DecontaminateTaskManage : UserControl
     {
+        private bool isInit = false;
         public DecontaminateTaskManage()
         {
             InitializeComponent();
@@ -38,13 +39,16 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void DecontaminateTaskManage_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Loaded -= DecontaminateTaskManage_Loaded;
-            pager.PageChanged += Pager_PageChanged;
-            lvDatas.ItemsSource = DecontaminateTasks;
-            var startTime = TimeHelper.ToUnixDate(DateTime.Now);
-            var today = TimeHelper.FromUnixTime(startTime);
-            dti.StartTime = today.AddDays(-7);
-            dti.EndTime = today.AddDays(1);
+            if (!this.isInit)
+            {
+                pager.PageChanged += Pager_PageChanged;
+                lvDatas.ItemsSource = DecontaminateTasks;
+                var startTime = TimeHelper.ToUnixDate(DateTime.Now);
+                var today = TimeHelper.FromUnixTime(startTime);
+                dti.StartTime = today.AddDays(-7);
+                dti.EndTime = today.AddDays(1);
+                this.isInit = true;
+            }
             LoadDecontaminateTasks();
         }
 
