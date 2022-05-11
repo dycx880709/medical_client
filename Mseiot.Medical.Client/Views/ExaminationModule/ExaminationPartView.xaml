@@ -363,7 +363,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="600"/>
                 </Grid.ColumnDefinitions>
                 <controls:CustomGroupBox Margin="5">
                     <controls:CustomGroupBox.Style>
@@ -443,7 +443,7 @@
                             <TextBlock Text="段"/>
                         </StackPanel>
                     </controls:CustomGroupBox.Header>
-                    <ListBox SelectedValue="{Binding SelectedMedia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SelectedExamination.Videos}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}">
+                    <ListBox VerticalContentAlignment="Stretch" SelectedValue="{Binding SelectedMedia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SelectedExamination.Videos}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
@@ -478,7 +478,11 @@
                             <TextBlock Text="张"/>
                         </StackPanel>
                     </controls:CustomGroupBox.Header>
-                    <ListBox SelectedValue="{Binding SelectedMedia, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SelectedExamination.Images}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}"/>
+                    <ListBox Style="{StaticResource WrappingListBoxStyle}"
+                        SelectedValue="{Binding SelectedMedia, ElementName=uc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        ItemsSource="{Binding SelectedExamination.Images}" 
+                        ItemTemplate="{StaticResource ExaminationMediaDataTemplate}"
+                    />
                 </controls:CustomGroupBox>
                 <controls:CustomGroupBox x:Name="cgb_word" Visibility="Collapsed" Grid.Row="1" Margin="5,0" Header="特殊字符">
                     <controls:CustomGroupBox.AttachContent>
