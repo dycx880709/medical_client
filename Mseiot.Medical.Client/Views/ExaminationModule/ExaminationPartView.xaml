@@ -359,7 +359,7 @@
                 </Grid.Style>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="400"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -443,7 +443,11 @@
                             <TextBlock Text="段"/>
                         </StackPanel>
                     </controls:CustomGroupBox.Header>
-                    <ListBox VerticalContentAlignment="Stretch" SelectedValue="{Binding SelectedMedia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SelectedExamination.Videos}" ItemTemplate="{StaticResource ExaminationMediaDataTemplate}">
+                    <ListBox Style="{StaticResource WrappingListBoxStyle}" VerticalAlignment="Top"
+                        SelectedValue="{Binding SelectedMedia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        ItemsSource="{Binding SelectedExamination.Videos}" 
+                        ItemTemplate="{StaticResource ExaminationMediaDataTemplate}"
+                    >
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal" IsItemsHost="True"/>
