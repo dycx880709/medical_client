@@ -68,7 +68,7 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            if (ConfirmWindow.Show("是否继续?"))
+            if (MsPrompt.ShowDialog("是否继续?"))
             {
                 if (sender is FrameworkElement element && element.DataContext is Enzyme enzyme)
                 {
@@ -97,9 +97,9 @@ namespace MM.Medical.Client.Module.Decontaminate
             Enzyme enzyme = (sender as FrameworkElement).Tag as Enzyme;
             if (enzyme != null)
             {
-                foreach(var item in Enzymes)
+                foreach (var item in Enzymes)
                 {
-                    if(item.EnzymeID == enzyme.EnzymeID)
+                    if (item.EnzymeID == enzyme.EnzymeID)
                     {
                         item.Enabled = true;
                     }
@@ -110,7 +110,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                 }
             }
 
-           var result= await SocketProxy.Instance.ChangeModifyEnzymeSelected(enzyme);
+            var result = await SocketProxy.Instance.ChangeModifyEnzymeSelected(enzyme);
             if (result.IsSuccess)
             {
                 Alert.ShowMessage(true, AlertType.Success, "设置成功");

@@ -44,14 +44,20 @@ namespace MM.Medical.Client.Module.Decontaminate
         #region 数据
         public ObservableCollection<DecontaminateFlow> DecontaminateFlows { get; set; } = new ObservableCollection<DecontaminateFlow>();
 
-        private async void LoadDecontaminateFlows()
+        private void LoadDecontaminateFlows()
         {
             DecontaminateFlows.Clear();
-            loading.Start("获取流程列表中,请稍后");
-            var result = await SocketProxy.Instance.GetDecontaminateFlows();
-            if (result.IsSuccess) DecontaminateFlows.AddRange(result.Content);
-            else Alert.ShowMessage(true, AlertType.Error, $"获取流程列表失败,{ result.Error }");
+            var result = loading.AsyncWait("获取流程列表中,请稍后", SocketProxy.Instance.GetDecontaminateFlows());
+            if (result.IsSuccess) 
+                DecontaminateFlows.AddRange(result.Content);
+            else 
+                Alert.ShowMessage(true, AlertType.Error, $"获取流程列表失败,{ result.Error }");
             loading.Stop();
+            this.UpdateLayout();
+            if (lvDecontaminateFlows.Items.Count > 0)
+            {
+                lvDecontaminateFlows.SelectedIndex = 0;
+            }
         }
 
         #endregion
@@ -68,7 +74,7 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void RemoveFlow_Click(object sender, RoutedEventArgs e)
         {
-            if (ConfirmWindow.Show("是否继续?"))
+            if (MsPrompt.ShowDialog("是否继续?"))
             {
                 if (sender is FrameworkElement element && element.DataContext is DecontaminateFlow decontaminateFlow)
                 {
@@ -150,9 +156,12 @@ namespace MM.Medical.Client.Module.Decontaminate
         {
             if (sender is FrameworkElement element && element.DataContext is DecontaminateFlowStep decontaminateFlowStep)
             {
-                var result = loading.AsyncWait("删除流程步骤中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlowSteps(new List<int> { decontaminateFlowStep.DecontaminateFlowStepID }));
-                if (result.IsSuccess) LoadDecontaminateSteps();
-                else Alert.ShowMessage(true, AlertType.Error, $"流程步骤删除失败,{ result.Error }");
+                if (MsPrompt.ShowDialog("是否继续"))
+                {
+                    var result = loading.AsyncWait("删除流程步骤中,请稍后", SocketProxy.Instance.RemoveDecontaminateFlowSteps(new List<int> { decontaminateFlowStep.DecontaminateFlowStepID }));
+                    if (result.IsSuccess) LoadDecontaminateSteps();
+                    else Alert.ShowMessage(true, AlertType.Error, $"流程步骤删除失败,{ result.Error }");
+                }
             }
         }
 

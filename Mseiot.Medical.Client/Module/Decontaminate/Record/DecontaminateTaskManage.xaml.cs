@@ -62,7 +62,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             pager.PageChanged -= Pager_PageChanged;
             pager.SelectedCount = lvDatas.GetFullCountWithoutScroll();
             DecontaminateTasks.Clear();
-            loading.Start("获取内窥镜列表中,请稍后");
+            loading.Start("获取清洗记录中,请稍后");
             var result = await SocketProxy.Instance.GetDecontaminateTasks(
                 pager.PageIndex,
                 pager.SelectedCount,
@@ -76,12 +76,20 @@ namespace MM.Medical.Client.Module.Decontaminate
                 if (result.IsSuccess)
                 {
                     DecontaminateTasks.AddRange(result.Content.Results);
+                    for (int i = 0; i < DecontaminateTasks.Count; i++)
+                    {
+                        DecontaminateTasks[i].SerialNumber = i + 1;
+                    }
                     pager.TotalCount = result.Content.Total;
                 }
                 loading.Stop();
             });
             pager.PageChanged += Pager_PageChanged;
             areDecontaminateTask.Set();
+            if (lvDatas.Items.Count > 0)
+            {
+                lvDatas.SelectedIndex = 0;
+            }
         }
 
         #endregion

@@ -44,6 +44,21 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(decontaminateFlowStep.Name))
+            {
+                Alert.ShowMessage(true, AlertType.Warning, "流程名称不能为空");
+                return;
+            }
+            if (decontaminateFlowStep.Timeout <= 0)
+            {
+                Alert.ShowMessage(true, AlertType.Warning, "清洗超时必须大于0");
+                return;
+            }
+            if (decontaminateFlowStep.RFIDDeviceID <= 0)
+            {
+                Alert.ShowMessage(true, AlertType.Warning, "采集设备不能为空");
+                return;
+            }
             if (decontaminateFlowStep.DecontaminateFlowID == 0)
             {
                 var result = loading.AsyncWait("新建流程步骤中,请稍后", SocketProxy.Instance.AddDecontaminateFlowStep(decontaminateFlowStep));

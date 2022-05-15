@@ -65,7 +65,7 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            if (ConfirmWindow.Show("是否继续?"))
+            if (MsPrompt.ShowDialog("是否继续?"))
             {
                 var rfidDevice = (sender as FrameworkElement).Tag as RFIDDevice;
                 var result = loading.AsyncWait("删除采集设备中,请稍后", SocketProxy.Instance.RemoveRFIDDevices(new List<int> { rfidDevice.RFIDDeviceID }));

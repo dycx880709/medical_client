@@ -68,14 +68,15 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            if (ConfirmWindow.Show("是否继续?"))
+            if (MsPrompt.ShowDialog("是否继续?"))
             {
                 if (sender is FrameworkElement element && element.DataContext is Endoscope endoscope)
                 {
                     var result = loading.AsyncWait("删除内窥镜中,请稍后", SocketProxy.Instance.RemoveEndoscopes(new List<int> { endoscope.EndoscopeID }));
                     if (result.IsSuccess)
                         LoadEndoscopes();
-                    else Alert.ShowMessage(true, AlertType.Error, $"删除内窥镜失败,{ result.Error }");
+                    else
+                        Alert.ShowMessage(true, AlertType.Error, $"删除内窥镜失败,{ result.Error }");
                 }
             }
         }
@@ -96,7 +97,7 @@ namespace MM.Medical.Client.Module.Decontaminate
 
         private void All_Selected(object sender, RoutedEventArgs e)
         {
-            foreach(var item in Endoscopes)
+            foreach (var item in Endoscopes)
                 item.IsSelected = true;
         }
 

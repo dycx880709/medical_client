@@ -35,6 +35,7 @@
                 </Grid.RowDefinitions>
                 <DataGrid x:Name="lvDatas">
                     <DataGrid.Columns>
+                        <DataGridTextColumn Width="60" Header="序号" Binding="{Binding SerialNumber}"/>
                         <DataGridTextColumn Width="80" Header="内镜编号" Binding="{Binding EndoscopeID,Converter={StaticResource IntToFormatStringConverter},ConverterParameter=6}"/>
                         <DataGridTextColumn Width="120" Header="患者姓名" Binding="{Binding PatientName}"/>
                         <DataGridTextColumn Width="60" Header="年龄" Binding="{Binding PatientBirthday}"/>

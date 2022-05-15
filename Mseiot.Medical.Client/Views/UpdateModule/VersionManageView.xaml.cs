@@ -53,7 +53,7 @@ namespace MM.Medical.Client.Views
             {
                 if (result.IsSuccess)
                 {
-                    if (result.Content != null && result.Content != null)
+                    if (result.Content != null && result.Content.Count > 0)
                     {
                         versions.AddRange(result.Content);
                         var currentCodes = CacheHelper.ClientVersion.Split('.');
@@ -62,13 +62,17 @@ namespace MM.Medical.Client.Views
                             var codes = t.VersionCode.Split('.');
                             for (int i = 0; i < codes.Length; i++)
                             {
-                                if (Convert.ToInt32(codes[i]) > Convert.ToInt32(currentCodes[i]))
+                                if (Convert.ToInt32(codes[i]) < Convert.ToInt32(currentCodes[i]))
                                 {
-                                    return false;
+                                    return true;
                                 }
                             }
-                            return true;
+                            return false;
                         });
+                    }
+                    else
+                    {
+                        bt_version.IsEnabled = true;
                     }
                 }
                 else

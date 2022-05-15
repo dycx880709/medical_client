@@ -46,6 +46,10 @@ namespace MM.Medical.Client.Views
         {
             loading.Start("压缩文件中,请稍后");
             string zipFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "update.zip");
+            if (File.Exists(zipFileName))
+            {
+                File.Delete(zipFileName);
+            }
             var zipResult = await ZipHelper.ZipDirectory(AppDomain.CurrentDomain.BaseDirectory, zipFileName);
             if (zipResult.IsSuccess)
             {

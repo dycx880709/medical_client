@@ -16,12 +16,23 @@ namespace Mseiot.Medical.Service.Entities
         Complete
     }
 
-    public class DecontaminateTask:BaseModel
+    public class DecontaminateTask : BaseModel
     {
+        private int serialNumber;
+        public int SerialNumber
+        {
+            get { return serialNumber; }
+            set
+            {
+                serialNumber = value;
+                NotifyPropertyChanged("SerialNumber");
+            }
+        }
+
         /// <summary>
         /// 消洗任务ID
         /// </summary>
-        public int DecontaminateTaskID{ get; set; }
+        public int DecontaminateTaskID { get; set; }
 
         /// <summary>
         /// 清洗员ID
@@ -37,7 +48,7 @@ namespace Mseiot.Medical.Service.Entities
         {
             get { return cleanName; }
             set
-            { 
+            {
                 cleanName = value;
                 NotifyPropertyChanged("CleanName");
             }
@@ -109,8 +120,8 @@ namespace Mseiot.Medical.Service.Entities
         public List<DecontaminateTaskStep> DecontaminateTaskSteps
         {
             get { return decontaminateTaskSteps; }
-            set 
-            { 
+            set
+            {
                 decontaminateTaskSteps = value;
                 NotifyPropertyChanged("DecontaminateTaskSteps");
             }
@@ -130,7 +141,7 @@ namespace Mseiot.Medical.Service.Entities
         Complete
     }
 
-    public class DecontaminateTaskStep:BaseModel
+    public class DecontaminateTaskStep : BaseModel
     {
 
         public int Index { get; set; }
@@ -174,7 +185,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 剩余时间
         /// </summary>
-        public int ResidueTime 
+        public int ResidueTime
         {
             get
             {
@@ -227,7 +238,7 @@ namespace Mseiot.Medical.Service.Entities
         }
     }
 
-    public class RFIDDevice: BaseModel
+    public class RFIDDevice : BaseModel
     {
         /// <summary>
         /// ID
@@ -262,7 +273,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// ID
         /// </summary>
-        public int EndoscopeID 
+        public int EndoscopeID
         {
             get
             {
@@ -275,19 +286,36 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
+        private string factory;
         /// <summary>
         /// 厂家
         /// </summary>
-        public string Factory { get; set; }
+        public string Factory
+        {
+            get { return string.IsNullOrEmpty(factory) ? "" : factory.Trim(); }
+            set { factory = value; }
+        }
 
+        private string model;
         /// <summary>
         /// 型号
         /// </summary>
-        public string Model { get; set; }
+        public string Model
+        {
+            get { return string.IsNullOrEmpty(model) ? "" : model.Trim(); }
+            set { model = value; }
+        }
+
+        private string iMEI;
         /// <summary>
         /// 机身编号
         /// </summary>
-        public string IMEI { get; set; }
+        public string IMEI
+        {
+            get { return string.IsNullOrEmpty(iMEI) ? "" : iMEI.Trim(); }
+            set { iMEI = value; }
+        }
+
         /// <summary>
         /// 采购时间
         /// </summary>
@@ -299,7 +327,7 @@ namespace Mseiot.Medical.Service.Entities
     }
 
     public enum EndoscopeState
-    { 
+    {
         [Description("待用")]
         Waiting,
         [Description("使用中")]
