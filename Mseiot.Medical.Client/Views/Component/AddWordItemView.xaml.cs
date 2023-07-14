@@ -43,7 +43,10 @@ namespace MM.Medical.Client.Views
             if (!string.IsNullOrEmpty(tb_name.Text))
             {
                 var word_back = word.Copy();
-                word_back.Items.AddRange(word_back.Content.Split(','));
+                if (!string.IsNullOrEmpty(word_back.Content))
+                {
+                    word_back.Items.AddRange(word_back.Content.Split(','));
+                }
                 if (this.index >= 0)
                 {
                     word_back.Items[this.index] = tb_name.Text.Trim();

@@ -2,15 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MM.Medical.Decontaminate"
-             xmlns:converts="clr-namespace:Mseiot.Medical.Service.Converts;assembly=Mseiot.Medical.Service"
+             xmlns:cv1="clr-namespace:Ms.Controls.Converters;assembly=Ms.Controls"
+             xmlns:cv2="clr-namespace:MM.Medical.Share.Converters;assembly=MM.Medical.Share"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="Views/Login/LoginView.xaml">
     <Application.Resources>
         <ResourceDictionary>
 
-            <converts:EnumDescriptionConvert x:Key="enumDescriptionConvert"></converts:EnumDescriptionConvert>
-            <converts:YNToCNConvert x:Key="ynToCNConvert"></converts:YNToCNConvert>
-            <converts:IntToFormatString x:Key="intToFormatString"></converts:IntToFormatString>
+            <cv1:EnumDescriptionConvert x:Key="enumDescriptionConvert"></cv1:EnumDescriptionConvert>
+            <cv2:YNToCNConvert x:Key="ynToCNConvert"></cv2:YNToCNConvert>
+            <cv2:IntToFormatString x:Key="intToFormatString"></cv2:IntToFormatString>
 
             <SolidColorBrush x:Key="Color_Primary">#3F80EA</SolidColorBrush>
 

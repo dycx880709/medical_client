@@ -206,11 +206,11 @@ namespace MM.Medical.Client.Views
                 var expander = ControlHelper.GetParentObject<Expander>(textBox);
                 var title = expander.Header.ToString();
                 var medicalWord = MedicalWords.FirstOrDefault(t => t.Name.Equals(title));
-                if (medicalWord == null) tv_medicalWord.ItemsSource = null;
-                else tv_medicalWord.ItemsSource = medicalWord.MedicalWords;
+                tv_medicalWord.ItemsSource = medicalWord != null ? medicalWord.MedicalWords : null;
                 if (title.Equals("内镜所见") || title.Equals("镜下诊断"))
                     ti_template.IsSelected = true;
-                else ti_word.IsSelected = true;
+                else 
+                    ti_word.IsSelected = true;
                 cgb_word.Visibility = Visibility.Visible;
                 textBox.SelectionStart = textBox.Text.Length;
             }

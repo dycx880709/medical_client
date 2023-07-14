@@ -53,10 +53,8 @@ namespace MM.Medical.Client.Views
                 this.playTask = Task.Run(() =>
                 {
                     //var index = 0;
-                    while (true)
+                    while (!token.IsCancellationRequested)
                     {
-                        if (token.IsCancellationRequested)
-                            return;
                         resetEvent.WaitOne();
                         var mat = videoCapture.RetrieveMat();
                         if (mat.Empty())
@@ -68,8 +66,9 @@ namespace MM.Medical.Client.Views
                         }
                         //if (index++ % 2 == 0)
                         {
-                            byte[] buffer = mat.ToBytes(".jpg");
-                            this.Dispatcher.Invoke(() => { ImageSource = buffer; });
+                            //byte[] buffer = mat.ToBytes(".jpg");
+                            //this.Dispatcher.Invoke(() => { ImageSource = buffer; });
+                            this.Dispatcher.Invoke(() => { ImageSource = mat.ToMemoryStream(".jpg"); });
                         }
                         mat.Dispose();
                         resetEvent.Set();
