@@ -11,7 +11,7 @@ namespace Mseiot.Medical.Service.Entities
 {
     public class Version : NotifyPropertyBase
     {
-        private string versionCode;
+        private string code;
         private string content;
         private string localPath;
 
@@ -33,13 +33,13 @@ namespace Mseiot.Medical.Service.Entities
 
         public long Size { get; set; }
 
-        public string VersionCode
+        public string Code
         {
-            get { return versionCode; }
+            get { return code; }
             set
             {
-                versionCode = value;
-                RaisePropertyChanged("VersionCode");
+                code = value;
+                RaisePropertyChanged("Code");
             }
         }
 

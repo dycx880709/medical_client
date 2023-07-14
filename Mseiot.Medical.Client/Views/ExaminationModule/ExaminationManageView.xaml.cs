@@ -304,7 +304,7 @@ namespace MM.Medical.Client.Views
                     }
                     if (CacheHelper.IsDebug)
                     {
-                        var result = loading.AsyncWait("读取内窥镜中,请稍后", SocketProxy.Instance.GetEndoscopeById(1));
+                        var result = loading.AsyncWait("读取内窥镜中,请稍后", SocketProxy.Instance.GetEndoscopeById(0));
                         if (result.IsSuccess)
                             CommitExamination(result.Content);
                         else

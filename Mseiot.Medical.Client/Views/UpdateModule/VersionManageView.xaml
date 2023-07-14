@@ -20,7 +20,7 @@
             </msControls:CustomGroupBox.HeaderMenu>
             <DataGrid x:Name="dgDatas">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="版本" Binding="{Binding VersionCode,ValidatesOnNotifyDataErrors=False}" Width="*"/>
+                    <DataGridTextColumn Header="版本" Binding="{Binding Code,ValidatesOnNotifyDataErrors=False}" Width="*"/>
                     <DataGridTextColumn Header="内容" Binding="{Binding Content,ValidatesOnNotifyDataErrors=False}" Width="*"/>
                     <DataGridTextColumn Header="大小" Binding="{Binding Size,Converter={StaticResource SizeLengthFormatConverter},ValidatesOnNotifyDataErrors=False}" Width="*"/>
                     <DataGridTextColumn Header="时间" Binding="{Binding Time,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm,ValidatesOnNotifyDataErrors=False}" Width="*"/>

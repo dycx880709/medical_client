@@ -38,7 +38,7 @@ namespace MM.Medical.Client.Views
             {
                 Version = new Version();
             }
-            Version.VersionCode = CacheHelper.ClientVersion;
+            Version.Code = CacheHelper.ClientVersion;
             DataContext = this;
         }
 

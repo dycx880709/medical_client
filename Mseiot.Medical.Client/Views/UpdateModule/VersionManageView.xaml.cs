@@ -59,7 +59,7 @@ namespace MM.Medical.Client.Views
                         var currentCodes = CacheHelper.ClientVersion.Split('.');
                         bt_version.IsEnabled = result.Content.Any(t =>
                         {
-                            var codes = t.VersionCode.Split('.');
+                            var codes = t.Code.Split('.');
                             for (int i = 0; i < codes.Length; i++)
                             {
                                 if (Convert.ToInt32(codes[i]) < Convert.ToInt32(currentCodes[i]))
@@ -102,9 +102,9 @@ namespace MM.Medical.Client.Views
         {
             if (sender is FrameworkElement element && element.DataContext is Version version)
             {
-                if (MsPrompt.ShowDialog($"确定删除版本{ version.VersionCode }"))
+                if (MsPrompt.ShowDialog($"确定删除版本{ version.Code }"))
                 {
-                    loading.ShowDialog("删除版本中,请稍后");
+                    loading.Start("删除版本中,请稍后");
                     var result = await SocketProxy.Instance.RemoveVersions(new List<int> { version.VersionID });
                     this.Dispatcher.Invoke(() =>
                     {

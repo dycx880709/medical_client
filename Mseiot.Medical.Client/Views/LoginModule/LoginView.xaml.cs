@@ -41,8 +41,8 @@ namespace MM.Medical.Client.Views
 
         private async Task Updater()
         {
-            var result = await SocketProxy.Instance.VerifyVersion(new Version { VersionCode = CacheHelper.ClientVersion });
-            if (result.IsSuccess && result.Content != null && !string.IsNullOrEmpty(result.Content.VersionCode))
+            var result = await SocketProxy.Instance.VerifyVersion(new Version { Code = CacheHelper.ClientVersion });
+            if (result.IsSuccess && result.Content != null && !string.IsNullOrEmpty(result.Content.Code))
             {
                 var view = new UpdateMain(result.Content);
                 view.ShowDialog("新版本提示");

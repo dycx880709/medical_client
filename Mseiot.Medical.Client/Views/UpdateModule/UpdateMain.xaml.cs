@@ -30,7 +30,7 @@ namespace MM.Medical.Client.Views
             this.version = version;
             tbContent.Text = version.Content;
             tbTime.Text = TimeHelper.FromUnixTime(version.Time).ToString("yyyy/MM/dd HH:mm:ss");
-            tbVersion.Text = version.VersionCode;
+            tbVersion.Text = version.Code;
         }
 
         #endregion

@@ -17,7 +17,7 @@
                     <Run Text="*" Foreground="Transparent" FontSize="{DynamicResource NormalFontSize}"/>
                     <Run  Text="更新版本" FontSize="{DynamicResource NormalFontSize}"/>
                 </TextBlock>
-                <TextBlock Text="{Binding Version.VersionCode}" FontSize="{DynamicResource NormalFontSize}"/>
+                <TextBlock Text="{Binding Version.Code}" FontSize="{DynamicResource NormalFontSize}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock VerticalAlignment="Top" Style="{StaticResource editorFormItemText}">
