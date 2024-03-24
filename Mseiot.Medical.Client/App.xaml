@@ -31,7 +31,7 @@
             <converters:SexConverter x:Key="SexConverter"/>
 
             <sys:Double x:Key="InputElementHeight">36</sys:Double>
-            <sys:Double x:Key="InputElementWidth">180</sys:Double>
+            <sys:Double x:Key="InputElementWidth">190</sys:Double>
             <sys:Double x:Key="ButtonHeight">32</sys:Double>
             <sys:Double x:Key="DataGrdiColumnHeight">48</sys:Double>
             <sys:Double x:Key="DataGrdiRowHeight">40</sys:Double>

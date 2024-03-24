@@ -37,7 +37,7 @@ namespace MM.Medical.Client.Views
         private void LoadProperty()
         {
             var localSetting = CacheHelper.LocalSetting;
-            tb_address.ItemsSource = localSetting.ServerSettingRecords.Select(t => t.Address).ToList();
+            tb_address.ItemsSource = localSetting.ServerSettingRecords.Select(t =>new CustomTextBoxComplete { Label =t.Address, Value = t}).ToList();
             var serverSetting = localSetting.ServerSetting;
             tb_address.Text = serverSetting.Address ?? "";
             tb_httpPort.Text = serverSetting.HttpPort.ToString();

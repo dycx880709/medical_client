@@ -26,7 +26,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <TextBlock Margin="3,0,0,0" Text="{Binding Title}"/>
+                            <TextBlock Margin="3,0,0,0" Text="{Binding Title}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"/>
                             <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
                                 <controls:MediaButton Click="ModifyWord_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
                                 <controls:MediaButton Click="RemoveWord_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
@@ -46,7 +46,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <TextBlock Margin="3,0,0,0" Text="{Binding}"/>
+                            <TextBlock Margin="3,0,0,0" Text="{Binding}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <controls:MediaButton Click="ModifyItem_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
                                 <controls:MediaButton Click="RemoveItem_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>

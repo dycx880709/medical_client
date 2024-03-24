@@ -116,7 +116,7 @@
                         <TextBlock Text="预约日期"/>
                         <controls:DateTimeInterval x:Name="dtiTime"/>
                         <TextBlock Text="患者信息"/>
-                        <controls:CustomTextBox Margin="5,0" Width="215" x:Name="tbSearchName" Watermark="身份证、社保号码、姓名"/>
+                        <controls:CustomTextBox Margin="5,0" Width="255" x:Name="tbSearchName" Watermark="身份证、社保号码、姓名"/>
                         <Button Content="查询" Click="Search_Click" IsDefault="True"/>
                     </StackPanel>
                 </Grid>
@@ -137,7 +137,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border>
-                                            <TextBlock x:Name="tb" Text="{Binding ConsultingRoomName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock x:Name="tb" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Text="{Binding ConsultingRoomName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reserved}">
@@ -162,11 +162,11 @@
                             <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Name}"/>
                             <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Birthday}"/>
                             <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Sex, Converter={StaticResource SexConverter}}"/>
-                            <DataGridTextColumn Width="2*" Header="电话号码" Binding="{Binding Telephone}"/>
-                            <DataGridTextColumn Width="2*" Header="身份证号" Binding="{Binding IDCard}"/>
-                            <DataGridTextColumn Width="2*" Header="社保号码" Binding="{Binding SocialSecurityCode}"/>
+                            <DataGridTextColumn Width="1.5*" Header="电话号码" Binding="{Binding Telephone}"/>
+                            <DataGridTextColumn Width="1.5*" Header="身份证号" Binding="{Binding IDCard}"/>
+                            <DataGridTextColumn Width="1.5*" Header="社保号码" Binding="{Binding SocialSecurityCode}"/>
                             <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding AppointmentType}"/>
-                            <DataGridTextColumn Width="*" Header="预约时间" Binding="{Binding AppointmentTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm}"/>
+                            <DataGridTextColumn Width="1.5*" Header="预约时间" Binding="{Binding AppointmentTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

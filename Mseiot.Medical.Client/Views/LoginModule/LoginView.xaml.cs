@@ -52,7 +52,7 @@ namespace MM.Medical.Client.Views
         private bool InitProperty()
         {
             tbName.Text = LocalSetting.UserRecord.LoginName ?? "";
-            tbName.ItemsSource = LocalSetting.UserRecords.Select(t => t.LoginName).ToList();
+            tbName.ItemsSource = LocalSetting.UserRecords.Select(t => new CustomTextBoxComplete { Label = t.LoginName, Value = t }).ToList();
             tbPwd.Text = LocalSetting.UserRecord.LoginPwd ?? "";
             cbRemember.IsChecked = LocalSetting.IsRemember;
             cbLogin.IsChecked = LocalSetting.AutoLogin;

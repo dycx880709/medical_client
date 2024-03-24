@@ -20,6 +20,7 @@
                 <Ellipse x:Name="path" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
                 <Grid x:Name="gd_content" Grid.Column="1" Margin="5,0">
                     <TextBox x:Name="tb_name" Background="Transparent" IsReadOnly="True" IsHitTestVisible="False" HorizontalAlignment="Left" Width="Auto"
+                        Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
                         MinWidth="{DynamicResource InputElementWidth}" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                         MaxWidth="{Binding ActualWidth, ElementName=gd_content}"/>
                 </Grid>

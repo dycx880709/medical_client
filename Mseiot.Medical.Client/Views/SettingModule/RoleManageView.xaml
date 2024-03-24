@@ -27,7 +27,8 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <TextBox x:Name="tb_name" IsReadOnly="True" IsHitTestVisible="False" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
+                            <TextBox x:Name="tb_name" IsReadOnly="True" IsHitTestVisible="False" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                     Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
                             <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
                                 <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Click="Save_Click" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0"/>
                                 <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" Click="Edit_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="10,0"/>

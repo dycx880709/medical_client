@@ -112,6 +112,10 @@ namespace MM.Medical.Client.Views
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         }
                     }
+                    else
+                    {
+                        role.IsSelected = false;
+                    }
                 }
             }
         }

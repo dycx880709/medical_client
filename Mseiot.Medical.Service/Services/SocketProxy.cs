@@ -48,7 +48,7 @@ namespace Mseiot.Medical.Service.Services
         public async Task<MsResult<string>> UploadFile(string localName)
         {
             var remoteName = Path.GetFileName(localName);
-            return await HttpProxy.UploadFile<string>(localName, remoteName);
+            return await HttpProxy.UploadFile<string>(localName);
         }
     }
 }

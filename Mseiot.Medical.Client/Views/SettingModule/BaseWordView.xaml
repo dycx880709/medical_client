@@ -42,7 +42,8 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Ellipse x:Name="path" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
-                                    <TextBox x:Name="tb_name" IsHitTestVisible="False" Grid.Column="1" IsReadOnly="True" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
+                                    <TextBox x:Name="tb_name" IsHitTestVisible="False" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                             Grid.Column="1" IsReadOnly="True" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Background="Transparent"/>
                                 </Grid>
                                 <StackPanel Visibility="{Binding Editable, Converter={StaticResource BooleanToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Right">
                                     <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Click="SaveWord_Click" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0"/>
@@ -91,7 +92,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <TextBlock Margin="3,0,0,0" Text="{Binding}" Foreground="{StaticResource Color_Font_Primary}"/>
+                                <TextBlock Margin="3,0,0,0" Text="{Binding}"  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <controls:MediaButton Click="ModifyItem_Click" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}"/>
                                     <controls:MediaButton Click="RemoveItem_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}" Margin="10,0,0,0"/>
