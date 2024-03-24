@@ -50,7 +50,7 @@
             </StackPanel>
 
             <Grid x:Name="menuContainer" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <ListView Width="{Binding Width,ElementName=menuContainer}" x:Name="lvMenus" SelectedValue="{Binding SelectedMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" SelectionChanged="Menu_Selected">
+                <ListView x:Name="lvMenus" Width="{Binding Width,ElementName=menuContainer}" SelectedValue="{Binding SelectedMenu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" SelectionChanged="Menu_Selected">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>

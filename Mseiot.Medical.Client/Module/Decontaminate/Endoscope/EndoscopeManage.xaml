@@ -48,7 +48,7 @@
                     <DataGridTemplateColumn Header="是否启用" Width="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ToggleButton x:Name="tb" Click="Switch_Click" IsChecked="{Binding State, Converter={StaticResource EndoscopeStateIsEnabledConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SwitchToggleButtonStyle}"/>
+                                <ToggleButton x:Name="tb" BorderThickness="1" Click="Switch_Click" IsChecked="{Binding State, Converter={StaticResource EndoscopeStateIsEnabledConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SwitchToggleButtonStyle}"/>
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding State}" Value="Using">
                                         <Setter Property="IsEnabled" TargetName="tb" Value="False"/>
