@@ -65,6 +65,11 @@ namespace MM.Medical.Client.Views
         {
             if (sender is FrameworkElement element && element.DataContext is ConsultingRoom room)
             {
+                if (string.IsNullOrEmpty(room.ExaminationTypes))
+                {
+                    Alert.ShowMessage(false, AlertType.Error, "诊所类型不能为空");
+                    return;
+                }
                 var parent = ControlHelper.GetParentObject<Grid>(element);
                 var tb = ControlHelper.GetVisualChild<TextBox>(parent);
                 var cb = ControlHelper.GetVisualChild<ComboBox>(parent);

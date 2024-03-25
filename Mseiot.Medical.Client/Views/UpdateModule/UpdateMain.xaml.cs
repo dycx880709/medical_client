@@ -46,7 +46,7 @@ namespace MM.Medical.Client.Views
             File.Copy(AppDomain.CurrentDomain.BaseDirectory + "update.exe", runExe, true);
             #endregion
             var localFilePath = runPath + "/update" + Path.GetFileName(version.Path);
-            var result = loading.AsyncWait("下载升级包中,请稍后", SocketProxy.Instance.HttpProxy.DownloadFile("files/" + version.Path, localFilePath));
+            var result = loading.AsyncWait("下载升级包中,请稍后", SocketProxy.Instance.HttpProxy.DownloadFile(version.Path, localFilePath));
             if (result.IsSuccess)
             {
                 #region 运行升级程序，并关掉主进程 

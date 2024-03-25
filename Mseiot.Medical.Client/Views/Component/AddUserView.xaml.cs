@@ -71,6 +71,11 @@ namespace MM.Medical.Client.Views
                 Alert.ShowMessage(true, AlertType.Error, "用户姓名不能为空", "软件提示");
                 return;
             }
+            if (user.RoleID <= 0)
+            {
+                Alert.ShowMessage(true, AlertType.Error, "用户角色不能为空", "软件提示");
+                return;
+            }
             if (cb_roles.SelectedValue == null)
             {
                 Alert.ShowMessage(true, AlertType.Error, "用户角色不能为空", "软件提示");
