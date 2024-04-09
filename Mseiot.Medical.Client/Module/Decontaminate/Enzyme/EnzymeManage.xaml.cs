@@ -117,7 +117,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             }
             else
             {
-                Alert.ShowMessage(false, AlertType.Error, result.Error);
+                Alert.ShowMessage(true, AlertType.Error, result.Error);
             }
         }
     }

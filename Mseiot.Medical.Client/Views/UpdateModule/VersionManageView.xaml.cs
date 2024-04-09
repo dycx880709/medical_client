@@ -77,7 +77,7 @@ namespace MM.Medical.Client.Views
                 }
                 else
                 {
-                    Alert.ShowMessage(false, AlertType.Error, result.Error);
+                    Alert.ShowMessage(true, AlertType.Error, result.Error);
                 }
                 loading.Stop();
             });
@@ -114,7 +114,7 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            Alert.ShowMessage(false, AlertType.Error, result.Error);
+                            Alert.ShowMessage(true, AlertType.Error, result.Error);
                         }
                     });
                 }

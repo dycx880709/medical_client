@@ -65,19 +65,19 @@ namespace MM.Medical.Client.Views
         {
             if (sender is FrameworkElement element && element.DataContext is ConsultingRoom room)
             {
-                if (string.IsNullOrEmpty(room.ExaminationTypes))
-                {
-                    Alert.ShowMessage(false, AlertType.Error, "诊所类型不能为空");
-                    return;
-                }
                 var parent = ControlHelper.GetParentObject<Grid>(element);
                 var tb = ControlHelper.GetVisualChild<TextBox>(parent);
                 var cb = ControlHelper.GetVisualChild<ComboBox>(parent);
+                if (string.IsNullOrEmpty(cb.Text))
+                {
+                    Alert.ShowMessage(true, AlertType.Error, "诊所类型不能为空");
+                    return;
+                }
                 if (room.ConsultingRoomID == 0)
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        Alert.ShowMessage(false, AlertType.Error, "新建诊室名称不能为空");
+                        Alert.ShowMessage(true, AlertType.Error, "新建诊室名称不能为空");
                         return;
                     }
                     var add = new ConsultingRoom { Name = tb.Text, ExaminationTypes = cb.Text };
@@ -94,7 +94,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (string.IsNullOrWhiteSpace(tb.Text))
                     {
-                        Alert.ShowMessage(false, AlertType.Error, "编辑诊室名称不能为空");
+                        Alert.ShowMessage(true, AlertType.Error, "编辑诊室名称不能为空");
                         tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         tb.GetBindingExpression(ComboBox.TextProperty).UpdateTarget();
                         return;
@@ -113,7 +113,7 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            Alert.ShowMessage(false, AlertType.Error, $"更新诊室失败,{ result.Error }");
+                            Alert.ShowMessage(true, AlertType.Error, $"更新诊室失败,{ result.Error }");
                             cb.GetBindingExpression(ComboBox.TextProperty).UpdateTarget();
                             tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                         }
@@ -150,13 +150,13 @@ namespace MM.Medical.Client.Views
                 {
                     if (room.IsUsed)
                     {
-                        Alert.ShowMessage(false, AlertType.Error, "诊室使用中,删除诊室失败");
+                        Alert.ShowMessage(true, AlertType.Error, "诊室使用中,删除诊室失败");
                         return;
                     }
                     var result = loading.AsyncWait("删除诊室中,请稍后", SocketProxy.Instance.RemoveConsultingRoom(room.ConsultingRoomID));
                     if (!result.IsSuccess)
                     {
-                        Alert.ShowMessage(false, AlertType.Error, $"删除诊室失败,{ result.Error }");
+                        Alert.ShowMessage(true, AlertType.Error, $"删除诊室失败,{ result.Error }");
                     }
                     else rooms.Remove(room);
                 }

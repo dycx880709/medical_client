@@ -66,12 +66,6 @@
             <Style TargetType="{x:Type TextBox}" x:Key="editorFormItemInput" BasedOn="{StaticResource DefaultTextBoxStyle}">
                 <Setter Property="Width" Value="200"/>
             </Style>
-            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Button_Primary}">
-                <Setter Property="Foreground" Value="{DynamicResource Color_Font_Light}"/>
-            </Style>
-            <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource DefaultToggleButtonStyle}">
-                <Setter Property="Foreground" Value="{DynamicResource Color_Font_Light}"/>
-            </Style>
             <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}"/>
             <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource CustomGroupBoxStyle2}"/>
         </ResourceDictionary>

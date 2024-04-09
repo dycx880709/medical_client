@@ -23,7 +23,7 @@
                         <Grid>
                             <Image x:Name="img" Source="{Binding Path, Converter={StaticResource PathToWebUrlConverter}}" Stretch="Fill"/>
                             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Border Opacity="0.6" Background="{StaticResource Color_Content_Primary}" CornerRadius="100"/>
+                                <Border Opacity="0.6" Background="{StaticResource Color_Content_Primary}" CornerRadius="100" Height="40" Width="40"/>
                                 <controls:MediaButton x:Name="bt_play" FISize="{StaticResource LargeExFontSize}" NormalSource="{StaticResource Img_Visible}" HoverSource="{StaticResource Img_Visible_Hover}" 
                                                       Click="PlayMedia_Click" Margin="5"/>
                             </Grid>
@@ -39,9 +39,9 @@
                     <Grid Grid.Column="1" Margin="0,2">
                         <CheckBox x:Name="cb" IsTabStop="False" VerticalAlignment="Top" Click="MediaPrint_Click" ToolTip="选中" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <controls:MediaButton x:Name="mb_export"  IsTabStop="False" Click="ExportMedia_Click" ToolTip="导出" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}"
-                                              Height="15" Width="15" VerticalAlignment="Center"/>
+                                              FISize="15" Padding="0" VerticalAlignment="Center"/>
                         <controls:MediaButton x:Name="mb_remove"  IsTabStop="False" Click="RemoveMedia_Click" ToolTip="删除" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}" 
-                                              Height="15" Width="15" VerticalAlignment="Bottom"/>
+                                              FISize="15" Padding="0" VerticalAlignment="Bottom"/>
                     </Grid>
                 </Grid>
                 <Grid x:Name="loading" Visibility="Hidden">

@@ -17,7 +17,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Ellipse x:Name="path" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
+                <Ellipse x:Name="path" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                         Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"/>
                 <Grid x:Name="gd_content" Grid.Column="1" Margin="5,0">
                     <TextBox x:Name="tb_name" Background="Transparent" IsReadOnly="True" IsHitTestVisible="False" HorizontalAlignment="Left" Width="Auto"
                         Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"

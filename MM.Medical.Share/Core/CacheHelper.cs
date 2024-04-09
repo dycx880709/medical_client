@@ -30,7 +30,8 @@ namespace MM.Medical.Share.Core
             var product = (AssemblyProductAttribute)Attribute.GetCustomAttribute(Assembly.GetEntryAssembly(), typeof(AssemblyProductAttribute));
             var compary = (AssemblyCompanyAttribute)Attribute.GetCustomAttribute(Assembly.GetEntryAssembly(), typeof(AssemblyCompanyAttribute));
             var version = Assembly.GetEntryAssembly().GetName().Version;
-            CacheHelper.ClientVersion = $"{version.Major}.{version.Minor}.{version.Build}.{(version.Revision.ToString().Length > 3 ? version.Revision.ToString() : "0" + version.Revision.ToString())}";
+            CacheHelper.ClientVersion = $"{version.Major}.{version.Minor}.{version.Build}";
+            //CacheHelper.ClientVersion = $"{version.Major}.{version.Minor}.{version.Build}.{(version.Revision.ToString().Length > 3 ? version.Revision.ToString() : "0" + version.Revision.ToString())}";
             CacheHelper.ProductName = product.Product;
             CacheHelper.ProcessName = Process.GetCurrentProcess().ProcessName;
             CacheHelper.ApplicationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), compary.Company, product.Product);

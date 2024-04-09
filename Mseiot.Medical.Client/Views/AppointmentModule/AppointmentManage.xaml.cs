@@ -91,7 +91,7 @@ namespace MM.Medical.Client.Views
                 CollectionView.Refresh();
                 pager.TotalCount = result.Content.Total;
             }
-            else Alert.ShowMessage(false, AlertType.Error, result.Error);
+            else Alert.ShowMessage(true, AlertType.Error, result.Error);
         }
 
         #endregion
@@ -120,7 +120,7 @@ namespace MM.Medical.Client.Views
             {
                 var result = loading.AsyncWait("删除预约中,请稍后", SocketProxy.Instance.RemoveAppointments(new List<int> { appointment.AppointmentID }));
                 if (result.IsSuccess) LoadAppointments();
-                else Alert.ShowMessage(false, AlertType.Error, "删除预约失败", result.Error);
+                else Alert.ShowMessage(true, AlertType.Error, "删除预约失败", result.Error);
             }
         }
 

@@ -112,7 +112,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             {
                 if (string.IsNullOrEmpty(CacheHelper.LocalSetting.RFIDCom))
                 {
-                    Alert.ShowMessage(false, AlertType.Error, "制卡器未配置,请先配置制卡器");
+                    Alert.ShowMessage(true, AlertType.Error, "制卡器未配置,请先配置制卡器");
                     var view = new DecontaminateSetting();
                     child.ShowDialog("配置制卡器", view);
                 }
@@ -127,7 +127,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                     }
                     catch (Exception ex)
                     {
-                        this.Dispatcher.Invoke(() => Alert.ShowMessage(false, AlertType.Error, "写卡失败:" + ex.Message));
+                        this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, "写卡失败:" + ex.Message));
                     }
                     finally
                     {
@@ -161,7 +161,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                     }
                     else
                     {
-                        Alert.ShowMessage(false, AlertType.Error, $"{ state }内窥镜失败,{ result.Error }");
+                        Alert.ShowMessage(true, AlertType.Error, $"{ state }内窥镜失败,{ result.Error }");
                         tb.IsChecked = !tb.IsChecked.Value;
                     }
                     loading.Stop();

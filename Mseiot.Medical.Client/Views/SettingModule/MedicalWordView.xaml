@@ -10,18 +10,30 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="MedicalWordDataTemplate" DataType="{x:Type entities:MedicalWord}">
-            <Grid>
+            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
                 <Grid HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="15"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Ellipse x:Name="path" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Color_Font_Primary}"/>
-                    <TextBox x:Name="tb_name" Grid.Column="1" HorizontalAlignment="Left" Background="Transparent" IsReadOnly="True" IsHitTestVisible="False" 
+                    <Ellipse x:Name="path" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"/>
+                    <TextBlock x:Name="tb_label" Grid.Column="1" TextTrimming="WordEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left" Background="Transparent" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                         Text="{Binding Name}">
+                        <TextBlock.ToolTip>
+                            <Border>
+                                <TextBlock TextWrapping="Wrap" Width="250" Text="{Binding Name}"/>
+                            </Border>
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                    <TextBox x:Name="tb_name" Grid.Column="1" Background="Transparent" Visibility="Hidden" Width="Auto" HorizontalAlignment="Stretch"
                          Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
                          Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
                 </Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                     <controls:MediaButton x:Name="bt_comfirm" ToolTip="保存" Visibility="Collapsed" NormalSource="{StaticResource Img_Save}" HoverSource="{StaticResource Img_Save_Hover}" Margin="0,0,10,0" Click="ModifyWord_Click"/>
                     <controls:MediaButton x:Name="bt_edit" ToolTip="编辑" NormalSource="{StaticResource Img_Modify}" HoverSource="{StaticResource Img_Modify_Hover}" Margin="0,0,10,0" Click="StartModify_Click"/>
                     <controls:MediaButton x:Name="bt_remove" Click="RemoveWord_Click" NormalSource="{StaticResource Img_Delete}" HoverSource="{StaticResource Img_Delete_Hover}"/>
@@ -34,10 +46,11 @@
                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
                     <Setter Property="Visibility" TargetName="bt_comfirm" Value="Visible"/>
                     <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
-                    <Setter Property="IsReadOnly" TargetName="tb_name" Value="False"/>
-                    <Setter Property="IsHitTestVisible" TargetName="tb_name" Value="True"/>
+                    <Setter Property="Visibility" TargetName="tb_name" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="tb_label" Value="Collapsed"/>
+                    <Setter Property="ToolTip" TargetName="tb_name" Value="{x:Null}"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding MedicalTemplateID}" Value="0">
+                <DataTrigger Binding="{Binding MedicalWordID}" Value="0">
                     <Setter Property="Visibility" TargetName="bt_edit" Value="Collapsed"/>
                     <Setter Property="Visibility" TargetName="bt_remove" Value="Collapsed"/>
                 </DataTrigger>

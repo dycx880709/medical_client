@@ -60,7 +60,9 @@ namespace MM.Medical.Client.Views
                     return await SocketProxy.Instance.UpdateSystemSetting(setting);
                 }));
                 if (!result.IsSuccess)
-                    MsWindow.ShowDialog($"更新系统设置失败,{ result.Error }", "软件提示");
+                    Alert.ShowMessage(true, AlertType.Error, $"更新系统设置失败,{result.Error}", "软件提示");
+                else
+                    Alert.ShowMessage(true, AlertType.Success, "系统设置更新成功");
             }
         }
 
@@ -73,7 +75,6 @@ namespace MM.Medical.Client.Views
                 if (dialog.ShowDialog().Value)
                     setting.ReportIconLocal = dialog.FileName;
             }
-            
         }
 
         private void UploadCutshotSound_Click(object sender, RoutedEventArgs e)

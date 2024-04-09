@@ -80,7 +80,7 @@
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Name}"/>
                         <DataGridTextColumn Width="40" Header="性别" Binding="{Binding Sex, Converter={StaticResource SexConverter}}"/>
-                        <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding AppointmentType}"/>
+                        <DataGridTextColumn Width="1.2*" Header="检查类型" Binding="{Binding AppointmentType}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

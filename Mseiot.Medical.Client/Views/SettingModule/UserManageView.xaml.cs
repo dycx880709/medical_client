@@ -97,7 +97,7 @@ namespace MM.Medical.Client.Views
             {
                 if (string.IsNullOrEmpty(CacheHelper.LocalSetting.RFIDCom))
                 {
-                    Alert.ShowMessage(false, AlertType.Error, "制卡器未配置,请先配置制卡器");
+                    Alert.ShowMessage(true, AlertType.Error, "制卡器未配置,请先配置制卡器");
                     var view = new Module.Decontaminate.DecontaminateSetting();
                     sp.ShowDialog("配置制卡器", view);
                 }
@@ -113,7 +113,7 @@ namespace MM.Medical.Client.Views
                     }
                     catch (Exception ex)
                     {
-                        this.Dispatcher.Invoke(() => Alert.ShowMessage(false, AlertType.Error, "写卡失败:" + ex.Message));
+                        this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, "写卡失败:" + ex.Message));
                     }
                     finally
                     {

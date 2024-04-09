@@ -74,7 +74,7 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            Alert.ShowMessage(false, AlertType.Error, result.Error);
+                            Alert.ShowMessage(true, AlertType.Error, result.Error);
                         }
                     });
                 }
@@ -82,7 +82,7 @@ namespace MM.Medical.Client.Views
                 {
                     this.Dispatcher.Invoke(() =>
                     {
-                        Alert.ShowMessage(false, AlertType.Error, "上传版本失败");
+                        Alert.ShowMessage(true, AlertType.Error, "上传版本失败");
                         loading.Stop();
                     }); 
                 }
@@ -91,7 +91,7 @@ namespace MM.Medical.Client.Views
             {
                 this.Dispatcher.Invoke(()=>
                 {
-                    Alert.ShowMessage(false, AlertType.Error, zipResult.Error);
+                    Alert.ShowMessage(true, AlertType.Error, zipResult.Error);
                     loading.Stop();
                 });
             }

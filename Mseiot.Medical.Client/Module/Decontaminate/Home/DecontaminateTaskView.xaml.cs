@@ -117,7 +117,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    Alert.ShowMessage(false, AlertType.Error, $"获取内窥镜串口信息失败,{ result.Error }");
+                    Alert.ShowMessage(true, AlertType.Error, $"获取内窥镜串口信息失败,{ result.Error }");
                 });
             }
         }

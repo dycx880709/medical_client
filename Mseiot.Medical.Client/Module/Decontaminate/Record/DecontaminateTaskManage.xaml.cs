@@ -121,7 +121,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                     dti.EndTime
                 );
                 if (!result.IsSuccess)
-                    this.Dispatcher.Invoke(() => Alert.ShowMessage(false, AlertType.Error, $"导出清洗数据失败,{ result.Error }"));
+                    this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, $"导出清洗数据失败,{ result.Error }"));
                 else
                 {
                     var excelDatas = result.Content.Results.Select(t => new DecontaminateTaskExcel(t));
@@ -129,7 +129,7 @@ namespace MM.Medical.Client.Module.Decontaminate
                     if (result2.Item1)
                         this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Success, "导出清洗数据完成"));
                     else
-                        this.Dispatcher.Invoke(() => Alert.ShowMessage(false, AlertType.Error, "导出清洗数据到Excel失败"));
+                        this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, "导出清洗数据到Excel失败"));
                 }
                 this.Dispatcher.Invoke(() => loading.Stop());
             }

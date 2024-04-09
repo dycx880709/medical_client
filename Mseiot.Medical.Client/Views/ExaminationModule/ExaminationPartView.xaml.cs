@@ -144,14 +144,14 @@ namespace MM.Medical.Client.Views
         {
             var result1 = Loading.AsyncWait("获取诊断模板中,请稍后", SocketProxy.Instance.GetMedicalTemplates());
             if (result1.IsSuccess) tv_template.ItemsSource = CacheHelper.SortMedicalTemplates(result1.Content, 0);
-            else Alert.ShowMessage(false, AlertType.Error, $"获取诊断模板失败,{ result1.Error }");
+            else Alert.ShowMessage(true, AlertType.Error, $"获取诊断模板失败,{ result1.Error }");
             var result2 = Loading.AsyncWait("获取医学词库中,请稍后", SocketProxy.Instance.GetMedicalWords());
             if (result2.IsSuccess)
             {
                 this.OriginMedicalWords = result2.Content;
                 this.MedicalWords = CacheHelper.SortMedicalWords(this.OriginMedicalWords, 0);
             }
-            else Alert.ShowMessage(false, AlertType.Error, $"获取医学词库失败,{ result2.Error }");
+            else Alert.ShowMessage(true, AlertType.Error, $"获取医学词库失败,{ result2.Error }");
         }
 
         private void GetBaseWords()

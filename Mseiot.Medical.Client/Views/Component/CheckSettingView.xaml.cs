@@ -50,7 +50,7 @@ namespace MM.Medical.Client.Views
             }
             else
             {
-                Alert.ShowMessage(false, AlertType.Error, $"获取预约诊室失败,{ result.Error }");
+                Alert.ShowMessage(true, AlertType.Error, $"获取预约诊室失败,{ result.Error }");
             }
         }
 
@@ -64,7 +64,7 @@ namespace MM.Medical.Client.Views
             }
             else
             {
-                Alert.ShowMessage(false, AlertType.Error, $"签到预约失败,{ result.Error }");
+                Alert.ShowMessage(true, AlertType.Error, $"签到预约失败,{ result.Error }");
             }
         }
     }

@@ -70,7 +70,7 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <Button Content="取消签到" Margin="5,0" Visibility="Collapsed" Click="UnPunch_Click">
+                        <Button Content="取消签到" Margin="5,0" Click="UnPunch_Click">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>
@@ -127,8 +127,8 @@
                             <DataGridTemplateColumn Width="150" Header="预约状态">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Border Width="70" Height="23" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
-                                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}" Text="{Binding AppointmentStatus, Converter={StaticResource EnumToStringConverter}}"/>
+                                        <Border Width="70" Height="30" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
+                                            <TextBlock VerticalAlignment="Center" FontSize="{DynamicResource SmallFontSize}" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}" Text="{Binding AppointmentStatus, Converter={StaticResource EnumToStringConverter}}"/>
                                         </Border>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -150,9 +150,6 @@
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Cross}">
-                                                <Setter Property="Text" TargetName="tb" Value="--"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.PunchIn}">
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
                                         </DataTemplate.Triggers>

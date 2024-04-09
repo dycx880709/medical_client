@@ -2,6 +2,7 @@
 using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -103,6 +104,8 @@ namespace MM.Medical.Client.Views
         {
             if (this.ImageSource is byte[] datas)
                 return datas;
+            else if (this.ImageSource is MemoryStream ms)
+                return ms.ToArray();
             return null;
         }
 

@@ -144,7 +144,7 @@ namespace MM.Medical.Client.Views
                 }
                 else
                 {
-                    Alert.ShowMessage(false, AlertType.Error, "设备读卡器未配置");
+                    Alert.ShowMessage(true, AlertType.Error, "设备读卡器未配置");
                     this.IsEnabled = false;
                 }
             }
@@ -187,7 +187,7 @@ namespace MM.Medical.Client.Views
             }
             else
             {
-                Alert.ShowMessage(false, AlertType.Error, $"检查诊室未配置,模块不可用");
+                Alert.ShowMessage(true, AlertType.Error, $"检查诊室未配置,模块不可用");
                 tb_check.IsEnabled = false;
             }
         }
@@ -260,6 +260,8 @@ namespace MM.Medical.Client.Views
             }
         }
 
+        int epcID = 0;
+
         private void Check_Click(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton tb && dg_appointments.SelectedValue is Appointment appointment)
@@ -308,14 +310,16 @@ namespace MM.Medical.Client.Views
                         if (result.IsSuccess)
                             CommitExamination(result.Content);
                         else
-                            Alert.ShowMessage(false, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
+                            Alert.ShowMessage(true, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
                     }
                     else
                     {
                         loading.Start("读取内窥镜信息中,请稍后");
                         this.rfidNotifyAction = async device =>
                         {
+                            Console.WriteLine($"读取内窥镜信息,{device.DeviceID} {device.EPC}");
                             this.rfidNotifyAction = null;
+                            //var result = await SocketProxy.Instance.GetEndoscopeById(++epcID%4 == 0 ? 1 : epcID);
                             var result = await SocketProxy.Instance.GetEndoscopeById(device.EPC);
                             this.Dispatcher.Invoke(() =>
                             {
@@ -328,18 +332,18 @@ namespace MM.Medical.Client.Views
                                             CommitExamination(result.Content);
                                             break;
                                         case EndoscopeState.Decontaminating:
-                                            Alert.ShowMessage(false, AlertType.Error, "内窥镜正在清洗中,请勿重复使用");
+                                            Alert.ShowMessage(true, AlertType.Error, "内窥镜正在清洗中,请勿重复使用");
                                             tb.IsChecked = !tb.IsChecked.Value;
                                             break;
                                         case EndoscopeState.Disabled:
-                                            Alert.ShowMessage(false, AlertType.Error, "内窥镜已禁止使用");
+                                            Alert.ShowMessage(true, AlertType.Error, "内窥镜已禁止使用");
                                             tb.IsChecked = !tb.IsChecked.Value;
                                             break;
                                     }
                                 }
                                 else
                                 {
-                                    Alert.ShowMessage(false, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
+                                    Alert.ShowMessage(true, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
                                     tb.IsChecked = !tb.IsChecked.Value;
                                 }
                                 loading.Stop();
@@ -386,7 +390,7 @@ namespace MM.Medical.Client.Views
                     }
                     else
                     {
-                        Alert.ShowMessage(false, AlertType.Error, $"结束检查失败,{ result1.Error }");
+                        Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result1.Error }");
                         tb.IsChecked = !tb.IsChecked.Value;
                     }
                 }
@@ -481,7 +485,10 @@ namespace MM.Medical.Client.Views
 
         private void Call_Click(object sender, RoutedEventArgs e)
         {
-
+            if (dg_appointments.SelectedValue is Appointment appointment)
+            {
+               
+            }
         }
         private void CaptureSetting_Click(object sender, RoutedEventArgs e)
         {

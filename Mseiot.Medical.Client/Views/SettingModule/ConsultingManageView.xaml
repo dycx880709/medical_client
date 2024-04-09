@@ -43,10 +43,10 @@
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox x:Name="tb_name" IsReadOnly="True"  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                <TextBox x:Name="tb_name" IsReadOnly="True" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
                                          HorizontalContentAlignment="Center" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Grid.Column="0" HorizontalAlignment="Center" Background="Transparent"/>
                                 <Grid Grid.Column="1" HorizontalAlignment="Center">
-                                    <TextBlock x:Name="tb_type" Text="{Binding ExaminationTypes}" Foreground="{DynamicResource Color_Font_Light}" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="tb_type" Text="{Binding ExaminationTypes}"  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" VerticalAlignment="Center"/>
                                     <ComboBox x:Name="cb_type" Style="{StaticResource MultipleComboBoxStyle}" ItemsSource="{Binding ExaminationTypes, RelativeSource={RelativeSource AncestorType={x:Type local:ConsultingManageView}}}" 
                                           DropDownOpened="Type_DropDownOpened" Visibility="Hidden" Text="{Binding ExaminationTypes, Mode=TwoWay, UpdateSourceTrigger=Explicit}">
                                         <ComboBox.ItemTemplate>

@@ -98,7 +98,7 @@ namespace MM.Medical.Client.Views
                     }
                     else
                     {
-                        Alert.ShowMessage(false, AlertType.Error, $"下载失败");
+                        Alert.ShowMessage(true, AlertType.Error, $"下载失败");
                     }
                     loading.Stop();
                 }
