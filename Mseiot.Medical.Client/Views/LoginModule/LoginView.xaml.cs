@@ -143,7 +143,7 @@ namespace MM.Medical.Client.Views
 
         private void tbName_Selected(object sender, CustomEventArgs e)
         {
-            var userRecord = LocalSetting.UserRecords.FirstOrDefault(t => t.LoginName.Equals(e.PropertyValue));
+            var userRecord = LocalSetting.UserRecords.FirstOrDefault(t => t.LoginName.Equals((e.PropertyValue as UserRecord).LoginName));
             if (TimeHelper.ToUnixTime(DateTime.Now) - userRecord.LoginTime > 3600 * 24 * 7)
                 tbPwd.Text = userRecord.LoginPwd = "";
             else

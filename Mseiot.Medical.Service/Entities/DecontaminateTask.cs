@@ -211,7 +211,7 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// RFID编号
         /// </summary>
-        public int RFIDDeviceSN { get; set; }
+        public string RFIDDeviceSN { get; set; }
         /// <summary>
         /// RFID通信串口
         /// </summary>
@@ -347,7 +347,9 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 流程名称
         /// </summary>
-        public string Name { get; set; }
+        //public string Name { get; set; }
+        public string Factory { get; set; }
+        public string Model { get; set; }
         /// <summary>
         /// 是否可以编辑
         /// </summary>

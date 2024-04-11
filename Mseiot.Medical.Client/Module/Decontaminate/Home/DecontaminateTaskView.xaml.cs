@@ -310,13 +310,13 @@ namespace MM.Medical.Client.Module.Decontaminate
         public async void GetDatas(object obj)
         {
             timer.Change(Timeout.Infinite, Timeout.Infinite);
-            List<DecontaminateTaskStatus> decontaminateTaskStatuss = new List<DecontaminateTaskStatus> { DecontaminateTaskStatus.Wait };
+            var decontaminateTaskStatuss = new List<DecontaminateTaskStatus> { DecontaminateTaskStatus.Wait };
             var result = await SocketProxy.Instance.GetDecontaminateTasks(0, 10000, decontaminateTaskStatuss,"",null,null);
             if (result.IsSuccess && result.Content != null && result.Content.Results != null)
             {
                 var results = result.Content.Results;
                 for (int j = 0; j < results.Count; j++)
-                {
+                {   
                     if (DecontaminateTasks.Count(f => f.DecontaminateTaskID == results[j].DecontaminateTaskID) == 0)
                     {
                         this.Dispatcher.Invoke(() =>

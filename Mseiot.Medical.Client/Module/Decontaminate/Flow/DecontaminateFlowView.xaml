@@ -22,7 +22,9 @@
             </controls:CustomGroupBox.AttachContent>
             <DataGrid x:Name="lvDecontaminateFlows" Grid.Row="1" SelectionChanged="DecontaminateFlows_SelectionChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="2*" Header="流程名称" Binding="{Binding Name}"/>
+                    <!--<DataGridTextColumn Width="2*" Header="流程名称" Binding="{Binding Name}"/>-->
+                    <DataGridTextColumn Width="2*" Header="生产厂家" Binding="{Binding Factory}"/>
+                    <DataGridTextColumn Width="2*" Header="设备型号" Binding="{Binding Model}"/>
                     <DataGridTemplateColumn Width="*" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

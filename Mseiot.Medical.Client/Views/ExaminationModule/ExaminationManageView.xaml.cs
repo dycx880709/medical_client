@@ -306,7 +306,8 @@ namespace MM.Medical.Client.Views
                     }
                     if (CacheHelper.IsDebug)
                     {
-                        var result = loading.AsyncWait("读取内窥镜中,请稍后", SocketProxy.Instance.GetEndoscopeById(0));
+                        //var result = loading.AsyncWait("读取内窥镜中,请稍后", SocketProxy.Instance.GetEndoscopeById(0));
+                        var result = loading.AsyncWait("读取内窥镜中,请稍后", SocketProxy.Instance.GetEndoscopeById(1));
                         if (result.IsSuccess)
                             CommitExamination(result.Content);
                         else
@@ -319,8 +320,8 @@ namespace MM.Medical.Client.Views
                         {
                             Console.WriteLine($"读取内窥镜信息,{device.DeviceID} {device.EPC}");
                             this.rfidNotifyAction = null;
-                            //var result = await SocketProxy.Instance.GetEndoscopeById(++epcID%4 == 0 ? 1 : epcID);
-                            var result = await SocketProxy.Instance.GetEndoscopeById(device.EPC);
+                            var result = await SocketProxy.Instance.GetEndoscopeById(++epcID % 4 == 0 ? 1 : epcID);
+                            //var result = await SocketProxy.Instance.GetEndoscopeById(device.EPC);
                             this.Dispatcher.Invoke(() =>
                             {
                                 if (result.IsSuccess)
@@ -368,7 +369,7 @@ namespace MM.Medical.Client.Views
                         }
                         else
                         {
-                            if (!CacheHelper.IsDebug)
+                           // if (!CacheHelper.IsDebug)
                             {
                                 var decontaminateTask = new DecontaminateTask
                                 {
@@ -381,8 +382,8 @@ namespace MM.Medical.Client.Views
                                 else
                                     Alert.ShowMessage(true, AlertType.Success, $"检查已结束,报告已保存并生成清洗任务");
                             }
-                            else 
-                                Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
+                         //   else 
+                         //       Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
                             commit.CopyTo(appointment);
                             CollectionView.Refresh();
                             epv.video.Dispose();
