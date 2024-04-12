@@ -13,7 +13,7 @@
         <Grid>
             <TextBlock Text="病历记录" Margin="10,0,0,0" HorizontalAlignment="Left" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource Color_Font_Primary}" FontSize="{StaticResource LargeFontSize}"/>
             <controls:MediaButton NormalSource="{StaticResource Img_Save}" HorizontalAlignment="Right" Width="{StaticResource ButtonHeight}" Height="{StaticResource ButtonHeight}" HoverSource="{StaticResource Img_Save_Hover}" 
-                                  Margin="0,-10,0,0" ToolTip="保存" VerticalAlignment="Center" Click="Save_Click">
+                                  Margin="0,-10,0,0" ToolTip="保存" Padding="0" VerticalAlignment="Center" Click="Save_Click">
                 <controls:MediaButton.Style>
                     <Style TargetType="{x:Type controls:MediaButton}" BasedOn="{StaticResource {x:Type controls:MediaButton}}">
                         <Style.Triggers>
