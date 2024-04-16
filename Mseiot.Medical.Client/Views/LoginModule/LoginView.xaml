@@ -14,7 +14,7 @@
 
     <controls:BaseWindow.Header>
         <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Color_Font_Primary}" FontSize="{StaticResource NormalFontSize}" FontStyle="Italic">
-                    <Run Text="网络版 版本号:" />
+                    <Run Text="版本号:" />
                     <Run Text="{x:Static core:CacheHelper.ClientVersion}" x:Name="tb_version"/>
         </TextBlock>
     </controls:BaseWindow.Header>
