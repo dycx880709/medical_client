@@ -1,5 +1,7 @@
 ﻿using MM.Medical.Client.Entities;
+using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
+using Mseiot.Medical.Service.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace MM.Medical.Client.Core
 {
@@ -56,7 +60,20 @@ namespace MM.Medical.Client.Core
             if (Directory.Exists(CacheHelper.VideoPath))
                 Directory.Delete(CacheHelper.VideoPath, true);
             Directory.CreateDirectory(CacheHelper.VideoPath);
-          
+            //CheckAuth();
+        }
+
+        private static void CheckAuth()
+        {
+            var timer = new Timer(5000);
+            timer.Elapsed += (o, e) =>
+            {
+                if (1728383265 - TimeHelper.ToUnixTime(DateTime.Now) < 0)
+                {
+                    Application.Current.Dispatcher.Invoke(() => Application.Current.Shutdown());
+                }
+            };
+            timer.Start();
         }
 
         public static void SaveLocalSetting()

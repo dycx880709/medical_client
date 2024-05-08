@@ -273,6 +273,7 @@ namespace MM.Medical.Client.Module.Decontaminate
             else if (info.EPC > 100000000 && info.EPC < 200000000) //清洗人员
             {
                 var result = await SocketProxy.Instance.GetUserById((info.EPC - 100000000).ToString());
+                //var result = await SocketProxy.Instance.GetUserById("1");
                 this.Dispatcher.Invoke(() =>
                 {
                     if (!result.IsSuccess)

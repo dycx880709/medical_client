@@ -260,8 +260,6 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        int epcID = 0;
-
         private void Check_Click(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton tb && dg_appointments.SelectedValue is Appointment appointment)
@@ -320,8 +318,7 @@ namespace MM.Medical.Client.Views
                         {
                             Console.WriteLine($"读取内窥镜信息,{device.DeviceID} {device.EPC}");
                             this.rfidNotifyAction = null;
-                            var result = await SocketProxy.Instance.GetEndoscopeById(++epcID % 4 == 0 ? 1 : epcID);
-                            //var result = await SocketProxy.Instance.GetEndoscopeById(device.EPC);
+                            var result = await SocketProxy.Instance.GetEndoscopeById(device.EPC);
                             this.Dispatcher.Invoke(() =>
                             {
                                 if (result.IsSuccess)
