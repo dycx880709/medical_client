@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\OpenCvSharp4.runtime.win.4.8.0.20230708\build\net48\OpenCvSharp4.runtime.win.props" Condition="Exists('packages\OpenCvSharp4.runtime.win.4.8.0.20230708\build\net48\OpenCvSharp4.runtime.win.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -44,9 +43,6 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FFmpeg.AutoGen, Version=4.4.0.0, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
-      <HintPath>packages\FFmpeg.AutoGen.4.4.0\lib\net472\FFmpeg.AutoGen.dll</HintPath>
-    </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
@@ -61,10 +57,12 @@
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
-      <HintPath>packages\OpenCvSharp4.4.8.0.20230708\lib\net48\OpenCvSharp.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs_csharp\Ms.Controls\dll\x64\OpenCvSharp.dll</HintPath>
     </Reference>
-    <Reference Include="OpenCvSharp.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
-      <HintPath>packages\OpenCvSharp4.Extensions.4.8.0.20230708\lib\net48\OpenCvSharp.Extensions.dll</HintPath>
+    <Reference Include="OpenCvSharp.WpfExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs_csharp\Ms.Controls\dll\x64\OpenCvSharp.WpfExtensions.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="ReachFramework" />
@@ -116,6 +114,9 @@
     <Compile Include="Controls\MenuModule.xaml.cs">
       <DependentUpon>MenuModule.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Video.xaml.cs">
+      <DependentUpon>Video.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\AppointmentStatusToColorConverter.cs" />
     <Compile Include="Converters\EndoscopeStateIsEnabledConverter.cs" />
     <Compile Include="Converters\EndoscopeStateToColorConverter.cs" />
@@ -146,9 +147,6 @@
     </Compile>
     <Compile Include="Module\Decontaminate\Record\DecontaminateTaskManage.xaml.cs">
       <DependentUpon>DecontaminateTaskManage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Video.xaml.cs">
-      <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AppointmentModule\AddAppointment.xaml.cs">
       <DependentUpon>AddAppointment.xaml</DependentUpon>
@@ -271,6 +269,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\Video.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
     <Page Include="Module\Decontaminate\Enzyme\AddEnzyme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -282,10 +284,6 @@
     <Page Include="Module\Decontaminate\Record\DecontaminateTaskManage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Video.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AppointmentModule\AddAppointment.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -526,10 +524,4 @@
     <Resource Include="Images\Icon\download.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('packages\OpenCvSharp4.runtime.win.4.8.0.20230708\build\net48\OpenCvSharp4.runtime.win.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\OpenCvSharp4.runtime.win.4.8.0.20230708\build\net48\OpenCvSharp4.runtime.win.props'))" />
-  </Target>
 </Project>

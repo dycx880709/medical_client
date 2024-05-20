@@ -413,7 +413,7 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        private void CloseMedia_Click(object sender, RoutedEventArgs e)
+        private async void CloseMedia_Click(object sender, RoutedEventArgs e)
         {
             if (bt_close.Tag is ExaminationMedia media)
             {
@@ -423,8 +423,15 @@ namespace MM.Medical.Client.Views
                     img_media.Source = null;
                 }
                 if (SelectedExamination.Appointment.AppointmentStatus == AppointmentStatus.Checking)
-                    video.SetSource(CacheHelper.EndoscopeDeviceID, true);
-                bt_close.Visibility = Visibility.Hidden;
+                {
+                    cl.Start("加载视频中,请稍后");
+                    await Task.Run(() => video.SetSource(CacheHelper.EndoscopeDeviceID, true));
+                }
+                this.Dispatcher.Invoke(() => 
+                {
+                    bt_close.Visibility = Visibility.Hidden;
+                    cl.Stop();
+                });
             }
         }
 
