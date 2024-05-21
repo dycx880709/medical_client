@@ -14,6 +14,9 @@ using System.Net.Sockets;
 using MM.Medical.Client.Entities;
 using System.Linq;
 using MM.Medical.Client.Module.Decontaminate;
+using System.Numerics;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace MM.Medical.Client.Views
 {
@@ -53,6 +56,22 @@ namespace MM.Medical.Client.Views
             LoadMenus();
             UpdateTime();
             LoadTcp();
+            GetSystemSetting();
+            this.Closed += (_, ex) => Application.Current.Shutdown();
+        }
+
+        private void GetSystemSetting()
+        {
+            var result = loading.AsyncWait("获取系统设置中,请稍后", SocketProxy.Instance.GetSystemSetting());
+            if (result.IsSuccess)
+            {
+                CacheHelper.SystemSetting = result.Content;
+            }
+            else
+            {
+                MsWindow.ShowDialog("获取系统设置失败,软件退出");
+                Application.Current.Shutdown();
+            }
         }
 
         private async void LoadTcp()
@@ -136,10 +155,7 @@ namespace MM.Medical.Client.Views
         private void UpdateTime()
         {
             tb_time.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            var timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timer.Tick += (o, ex) => tb_time.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             timer.Start();
         }
@@ -170,7 +186,7 @@ namespace MM.Medical.Client.Views
                 SocketProxy.Instance.TcpProxy.ReceiveMessaged -= TcpProxy_ReceiveMessaged;
                 await SocketProxy.Instance.TcpProxy.Stop();
             }
-            App.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         #region 菜单

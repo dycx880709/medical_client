@@ -36,7 +36,6 @@ namespace MM.Medical.Client.Views
                 if (result.IsSuccess)
                 {
                     Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
-                    epv.video.Dispose();
                     this.DialogResult = true;
                 }
                 else

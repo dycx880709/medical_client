@@ -13,7 +13,7 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="ExaminationMediaDataTemplate" DataType="{x:Type entities:ExaminationMedia}">
-            <Grid Height="120" Width="160">
+            <Grid Height="130" Width="180">
                 <Grid x:Name="content">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -87,17 +87,17 @@
     </UserControl.Resources>
     
     <Grid>
-        <Grid>
+        <Grid x:Name="PATJ_MAIN">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="330"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="360"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <WrapPanel VerticalAlignment="Center" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+            <WrapPanel VerticalAlignment="Center" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="5">
                 <WrapPanel.Resources>
                     <sys:Double x:Key="InputElementWidth">110</sys:Double>
                     <sys:Double x:Key="InputElementHeight">30</sys:Double>
@@ -109,40 +109,56 @@
                     <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource editorFormItem}">
                         <Setter Property="Margin" Value="2"/>
                     </Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        <Setter Property="Width" Value="110"/>
+                        <!--<Setter Property="Margin" Value="0,10"/>-->
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
                     <!--<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                         <Setter Property="FontWeight" Value="Bold"/>
                     </Style>-->
                 </WrapPanel.Resources>
                 <StackPanel>
                     <TextBlock Text="姓名"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Name}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Appointment.Name}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.Name}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="性别"/>
-                    <ComboBox IsReadOnly="{Binding IsReadOnly}" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding SelectedExamination.Appointment.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
+                    <ComboBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding SelectedExamination.Appointment.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.Sex, Converter={StaticResource SexConverter}}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="年龄"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Birthday}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Appointment.Birthday}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.Birthday, Converter={StaticResource IntToFormatStringConverter}, ConverterParameter=1}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="电话号码"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Telephone}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Appointment.Telephone}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.Telephone}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查类型"/>
-                    <ComboBox x:Name="cb_type" IsReadOnly="{Binding IsReadOnly}" SelectedValue="{Binding SelectedExamination.Appointment.AppointmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ComboBox x:Name="cb_type" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" SelectedValue="{Binding SelectedExamination.Appointment.AppointmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.AppointmentType}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="麻醉方法"/>
-                    <ComboBox x:Name="cb_anesthesia" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ComboBox x:Name="cb_anesthesia" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Appointment.Anesthesia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.Anesthesia}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="患者来源"/>
-                    <ComboBox x:Name="cb_source" IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.PatientSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox x:Name="cb_source" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Appointment.PatientSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBoxItem>门诊</ComboBoxItem>
                         <ComboBoxItem>住院</ComboBoxItem>
                     </ComboBox>
+                    <Label Content="{Binding SelectedExamination.Appointment.PatientSource}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <StackPanel.Style>
@@ -156,7 +172,8 @@
                         </Style>
                     </StackPanel.Style>
                     <TextBlock Text="住院号"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.HospitalID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Appointment.HospitalID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.HospitalID}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <StackPanel.Style>
@@ -170,7 +187,8 @@
                         </Style>
                     </StackPanel.Style>
                     <TextBlock Text="科室"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Appointment.Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.Department}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <StackPanel.Style>
@@ -184,25 +202,26 @@
                         </Style>
                     </StackPanel.Style>
                     <TextBlock Text="床号"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Appointment.RoomID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Appointment.RoomID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.RoomID}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查时间"/>
-                    <TextBox IsReadOnly="True" BorderThickness="0">
-                        <TextBox.Style>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Setter Property="Text" Value="--"/>
+                    <Label>
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+                                <Setter Property="Content" Value="--"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Checked}">
-                                        <Setter Property="Text" Value="{Binding SelectedExamination.ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
+                                        <Setter Property="Content" Value="{Binding SelectedExamination.ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=HH:mm:ss}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding SelectedExamination.Appointment.AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reported}">
-                                        <Setter Property="Text" Value="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
+                                        <Setter Property="Content" Value="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                        </Label.Style>
+                    </Label>
                 </StackPanel>
                 <StackPanel>
                     <StackPanel.Style>
@@ -219,26 +238,26 @@
                         </Style>
                     </StackPanel.Style>
                     <TextBlock Text="报告日期"/>
-                    <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy/MM/dd}"/>
+                    <Label Content="{Binding SelectedExamination.ReportTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy-MM-dd}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查医生"/>
-                    <TextBox IsReadOnly="True">
-                        <TextBox.Style>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Setter Property="Text" Value="{Binding SelectedExamination.DoctorName}"/>
+                    <Label>
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+                                <Setter Property="Content" Value="{Binding SelectedExamination.DoctorName}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SelectedExamination.DoctorName}" Value="">
-                                        <Setter Property="Text" Value="--"/>
+                                        <Setter Property="Content" Value="--"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                        </Label.Style>
+                    </Label>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查部位"/>
-                    <ComboBox x:Name="cb_body" IsReadOnly="{Binding IsReadOnly}" DropDownOpened="BodyPart_DropDownOpened" Style="{StaticResource MultipleComboBoxStyle}" Text="{Binding SelectedExamination.BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox x:Name="cb_body" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" DropDownOpened="BodyPart_DropDownOpened" Style="{StaticResource MultipleComboBoxStyle}" Text="{Binding SelectedExamination.BodyPart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Border>
@@ -247,35 +266,56 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    <Label Content="{Binding SelectedExamination.BodyPart}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="审核医生"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.AuditDoctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.AuditDoctor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedExamination.AuditDoctor}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="医生助理"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding SelectedExamination.Nurse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Nurse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedExamination.Nurse}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="内镜编号"/>
-                    <TextBox IsReadOnly="True" Text="{Binding SelectedExamination.EndoscopeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IntToFormatStringConverter}, ConverterParameter=6}"/>
+                    <Label Content="{Binding SelectedExamination.EndoscopeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IntToFormatStringConverter}, ConverterParameter=6}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="检查结果"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Width="290" Text="{Binding SelectedExamination.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Width="320" Text="{Binding SelectedExamination.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedExamination.Result}" Width="320" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="主诉"/>
-                    <TextBox IsReadOnly="{Binding IsReadOnly}" Width="290" Text="{Binding SelectedExamination.PatientTalk, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Width="320" Text="{Binding SelectedExamination.PatientTalk, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{Binding SelectedExamination.PatientTalk}" Width="320" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </StackPanel>
+                <StackPanel Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}">
+                    <CheckBox x:Name="back_cb" Margin="5,0" Content="回访时间" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}"/>
+                    <controls:DateTimePicker Width="200" Visibility="{Binding IsChecked, ElementName=back_cb, Converter={StaticResource BooleanToVisibilityConverter}}" SelectedDateTime="{Binding BackingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+                </StackPanel>
+                <StackPanel Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="回访时间"/>
+                    <Label Content="{Binding BackingTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy-MM-dd}"/>
                 </StackPanel>
             </WrapPanel>
-            <ScrollViewer Grid.Row="1" Grid.Column="0">
-                <StackPanel>
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                            <Setter Property="Width" Value="310"/>
-                        </Style>
-                    </StackPanel.Resources>
+            <ScrollViewer Grid.Row="1" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer.Resources>
+                    <Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                <Setter Property="Grid.ColumnSpan" Value="2"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Setter Property="Width" Value="Auto"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    </Style>
+                </ScrollViewer.Resources>
+                <StackPanel Margin="0,0,5,0">
                     <Expander Header="临床诊断" IsExpanded="True">
                         <TextBox MinHeight="100" AcceptsReturn="True" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.ClinicalDiagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Expander>
@@ -296,53 +336,67 @@
                     </Expander>
                 </StackPanel>
             </ScrollViewer>
-            <TabControl Grid.Row="1" Grid.Column="1" Width="300" BorderBrush="{StaticResource Color_Border_Primary}" Margin="10">
-                <TabControl.Style>
-                    <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
+            <Grid Margin="5" Grid.Row="1" Grid.Column="1">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </TabControl.Style>
-                <TabItem x:Name="ti_word" Width="149" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True" Cursor="Hand">
-                    <TreeView x:Name="tv_medicalWord" Focusable="False">
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                                <Setter Property="IsExpanded" Value="True"/>
-                                <Setter Property="Focusable" Value="False"/>
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
-                                <StackPanel x:Name="sp" Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalWord_MouseLeftButtonDown">
-                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
-                </TabItem>
-                <TabItem x:Name="ti_template" Width="149" Style="{StaticResource CustomHeaderTabItemStyle}" Header="诊断模板" Foreground="{StaticResource Color_Font_Primary}">
-                    <TreeView x:Name="tv_template" Focusable="False">
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                                <Setter Property="Focusable" Value="False"/>
-                                <Setter Property="IsExpanded" Value="True"/>
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type entities:MedicalTemplate}" ItemsSource="{Binding MedicalTemplates}">
-                                <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalTemplate_MouseLeftButtonDown">
-                                    <TextBlock Text="{Binding Name}"/>
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
-                </TabItem>
-            </TabControl>
-            <Grid Margin="5" Background="White">
-                <Grid.Style>
+                </Grid.Style>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="330"/>
+                </Grid.RowDefinitions>
+                <TabControl BorderBrush="{StaticResource Color_Border_Primary}" Margin="5">
+                    <TabItem x:Name="ti_word" Width="149" Style="{StaticResource CustomHeaderTabItemStyle}" Header="医学词库" IsSelected="True" Cursor="Hand">
+                        <TreeView x:Name="tv_medicalWord" Focusable="False">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                    <Setter Property="IsExpanded" Value="True"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type entities:MedicalWord}" ItemsSource="{Binding MedicalWords}">
+                                    <StackPanel x:Name="sp" Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalWord_MouseLeftButtonDown">
+                                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </TabItem>
+                    <TabItem x:Name="ti_template" Width="149" Style="{StaticResource CustomHeaderTabItemStyle}" Header="诊断模板" Foreground="{StaticResource Color_Font_Primary}">
+                        <TreeView x:Name="tv_template" Focusable="False">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                    <Setter Property="Focusable" Value="False"/>
+                                    <Setter Property="IsExpanded" Value="True"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type entities:MedicalTemplate}" ItemsSource="{Binding MedicalTemplates}">
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="MedicalTemplate_MouseLeftButtonDown">
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </TabItem>
+                </TabControl>
+                <controls:CustomGroupBox x:Name="cgb_word" Grid.Row="1" Margin="5" Header="特殊字符">
+                    <!--<controls:CustomGroupBox.AttachContent>
+                        <ControlTemplate>
+                            <Button Style="{StaticResource Button_Close}" Foreground="{StaticResource Color_Font_Primary}" Click="CloseWord_Click"/>
+                        </ControlTemplate>
+                    </controls:CustomGroupBox.AttachContent>-->
+                    <controls:SoftKeyboard x:Name="sk" Margin="5,10"/>
+                </controls:CustomGroupBox>
+            </Grid>
+            <Grid Margin="5" Background="White" Grid.Row="1" Grid.Column="2">
+                <!--<Grid.Style>
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Grid.Row" Value="1"/>
                         <Setter Property="Grid.Column" Value="2"/>
@@ -356,16 +410,16 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Grid.Style>
+                </Grid.Style>-->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="400"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
+                <!--<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="600"/>
-                </Grid.ColumnDefinitions>
-                <controls:CustomGroupBox Margin="5">
+                </Grid.ColumnDefinitions>-->
+                <!--<controls:CustomGroupBox Margin="5">
                     <controls:CustomGroupBox.Style>
                         <Style TargetType="{x:Type controls:CustomGroupBox}" BasedOn="{StaticResource {x:Type controls:CustomGroupBox}}">
                             <Setter Property="Header" Value="预览画面"/>
@@ -420,7 +474,7 @@
                             <Button x:Name="bt_close" Click="CloseMedia_Click" Visibility="Hidden" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,5,0" Style="{StaticResource Button_Close}"/>
                         </Grid>
                     </Grid>
-                </controls:CustomGroupBox>
+                </controls:CustomGroupBox>-->
                 <controls:CustomGroupBox Margin="5" Grid.Row="1">
                     <controls:CustomGroupBox.Header>
                         <StackPanel Orientation="Horizontal">
@@ -450,7 +504,7 @@
                     >
                     </ListBox>
                 </controls:CustomGroupBox>
-                <controls:CustomGroupBox Margin="5" Grid.Column="1" Grid.RowSpan="2">
+                <controls:CustomGroupBox Margin="5">
                     <controls:CustomGroupBox.AttachContent>
                         <ControlTemplate>
                             <CheckBox Content="只显示已选" IsChecked="{Binding ShowSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Click="ShowSelect_Click"/>
@@ -483,16 +537,8 @@
                         ItemTemplate="{StaticResource ExaminationMediaDataTemplate}"
                     />
                 </controls:CustomGroupBox>
-                <controls:CustomGroupBox x:Name="cgb_word" Visibility="Collapsed" Grid.Row="1" Margin="5,0" Header="特殊字符">
-                    <controls:CustomGroupBox.AttachContent>
-                        <ControlTemplate>
-                            <Button Style="{StaticResource Button_Close}" Foreground="{StaticResource Color_Font_Primary}" Click="CloseWord_Click"/>
-                        </ControlTemplate>
-                    </controls:CustomGroupBox.AttachContent>
-                    <controls:SoftKeyboard x:Name="sk" Margin="5,10"/>
-                </controls:CustomGroupBox>
             </Grid>
         </Grid>
-        <controls:Loading x:Name="cl" Grid.ColumnSpan="2"/>
+        <controls:Loading x:Name="cl"/>
     </Grid>
 </UserControl>

@@ -44,6 +44,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BooleanReverseToVisibilityConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConvert.cs" />
     <Compile Include="Converters\ObjectEqualParamConverter.cs" />
     <Compile Include="Converters\SexConverter.cs" />

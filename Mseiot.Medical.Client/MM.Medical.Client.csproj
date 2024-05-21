@@ -128,6 +128,7 @@
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Core\Const.cs" />
     <Compile Include="Core\Extension.cs" />
+    <Compile Include="Core\HotKeyManager.cs" />
     <Compile Include="Core\KeyHookHelper.cs" />
     <Compile Include="Core\RFIDManager.cs" />
     <Compile Include="Entities\BaseWordExtend.cs" />
@@ -153,6 +154,9 @@
     </Compile>
     <Compile Include="Views\AppointmentModule\AppointmentManage.xaml.cs">
       <DependentUpon>AppointmentManage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppointmentModule\BackExaminationManage.xaml.cs">
+      <DependentUpon>BackExaminationManage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Component\CheckSettingView.xaml.cs">
       <DependentUpon>CheckSettingView.xaml</DependentUpon>
@@ -210,6 +214,12 @@
     </Compile>
     <Compile Include="Views\ExaminationModule\ExaminationPartWindow.xaml.cs">
       <DependentUpon>ExaminationPartWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExaminationModule\ExaminationVideoView.xaml.cs">
+      <DependentUpon>ExaminationVideoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExaminationModule\PreviewMediaView.xaml.cs">
+      <DependentUpon>PreviewMediaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginModule\SeverSetting.xaml.cs">
       <DependentUpon>SeverSetting.xaml</DependentUpon>
@@ -293,6 +303,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\AppointmentModule\BackExaminationManage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Component\CheckSettingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -366,6 +380,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExaminationModule\ExaminationPartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExaminationModule\ExaminationVideoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExaminationModule\PreviewMediaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -482,6 +504,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\libs_csharp\MM.Dog.Lib\MM.Dog.Lib.csproj">
+      <Project>{097d3a77-16a4-441c-b100-e59d92876e0f}</Project>
+      <Name>MM.Dog.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\libs_csharp\Ms.Controls\Ms.Controls.csproj">
       <Project>{658d1289-6eaf-40e9-9b98-fd78ffb4a5ea}</Project>
       <Name>Ms.Controls</Name>

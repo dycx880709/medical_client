@@ -21,13 +21,14 @@ using System.ComponentModel;
 using MM.Libs.RFID;
 using System.Windows.Media.Imaging;
 using System.IO;
+using Ms.Libs;
 
 namespace MM.Medical.Client.Views
 {
     /// <summary>
     /// ExaminationManageView.xaml 的交互逻辑
     /// </summary>
-    public partial class ExaminationManageView : UserControl, IConnection
+    public partial class ExaminationManageView : UserControl
     {
         public ExaminationMedia SelectedMedia
         {
@@ -72,6 +73,7 @@ namespace MM.Medical.Client.Views
         private RFIDProxy rfidProxy;
         private int consultingRoomId;
         private Action<EPCInfo> rfidNotifyAction;
+        private ExaminationVideoView examView;
 
         public ExaminationManageView()
         {
@@ -83,6 +85,8 @@ namespace MM.Medical.Client.Views
             this.IsEnabled = false;
             this.Loaded += ExaminationManageView_Loaded;
             this.Unloaded += ExaminationManageView_Unloaded;
+            this.examView = new ExaminationVideoView();
+            examView.Show();
         }
 
         private void ExaminationManageView_Unloaded(object sender, RoutedEventArgs e)
@@ -162,7 +166,7 @@ namespace MM.Medical.Client.Views
                     dg_appointments.SelectedValue = condition;
                     this.IsEditable = true;
                     loading.Stop();
-                    epv.video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
+                    examView.SetExam(condition.Examination);
                 });
             }
             this.IsEnabled = true;
@@ -268,7 +272,7 @@ namespace MM.Medical.Client.Views
                 var commit_ex = appointment.Examination.Copy();
                 if (tb.IsChecked.Value)
                 {
-                    void CommitExamination(Endoscope endoscope)
+                    void AddExamination(Endoscope endoscope)
                     {
                         commit_ex.DoctorName = CacheHelper.CurrentUser.Name;
                         commit_ex.DoctorID = CacheHelper.CurrentUser.UserID;
@@ -281,6 +285,10 @@ namespace MM.Medical.Client.Views
                         {
                             commit_ex.ExaminationID = result1.Content;
                             commit_ex.CopyTo(appointment.Examination);
+                            if (appointment.Examination.Videos == null)
+                                appointment.Examination.Videos = new ObservableCollection<ExaminationMedia>();
+                            if (appointment.Examination.Images == null)
+                                appointment.Examination.Images = new ObservableCollection<ExaminationMedia>();
                             commit.AppointmentStatus = AppointmentStatus.Checking;
                             var result = loading.AsyncWait("启动检查中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(commit));
                             if (!result.IsSuccess)
@@ -291,9 +299,13 @@ namespace MM.Medical.Client.Views
                             else
                             {
                                 Alert.ShowMessage(true, AlertType.Success, "检查已启动");
+                                if (!string.IsNullOrEmpty(appointment.WatchInfo))
+                                {
+                                    SpeechHelper.Add($"患者{appointment.Name}存在关注事项,{appointment.WatchInfo}");
+                                }
                                 commit.CopyTo(appointment);
                                 CollectionView.Refresh();
-                                epv.video.SetSource(CacheHelper.EndoscopeDeviceID, true, OpenCvSharp.VideoCaptureAPIs.DSHOW);
+                                examView.SetExam(appointment.Examination);
                             }
                         }
                         else
@@ -304,10 +316,9 @@ namespace MM.Medical.Client.Views
                     }
                     if (CacheHelper.IsDebug)
                     {
-                        //var result = loading.AsyncWait("读取内窥镜中,请稍后", SocketProxy.Instance.GetEndoscopeById(0));
                         var result = loading.AsyncWait("读取内窥镜中,请稍后", SocketProxy.Instance.GetEndoscopeById(1));
                         if (result.IsSuccess)
-                            CommitExamination(result.Content);
+                            AddExamination(result.Content);
                         else
                             Alert.ShowMessage(true, AlertType.Error, $"读取内窥镜信息失败,{ result.Error }");
                     }
@@ -327,7 +338,7 @@ namespace MM.Medical.Client.Views
                                     {
                                         case EndoscopeState.Waiting:
                                         case EndoscopeState.Using:
-                                            CommitExamination(result.Content);
+                                            AddExamination(result.Content);
                                             break;
                                         case EndoscopeState.Decontaminating:
                                             Alert.ShowMessage(true, AlertType.Error, "内窥镜正在清洗中,请勿重复使用");
@@ -351,45 +362,52 @@ namespace MM.Medical.Client.Views
                 }
                 else
                 {
-                    commit_ex.ReportTime = TimeHelper.ToUnixTime(DateTime.Now);
-                    var result1 = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyExamination(commit_ex));
-                    if (result1.IsSuccess)
+                    if (appointment.Examination.Videos.Any(t => !string.IsNullOrEmpty(t.LocalVideoPath)))
                     {
-                        commit_ex.CopyTo(appointment.Examination);
-                        commit.AppointmentStatus = AppointmentStatus.Checked;
-                        appointment.Examination.Appointment = appointment;
-                        var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointment(commit));
-                        if (!result.IsSuccess)
-                        {
-                            Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result.Error }");
-                            tb.IsChecked = !tb.IsChecked.Value;
-                        }
-                        else
-                        {
-                           // if (!CacheHelper.IsDebug)
-                            {
-                                var decontaminateTask = new DecontaminateTask
-                                {
-                                    EndoscopeID = commit_ex.EndoscopeID,
-                                    ExaminationID = commit_ex.ExaminationID
-                                };
-                                var result2 = loading.AsyncWait("创建清洗任务中,请稍后", SocketProxy.Instance.AddDecontaminateTask(decontaminateTask));
-                                if (!result2.IsSuccess)
-                                    Alert.ShowMessage(false, AlertType.Warning, $"检查已结束,报告已保存但生成清洗任务失败,{ result.Error }");
-                                else
-                                    Alert.ShowMessage(true, AlertType.Success, $"检查已结束,报告已保存并生成清洗任务");
-                            }
-                         //   else 
-                         //       Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
-                            commit.CopyTo(appointment);
-                            CollectionView.Refresh();
-                            epv.video.Dispose();
-                        }
+                        Alert.ShowMessage(true, AlertType.Warning, $"结束检查失败,存在未结束的录像任务");
+                        tb.IsChecked = !tb.IsChecked.Value;
                     }
                     else
                     {
-                        Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{ result1.Error }");
-                        tb.IsChecked = !tb.IsChecked.Value;
+                        commit_ex.ReportTime = TimeHelper.ToUnixTime(DateTime.Now);
+                        var result1 = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyExamination(commit_ex));
+                        if (result1.IsSuccess)
+                        {
+                            commit_ex.CopyTo(appointment.Examination);
+                            commit.AppointmentStatus = AppointmentStatus.Checked;
+                            appointment.Examination.Appointment = appointment;
+                            var result = loading.AsyncWait("结束检查中,请稍后", SocketProxy.Instance.ModifyAppointment(commit));
+                            if (!result.IsSuccess)
+                            {
+                                Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{result.Error}");
+                                tb.IsChecked = !tb.IsChecked.Value;
+                            }
+                            else
+                            {
+                                // if (!CacheHelper.IsDebug)
+                                {
+                                    var decontaminateTask = new DecontaminateTask
+                                    {
+                                        EndoscopeID = commit_ex.EndoscopeID,
+                                        ExaminationID = commit_ex.ExaminationID
+                                    };
+                                    var result2 = loading.AsyncWait("创建清洗任务中,请稍后", SocketProxy.Instance.AddDecontaminateTask(decontaminateTask));
+                                    if (!result2.IsSuccess)
+                                        Alert.ShowMessage(false, AlertType.Warning, $"检查已结束,报告已保存但生成清洗任务失败,{result.Error}");
+                                    else
+                                        Alert.ShowMessage(true, AlertType.Success, $"检查已结束,报告已保存并生成清洗任务");
+                                }
+                                //   else 
+                                //       Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
+                                commit.CopyTo(appointment);
+                                CollectionView.Refresh();
+                            }
+                        }
+                        else
+                        {
+                            Alert.ShowMessage(true, AlertType.Error, $"结束检查失败,{result1.Error}");
+                            tb.IsChecked = !tb.IsChecked.Value;
+                        }
                     }
                 }
             }
@@ -444,7 +462,6 @@ namespace MM.Medical.Client.Views
                         if (result.IsSuccess)
                         {
                             Alert.ShowMessage(true, AlertType.Success, "保存检查信息成功");
-                            epv.video.Dispose();
                         }
                         else
                         {
@@ -463,20 +480,25 @@ namespace MM.Medical.Client.Views
         {
             if (dg_appointments.SelectedValue is Appointment appointment)
             {
-                Examination examination = new Examination();
                 if (appointment.AppointmentStatus != AppointmentStatus.Waiting)
                 {
-                    var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetExaminationsByAppointmentID(appointment.AppointmentID));
-                    if (result.IsSuccess) 
-                        examination = result.Content;
-                    else 
-                        Alert.ShowMessage(true, AlertType.Error, $"获取检查详细信息失败,{ result.Error }");
+                    if (appointment.Examination == null)
+                    {
+                        var result = loading.AsyncWait("获取检查信息中,请稍后", SocketProxy.Instance.GetExaminationsByAppointmentID(appointment.AppointmentID));
+                        if (result.IsSuccess)
+                            appointment.Examination = result.Content;
+                        else
+                            Alert.ShowMessage(true, AlertType.Error, $"获取检查详细信息失败,{result.Error}");
+                    }
                 }
-                if (examination.Images == null)
-                    examination.Images = new ObservableCollection<ExaminationMedia>();
-                if (examination.Videos == null)
-                    examination.Videos = new ObservableCollection<ExaminationMedia>();
-                appointment.Examination = examination;
+                if (appointment.Examination == null)
+                {
+                    appointment.Examination = new Examination();
+                }
+                if (appointment.Examination.Images == null)
+                    appointment.Examination.Images = new ObservableCollection<ExaminationMedia>();
+                if (appointment.Examination.Videos == null)
+                    appointment.Examination.Videos = new ObservableCollection<ExaminationMedia>();
                 appointment.Examination.Appointment = appointment;
             }
         }
@@ -485,7 +507,7 @@ namespace MM.Medical.Client.Views
         {
             if (dg_appointments.SelectedValue is Appointment appointment)
             {
-               
+                SpeechHelper.Add($"请患者{appointment.Name}前来检查");
             }
         }
         private void CaptureSetting_Click(object sender, RoutedEventArgs e)
@@ -501,10 +523,6 @@ namespace MM.Medical.Client.Views
                     AcceptConsultingRoom();
                 LoadConsultingRoom();
             });
-        }
-
-        public void Break()
-        {
         }
     }
 }

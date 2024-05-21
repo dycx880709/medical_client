@@ -7,6 +7,7 @@ using Mseiot.Medical.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,7 @@ namespace MM.Medical.Client.Views
     /// </summary>
     public partial class ExaminationPartView : UserControl
     {
+        #region Property
         public Examination SelectedExamination
         {
             get { return (Examination)GetValue(SelectedExaminationProperty); }
@@ -60,6 +62,7 @@ namespace MM.Medical.Client.Views
             get { return (bool)GetValue(ShowSelectedProperty); }
             set { SetValue(ShowSelectedProperty, value); }
         }
+        public bool IsExamination { get; set; }
 
         public static readonly DependencyProperty ShowSelectedProperty = DependencyProperty.Register("ShowSelected", typeof(bool), typeof(ExaminationPartView), new PropertyMetadata(false));
         public static readonly DependencyProperty SelectedExaminationProperty = DependencyProperty.Register("SelectedExamination", typeof(Examination), typeof(ExaminationPartView), new PropertyMetadata(null, SelectedExaminationPropertyChanged));
@@ -71,20 +74,18 @@ namespace MM.Medical.Client.Views
         public IEnumerable<MedicalWord> OriginMedicalWords { get; set; }
         public IEnumerable<MedicalWord> MedicalWords { get; set; }
         public List<string> BodyParts { get; set; }
-        private SystemSetting systemSetting;
+        private SystemSetting systemSetting = CacheHelper.SystemSetting;
+        private Window previewVideoView;
         private MediaPlayer player;
-
         private static void SelectedExaminationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ExaminationPartView epv)
             {
-                epv.video.Dispose();
-                epv.bd_media.Visibility = Visibility.Hidden;
-                epv.img_media.Source = null;
-                epv.bt_close.Visibility = Visibility.Hidden;
                 epv.ShowSelected = false;
             }
         }
+        #endregion
+
 
         public ExaminationPartView()
         {
@@ -97,7 +98,7 @@ namespace MM.Medical.Client.Views
             this.Loaded -= ExaminationPartView_Loaded;
             AddSoftKeyboard();
             this.Loading = this.Loading ?? this.cl;
-            GetSystemSetting();
+            //GetSystemSetting();
             GetBaseWords();
             GetMedicalDatas();
             this.DataContext = this;
@@ -111,33 +112,6 @@ namespace MM.Medical.Client.Views
             sk.Keys.AddRange(new List<string> { "℃", "°" });
             sk.Keys.AddRange(new List<string> { "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ" });
             sk.Keys.AddRange(new List<string> { "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω" });
-        }
-
-        private void GetSystemSetting()
-        {
-            this.player = new MediaPlayer();
-            var result = Loading.AsyncWait("获取系统设置中,请稍后", SocketProxy.Instance.GetSystemSetting());
-            if (result.IsSuccess && !string.IsNullOrEmpty(result.Content.CutshotSound))
-            {
-                var soundPath = SocketProxy.Instance.GetFileRounter() + result.Content.CutshotSound;
-                player.Open(new Uri(soundPath, UriKind.Absolute));
-                var shotcutKey = result.Content.CutshotKeyboard;
-                Application.Current.MainWindow.KeyDown += (_, e) =>
-                {
-                    if (this.SelectedExamination != null && 
-                    SelectedExamination.Appointment != null && 
-                    SelectedExamination.Appointment.AppointmentStatus == AppointmentStatus.Checking &&
-                    this.IsLoaded)
-                    {
-                        if (e.Key.ToString().Equals(shotcutKey))
-                            Shotcut();
-                        else if (e.Key.ToString().Equals("System"))
-                            KeyHookHelper.ResetSystem();
-                    }
-                };
-            }
-            else player.Open(new Uri("screenshot.mp3", UriKind.Relative));
-            this.systemSetting = result.Content;
         }
 
         private void GetMedicalDatas()
@@ -201,9 +175,9 @@ namespace MM.Medical.Client.Views
 
         private void ExaminationText_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBox textBox && !this.IsReadOnly)
+            if (sender is TextBox tb && !this.IsReadOnly)
             {
-                var expander = ControlHelper.GetParentObject<Expander>(textBox);
+                var expander = ControlHelper.GetParentObject<Expander>(tb);
                 var title = expander.Header.ToString();
                 var medicalWord = MedicalWords.FirstOrDefault(t => t.Name.Equals(title));
                 tv_medicalWord.ItemsSource = medicalWord != null ? medicalWord.MedicalWords : null;
@@ -212,7 +186,7 @@ namespace MM.Medical.Client.Views
                 else 
                     ti_word.IsSelected = true;
                 cgb_word.Visibility = Visibility.Visible;
-                textBox.SelectionStart = textBox.Text.Length;
+                tb.SelectionStart = tb.Text.Length;
             }
         }
 
@@ -289,149 +263,12 @@ namespace MM.Medical.Client.Views
             }
         }
 
-        private void Shotcut_Click(object sender, RoutedEventArgs e)
-        {
-            Shotcut();
-        }
-
-        private async void Record_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is ToggleButton tb)
-            {
-                tb.IsEnabled = false;
-                if (tb.IsChecked.Value)
-                {
-                    if (SelectedExamination.Videos.Count >= systemSetting.MediaCount)
-                    {
-                        Alert.ShowMessage(true, AlertType.Warning, "采集视频数量超过上限");
-                        tb.IsChecked = false;
-                        tb.IsEnabled = true;
-                        return;
-                    }
-                    var image = video.Shotcut();
-                    if (image != null && image.Length > 0)
-                    {
-                        var media = new ExaminationMedia
-                        {
-                            Buffer = image,
-                            ExaminationID = SelectedExamination.ExaminationID,
-                            MediaType = MediaType.Video,
-                        };
-                        SelectedExamination.Videos.Add(media);
-                        var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(image);
-                        if (result.IsSuccess)
-                        {
-                            media.Path = result.Content;
-                            var result2 = await SocketProxy.Instance.AddExaminationMedia(media);
-                            if (result2.IsSuccess)
-                            {
-                                media.ExaminationMediaID = result2.Content;
-                                media.ErrorMsg = null;
-                                var filePath = Path.Combine(CacheHelper.VideoPath, TimeHelper.ToUnixTime(DateTime.Now).ToString() + ".avi");
-                                if (video.StartRecord(filePath))
-                                    media.LocalVideoPath = filePath;
-                                else
-                                {
-                                    this.Dispatcher.Invoke(() =>
-                                    {
-                                        Alert.ShowMessage(true, AlertType.Error, "开启录像失败");
-                                        tb.IsChecked = false;
-                                    });
-                                }
-                            }
-                            else this.Dispatcher.Invoke(() =>
-                            {
-                                media.ErrorMsg = $"上传视频数据失败,{ result2.Error }";
-                                tb.IsChecked = false;
-                            });
-                        }
-                        else
-                        {
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                media.ErrorMsg = $"上传视频预览图片失败,{ result.Error }";
-                                tb.IsChecked = false;
-                            });
-                        }
-                    }
-                    else
-                    {
-                        Alert.ShowMessage(true, AlertType.Error, "预览图获取失败,录像已停止");
-                        tb.IsChecked = false;
-                    }
-                }
-                else
-                {
-                    if (video.StopRecord())
-                    {
-                        var media = SelectedExamination.Videos.FirstOrDefault(t => !string.IsNullOrEmpty(t.LocalVideoPath));
-                        var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(media.LocalVideoPath);
-                        if (result.IsSuccess)
-                        {
-                            media.VideoPath = result.Content;
-                            var result2 = await SocketProxy.Instance.ModifyExaminationMedia(media);
-                            if (!result2.IsSuccess)
-                                this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result2.Error }");
-                            else
-                            {
-                                File.Delete(media.LocalVideoPath);
-                                media.LocalVideoPath = null;
-                            }
-                        }
-                        else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传视频文件失败,{ result.Error }");
-                    }
-                    else
-                    {
-                        Alert.ShowMessage(true, AlertType.Error, "停止录像失败");
-                        tb.IsChecked = !tb.IsChecked.Value;
-                    }
-                }
-                this.Dispatcher.Invoke(() => tb.IsEnabled = true);
-            }
-        }
         private void PlayMedia_Click(object sender, RoutedEventArgs e)
         {
             if (sender is FrameworkElement element && element.DataContext is ExaminationMedia media)
             {
-
-                if (media.MediaType == MediaType.Image)
-                {
-                    video.Dispose();
-                    var remoteAddress = SocketProxy.Instance.GetFileRounter() + media.Path;
-                    bd_media.Visibility = Visibility.Visible;
-                    img_media.Source = new BitmapImage(new Uri(remoteAddress, UriKind.Absolute));
-                }
-                else
-                {
-                    bd_media.Visibility = Visibility.Hidden;
-                    img_media.Source = null;
-                    var remoteAddress = SocketProxy.Instance.GetFileRounter() + media.VideoPath;
-                    video.SetSource(remoteAddress, true);
-                }
-                bt_close.Visibility = Visibility.Visible;
-                bt_close.Tag = media;
-            }
-        }
-
-        private async void CloseMedia_Click(object sender, RoutedEventArgs e)
-        {
-            if (bt_close.Tag is ExaminationMedia media)
-            {
-                if (media.MediaType == MediaType.Image)
-                {
-                    bd_media.Visibility = Visibility.Hidden;
-                    img_media.Source = null;
-                }
-                if (SelectedExamination.Appointment.AppointmentStatus == AppointmentStatus.Checking)
-                {
-                    cl.Start("加载视频中,请稍后");
-                    await Task.Run(() => video.SetSource(CacheHelper.EndoscopeDeviceID, true));
-                }
-                this.Dispatcher.Invoke(() => 
-                {
-                    bt_close.Visibility = Visibility.Hidden;
-                    cl.Stop();
-                });
+                var view = new PreviewMediaView(media);
+                view.Show();
             }
         }
 
@@ -470,46 +307,6 @@ namespace MM.Medical.Client.Views
                     this.Dispatcher.Invoke(() => Alert.ShowMessage(true, AlertType.Error, $"设置是否打印失败,{ result.Error }"));
                     media.IsSelected = !media.IsSelected;
                 }
-            }
-        }
-
-        private async void Shotcut()
-        {
-            if (SelectedExamination.Images == null)
-            {
-                SelectedExamination.Images = new ObservableCollection<ExaminationMedia>();
-            }
-            if (SelectedExamination.Images.Count >= systemSetting.CutshotImageCount)
-            {
-                Alert.ShowMessage(true, AlertType.Warning, "采集图片数量超过上限");
-                return;
-            }
-            var image = video.Shotcut();
-            if (image != null && image.Length > 0)
-            {
-                player.Play();
-                var media = new ExaminationMedia
-                {
-                    Buffer = image,
-                    ExaminationID = SelectedExamination.ExaminationID,
-                    MediaType = MediaType.Image,
-                };
-                SelectedExamination.Images.Add(media);
-                var result = await SocketProxy.Instance.HttpProxy.UploadFile<string>(image);
-                if (result.IsSuccess)
-                {
-                    media.Path = result.Content;
-                    var result2 = await SocketProxy.Instance.AddExaminationMedia(media);
-                    if (result2.IsSuccess)
-                    {
-                        media.ExaminationMediaID = result2.Content;
-                        media.Buffer = null;
-                        media.ErrorMsg = null;
-                    }
-                    else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传数据失败,{ result2.Error }");
-                }
-                else this.Dispatcher.Invoke(() => media.ErrorMsg = $"上传图片失败,{ result.Error }");
-                player.Position = TimeSpan.Zero;
             }
         }
 

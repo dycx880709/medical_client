@@ -28,6 +28,8 @@ namespace Mseiot.Medical.Service.Entities
         private string auditDoctor;
         private string nurse;
         private Appointment appointment;
+        private ObservableCollection<ExaminationMedia> images;
+        private ObservableCollection<ExaminationMedia> videos;
 
         /// <summary>
         /// 检查ID
@@ -240,7 +242,24 @@ namespace Mseiot.Medical.Service.Entities
         public string DoctorID { get; set; }
         public Endoscope Endoscope { get; set; }
 
-        public ObservableCollection<ExaminationMedia> Images { get; set; }
-        public ObservableCollection<ExaminationMedia> Videos { get; set; }
+        public ObservableCollection<ExaminationMedia> Images
+        {
+            get { return images; }
+            set 
+            { 
+                images = value;
+                RaisePropertyChanged(nameof(Images));
+            }
+        }
+
+        public ObservableCollection<ExaminationMedia> Videos
+        {
+            get { return videos; }
+            set
+            {
+                videos = value;
+                RaisePropertyChanged(nameof(Videos));
+            }
+        }
     }
 }

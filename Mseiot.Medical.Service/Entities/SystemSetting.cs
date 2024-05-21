@@ -21,7 +21,8 @@ namespace Mseiot.Medical.Service.Entities
         private int mediaCount;
         private string wakeupCallName;
         private string cutshotKeyboard;
-        
+        private string recordKeyboard;
+
         /// <summary>
         /// 采图热键
         /// </summary>
@@ -32,6 +33,16 @@ namespace Mseiot.Medical.Service.Entities
             {
                 cutshotKeyboard = value;
                 RaisePropertyChanged("CutshotKeyboard");
+            }
+        }
+
+        public string RecordKeyboard
+        {
+            get { return recordKeyboard; }
+            set
+            { 
+                recordKeyboard = value;
+                RaisePropertyChanged("RecordKeyboard");
             }
         }
 

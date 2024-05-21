@@ -18,7 +18,8 @@ namespace MM.Medical.Client.Entities
                     Name = "内镜预约登记系统", Level = "1",
                     Children = new List<AppLevel>
                     {
-                        new AppLevel { Name = "预约登记", Level="11", Identify="MM.Medical.Client.Views.AppointmentManage", Reusability=true }
+                        new AppLevel { Name = "预约登记", Level="11", Identify="MM.Medical.Client.Views.AppointmentManage", Reusability=true },
+                        new AppLevel { Name = "回访中心", Level="12", Identify="MM.Medical.Client.Views.BackExaminationManage", Reusability=true }
                     }
                 },
                 new AppLevel

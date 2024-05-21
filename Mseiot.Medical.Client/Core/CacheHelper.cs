@@ -1,4 +1,5 @@
 ﻿using MM.Medical.Client.Entities;
+using Ms.Controls;
 using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
@@ -30,6 +31,7 @@ namespace MM.Medical.Client.Core
         public static string VideoPath { get; private set; }
         public static string RFIDCom { get; private set; } 
         public static bool IsDebug { get; private set; }
+        public static SystemSetting SystemSetting { get; set; }
 
         public static T GetConfig<T>(string name)
         {
@@ -68,9 +70,14 @@ namespace MM.Medical.Client.Core
             var timer = new Timer(5000);
             timer.Elapsed += (o, e) =>
             {
-                if (1728383265 - TimeHelper.ToUnixTime(DateTime.Now) < 0)
+                var result = Dog.Lib.Dog.Validate("20040830Kang!@#$");
+                if (!result.Item1)
                 {
-                    Application.Current.Dispatcher.Invoke(() => Application.Current.Shutdown());
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MsWindow.ShowDialog("请插入加密狗", "软件提示");
+                        Application.Current.Shutdown();
+                    });
                 }
             };
             timer.Start();

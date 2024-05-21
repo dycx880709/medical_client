@@ -233,19 +233,19 @@ namespace MM.Libs.RFID
         {
             return Task.Run((() =>
              {
-                     byte cmd = 0x04;
-                     byte[] epcBuffer = BitConverter.GetBytes((Int32)epc);
-                     List<byte> datas = new List<byte> { 0xFF, cmd, 0x02, 0x00, 0x00, 0x00, 0x00 };
-                     datas.AddRange(epcBuffer);
-                     byte[] result = WriteMessage(datas);
-                     switch (result[3])
-                     {
-                         case 0x00:
-                             break;
-                         default:
-                             throw new Exception(GetError(result[3]));
+                byte cmd = 0x04;
+                byte[] epcBuffer = BitConverter.GetBytes((Int32)epc);                 
+                List<byte> datas = new List<byte> { 0xFF, cmd, 0x02, 0x00, 0x00, 0x00, 0x00 };
+                 datas.AddRange(epcBuffer);
+                byte[] result = WriteMessage(datas);
+                switch (result[3])
+                {
+                    case 0x00:
+                        break;
+                     default:
+                         throw new Exception(GetError(result[3]));
 
-                     }
+                 }
              }));
         }
 

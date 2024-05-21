@@ -93,6 +93,10 @@
                         <TextBlock Text="采图热键" Style="{StaticResource editorFormItemText}"/>
                         <controls:CustomTextBox Text="{Binding CutshotKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
+                    <StackPanel Style="{StaticResource editorFormItem}">
+                        <TextBlock Text="录像热键" Style="{StaticResource editorFormItemText}"/>
+                        <controls:CustomTextBox Text="{Binding RecordKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
                 </WrapPanel>
             </controls:CustomGroupBox>
             <Button Click="Save_Click" Grid.Row="2" Margin="0,20" Grid.ColumnSpan="3" Content="保存"/>

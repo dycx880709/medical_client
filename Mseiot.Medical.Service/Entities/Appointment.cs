@@ -29,7 +29,33 @@ namespace Mseiot.Medical.Service.Entities
         private string roomID;
         private string department;
         private bool isPrior;
+        private string watchInfo;
+        private int backingTime;
 
+        /// <summary>
+        /// 回访时期
+        /// </summary>
+        public int BackingTime
+        {
+            get { return backingTime; }
+            set 
+            { 
+                backingTime = value;
+                RaisePropertyChanged("BackingTime");
+            }
+        }
+        /// <summary>
+        /// 关注信息
+        /// </summary>
+        public string WatchInfo
+        {
+            get { return watchInfo; }
+            set 
+            {
+                watchInfo = value;
+                RaisePropertyChanged("WatchInfo");
+            }
+        }
         /// <summary>
         /// ID
         /// </summary>

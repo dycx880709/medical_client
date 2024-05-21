@@ -6,7 +6,7 @@
              xmlns:core="clr-namespace:MM.Medical.Client.Core"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:validation="clr-namespace:MM.Medical.Share.Validations;assembly=MM.Medical.Share"
-             Width="750" Height="450"
+             Width="750" Height="500"
              mc:Ignorable="d" >
 
     <UserControl.Resources>
@@ -150,6 +150,10 @@
                 </StackPanel.Style>
                 <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="床号"/></TextBlock>
                 <TextBox Text="{Binding RoomID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Style="{StaticResource editorFormItem}">
+                <TextBlock><Run Text="关注信息"/></TextBlock>
+                <TextBox x:Name="tb_remark" Width="490" Text="{Binding WatchInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
