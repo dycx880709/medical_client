@@ -23,7 +23,7 @@ namespace Mseiot.Medical.Service.Services
 
         public async Task<MsResult<bool>> DownloadDBRecord(string path,string localFilePath)
         {
-            return await HttpProxy.DownloadFile("/backupdb/" + path, localFilePath);
+            return await HttpProxy.DownloadFileRaw("/backupdb/" + path, localFilePath);
         }
 
     }

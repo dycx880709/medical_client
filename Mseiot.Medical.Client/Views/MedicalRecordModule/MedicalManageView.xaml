@@ -81,7 +81,7 @@
                         </StackPanel>
                         <StackPanel Style="{StaticResource editorFormItem}">
                             <TextBlock Text="诊断信息"/>
-                            <controls:CustomTextBox x:Name="tb_diagnose" Watermark="对临床诊断/内镜所见/镜下诊断/活检部位/病理诊断/医生建议全文搜索" Width="520" Text=""/>
+                            <controls:CustomTextBox x:Name="tb_diagnose" Watermark="对临床诊断/内镜所见/镜下诊断/活检部位/病理诊断/医生建议搜索" Width="520" Text=""/>
                         </StackPanel>
                         <Button Content="查询" Click="Get_Click" Grid.Column="1" IsDefault="True"/>
                     </WrapPanel>

@@ -157,7 +157,7 @@
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="重新扫描" Click="Rescan_Click" IsEnabled="False"/>
+            <!--<Button Content="重新扫描" Click="Rescan_Click" IsEnabled="False"/>-->
             <Button Content="确定" Margin="20,0,0,0" IsDefault="True" Click="Save_Click"/>
         </StackPanel>
     </Grid>

@@ -62,7 +62,7 @@ namespace MM.Medical.Client.Core
             if (Directory.Exists(CacheHelper.VideoPath))
                 Directory.Delete(CacheHelper.VideoPath, true);
             Directory.CreateDirectory(CacheHelper.VideoPath);
-            //CheckAuth();
+           CheckAuth();
         }
 
         private static void CheckAuth()
@@ -70,14 +70,22 @@ namespace MM.Medical.Client.Core
             var timer = new Timer(5000);
             timer.Elapsed += (o, e) =>
             {
-                var result = Dog.Lib.Dog.Validate("20040830Kang!@#$");
-                if (!result.Item1)
+                if (1721577600000-TimeHelper.ToUnixTime(DateTime.Now) > 0)
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        MsWindow.ShowDialog("请插入加密狗", "软件提示");
-                        Application.Current.Shutdown();
-                    });
+                    //var result = Dog.Lib.Dog.Validate("20040830Kang!@#$");
+                    //if (!result.Item1)
+                    //{
+                    //    Application.Current.Dispatcher.Invoke(() =>
+                    //    {
+                    //        MsWindow.ShowDialog("请插入加密狗", "软件提示");
+                    //        Application.Current.Shutdown();
+                    //    });
+                    //}
+                }
+                else
+                {
+                    MsWindow.ShowDialog("授权已过期", "软件提示");
+                    Application.Current.Shutdown();
                 }
             };
             timer.Start();

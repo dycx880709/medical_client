@@ -39,11 +39,15 @@ namespace MM.Medical.Client.Views
 
         public async void SetSource(object videoSource, bool autoPlay = false, VideoCaptureAPIs captureAPIs = VideoCaptureAPIs.ANY)
         {
+            var isRealTime = false;
             await this.Stop();
             this.tokenSource = new CancellationTokenSource();
             this.resetEvent = new ManualResetEvent(autoPlay);
             if (videoSource is int deviceId)
+            { 
                 this.videoCapture = new VideoCapture(deviceId, captureAPIs);
+                isRealTime = true;
+            }
             else
                 this.videoCapture = new VideoCapture(videoSource.ToString(), captureAPIs);
             if (videoCapture.IsOpened())
@@ -53,7 +57,7 @@ namespace MM.Medical.Client.Views
                 var token = tokenSource.Token;
                 this.playTask = Task.Run(() =>
                 {
-                    //var index = 0;
+                    var index = 0;
                     while (!token.IsCancellationRequested && videoCapture.Grab())
                     {
                         resetEvent.WaitOne();
@@ -65,9 +69,11 @@ namespace MM.Medical.Client.Views
                             if (this.videoWriter != null && !videoWriter.IsDisposed)
                                 videoWriter.Write(mat);
                         }
-                        //if (index++ % 2 == 0)
+                        if (index++ % 2 == 0 || !isRealTime)
                         {
                             this.Dispatcher.Invoke(() => { ImageSource = mat.ToMemoryStream(".jpg"); });
+                            if (index > 1000000)
+                                index = 0;
                         }
                         mat.Dispose();
                         resetEvent.Set();

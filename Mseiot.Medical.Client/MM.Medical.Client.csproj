@@ -124,6 +124,7 @@
     <Compile Include="Converters\ItemIndexToBooleanConverter.cs" />
     <Compile Include="Converters\PathToWebUrlConverter.cs" />
     <Compile Include="Converters\PatientStatusToColorConverter.cs" />
+    <Compile Include="Converters\SizeLengthFormatConverter.cs" />
     <Compile Include="Converters\TimeStampIsTodayConverter.cs" />
     <Compile Include="Core\CacheHelper.cs" />
     <Compile Include="Core\Const.cs" />

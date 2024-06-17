@@ -27,6 +27,7 @@
             <converters:ReverseBooleanConverter x:Key="ReverseBooleanConverter"/>
             <converters:ObjectEqualParamConverter x:Key="ObjectEqualParamConverter"/>
             <converters:BooleanReverseToVisibilityConverter x:Key="BooleanReverseToVisibilityConverter"/>
+            <lc:SizeLengthFormatConverter x:Key="SizeLengthFormatConverter"/>
             <lc:PathToWebUrlConverter x:Key="PathToWebUrlConverter"/>
             <converters:YNToCNConvert x:Key="YNToCNConvert"/>
             <converters:SexConverter x:Key="SexConverter"/>

@@ -112,6 +112,11 @@ namespace MM.Medical.Client.Views
                 Alert.ShowMessage(true, AlertType.Warning, "登录密码不能为空");
                 return;
             }
+            if (loginPwd.Length < 6)
+            {
+                Alert.ShowMessage(true, AlertType.Warning, "登录密码少于6位");
+                return;
+            }
             btLogin.IsEnabled = false;
             var result = await SocketProxy.Instance.Login(loginName, loginPwd);
             if (result.IsSuccess)

@@ -118,9 +118,12 @@ namespace MM.Medical.Client.Views
         {
             if (dg_appointment.SelectedValue is Appointment appointment)
             {
-                var result = loading.AsyncWait("删除预约中,请稍后", SocketProxy.Instance.RemoveAppointments(new List<int> { appointment.AppointmentID }));
-                if (result.IsSuccess) LoadAppointments();
-                else Alert.ShowMessage(true, AlertType.Error, "删除预约失败", result.Error);
+                if (MsPrompt.ShowDialog($"确定取消{appointment.Name}预约吗?"))
+                {
+                    var result = loading.AsyncWait("删除预约中,请稍后", SocketProxy.Instance.RemoveAppointments(new List<int> { appointment.AppointmentID }));
+                    if (result.IsSuccess) LoadAppointments();
+                    else Alert.ShowMessage(true, AlertType.Error, "删除预约失败", result.Error);
+                }
             }
         }
 

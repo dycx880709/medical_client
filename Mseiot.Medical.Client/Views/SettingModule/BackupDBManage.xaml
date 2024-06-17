@@ -18,7 +18,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*" Header="备份文件" Binding="{Binding Path}"/>
                     <DataGridTextColumn Width="*" Header="备份时间" Binding="{Binding Time,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm:ss}"/>
-                    <DataGridTextColumn Width="*" Header="文件大小(字节)" Binding="{Binding Size}"/>
+                    <DataGridTextColumn Width="*" Header="文件大小(字节)" Binding="{Binding Size, Converter={StaticResource SizeLengthFormatConverter}}"/>
                     <DataGridTemplateColumn Width="200" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

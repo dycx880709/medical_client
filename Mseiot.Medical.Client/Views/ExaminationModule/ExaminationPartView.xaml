@@ -77,6 +77,7 @@
                     <Setter Property="VerticalAlignment" TargetName="mb_export" Value="Top"/>
                     <Setter Property="NormalSource" TargetName="bt_play" Value="{StaticResource Img_Play}"/>
                     <Setter Property="HoverSource" TargetName="bt_play" Value="{StaticResource Img_Play_Hover}"/>
+                    <Setter Property="Text" TargetName="tb_msg" Value="视频上传中"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
                     <Setter Property="Visibility" TargetName="cb_part" Value="Visible"/>

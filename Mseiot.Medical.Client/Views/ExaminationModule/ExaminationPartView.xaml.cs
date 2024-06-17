@@ -338,8 +338,7 @@ namespace MM.Medical.Client.Views
                     if (media.MediaType == MediaType.Video && !string.IsNullOrEmpty(media.VideoPath))
                     {
                         var localVideoPath = Path.Combine(dialog.SelectedPath, $"{media.ExaminationMediaID}_{ TimeHelper.ToUnixTime(DateTime.Now) }.mp4");
-                        var videoPath = "files/" + media.VideoPath;
-                        var result = Loading.AsyncWait("导出视频文件中,请稍后", SocketProxy.Instance.HttpProxy.DownloadFile(videoPath, localVideoPath));
+                        var result = Loading.AsyncWait("导出视频文件中,请稍后", SocketProxy.Instance.HttpProxy.DownloadFile(media.VideoPath, localVideoPath));
                         if (!result.IsSuccess)
                         {
                             Alert.ShowMessage(true, AlertType.Error, $"导出视频文件失败,{ result.Error }");
@@ -350,8 +349,7 @@ namespace MM.Medical.Client.Views
                     else if (!string.IsNullOrEmpty(media.Path)) 
                     {
                         var localVideoPath = Path.Combine(dialog.SelectedPath, $"{media.ExaminationMediaID}_{ TimeHelper.ToUnixTime(DateTime.Now) }.jpg");
-                        var imagePath = "files/" + media.Path;
-                        var result = Loading.AsyncWait("导出图片文件中,请稍后", SocketProxy.Instance.HttpProxy.DownloadFile(imagePath, localVideoPath));
+                        var result = Loading.AsyncWait("导出图片文件中,请稍后", SocketProxy.Instance.HttpProxy.DownloadFile(media.Path, localVideoPath));
                         if (!result.IsSuccess)
                         { 
                             Alert.ShowMessage(true, AlertType.Error, $"导出图片文件失败,{ result.Error }");

@@ -7,5 +7,6 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <TextBlock Text="Coming Soon" FontWeight="Bold" FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        
     </Grid>
 </UserControl>

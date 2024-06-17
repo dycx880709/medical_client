@@ -69,8 +69,11 @@ namespace MM.Medical.Client.Views
         {
             ExaminationMedias.Clear();
             this.examination = examination;
-            ExaminationMedias.AddRange(examination.Images);
-            ExaminationMedias.AddRange(examination.Videos);
+            if (examination != null)
+            {
+                ExaminationMedias.AddRange(examination.Images);
+                ExaminationMedias.AddRange(examination.Videos);
+            }
         }
 
         private void SetWindowLocation()

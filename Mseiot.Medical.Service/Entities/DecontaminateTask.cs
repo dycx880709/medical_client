@@ -53,7 +53,7 @@ namespace Mseiot.Medical.Service.Entities
                 NotifyPropertyChanged("CleanName");
             }
         }
-
+        public string DoctorUserID { get; set; }
         /// <summary>
         /// 检查医生
         /// </summary>

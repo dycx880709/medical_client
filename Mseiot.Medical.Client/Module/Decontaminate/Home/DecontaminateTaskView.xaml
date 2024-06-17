@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MM.Medical.Client.Views"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             xmlns:core="clr-namespace:MM.Medical.Client.Core"
              x:Name="self"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        
         <Border Background="{DynamicResource Color_Content_Secondary}">
             <ListView x:Name="lvDrawGrid" BorderThickness="0" Padding="0">
                 <ListView.ItemContainerStyle>
@@ -23,11 +23,7 @@
                                                 <ColumnDefinition Width="150"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-
-                                            <!--信息-->
-                                            <Border Grid.Column="0" Background="#A0000000">
-                                               
-                                            </Border>
+                                            <Border Grid.Column="0" Background="#A0000000"/>
                                         </Grid>
                                     </Border>
                                 </ControlTemplate>
@@ -119,6 +115,16 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+
+        <Border Background="#20000000" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <TextBlock Margin="5,0" Text="测试专用" FontSize="20" Style="{StaticResource editorFormItemText}"/>
+                <controls:CustomTextBox x:Name="port_tb" Width="80" Margin="5,0" Watermark="扫描端口" Text="COM4"/>
+                <controls:CustomTextBox x:Name="serial_tb" Width="80" Margin="5,0" Watermark="设备编号" Text="1"/>
+                <Button Content="刷人" Click="BIBI_Person_Click"/>
+                <Button Content="刷卡" Margin="5,0,0,0" Click="BIBI_Card_Click"/>
+            </StackPanel>
+        </Border>
         <controls:Loading x:Name="loading"></controls:Loading>
     </Grid>
 </UserControl>

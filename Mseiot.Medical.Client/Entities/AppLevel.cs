@@ -27,7 +27,7 @@ namespace MM.Medical.Client.Entities
                     Name = "内镜消洗追溯系统", Level = "2", Describe = "清洗中心模块",
                     Children = new List<AppLevel>
                     {
-                        new AppLevel { Name="消洗中心", Level = "21", Identify="MM.Medical.Client.Module.Decontaminate.DecontaminateTaskView" },
+                        new AppLevel { Name="消洗中心", Level = "21", Identify="MM.Medical.Client.Module.Decontaminate.DecontaminateTaskView", Reusability = true },
                         new AppLevel { Name="内镜管理", Level = "22", Identify="MM.Medical.Client.Module.Decontaminate.EndoscopeManage" },
                         new AppLevel { Name="采集设备", Level = "23", Identify="MM.Medical.Client.Module.Decontaminate.RFIDDeviceManage" },
                         new AppLevel { Name="流程管理", Level = "24", Identify="MM.Medical.Client.Module.Decontaminate.DecontaminateFlowView" },
@@ -39,7 +39,7 @@ namespace MM.Medical.Client.Entities
                     Name = "医学影像图文系统", Level = "3",
                     Children = new List<AppLevel>()
                     {
-                        new AppLevel { Name="检查中心", Level = "31", Identify="MM.Medical.Client.Views.ExaminationManageView", Reusability=true },
+                        new AppLevel { Name="检查中心", Level = "31", Identify="MM.Medical.Client.Views.ExaminationManageView", Reusability = true },
                         new AppLevel { Name="病历中心", Level = "32", Identify="MM.Medical.Client.Views.MedicalManageView" },
                         new AppLevel { Name="我的工作台", Level="33", Identify="MM.Medical.Client.Views.SelfWorkStatisticsView" },
                         new AppLevel { Name="主任管理", Level="34", Identify="MM.Medical.Client.Views.SpecialStatisticsView" },

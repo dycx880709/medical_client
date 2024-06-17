@@ -61,7 +61,7 @@ namespace MM.Medical.Client.Views
         {
             if (string.IsNullOrEmpty(Appointment.Name))
             {
-                Alert.ShowMessage(true, AlertType.Error, "患者姓名输入不合法");
+                Alert.ShowMessage(true, AlertType.Error, "患者姓名不能为空");
                 return;
             }
             if (string.IsNullOrEmpty(Appointment.AppointmentType))
@@ -71,12 +71,12 @@ namespace MM.Medical.Client.Views
             }
             if (Appointment.Birthday == 0 && tb_birthday.Text != "0")
             {
-                Alert.ShowMessage(true, AlertType.Error, "患者年龄输入不合法");
+                Alert.ShowMessage(true, AlertType.Error, "患者年龄设置在0-150岁之间");
                 return;
             }
             if (!string.IsNullOrEmpty(tb_id.Text) && tb_id.Text.Length != 18)
             {
-                Alert.ShowMessage(true, AlertType.Error, "患者身份证长度输入不合法");
+                Alert.ShowMessage(true, AlertType.Error, "患者身份证长度输入不为18位");
                 return;
             }
             if (Appointment.AppointmentTime < TimeHelper.ToUnixTime(DateTime.Now))
@@ -86,7 +86,7 @@ namespace MM.Medical.Client.Views
             }
             if (string.IsNullOrEmpty(Appointment.Telephone))
             {
-                Alert.ShowMessage(true, AlertType.Error, "患者电话号码输入不合法");
+                Alert.ShowMessage(true, AlertType.Error, "患者电话号码长度输入不为11位");
                 return;
             }
             if (string.IsNullOrEmpty(Appointment.Anesthesia))

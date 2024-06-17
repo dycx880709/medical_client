@@ -389,7 +389,10 @@ namespace MM.Medical.Client.Views
                                     var decontaminateTask = new DecontaminateTask
                                     {
                                         EndoscopeID = commit_ex.EndoscopeID,
-                                        ExaminationID = commit_ex.ExaminationID
+                                        ExaminationID = commit_ex.ExaminationID,
+                                        DoctorUserID = commit_ex.DoctorID,
+                                        PatientName = commit_ex.Appointment.Name,
+                                        PatientSI = commit_ex.Appointment.SocialSecurityCode
                                     };
                                     var result2 = loading.AsyncWait("创建清洗任务中,请稍后", SocketProxy.Instance.AddDecontaminateTask(decontaminateTask));
                                     if (!result2.IsSuccess)
@@ -401,6 +404,7 @@ namespace MM.Medical.Client.Views
                                 //       Alert.ShowMessage(true, AlertType.Success, "检查已结束,报告已保存");
                                 commit.CopyTo(appointment);
                                 CollectionView.Refresh();
+                                examView.SetExam(null);
                             }
                         }
                         else
