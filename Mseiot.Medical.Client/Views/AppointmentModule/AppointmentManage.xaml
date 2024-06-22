@@ -40,7 +40,7 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <Button Content="扫描签到" Margin="5,0" IsEnabled="False">
+                        <Button Content="扫描签到" Margin="5,0" Visibility="Collapsed">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>

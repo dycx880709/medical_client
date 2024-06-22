@@ -164,11 +164,14 @@ namespace MM.Medical.Client.Views
             {
                 if (appointment.AppointmentStatus == AppointmentStatus.PunchIn)
                 {
-                    var bakAppointment = appointment.Copy();
-                    bakAppointment.AppointmentStatus = AppointmentStatus.Reserved;
-                    var result = loading.AsyncWait("取消签到预约中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(bakAppointment));
-                    if (result.IsSuccess) LoadAppointments();
-                    else Alert.ShowMessage(true, AlertType.Error, $"取消签到预约失败,{ result.Error }");
+                    if (MsPrompt.ShowDialog("确认取消签到?"))
+                    {
+                        var bakAppointment = appointment.Copy();
+                        bakAppointment.AppointmentStatus = AppointmentStatus.Reserved;
+                        var result = loading.AsyncWait("取消签到预约中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(bakAppointment));
+                        if (result.IsSuccess) LoadAppointments();
+                        else Alert.ShowMessage(true, AlertType.Error, $"取消签到预约失败,{result.Error}");
+                    }
                 }
             }
             else Alert.ShowMessage(true, AlertType.Warning, $"请选择取消签到项");

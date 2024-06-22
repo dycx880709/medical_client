@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace MM.Medical.Client
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            //Test();
             ThreadPool.SetMaxThreads(100, 100);
             CacheHelper.LoadSetting();
             if (e.Args.Length > 0)
@@ -50,6 +52,14 @@ namespace MM.Medical.Client
 
             var login = new LoginView();
             login.ShowDialog();
+        }
+
+        private void Test()
+        { 
+            Debug.WriteLine($"CPU {DeviceHelper.GetCPUSerialNum()}");
+            Debug.WriteLine($"CPU {DeviceHelper.GetCpuId()}");
+            Debug.WriteLine($"Memory {DeviceHelper.GetMemoryId()}");
+            Debug.WriteLine($"Disk {DeviceHelper.GetDiskId()}");
         }
     }
 }

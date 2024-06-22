@@ -71,7 +71,7 @@ namespace MM.Medical.Client.Views
             if (this.DataContext is SystemSettingExtend setting)
             {
                 var dialog = new OpenFileDialog();
-                dialog.Filter = ".jpg|*.jpg|.png|*.png|.jpeg|*.jpeg";
+                dialog.Filter = ".jpg|*.jpg|.png|*.png|.jpeg|*.jpeg|.bmp|*.bmp";
                 if (dialog.ShowDialog().Value)
                     setting.ReportIconLocal = dialog.FileName;
             }

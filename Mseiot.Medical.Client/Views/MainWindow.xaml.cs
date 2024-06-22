@@ -60,18 +60,23 @@ namespace MM.Medical.Client.Views
             this.Closed += (_, ex) => Application.Current.Shutdown();
         }
 
-        private void GetSystemSetting()
+        private async void GetSystemSetting()
         {
-            var result = loading.AsyncWait("获取系统设置中,请稍后", SocketProxy.Instance.GetSystemSetting());
-            if (result.IsSuccess)
+            loading.Start("获取系统设置中,请稍后");
+            var result = await SocketProxy.Instance.GetSystemSetting();
+            this.Dispatcher.Invoke(() =>
             {
-                CacheHelper.SystemSetting = result.Content;
-            }
-            else
-            {
-                MsWindow.ShowDialog("获取系统设置失败,软件退出");
-                Application.Current.Shutdown();
-            }
+                loading.Stop();
+                if (result.IsSuccess)
+                {
+                    CacheHelper.SystemSetting = result.Content;
+                }
+                else
+                {
+                    MsWindow.ShowDialog("获取系统设置失败,软件退出");
+                    Application.Current.Shutdown();
+                }
+            });
         }
 
         private async void LoadTcp()

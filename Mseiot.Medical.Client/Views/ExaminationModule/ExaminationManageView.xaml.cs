@@ -391,12 +391,15 @@ namespace MM.Medical.Client.Views
                                         EndoscopeID = commit_ex.EndoscopeID,
                                         ExaminationID = commit_ex.ExaminationID,
                                         DoctorUserID = commit_ex.DoctorID,
-                                        PatientName = commit_ex.Appointment.Name,
-                                        PatientSI = commit_ex.Appointment.SocialSecurityCode
+                                        //PatientName = commit_ex.Appointment.Name,
+                                        //PatientSI = commit_ex.Appointment.IDCard,
+                                        //StartExamineTime = commit_ex.ExaminationTime,
+                                        //EndExamineTime = TimeHelper.ToUnixTime(DateTime.Now),
+                                        //PatientBirthday = commit_ex.Appointment.Birthday,
                                     };
                                     var result2 = loading.AsyncWait("创建清洗任务中,请稍后", SocketProxy.Instance.AddDecontaminateTask(decontaminateTask));
                                     if (!result2.IsSuccess)
-                                        Alert.ShowMessage(false, AlertType.Warning, $"检查已结束,报告已保存但生成清洗任务失败,{result.Error}");
+                                        Alert.ShowMessage(false, AlertType.Warning, $"检查已结束,报告已保存但生成清洗任务失败,{result2.Error}");
                                     else
                                         Alert.ShowMessage(true, AlertType.Success, $"检查已结束,报告已保存并生成清洗任务");
                                 }
