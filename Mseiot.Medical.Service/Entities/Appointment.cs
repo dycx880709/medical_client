@@ -1,4 +1,5 @@
 ﻿using Ms.Libs.Models;
+using Ms.Libs.SysLib;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,18 @@ namespace Mseiot.Medical.Service.Entities
         private bool isPrior;
         private string watchInfo;
         private int backingTime;
+        private int born = (int)TimeHelper.ToUnixTime(new DateTime(2000, 1, 1));
+
+        public int PunchinTime { get; set; }
+        public int Born
+        {
+            get { return born; }
+            set
+            { 
+                born = value;
+                RaisePropertyChanged("Born");
+            }
+        }
 
         /// <summary>
         /// 回访时期

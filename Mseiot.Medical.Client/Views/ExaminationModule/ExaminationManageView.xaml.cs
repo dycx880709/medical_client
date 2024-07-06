@@ -80,8 +80,12 @@ namespace MM.Medical.Client.Views
             InitializeComponent();
             dg_appointments.ItemsSource = this.Appointments;
             CollectionView.SortDescriptions.Add(new SortDescription("AppointmentStatus", ListSortDirection.Ascending));
-            CollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
-            CollectionView.Filter = t => t is Appointment appointment && (appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Cancel || appointment.AppointmentStatus != AppointmentStatus.Cross || appointment.AppointmentStatus != AppointmentStatus.Exprire);
+            CollectionView.SortDescriptions.Add(new SortDescription("PunchinTime", ListSortDirection.Ascending));
+            CollectionView.Filter = t => t is Appointment appointment && 
+            (appointment.AppointmentStatus != AppointmentStatus.Cross || 
+            appointment.AppointmentStatus != AppointmentStatus.Cancel || 
+            appointment.AppointmentStatus != AppointmentStatus.Cross || 
+            appointment.AppointmentStatus != AppointmentStatus.Exprire);
             this.IsEnabled = false;
             this.Loaded += ExaminationManageView_Loaded;
             this.Unloaded += ExaminationManageView_Unloaded;

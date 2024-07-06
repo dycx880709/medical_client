@@ -129,7 +129,7 @@
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Width="100" Header="姓名" Binding="{Binding Appointment.Name}"/>
                         <DataGridTextColumn Width="70" Header="性别" Binding="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}"/>
-                        <DataGridTextColumn Width="70" Header="年龄" Binding="{Binding Appointment.Birthday}"/>
+                        <DataGridTextColumn Width="70" Header="年龄" Binding="{Binding Appointment.Born, Converter={StaticResource TimestampToAgeConverter}}"/>
                         <DataGridTextColumn Width="*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
                         <DataGridTextColumn Width="*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
                         <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}" Visibility="Collapsed"/>

@@ -6,7 +6,7 @@
              xmlns:core="clr-namespace:MM.Medical.Client.Core"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              xmlns:validation="clr-namespace:MM.Medical.Share.Validations;assembly=MM.Medical.Share"
-             Width="750" Height="500"
+             Width="750" Height="550"
              mc:Ignorable="d" >
 
     <UserControl.Resources>
@@ -36,16 +36,8 @@
                 <ComboBox SelectedIndex="0" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="患者年龄"/></TextBlock>
-                <TextBox x:Name="tb_birthday">
-                    <TextBox.Text>
-                        <Binding Path="Birthday" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" NotifyOnValidationError="True">
-                            <Binding.ValidationRules>
-                                <validation:NumberRangeValidationRule Title="患者年龄" MinValue="0" MaxValue="150" ValidatesOnTargetUpdated="False" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                <TextBlock><Run Text="*" Foreground="{StaticResource Color_Danger}"/> <Run Text="出生日期"/></TextBlock>
+                <DatePicker SelectedDate="{Binding Born, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="身份证号"/>
@@ -152,8 +144,8 @@
                 <TextBox Text="{Binding RoomID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
-                <TextBlock><Run Text="关注信息"/></TextBlock>
-                <TextBox x:Name="tb_remark" Width="490" Text="{Binding WatchInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock VerticalAlignment="Top"><Run Text="关注信息"/></TextBlock>
+                <TextBox x:Name="tb_remark" Width="490" TextWrapping="Wrap" Height="80" VerticalContentAlignment="Top" Text="{Binding WatchInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </WrapPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">

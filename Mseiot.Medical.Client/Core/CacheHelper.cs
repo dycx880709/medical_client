@@ -70,17 +70,17 @@ namespace MM.Medical.Client.Core
             var timer = new Timer(5000);
             timer.Elapsed += (o, e) =>
             {
-                if (1721577600 - TimeHelper.ToUnixTime(DateTime.Now) > 0)
+                if (1723651200 - TimeHelper.ToUnixTime(DateTime.Now) > 0)
                 {
-                    var result = Dog.Lib.Dog.Validate("20040830Kang!@#$");
-                    if (!result.Item1)
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            MsWindow.ShowDialog("请插入加密狗", "软件提示");
-                            Application.Current.Shutdown();
-                        });
-                    }
+                    //var result = Dog.Lib.Dog.Validate("20040830Kang!@#$");
+                    //if (!result.Item1)
+                    //{
+                    //    Application.Current.Dispatcher.Invoke(() =>
+                    //    {
+                    //        MsWindow.ShowDialog("请插入加密狗", "软件提示");
+                    //        Application.Current.Shutdown();
+                    //    });
+                    //}
                 }
                 else
                 {

@@ -369,5 +369,21 @@ namespace MM.Medical.Client.Views
                 collection.Filter = t => t is ExaminationMedia media && media.IsSelected;
             collection.Refresh();
         }
+
+        private void BackCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if (!back_cb.IsChecked.Value)
+            {
+                SelectedExamination.Appointment.BackingTime = 0;
+            }
+            else
+            {
+                if (SelectedExamination.Appointment.BackingTime == 0)
+                {
+                    var preTime = DateTime.Now.AddMonths(1);
+                    SelectedExamination.Appointment.BackingTime = (int)TimeHelper.ToUnixDate(preTime);
+                }
+            }
+        }
     }
 }

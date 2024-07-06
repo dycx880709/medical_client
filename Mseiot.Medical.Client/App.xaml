@@ -21,6 +21,7 @@
             <lc:PatientStatusToColorConverter x:Key="PatientStatusToColorConverter"/>
             <lc:AppointmentStatusToColorConverter x:Key="AppointmentStatusToColorConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <lc:TimestampToAgeConverter x:Key="TimestampToAgeConverter"/>
             <converters:TimeStampToDateTimeConverter x:Key="TimeStampToDateTimeConverter"/>
             <converters:TimeStampToStringFormatConverter x:Key="TimeStampToStringFormatConverter"/>
             <converters:IntToFormatString x:Key="IntToFormatStringConverter"/>

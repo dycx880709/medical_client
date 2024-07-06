@@ -39,6 +39,28 @@ namespace Mseiot.Medical.Service.Services
             });
         }
 
+        public async Task<MsResult<ListResult<Examination>>> GetBackRecords(
+            int index,
+            int count,
+            DateTime? startTime,
+            DateTime? endTime,
+            string userInfo = "",
+            string doctorID = "",
+            string examinationType = ""
+        )
+        {
+            return await HttpProxy.GetMessage<ListResult<Examination>>("/api/examination/getBackRecords", new
+            {
+                Index = index,
+                Count = count,
+                StartTime = TimeHelper.ToUnixTime(startTime.Value),
+                EndTime = TimeHelper.ToUnixTime(endTime.Value),
+                UserInfo = userInfo ?? "",
+                DoctorID = doctorID,
+                AppointmentType = examinationType,
+            });
+        }
+
         public async Task<MsResult<TimeResultCollection>> GetExaminationCountByTime(
             DateTime? startTime = null,
             DateTime? endTime = null,

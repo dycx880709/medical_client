@@ -98,7 +98,7 @@
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Appointment.Name}"/>
                             <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}"/>
-                            <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Appointment.Birthday}"/>
+                            <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Appointment.Born, Converter={StaticResource TimestampToAgeConverter}}"/>
                             <DataGridTextColumn Width="1.5*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
                             <DataGridTextColumn Width="1.5*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
                             <DataGridTextColumn Width="*" Header="患者来源" Binding="{Binding Appointment.PatientSource}"/>

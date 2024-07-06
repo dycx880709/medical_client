@@ -69,11 +69,11 @@ namespace MM.Medical.Client.Views
                 Alert.ShowMessage(true, AlertType.Error, "检查类型不能为空");
                 return;
             }
-            if (Appointment.Birthday == 0 && tb_birthday.Text != "0")
-            {
-                Alert.ShowMessage(true, AlertType.Error, "患者年龄设置在0-150岁之间");
-                return;
-            }
+            //if (Appointment.Birthday == 0 && tb_birthday.Text != "0")
+            //{
+            //    Alert.ShowMessage(true, AlertType.Error, "患者年龄设置在0-150岁之间");
+            //    return;
+            //}
             if (!string.IsNullOrEmpty(tb_id.Text) && tb_id.Text.Length != 18)
             {
                 Alert.ShowMessage(true, AlertType.Error, "患者身份证长度输入不为18位");

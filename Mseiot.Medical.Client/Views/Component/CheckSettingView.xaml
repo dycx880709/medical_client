@@ -30,7 +30,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="年龄" Style="{StaticResource editorFormItemText}"/>
-                <TextBlock Text="{Binding Birthday}"/>
+                <TextBlock Text="{Binding Born, Converter={StaticResource TimestampToAgeConverter}}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="检查类型" Style="{StaticResource editorFormItemText}"/>

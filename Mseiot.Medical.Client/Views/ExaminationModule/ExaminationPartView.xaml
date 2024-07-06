@@ -133,10 +133,10 @@
                     <ComboBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" ItemsSource="{x:Static core:Const.Sexs}" SelectedValue="{Binding SelectedExamination.Appointment.Sex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Title"/>
                     <Label Content="{Binding SelectedExamination.Appointment.Sex, Converter={StaticResource SexConverter}}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
-                <StackPanel>
+                <StackPanel Visibility="Collapsed">
                     <TextBlock Text="年龄"/>
                     <TextBox Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}" Text="{Binding SelectedExamination.Appointment.Birthday}"/>
-                    <Label Content="{Binding SelectedExamination.Appointment.Birthday, Converter={StaticResource IntToFormatStringConverter}, ConverterParameter=1}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.Born, Converter={StaticResource TimestampToAgeConverter}}" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="电话号码"/>
@@ -294,12 +294,13 @@
                     <Label Content="{Binding SelectedExamination.PatientTalk}" Width="320" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
                 <StackPanel Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}">
-                    <CheckBox x:Name="back_cb" Margin="5,0" Content="回访时间" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}"/>
-                    <controls:DateTimePicker Width="200" Visibility="{Binding IsChecked, ElementName=back_cb, Converter={StaticResource BooleanToVisibilityConverter}}" SelectedDateTime="{Binding BackingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
+                    <CheckBox x:Name="back_cb" Click="BackCheck_Click" Margin="5,0" Content="回访时间" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanReverseToVisibilityConverter}}"/>
+                    <!--<controls:DateTimePicker Width="200" Visibility="{Binding IsChecked, ElementName=back_cb, Converter={StaticResource BooleanToVisibilityConverter}}" SelectedDateTime="{Binding SelectedExamination.Appointment.BackingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>-->
+                    <DatePicker Width="200" Visibility="{Binding IsChecked, ElementName=back_cb, Converter={StaticResource BooleanToVisibilityConverter}}" SelectedDate="{Binding SelectedExamination.Appointment.BackingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TimeStampToDateTimeConverter}}"/>
                 </StackPanel>
                 <StackPanel Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TextBlock Text="回访时间"/>
-                    <Label Content="{Binding BackingTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy-MM-dd}"/>
+                    <Label Content="{Binding SelectedExamination.Appointment.BackingTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy-MM-dd}"/>
                 </StackPanel>
             </WrapPanel>
             <ScrollViewer Grid.Row="1" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">

@@ -53,13 +53,5 @@ namespace MM.Medical.Client
             var login = new LoginView();
             login.ShowDialog();
         }
-
-        private void Test()
-        { 
-            Debug.WriteLine($"CPU {DeviceHelper.GetCPUSerialNum()}");
-            Debug.WriteLine($"CPU {DeviceHelper.GetCpuId()}");
-            Debug.WriteLine($"Memory {DeviceHelper.GetMemoryId()}");
-            Debug.WriteLine($"Disk {DeviceHelper.GetDiskId()}");
-        }
     }
 }

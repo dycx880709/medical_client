@@ -3,10 +3,114 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:converter="clr-namespace:MM.Medical.Client.Converters"
+             xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
+             xmlns:local="clr-namespace:MM.Medical.Client.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Coming Soon" FontWeight="Bold" FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        
-    </Grid>
+
+    <UserControl.Resources>
+        <converter:ExamineToCanEditConverter x:Key="ExamineToCanEditConverter"/>
+    </UserControl.Resources>
+
+    <controls:CustomGroupBox Header="回访中心">
+        <controls:CustomGroupBox.AttachContent>
+            <ControlTemplate>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="打开" Margin="5,0" Click="Open_Click">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedValue, ElementName=dg_back}" Value="{x:Null}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="编辑" Margin="5,0" Visibility="Collapsed" Click="Edit_Click" IsEnabled="{Binding SelectedValue, ElementName=dg_back, Converter={StaticResource ExamineToCanEditConverter}}"/>
+                    <Button Content="打印" Margin="5,0" Visibility="Collapsed" Click="Report_Click">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedValue, ElementName=dg_back}" Value="{x:Null}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="刷新" Margin="5,0,0,0" Click="Refresh_Click"/>
+                </StackPanel>
+            </ControlTemplate>
+        </controls:CustomGroupBox.AttachContent>
+        <Border>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <WrapPanel.Resources>
+                            <sys:Double x:Key="InputElementWidth">100</sys:Double>
+                            <sys:Double x:Key="InputElementHeight">30</sys:Double>
+                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource editorFormItemText}">
+                                <Setter Property="Width" Value="80"/>
+                                <Setter Property="Margin" Value="0,0,5,0"/>
+                                <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"/>
+                            </Style>
+                            <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource editorFormItem}">
+                                <Setter Property="Margin" Value="2,4"/>
+                            </Style>
+                        </WrapPanel.Resources>
+                        <StackPanel>
+                            <TextBlock Text="回访日期"/>
+                            <controls:DateTimeInterval x:Name="dti_back" FontWeight="Normal"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource editorFormItem}">
+                            <TextBlock Text="身份信息"/>
+                            <controls:CustomTextBox x:Name="tb_user" Watermark="可输入病人姓名/身份证/社保号" Width="250" Text=""/>
+                        </StackPanel>
+                        <Button Content="查询" Click="Get_Click" Grid.Column="1" IsDefault="True"/>
+                    </WrapPanel>
+                </Grid>
+                <Border Grid.Row="1">
+                    <DataGrid x:Name="dg_back" MouseDoubleClick="DataGrid_MouseDoubleClick">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn  Width="70" Header="序号">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DataGridRow}}, Path=Header}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Appointment.Name}"/>
+                            <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}"/>
+                            <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Appointment.Born, Converter={StaticResource TimestampToAgeConverter}}"/>
+                            <DataGridTextColumn Width="1.5*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
+                            <DataGridTextColumn Width="1.5*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
+                            <DataGridTextColumn Width="*" Header="患者来源" Binding="{Binding Appointment.PatientSource}"/>
+                            <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding Appointment.AppointmentType}"/>
+                            <DataGridTextColumn Width="*" Header="检查诊室" Binding="{Binding Appointment.ConsultingRoomName}"/>
+                            <DataGridTextColumn Width="*" Header="检查医生" Binding="{Binding DoctorName}"/>
+                            <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                            <DataGridTextColumn Width="2*" Header="回访时间" Binding="{Binding Appointment.BackingTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                <controls:Pager x:Name="pager" Grid.Row="2" PageChanged="Examination_PageChanged"/>
+                <controls:Loading x:Name="loading" Grid.RowSpan="3"/>
+            </Grid>
+        </Border>
+    </controls:CustomGroupBox>
 </UserControl>
