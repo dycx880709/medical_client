@@ -84,8 +84,6 @@ namespace MM.Medical.Client.Core
                 }
                 else
                 {
-                    //MsWindow.ShowDialog("授权已过期", "软件提示");
-                    //Application.Current.Shutdown();
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         MsWindow.ShowDialog("授权已过期", "软件提示");

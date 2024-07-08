@@ -97,14 +97,23 @@
                             <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Appointment.Born, Converter={StaticResource TimestampToAgeConverter}}"/>
                             <DataGridTextColumn Width="1.5*" Header="身份证号" Binding="{Binding Appointment.IDCard}"/>
                             <DataGridTextColumn Width="1.5*" Header="社保号码" Binding="{Binding Appointment.SocialSecurityCode}"/>
-                            <DataGridTextColumn Width="*" Header="患者来源" Binding="{Binding Appointment.PatientSource}"/>
-                            <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*" Header="患者来源" Binding="{Binding Appointment.PatientSource}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*" Header="电话号码" Binding="{Binding Appointment.TelphoneNumber}"/>
                             <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding Appointment.AppointmentType}"/>
                             <DataGridTextColumn Width="*" Header="检查诊室" Binding="{Binding Appointment.ConsultingRoomName}"/>
                             <DataGridTextColumn Width="*" Header="检查医生" Binding="{Binding DoctorName}"/>
                             <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
-                            <DataGridTextColumn Width="2*" Header="回访时间" Binding="{Binding Appointment.BackingTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
+                            <DataGridTemplateColumn Width="2*" Header="回访原因">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Background="Transparent" ToolTip="{Binding Text, ElementName=tb}">
+                                            <TextBlock x:Name="tb" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Text="{Binding Appointment.BackReason, TargetNullValue='--'}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Width="*" Header="回访日期" Binding="{Binding Appointment.BackingTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

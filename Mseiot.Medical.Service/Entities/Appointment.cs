@@ -33,6 +33,17 @@ namespace Mseiot.Medical.Service.Entities
         private string watchInfo;
         private int backingTime;
         private int born = (int)TimeHelper.ToUnixTime(new DateTime(2000, 1, 1));
+        private string backReason;
+
+        public string BackReason
+        {
+            get { return backReason; }
+            set 
+            { 
+                backReason = value; 
+                RaisePropertyChanged("BackReason");
+            }
+        }
 
         public int PunchinTime { get; set; }
         public int Born
