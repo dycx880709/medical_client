@@ -53,9 +53,6 @@ namespace MM.Medical.Client.Views
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= MainWindow_Loaded;
-            LoadMenus();
-            UpdateTime();
-            LoadTcp();
             GetSystemSetting();
             this.Closed += (_, ex) => Application.Current.Shutdown();
         }
@@ -70,6 +67,9 @@ namespace MM.Medical.Client.Views
                 if (result.IsSuccess)
                 {
                     CacheHelper.SystemSetting = result.Content;
+                    LoadMenus();
+                    UpdateTime();
+                    LoadTcp();
                 }
                 else
                 {

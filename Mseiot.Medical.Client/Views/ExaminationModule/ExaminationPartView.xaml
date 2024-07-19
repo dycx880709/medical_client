@@ -336,7 +336,16 @@
                     <Expander Header="医生建议" IsExpanded="True">
                         <TextBox MinHeight="100" AcceptsReturn="True" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" GotFocus="ExaminationText_GotFocus" Text="{Binding SelectedExamination.DoctorAdvice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Expander>
-                    <Expander Header="回访原因" Visibility="{Binding IsChecked, ElementName=back_cb, Converter={StaticResource BooleanToVisibilityConverter}}" IsExpanded="True">
+                    <Expander Header="回访原因" IsExpanded="True">
+                        <Expander.Style>
+                            <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedExamination.Appointment.BackingTime}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Style>
                         <TextBox MinHeight="100" AcceptsReturn="True" IsReadOnly="{Binding IsReadOnly}" TextWrapping="Wrap" Text="{Binding SelectedExamination.Appointment.BackReason, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Expander>
                 </StackPanel>
