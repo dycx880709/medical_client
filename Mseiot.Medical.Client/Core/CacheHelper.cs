@@ -70,7 +70,7 @@ namespace MM.Medical.Client.Core
             var timer = new Timer(5000);
             timer.Elapsed += (o, e) =>
             {
-                if (1723651200 - TimeHelper.ToUnixTime(DateTime.Now) > 0)
+                if (1725120000 - TimeHelper.ToUnixTime(DateTime.Now) > 0)
                 {
                     //var result = Dog.Lib.Dog.Validate("20040830Kang!@#$");
                     //if (!result.Item1)

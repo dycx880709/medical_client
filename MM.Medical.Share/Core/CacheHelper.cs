@@ -15,6 +15,7 @@ namespace MM.Medical.Share.Core
     {
         public static string ApplicationPath { get; private set; }
         public static string ClientVersion { get; private set; }
+        public static string MainVersion { get; private set; }
         public static string ProductName { get; set; }
         public static string ProcessName { get; set; }
         public static string TempPath { get { return Path.Combine(ApplicationPath, "Temp"); } }
@@ -31,6 +32,7 @@ namespace MM.Medical.Share.Core
             var compary = (AssemblyCompanyAttribute)Attribute.GetCustomAttribute(Assembly.GetEntryAssembly(), typeof(AssemblyCompanyAttribute));
             var version = Assembly.GetEntryAssembly().GetName().Version;
             CacheHelper.ClientVersion = $"{version.Major}.{version.Minor}.{version.Build}";
+            CacheHelper.MainVersion = version.Major.ToString();
             //CacheHelper.ClientVersion = $"{version.Major}.{version.Minor}.{version.Build}.{(version.Revision.ToString().Length > 3 ? version.Revision.ToString() : "0" + version.Revision.ToString())}";
             CacheHelper.ProductName = product.Product;
             CacheHelper.ProcessName = Process.GetCurrentProcess().ProcessName;
