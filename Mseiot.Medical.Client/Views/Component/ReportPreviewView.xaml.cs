@@ -50,7 +50,6 @@ namespace MM.Medical.Client.Views
         private void ReportPreviewView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= ReportPreviewView_Loaded;
-            gb_content.Width = gb_content.ActualHeight / 1123 * 794;
             LoadExaminationInfo();
             LoadSystemSetting();
         }
@@ -63,8 +62,8 @@ namespace MM.Medical.Client.Views
                 if (result.IsSuccess)
                 {
                     this.examination = result.Content;
-                    var CollectionView = CollectionViewSource.GetDefaultView(examination.Images ?? new ObservableCollection<ExaminationMedia>());
-                    CollectionView.Filter = t => t is ExaminationMedia media && media.IsSelected;
+                    var cv = CollectionViewSource.GetDefaultView(examination.Images ?? new ObservableCollection<ExaminationMedia>());
+                    cv.Filter = t => t is ExaminationMedia media && media.IsSelected;
                     gd_content.DataContext = result.Content;
                 }
                 else
@@ -137,7 +136,7 @@ namespace MM.Medical.Client.Views
                 dialog.PrintQueue = LocalPrintServer.GetDefaultPrintQueue();
                 dialog.PrintTicket = dialog.PrintQueue.DefaultPrintTicket;
                 dialog.PrintTicket.PageOrientation = PageOrientation.Portrait;
-                dialog.PrintTicket.PageMediaSize = new PageMediaSize(PageMediaSizeName.ISOA3);
+                dialog.PrintTicket.PageMediaSize = new PageMediaSize(PageMediaSizeName.ISOA4);
                 if (dialog.ShowDialog().Value)
                 {
                     //Get the capabilities of the selected printer.
@@ -162,7 +161,6 @@ namespace MM.Medical.Client.Views
             }
             finally
             {
-                //Here I resize my view to the original size
                 fe.Height = feSize.Height;
                 fe.Width = feSize.Width;
                 fe.UpdateLayout();

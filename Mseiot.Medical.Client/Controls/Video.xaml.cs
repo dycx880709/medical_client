@@ -2,6 +2,7 @@
 using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -79,6 +80,23 @@ namespace MM.Medical.Client.Views
                         resetEvent.Set();
                     }
                 }, token);
+            }
+        }
+
+        public bool SettingROI
+        {
+            get { return (bool)GetValue(SettingROIProperty); }
+            set { SetValue(SettingROIProperty, value); }
+        }
+
+        public static readonly DependencyProperty SettingROIProperty =
+            DependencyProperty.Register("SettingROI", typeof(bool), typeof(Video), new PropertyMetadata(false, new PropertyChangedCallback(SettingROIPropertyChanged)));
+
+        private static void SettingROIPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is Video video)
+            {
+                video.canvas.Visibility = video.SettingROI ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -160,5 +178,106 @@ namespace MM.Medical.Client.Views
             await Stop();
             this.Dispatcher.Invoke(() => this.ImageSource = new BitmapImage(new Uri("/MM.Medical.Share;component/Images/no_signal.jpg", UriKind.Relative)));
         }
+
+        #region 绘制
+
+        float x1;
+        float y1;
+        float x2;
+        float y2;
+        float x3;
+        float y3;
+        float x4;
+        float y4;
+        public event EventHandler<PlayCoreDraw> NotifyDrawComplete;
+
+        PlayerCoreDrawType playerCoreDrawType = PlayerCoreDrawType.Rectangle;
+
+        public void SetDrawStatus(PlayerCoreDrawType playerCoreDrawType = PlayerCoreDrawType.None)
+        {
+            this.playerCoreDrawType = playerCoreDrawType;
+            if (playerCoreDrawType == PlayerCoreDrawType.None)
+            {
+                path.Data = null;
+                canvas.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                canvas.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void DrawStart_Click(object sender, MouseButtonEventArgs e)
+        {
+            var startPoint = e.GetPosition(canvas);
+            x1 = (float)startPoint.X;
+            y1 = (float)startPoint.Y;
+        }
+
+        private void Drawing_Click(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var endPoint = e.GetPosition(canvas);
+                x2 = (float)endPoint.X;
+                y2 = (float)endPoint.Y;
+                Draw();
+            }
+        }
+
+        private void Draw()
+        {
+            switch (playerCoreDrawType)
+            {
+                case PlayerCoreDrawType.Rectangle:
+                    x3 = x1;
+                    y3 = y2;
+                    x4 = x2;
+                    y4 = y1;
+                    path.Data = Geometry.Parse(string.Format("M{0},{1} {2},{3} {4},{5} {6},{7} Z", x1, y1, x3, y3, x2, y2, x4, y4));
+                    break;
+                case PlayerCoreDrawType.Line:
+                    path.Data = Geometry.Parse(string.Format("M{0},{1} {2},{3}", x1, y1, x2, y2));
+                    break;
+            }
+        }
+
+        public void Draw(float x1, float y1, float x2, float y2)
+        {
+            this.x1 = (float)img.ActualWidth * x1;
+            this.y1 = (float)img.ActualHeight * y1;
+            this.x2 = (float)img.ActualWidth * x2;
+            this.y2 = (float)img.ActualHeight * y2;
+            Draw();
+        }
+
+        private void DrawComplete_Click(object sender, MouseButtonEventArgs e)
+        {
+            float lastX1 = x1;
+            float lastY1 = y1;
+            float lastX2 = x2;
+            float lastY2 = y2;
+            switch (playerCoreDrawType)
+            {
+                case PlayerCoreDrawType.Rectangle:
+                    lastX1 = new List<float>() { x1, x2, x3, x4 }.Min();
+                    lastY1 = new List<float>() { y1, y2, y3, y4 }.Min();
+                    lastX2 = new List<float>() { x1, x2, x3, x4 }.Max();
+                    lastY2 = new List<float>() { y1, y2, y3, y4 }.Max();
+                    break;
+                case PlayerCoreDrawType.Line:
+                    break;
+            }
+            PlayCoreDraw playCoreDraw = new PlayCoreDraw()
+            {
+                X1 = lastX1 / (float)canvas.ActualWidth,
+                Y1 = lastY1 / (float)canvas.ActualHeight,
+                X2 = lastX2 / (float)canvas.ActualWidth,
+                Y2 = lastY2 / (float)canvas.ActualHeight,
+            };
+            NotifyDrawComplete?.Invoke(this, playCoreDraw);
+        }
+
+        #endregion
     }
 }

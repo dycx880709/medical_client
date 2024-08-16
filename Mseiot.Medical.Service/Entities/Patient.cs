@@ -11,9 +11,11 @@ namespace Mseiot.Medical.Service.Entities
     public class Patient : NotifyPropertyBase
     {
         private string name;
+        private bool sex;
         private string idCard;
+        private string patientNumber;
         private string socialSecurityCode;
-        private string telphoneNumber;
+        private string telphone;
         private string marryType;
         private string occupation;
         private int childrenCount;
@@ -21,11 +23,7 @@ namespace Mseiot.Medical.Service.Entities
         private int height;
         private int weight;
         private string address;
-        private string permanent;
-        private string patientNumber;
-        private string sex;
-        private int age;
-        private AgeType ageType;
+        private int born;
 
 
         #region 病人信息
@@ -45,31 +43,19 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 年龄
         /// </summary>
-        public int Age
+        public int Born
         {
-            get { return age; }
+            get { return born; }
             set
             {
-                age = value;
-                RaisePropertyChanged("Age");
-            }
-        }
-        /// <summary>
-        /// 年龄类型
-        /// </summary>
-        public AgeType AgeType
-        {
-            get { return ageType; }
-            set
-            {
-                ageType = value;
-                RaisePropertyChanged("AgeType");
+                born = value;
+                RaisePropertyChanged("Born");
             }
         }
         /// <summary>
         /// 性别
         /// </summary>
-        public string Sex
+        public bool Sex
         {
             get { return sex; }
             set
@@ -92,18 +78,6 @@ namespace Mseiot.Medical.Service.Entities
             {
                 patientNumber = value;
                 RaisePropertyChanged("PatientNumber");
-            }
-        }
-        /// <summary>
-        /// 户籍地址
-        /// </summary>
-        public string Permanent
-        {
-            get { return permanent; }
-            set
-            {
-                permanent = value;
-                RaisePropertyChanged("Permanent");
             }
         }
         /// <summary>
@@ -193,13 +167,13 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 电话号码
         /// </summary>
-        public string TelphoneNumber
+        public string Telephone
         {
-            get { return telphoneNumber; }
+            get { return telphone; }
             set
             {
-                telphoneNumber = value;
-                RaisePropertyChanged("TelphoneNumber");
+                telphone = value;
+                RaisePropertyChanged("Telephone");
             }
         }
         /// <summary>
@@ -217,59 +191,15 @@ namespace Mseiot.Medical.Service.Entities
         /// <summary>
         /// 身份证号
         /// </summary>
-        public string IdCard
+        public string IDCard
         {
             get { return idCard; }
             set
             {
                 idCard = value;
-                RaisePropertyChanged("IdCard");
+                RaisePropertyChanged("IDCard");
             }
         }
         #endregion
-    }
-
-    public enum AgeType
-    { 
-        [Description("岁")]
-        Year,
-        [Description("周")]
-        Week,
-        [Description("天")]
-        Day
-    }
-
-    public enum Sex
-    {
-        [Description("男")]
-        Male,
-        [Description("女")]
-        Female,
-        [Description("未知")]
-        Noknown
-    }
-
-    public enum AgeRange
-    {
-        [Description("小孩")]
-        Child,
-        [Description("少年")]
-        Juvenile,
-        [Description("成年人")]
-        Adult,
-        [Description("中年人")]
-        MiddleAger,
-        [Description("老人")]
-        Older
-    }
-
-    public enum MarryType
-    {
-        [Description("未婚")]
-        Unmarried,
-        [Description("已婚")]
-        Married,
-        [Description("离异")]
-        Divorced
     }
 }

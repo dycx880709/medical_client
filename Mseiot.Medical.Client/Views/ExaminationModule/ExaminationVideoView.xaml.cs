@@ -161,6 +161,7 @@ namespace MM.Medical.Client.Views
                     Buffer = image,
                     ExaminationID = examination.ExaminationID,
                     MediaType = MediaType.Image,
+                    ROI = CacheHelper.LocalSetting.ROI != null ? string.Join(",", CacheHelper.LocalSetting.ROI) : string.Empty
                 };
                 examination.Images.Add(media);
                 ExaminationMedias.Insert(0, media);

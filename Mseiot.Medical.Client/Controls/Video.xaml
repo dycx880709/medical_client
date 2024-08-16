@@ -7,6 +7,10 @@
         d:DesignHeight="768" d:DesignWidth="1080"
         mc:Ignorable="d">
     <Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
-        <Image Source="{Binding ImageSource}" Stretch="Uniform" Margin="5"/>
+        <Image x:Name="img" Source="{Binding ImageSource}" Stretch="Uniform" Margin="5"/>
+        <Grid x:Name="canvas" Visibility="Collapsed" Background="#00000000" Width="{Binding ActualWidth,ElementName=img}" Height="{Binding ActualHeight,ElementName=img}" 
+            MouseLeftButtonDown="DrawStart_Click" MouseMove="Drawing_Click" MouseLeftButtonUp="DrawComplete_Click">
+            <Path x:Name="path" Stroke="Red" StrokeThickness="1" />
+        </Grid>
     </Grid>
 </UserControl>

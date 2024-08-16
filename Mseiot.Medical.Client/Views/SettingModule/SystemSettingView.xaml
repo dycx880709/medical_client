@@ -97,6 +97,16 @@
                         <TextBlock Text="录像热键" Style="{StaticResource editorFormItemText}"/>
                         <controls:CustomTextBox Text="{Binding RecordKeyboard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
+                    <StackPanel Style="{StaticResource editorFormItem}">
+                        <TextBlock Text="视频截图范围" Width="Auto" Style="{StaticResource editorFormItemText}"/>
+                        <controls:CustomTextBox x:Name="tb_roi" IsReadOnly="True">
+                            <controls:CustomTextBox.AttachContent>
+                                <Border MouseLeftButtonDown="SetROI_Click" Background="Transparent" Cursor="Hand">
+                                    <Path StrokeThickness="2" SnapsToDevicePixels="True" ToolTip="设置" Stroke="{DynamicResource Color_Nav_Font}" Data="M8,10 22,10 M8,15 22,15 M8,20 22,20"/>
+                                </Border>
+                            </controls:CustomTextBox.AttachContent>
+                        </controls:CustomTextBox>
+                    </StackPanel>
                 </WrapPanel>
             </controls:CustomGroupBox>
             <Button Click="Save_Click" Grid.Row="2" Margin="0,20" Grid.ColumnSpan="3" Content="保存"/>

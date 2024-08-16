@@ -79,6 +79,18 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("IsSelected");
             }
         }
+
+        private string roi;
+        public string ROI
+        {
+            get { return roi; }
+            set
+            { 
+                roi = value;
+                RaisePropertyChanged("ROI");
+            }
+        }
+
     }
 
     public enum MediaType

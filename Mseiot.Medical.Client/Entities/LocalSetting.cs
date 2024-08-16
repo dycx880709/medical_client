@@ -27,6 +27,7 @@ namespace MM.Medical.Client.Entities
         public string LoginName { get { return UserRecord.LoginName; } }
         public string LoginPwd { get { return UserRecord.LoginPwd; } }
         public string RFIDCom { get; set; }
+        public float[] ROI { get; set; }
         public LocalSetting()
         {
             this.UserRecords = new List<UserRecord>();

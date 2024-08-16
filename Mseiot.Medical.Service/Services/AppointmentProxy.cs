@@ -11,6 +11,16 @@ namespace Mseiot.Medical.Service.Services
 {
     public partial class SocketProxy
     {
+        public async Task<MsResult<List<Appointment>>> GetTodayAppointmentRecords(string consultingRoomName)
+        {
+            return await HttpProxy.GetMessage<List<Appointment>>("/api/Appointment/GetTodayRecords", new { ConsultingRoomName = consultingRoomName });
+        }
+
+        public async Task<MsResult<Appointment>> GetAppointment(int appointmentID)
+        {
+            return await HttpProxy.GetMessage<Appointment>("/api/Appointment/GetAppointment", new { AppointmentID = appointmentID });
+        }
+
         public async Task<MsResult<ListResult<Appointment>>> GetAppointments(
             int index, 
             int count, 
