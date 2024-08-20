@@ -95,6 +95,30 @@ namespace Mseiot.Medical.Service.Services
             return await HttpProxy.PutMessage<bool>("/api/examination/modifyexamination", examination);
         }
 
+        public async Task<MsResult<Examination>> StartExamination(int examinationID, string doctorID, int endoscopeID)
+        {
+            return await HttpProxy.GetMessage<Examination>("/api/examination/start", new 
+            {
+                ExaminationID = examinationID,
+                DoctorID = doctorID,
+                EndoscopeID = endoscopeID
+            });
+        }
+        public async Task<MsResult<Examination>> ChangeEndoscope(int examinationID, int endoscopeID)
+        {
+            return await HttpProxy.GetMessage<Examination>("/api/examination/changeEndoscope", new
+            {
+                ExaminationID = examinationID,
+                EndoscopeID = endoscopeID
+            });
+        }
+        
+
+        public async Task<MsResult<long>> StopExamination(int examinationID)
+        {
+            return await HttpProxy.GetMessage<long>("/api/examination/stop", new { ExaminationID = examinationID });
+        }
+
         public async Task<MsResult<int>> AddExamination(Examination examination)
         {
             return await HttpProxy.PostMessage<int>("/api/examination/addexamination", examination);

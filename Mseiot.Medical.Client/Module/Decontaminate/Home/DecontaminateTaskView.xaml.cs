@@ -223,10 +223,14 @@ namespace MM.Medical.Client.Module.Decontaminate
                     //        return;
                     //    }
                     //}
-                    var firstStep = decontaminateTask.DecontaminateTaskSteps.FirstOrDefault(t => t.DecontaminateStepStatus != DecontaminateStepStatus.Complete && t.RFIDDeviceCom.Equals(com));
+                    var firstStep = decontaminateTask.DecontaminateTaskSteps.FirstOrDefault(t => t.DecontaminateStepStatus != DecontaminateStepStatus.Complete && t.Chooses.Any(s => s.RFIDDeviceCOM == com));
                     if (firstStep != null)
                     {
                         var condition = firstStep.Copy();
+                        var device = condition.Chooses.FirstOrDefault(t => t.RFIDDeviceCOM == com);
+                        condition.RFIDDeviceCom = device.RFIDDeviceCOM;
+                        condition.RFIDDeviceID = device.RFIDDeviceID;
+                        condition.Timeout = device.Timeout;
                         if (condition.DecontaminateStepStatus == DecontaminateStepStatus.Wait)
                         {
                             if (decontaminateTask.DecontaminateTaskSteps.IndexOf(firstStep) == 0)

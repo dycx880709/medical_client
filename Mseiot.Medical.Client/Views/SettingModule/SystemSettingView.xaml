@@ -32,7 +32,7 @@
                         <TextBlock Text="医院名称" Style="{StaticResource editorFormItemText}"/>
                         <controls:CustomTextBox Text="{Binding HospitalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
-                    <StackPanel Style="{StaticResource editorFormItem}">
+                    <StackPanel Style="{StaticResource editorFormItem}" Visibility="Collapsed">
                         <TextBlock Text="报告单名称" Width="Auto" Style="{StaticResource editorFormItemText}"/>
                         <controls:CustomTextBox Text="{Binding ReportName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>

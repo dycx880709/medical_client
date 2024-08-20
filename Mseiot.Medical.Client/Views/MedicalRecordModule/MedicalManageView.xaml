@@ -106,7 +106,7 @@
                             <DataGridTextColumn Width="*" Header="复/初诊" Binding="{Binding DiagnoseType}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="收费类型" Binding="{Binding ChargeType}" Visibility="Collapsed"/>
                             <DataGridTextColumn Width="*" Header="检查日期" Binding="{Binding ExaminationTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyyy/MM/dd}"/>
-                            <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding Appointment.AppointmentType}"/>
+                            <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding AppointmentType}"/>
                             <DataGridTextColumn Width="*" Header="内镜型号" Binding="{Binding Endoscope.Model}"/>
                             <DataGridTextColumn Width="2*" Header="检查结果" Binding="{Binding Result}"/>
                             <DataGridTextColumn Width="*" Header="检查诊室" Binding="{Binding Appointment.ConsultingRoomName}"/>

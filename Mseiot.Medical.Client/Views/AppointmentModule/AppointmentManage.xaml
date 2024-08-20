@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
-            xmlns:entities="clr-namespace:Mseiot.Medical.Service.Entities;assembly=Mseiot.Medical.Service"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
     <Grid>
@@ -18,10 +17,13 @@
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.Reserved}">
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="Exprire">
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.PunchIn}">
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="Reserved">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="PunchIn">
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -33,7 +35,7 @@
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.Reserved}">
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="Reserved">
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -45,7 +47,7 @@
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.Reserved}">
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="Reserved">
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -57,9 +59,12 @@
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Style.Triggers>
+                                        <!--<DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="Exprire">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>-->
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.Reserved}"/>
+                                                <Condition Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="Reserved"/>
                                                 <Condition Binding="{Binding SelectedValue.AppointmentTime, ElementName=dg_appointment, Converter={StaticResource TimeStampIsTodayConverter}}" Value="True"/>
                                             </MultiDataTrigger.Conditions>
                                             <MultiDataTrigger.Setters>
@@ -75,7 +80,7 @@
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="IsEnabled" Value="False"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="{x:Static entities:AppointmentStatus.PunchIn}">
+                                        <DataTrigger Binding="{Binding SelectedValue.AppointmentStatus, ElementName=dg_appointment}" Value="PunchIn">
                                             <Setter Property="IsEnabled" Value="True"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -121,13 +126,82 @@
                     </StackPanel>
                 </Grid>
                 <Border Grid.Row="1">
-                    <DataGrid x:Name="dg_appointment">
+                    <DataGrid x:Name="dg_appointment" RowDetailsVisibilityMode="VisibleWhenSelected">
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <WrapPanel Margin="10,5">
+                                    <StackPanel Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">身份证号:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding IDCard}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">社保号码:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding SocialSecurityCode}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">患者来源:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding PatientSource}"/>
+                                    </StackPanel>
+                                    <StackPanel x:Name="sp_clinic" Visibility="Collapsed" Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">门诊号:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding ClinicCode}"/>
+                                    </StackPanel>
+                                    <StackPanel x:Name="sp_department" Visibility="Collapsed" Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">科室:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding Department}"/>
+                                    </StackPanel>
+                                    <StackPanel x:Name="sp_roomID" Visibility="Collapsed" Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">床号:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding RoomID}"/>
+                                    </StackPanel>
+                                    <StackPanel x:Name="sp_hospitalID" Visibility="Collapsed" Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">住院号:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding HospitalID}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">申请科室:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding ApplyDepartment}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">申请医生:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding ApplyDoctor}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">麻醉方式:</TextBlock>
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" Text="{Binding Anesthesia}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource editorFormItem}">
+                                        <TextBlock Foreground="{StaticResource Color_Font_Light}" FontWeight="Bold" Style="{StaticResource editorFormItemText}">签到时间:</TextBlock>
+                                        <TextBlock x:Name="tb_punch" Foreground="{StaticResource Color_Font_Light}" Text="{Binding PunchinTime, Converter={StaticResource TimeStampToStringFormatConverter}, ConverterParameter=yyy-MM-dd HH:mm}"/>
+                                    </StackPanel>
+                                </WrapPanel>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding PunchinTime}" Value="0">
+                                        <Setter Property="Text" TargetName="tb_punch" Value="--"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding PatientSource}" Value="门诊">
+                                        <Setter Property="Visibility" TargetName="sp_clinic" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding PatientSource}" Value="住院">
+                                        <Setter Property="Visibility" TargetName="sp_department" Value="Visible"/>
+                                        <Setter Property="Visibility" TargetName="sp_roomID" Value="Visible"/>
+                                        <Setter Property="Visibility" TargetName="sp_hospitalID" Value="Visible"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                                <Setter Property="Height" Value="Auto"/>
+                                <Setter Property="MinHeight" Value="{DynamicResource DataGrdiRowHeight}"/>
+                            </Style>
+                        </DataGrid.RowStyle>
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="80" Header="检查序号" Binding="{Binding Number}"/>
                             <DataGridTemplateColumn Width="150" Header="预约状态">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Border Width="70" Height="30" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
+                                        <Border Margin="0,5,0,0" Width="70" Height="30" CornerRadius="5" Background="{Binding AppointmentStatus, Converter={StaticResource AppointmentStatusToColorConverter}}">
                                             <TextBlock VerticalAlignment="Center" FontSize="{DynamicResource SmallFontSize}" HorizontalAlignment="Center" Foreground="{StaticResource Color_Font_Light}" Text="{Binding AppointmentStatus, Converter={StaticResource EnumToStringConverter}}"/>
                                         </Border>
                                     </DataTemplate>
@@ -140,30 +214,37 @@
                                             <TextBlock x:Name="tb" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Text="{Binding ConsultingRoomName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                         <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Reserved}">
+                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="Reserved">
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Exprire}">
+                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="Exprire">
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Cancel}">
+                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="Cancel">
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="{x:Static entities:AppointmentStatus.Cross}">
+                                            <DataTrigger Binding="{Binding AppointmentStatus}" Value="Cross">
                                                 <Setter Property="Text" TargetName="tb" Value="--"/>
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+                            <DataGridTextColumn Width="*" Header="患者ID" Binding="{Binding PatientNumber}"/>
                             <DataGridTextColumn Width="*" Header="姓名" Binding="{Binding Name}"/>
                             <DataGridTextColumn Width="*" Header="年龄" Binding="{Binding Born, Converter={StaticResource TimestampToAgeConverter}}"/>
                             <DataGridTextColumn Width="*" Header="性别" Binding="{Binding Sex, Converter={StaticResource SexConverter}}"/>
                             <DataGridTextColumn Width="1.5*" Header="电话号码" Binding="{Binding Telephone}"/>
-                            <DataGridTextColumn Width="1.5*" Header="身份证号" Binding="{Binding IDCard}"/>
-                            <DataGridTextColumn Width="1.5*" Header="社保号码" Binding="{Binding SocialSecurityCode}"/>
-                            <DataGridTextColumn Width="*" Header="检查类型" Binding="{Binding AppointmentType}"/>
-                            <DataGridTextColumn Width="1.5*" Header="预约时间" Binding="{Binding AppointmentTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm}"/>
+                            <DataGridTemplateColumn Width="1.5*" Header="检查类型">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <TextBlock x:Name="tb" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Text="{Binding AppointmentTypeStr}" TextTrimming="CharacterEllipsis" ToolTip="{Binding AppointmentTypeStr}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Width="1.5*" Header="预约时间" Binding="{Binding AppointmentTime,Converter={StaticResource TimeStampToDateTimeConverter},StringFormat=yyyy-MM-dd HH:mm}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

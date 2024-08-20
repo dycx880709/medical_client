@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -201,12 +202,10 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
 
-
         /// <summary>
         /// RFID设备编号
         /// </summary>
         public int RFIDDeviceID { get; set; }
-
 
         /// <summary>
         /// RFID编号
@@ -216,6 +215,8 @@ namespace Mseiot.Medical.Service.Entities
         /// RFID通信串口
         /// </summary>
         public string RFIDDeviceCom { get; set; }
+
+        public ObservableCollection<DecontaminateChoose> Chooses { get; set; }
 
         private DecontaminateStepStatus decontaminateStepStatus;
         /// <summary>
@@ -387,5 +388,23 @@ namespace Mseiot.Medical.Service.Entities
         /// 设备名称
         /// </summary>
         public string RFIDDeviceName { get; set; }
+
+        public ObservableCollection<DecontaminateChoose> Chooses { get; set; }
+    }
+
+    public class DecontaminateChoose
+    {
+        /// <summary>
+        /// 超时时间
+        /// </summary>
+        public int Timeout { get; set; }
+
+        /// <summary>
+        /// ID
+        /// </summary>
+        public int RFIDDeviceID { get; set; }
+
+        public string RFIDDeviceName { get; set; }
+        public string RFIDDeviceCOM { get; set; }
     }
 }

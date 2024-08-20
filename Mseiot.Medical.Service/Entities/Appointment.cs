@@ -3,6 +3,7 @@ using Ms.Libs.SysLib;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,10 @@ namespace Mseiot.Medical.Service.Entities
         private string idCard;
         private string socialSecurityCode;
         private bool sex;
-        private int birthday;
         private AppointmentStatus appointmentStatus;
         private Examination examination;
         private int endoscopeID;
-        private string appointmentType;
+        private string[] appointmentType;
         private string consultingRoomName;
         private string telephone;
         private string anesthesia;
@@ -34,7 +34,76 @@ namespace Mseiot.Medical.Service.Entities
         private int backingTime;
         private int born = (int)TimeHelper.ToUnixTime(new DateTime(2000, 1, 1));
         private string backReason;
+        private string patientNumber;
+        private string clinicCode;
+        private string applyDoctor;
+        private string applyDepartment;
+        private string address;
+        public int PatientID { get; set; }
+        /// <summary>
+        /// 家庭地址
+        /// </summary>
+        public string Address
+        {
+            get { return address; }
+            set
+            { 
+                address = value;
+                RaisePropertyChanged("Address");
+            }
+        }
 
+        /// <summary>
+        /// 申请科室
+        /// </summary>
+        public string ApplyDepartment
+        {
+            get { return applyDepartment; }
+            set 
+            { 
+                applyDepartment = value;
+                RaisePropertyChanged("ApplyDepartment");
+            }
+        }
+        /// <summary>
+        /// 申请医生
+        /// </summary>
+        public string ApplyDoctor
+        {
+            get { return applyDoctor; }
+            set
+            { 
+                applyDoctor = value;
+                RaisePropertyChanged("ApplyDoctor");
+            }
+        }
+        /// <summary>
+        /// 门诊号
+        /// </summary>
+        public string ClinicCode
+        {
+            get { return clinicCode; }
+            set
+            { 
+                clinicCode = value;
+                RaisePropertyChanged("ClinicCode");
+            }
+        }
+        /// <summary>
+        /// 病人ID
+        /// </summary>
+        public string PatientNumber
+        {
+            get { return patientNumber; }
+            set 
+            { 
+                patientNumber = value; 
+                RaisePropertyChanged("PatientNumber"); 
+            }
+        }
+        /// <summary>
+        /// 回访原因
+        /// </summary>
         public string BackReason
         {
             get { return backReason; }
@@ -44,7 +113,9 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("BackReason");
             }
         }
-
+        /// <summary>
+        /// 签到时间
+        /// </summary>
         public int PunchinTime { get; set; }
         public int Born
         {
@@ -55,7 +126,6 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("Born");
             }
         }
-
         /// <summary>
         /// 回访时期
         /// </summary>
@@ -150,18 +220,6 @@ namespace Mseiot.Medical.Service.Entities
             }
         }
         /// <summary>
-        /// 年龄
-        /// </summary>
-        public int Birthday
-        {
-            get { return birthday; }
-            set
-            {
-                birthday = value;
-                RaisePropertyChanged("Birthday");
-            }
-        }
-        /// <summary>
         /// 内镜编号
         /// </summary>
         public int EndoscopeID
@@ -185,10 +243,16 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("AppointmentStatus");
             }
         }
+
+        public string AppointmentTypeStr
+        {
+            get { return AppointmentType != null ? string.Join(",", AppointmentType) : string.Empty; }
+            set { AppointmentType = value.Split(',');  }
+        }
         /// <summary>
         /// 检查类型
         /// </summary>
-        public string AppointmentType
+        public string[] AppointmentType
         {
             get { return appointmentType; }
             set
@@ -210,6 +274,7 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("Examination");
             }
         }
+        public ObservableCollection<Examination> Examinations { get; set; }
         /// <summary>
         /// 预约诊室
         /// </summary>

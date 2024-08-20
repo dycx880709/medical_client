@@ -53,9 +53,9 @@ namespace Mseiot.Medical.Service.Services
             return await HttpProxy.PutMessage<bool>("/api/Appointment/ModifyAppointment", appointment);
         }
 
-        public async Task<MsResult<bool>> ModifyAppointmentStatus(Appointment appointment)
+        public async Task<MsResult<bool>> ModifyAppointmentStatus(int appointmentID, AppointmentStatus status)
         {
-            return await HttpProxy.PutMessage<bool>("/api/Appointment/ModifyAppointmentStatus", appointment);
+            return await HttpProxy.PutMessage<bool>("/api/Appointment/ModifyAppointmentStatus", new { AppointmentID = appointmentID, AppointmentStatus = status });
         }
 
         public async Task<MsResult<bool>> RemoveAppointments(List<int> appointmentIDs)

@@ -115,8 +115,8 @@ namespace MM.Medical.Client.Views
             if (!string.IsNullOrEmpty(systemSetting.RecordKeyboard))
             {
                 RegistHotKey(systemSetting.RecordKeyboard, Record);
-                this.are = new AutoResetEvent(true);
             }
+            this.are = new AutoResetEvent(true);
         }
 
         private void RegistHotKey(string shotcutKey, Action action)

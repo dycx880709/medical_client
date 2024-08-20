@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MM.Medical.Client.Module.Decontaminate"
              xmlns:controls="clr-namespace:Ms.Controls;assembly=Ms.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -10,16 +11,54 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="步骤名称" Style="{StaticResource editorFormItemText}"/>
-                <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
-            <StackPanel Style="{StaticResource editorFormItem}">
+            <StackPanel Margin="25,0">
+                <TextBlock Text="已选设备" FontWeight="Bold" Margin="0,0,0,10"/>
+                <DataGrid ItemsSource="{Binding Chooses}" MinHeight="200" BorderThickness="1">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="设备名称" Width="200" Binding="{Binding RFIDDeviceName}"/>
+                        <DataGridTextColumn Header="设备口" Width="200" Binding="{Binding RFIDDeviceCOM}"/>
+                        <DataGridTextColumn Header="清洗时间" Width="200" Binding="{Binding Timeout}"/>
+                        <DataGridTemplateColumn Header="操作" Width="60">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="Remove_Click" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Style="{StaticResource Button_Close}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            <StackPanel Margin="25,10">
+                <TextBlock Text="添加设备" FontWeight="Bold"/>
+                <StackPanel Style="{StaticResource editorFormItem}">
+                    <TextBlock Text="设备名称" Style="{StaticResource editorFormItemText}"/>
+                    <ComboBox ItemsSource="{Binding RFIDDevices, RelativeSource={RelativeSource AncestorType={x:Type local:AddDecontaminateFlowStep}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" 
+                              SelectedValue="{Binding RFIDDevice, RelativeSource={RelativeSource AncestorType={x:Type local:AddDecontaminateFlowStep}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="清洗时间" Style="{StaticResource editorFormItemText}"/>
+                    <TextBox Text="{Binding CleanTime, RelativeSource={RelativeSource AncestorType={x:Type local:AddDecontaminateFlowStep}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="添加" Click="AddDevice_Click" Margin="10,0,0,0">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Button_Primary}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RFIDDevice, RelativeSource={RelativeSource AncestorType={x:Type local:AddDecontaminateFlowStep}}}" Value="{x:Null}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            <!--<StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="超时(秒)" Style="{StaticResource editorFormItemText}"/>
                 <TextBox Text="{Binding Timeout,UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="采集设备" Style="{StaticResource editorFormItemText}"/>
                 <ComboBox x:Name="cbRFIDDevices" DisplayMemberPath="Name" SelectedValue="{Binding RFIDDeviceID,UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="RFIDDeviceID"/>
-            </StackPanel>
+            </StackPanel>-->
             <Button Click="Save_Click" Content="保存" IsDefault="True"/>
         </StackPanel>
     </Grid>

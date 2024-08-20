@@ -148,7 +148,7 @@ namespace MM.Medical.Client.Views
         {
             if (dg_appointment.SelectedValue is Appointment appointment)
             {
-                if (appointment.AppointmentStatus == AppointmentStatus.Reserved)
+                if (appointment.AppointmentStatus == AppointmentStatus.Reserved || appointment.AppointmentStatus == AppointmentStatus.Exprire)
                 {
                     var view = new CheckSettingView(appointment, this.loading);
                     if (child.ShowDialog("预约签到", view))
@@ -166,9 +166,7 @@ namespace MM.Medical.Client.Views
                 {
                     if (MsPrompt.ShowDialog("确认取消签到?"))
                     {
-                        var bakAppointment = appointment.Copy();
-                        bakAppointment.AppointmentStatus = AppointmentStatus.Reserved;
-                        var result = loading.AsyncWait("取消签到预约中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(bakAppointment));
+                        var result = loading.AsyncWait("取消签到预约中,请稍后", SocketProxy.Instance.ModifyAppointmentStatus(appointment.AppointmentID, AppointmentStatus.Reserved));
                         if (result.IsSuccess) LoadAppointments();
                         else Alert.ShowMessage(true, AlertType.Error, $"取消签到预约失败,{result.Error}");
                     }

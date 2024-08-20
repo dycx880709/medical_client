@@ -56,10 +56,16 @@
                 </ControlTemplate>
             </controls:CustomGroupBox.AttachContent>
             <DataGrid x:Name="lvFlowSteps" Grid.Row="1">
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
+                        <Setter Property="Height" Value="Auto"/>
+                        <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"/>
+                        <Setter Property="MinHeight" Value="{DynamicResource DataGrdiRowHeight}"/>
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*" Header="步骤名称" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Width="*" Header="超时时间（秒）" Binding="{Binding Timeout}"/>
-                    <DataGridTextColumn Width="*" Header="采集设备" Binding="{Binding RFIDDeviceName}"/>
+                    <DataGridTextColumn Width="*" Header="设备数量" Binding="{Binding Chooses.Count}"/>
                     <DataGridTemplateColumn Width="200" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

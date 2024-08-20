@@ -46,7 +46,7 @@ namespace MM.Medical.Client.Views
             var result = loading.AsyncWait("获取预约诊室中,请稍后", SocketProxy.Instance.GetConsultingRooms());
             if (result.IsSuccess)
             {
-                cb_room.ItemsSource = result.Content.Where(t => t.ExaminationTypes.Split(',').Any(p => p.Equals(Appointment.AppointmentType)));
+                cb_room.ItemsSource = result.Content.Where(t => Appointment.AppointmentType.All(s => t.ExaminationTypes.Split(',').Contains(s)));
             }
             else
             {

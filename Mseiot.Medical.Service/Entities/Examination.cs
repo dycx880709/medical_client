@@ -27,10 +27,37 @@ namespace Mseiot.Medical.Service.Entities
         private string patientTalk;
         private string auditDoctor;
         private string nurse;
+        private bool isRunning;
         private Appointment appointment;
         private ObservableCollection<ExaminationMedia> images;
         private ObservableCollection<ExaminationMedia> videos;
+        private string appointmentType;
+        private ExaminationState examinationState;
 
+        /// <summary>
+        /// 检查状态
+        /// </summary>
+        public ExaminationState ExaminationState
+        {
+            get { return examinationState; }
+            set
+            {
+                examinationState = value;
+                RaisePropertyChanged("ExaminationState");
+            }
+        }
+        /// <summary>
+        /// 预约类型
+        /// </summary>
+        public string AppointmentType
+        {
+            get { return appointmentType; }
+            set 
+            {
+                appointmentType = value;
+                RaisePropertyChanged("AppointmentType");
+            }
+        }
         /// <summary>
         /// 检查ID
         /// </summary>
@@ -131,6 +158,20 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged("ExaminationTime");
             }
         }
+
+        /// <summary>
+        /// 是否正在检查
+        /// </summary>
+        public bool IsRunning
+        {
+            get { return isRunning; }
+            set 
+            { 
+                isRunning = value;
+                RaisePropertyChanged("IsRunning");
+            }
+        }
+
         /// <summary>
         /// 报告日期
         /// </summary>
@@ -261,5 +302,12 @@ namespace Mseiot.Medical.Service.Entities
                 RaisePropertyChanged(nameof(Videos));
             }
         }
+    }
+
+    public enum ExaminationState
+    { 
+        None,
+        Running,
+        Complete
     }
 }

@@ -34,7 +34,7 @@
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="检查类型" Style="{StaticResource editorFormItemText}"/>
-                <TextBlock Text="{Binding AppointmentType}"/>
+                <TextBlock Text="{Binding AppointmentTypeStr}"/>
             </StackPanel>
             <StackPanel Style="{StaticResource editorFormItem}">
                 <TextBlock Text="签到类型" Style="{StaticResource editorFormItemText}"/>

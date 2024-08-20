@@ -32,8 +32,28 @@ namespace MM.Medical.Client.Module.Decontaminate
             InitializeComponent();
             this.decontaminateFlow = decontaminateFlow.Copy();
             this.decontaminateFlow_origin = decontaminateFlow;
-            this.DataContext = this.decontaminateFlow;
+            this.Loaded += AddDecontaminateFlow_Loaded;
             this.loading = loading;
+        }
+
+        private async void AddDecontaminateFlow_Loaded(object sender, RoutedEventArgs e)
+        {
+            loading.Start("获取内镜中,请稍后");
+            var result = await SocketProxy.Instance.GetEndoscopes();
+            this.Dispatcher.Invoke(() =>
+            {
+                loading.Stop();
+                if (result.IsSuccess)
+                {
+                    cb_model.ItemsSource = result.Content.Select(t => t.Model);
+                    cb_model.UpdateLayout();
+                }
+                else
+                {
+                    Alert.ShowMessage(true, AlertType.Error, $"获取内镜失败:{result.Error}");
+                }
+                this.DataContext = this.decontaminateFlow;
+            });
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

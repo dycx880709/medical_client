@@ -38,7 +38,7 @@ namespace Mseiot.Medical.Service.Services
 
         public async Task<MsResult<List<DecontaminateFlowStep>>> GetDecontaminateFlowSteps(int decontaminateFlowID)
         {
-            return await HttpProxy.GetMessage<List<DecontaminateFlowStep>>("/api/DecontaminateFlow/GetDecontaminateFlowSteps", new { decontaminateFlowID = decontaminateFlowID });
+            return await HttpProxy.GetMessage<List<DecontaminateFlowStep>>("/api/DecontaminateFlow/GetDecontaminateFlowSteps", new { DecontaminateFlowID = decontaminateFlowID });
         }
 
         public async Task<MsResult<int>> AddDecontaminateFlowStep(DecontaminateFlowStep decontaminateFlowStep)

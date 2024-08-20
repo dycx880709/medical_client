@@ -119,6 +119,7 @@
       <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AppointmentStatusToColorConverter.cs" />
+    <Compile Include="Converters\ReportImageToUrlConverter.cs" />
     <Compile Include="Converters\TimeStampToAgeConverter.cs" />
     <Compile Include="Converters\EndoscopeStateIsEnabledConverter.cs" />
     <Compile Include="Converters\EndoscopeStateToColorConverter.cs" />
@@ -226,6 +227,9 @@
     </Compile>
     <Compile Include="Views\LoginModule\SeverSetting.xaml.cs">
       <DependentUpon>SeverSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingModule\ROISettingView.xaml.cs">
+      <DependentUpon>ROISettingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UpdateModule\AddVersion.xaml.cs">
       <DependentUpon>AddVersion.xaml</DependentUpon>
@@ -397,6 +401,10 @@
     <Page Include="Views\LoginModule\SeverSetting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SettingModule\ROISettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UpdateModule\AddVersion.xaml">
       <SubType>Designer</SubType>

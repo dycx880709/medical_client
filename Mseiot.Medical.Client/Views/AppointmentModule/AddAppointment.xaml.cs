@@ -1,5 +1,6 @@
 ﻿using MM.Medical.Client.Core;
 using Ms.Controls;
+using Ms.Controls.Core;
 using Ms.Libs.SysLib;
 using Mseiot.Medical.Service.Entities;
 using Mseiot.Medical.Service.Services;
@@ -64,7 +65,7 @@ namespace MM.Medical.Client.Views
                 Alert.ShowMessage(true, AlertType.Error, "患者姓名不能为空");
                 return;
             }
-            if (string.IsNullOrEmpty(Appointment.AppointmentType))
+            if (string.IsNullOrEmpty(Appointment.AppointmentTypeStr))
             {
                 Alert.ShowMessage(true, AlertType.Error, "检查类型不能为空");
                 return;
@@ -129,6 +130,91 @@ namespace MM.Medical.Client.Views
         private void Rescan_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private async void PatientNumber_Changed(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Appointment.PatientNumber))
+            {
+                var result = await SocketProxy.Instance.GetPatients(Appointment.PatientNumber);
+                if (result.IsSuccess)
+                {
+                    var list = result.Content.Select(t => new CustomTextBoxComplete { Label = t.PatientNumber, Value = t }).ToList();
+                    patient_tb.ItemsSource = list;
+                    patient_tb.UpdateLayout();
+                    patient_tb.IsPopupOpen(list.Count > 0 && Appointment.PatientNumber.Length > 1);
+                }
+            }
+        }
+
+        private void Patient_Selected(object sender, Ms.Controls.Models.CustomEventArgs e)
+        {
+            if (e.PropertyValue is Patient patient)
+            {
+                patient.CopyTo(this.Appointment);
+            }
+        }
+
+        private void Type_DropDownOpened(object sender, EventArgs e)
+        {
+            if (sender is ComboBox cb_type && cb_type.DataContext is ConsultingRoom room)
+            {
+                var selectedTypes = new List<string>();
+                if (!string.IsNullOrEmpty(room.ExaminationTypes))
+                {
+                    selectedTypes = room.ExaminationTypes.Split(',').ToList();
+                }
+                void UpdateSelectedType()
+                {
+                    for (int i = 0; i < cb_type.Items.Count; i++)
+                    {
+                        var cbi = cb_type.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
+                        if (cbi != null)
+                        {
+                            var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
+                            cb.IsChecked = selectedTypes.Any(t => t.Equals(cb_type.Items[i].ToString()));
+                        }
+                    }
+                }
+                if (cb_type.ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+                {
+                    UpdateSelectedType();
+                }
+                else
+                {
+                    Task.Run(async () =>
+                    {
+                        while (cb_type.ItemContainerGenerator.Status != System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+                        {
+                            await Task.Delay(100);
+                        }
+                        this.Dispatcher.Invoke(() => UpdateSelectedType());
+                    });
+                }
+            }
+        }
+
+        private void SelectedType_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element)
+            {
+                var item = ControlHelper.GetParentObject<ComboBoxItem>(element);
+                var cb_type = ItemsControl.ItemsControlFromItemContainer(item) as ComboBox;
+                cb_type.Text = string.Empty;
+                for (int i = 0; i < cb_type.Items.Count; i++)
+                {
+                    var cbi = cb_type.ItemContainerGenerator.ContainerFromIndex(i) as ComboBoxItem;
+                    var cb = ControlHelper.GetVisualChild<CheckBox>(cbi);
+                    if (cb.IsChecked.Value)
+                    {
+                        cb_type.Text += cb.Content.ToString() + ",";
+                    }
+                }
+                if (!string.IsNullOrEmpty(cb_type.Text))
+                {
+                    cb_type.Text = cb_type.Text.Substring(0, cb_type.Text.Length - 1);
+                }
+            }
         }
     }
 }

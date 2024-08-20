@@ -90,12 +90,10 @@
                                                 </Style>
                                             </Image.Style>
                                         </Image>
-                                        <StackPanel>
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
-                                                <TextBlock Text="{Binding HospitalName}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
-                                                <TextBlock Text="{Binding ReportName}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
-                                            </StackPanel>
-                                            <TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="{StaticResource LargeFontSize}"><Run Text="{Binding DataContext.Appointment.AppointmentType, ElementName=gd_content}"/>报告单</TextBlock>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding HospitalName}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
+                                            <TextBlock Text="{Binding DataContext.AppointmentType, ElementName=gd_content}" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
+                                            <TextBlock Text="报告单" FontWeight="Bold" FontSize="{StaticResource LargeExFontSize}"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <Grid x:Name="gd_content" Grid.Row="1" Margin="10,0">
@@ -141,7 +139,6 @@
                                             <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Appointment.Sex, Converter={StaticResource SexConverter}}" VerticalAlignment="Center"/>
                                             <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding Appointment.Born, Converter={StaticResource TimestampToAgeConverter}}" VerticalAlignment="Center"/>
                                             <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding Endoscope.Model}" VerticalAlignment="Center"/>
-
                                             <Grid Grid.Row="2" Grid.ColumnSpan="8">
                                                 <Grid.Style>
                                                     <Style TargetType="{x:Type Grid}">

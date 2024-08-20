@@ -58,6 +58,7 @@
     <Compile Include="Entities\MedicalTemplate.cs" />
     <Compile Include="Entities\MedicalWord.cs" />
     <Compile Include="Entities\Patient.cs" />
+    <Compile Include="Entities\PatientAppointmentRecord.cs" />
     <Compile Include="Entities\PatientInfo.cs" />
     <Compile Include="Entities\SQLInfo.cs" />
     <Compile Include="Entities\StatisticsType.cs" />
